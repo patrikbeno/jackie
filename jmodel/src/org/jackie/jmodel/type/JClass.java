@@ -1,9 +1,9 @@
 package org.jackie.jmodel.type;
 
-import org.jackie.jmodel.JType;
 import org.jackie.jmodel.Annotated;
-import org.jackie.jmodel.JPackage;
 import org.jackie.jmodel.FQNamed;
+import org.jackie.jmodel.JPackage;
+import org.jackie.jmodel.JType;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JTypeVariable;

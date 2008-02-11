@@ -1,17 +1,16 @@
 package org.jackie.jmodel.type;
 
 import org.jackie.jmodel.structure.JAnnotationAttribute;
-import org.jackie.jmodel.FQNamed;
 
-import java.util.Set;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Annotation type declaration (special type of JClass that represents an annotation)
  *
  * @author Patrik Beno
  */
-public interface AnnotationType extends ExtendedType, FQNamed {
+public interface AnnotationType extends ExtendedType {
 
 	/**
 	 * Names of the annotation attributes.

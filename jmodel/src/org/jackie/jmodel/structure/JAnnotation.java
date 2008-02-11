@@ -1,7 +1,7 @@
 package org.jackie.jmodel.structure;
 
-import org.jackie.jmodel.JNode;
 import org.jackie.jmodel.Annotated;
+import org.jackie.jmodel.JNode;
 import org.jackie.jmodel.type.AnnotationType;
 
 import java.util.List;

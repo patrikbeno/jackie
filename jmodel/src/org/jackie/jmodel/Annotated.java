@@ -2,8 +2,8 @@ package org.jackie.jmodel;
 
 import org.jackie.jmodel.structure.JAnnotation;
 
-import java.util.List;
 import java.lang.annotation.Annotation;
+import java.util.List;
 
 /**
  * @author Patrik Beno

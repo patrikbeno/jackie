@@ -1,10 +1,6 @@
 package org.jackie.jmodel.type;
 
 import org.jackie.jmodel.JType;
-import org.jackie.jmodel.attributes.Flags;
-import org.jackie.utils.Assert;
-
-import java.util.Set;
 
 /**
  * @author Patrik Beno
@@ -39,9 +35,4 @@ public enum JPrimitive implements JType {
 		return clazz;
 	}
 
-	public Flags flags() {
-		throw Assert.notYetImplemented();
-	}
-
-	
 }
