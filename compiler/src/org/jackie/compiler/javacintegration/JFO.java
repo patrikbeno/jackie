@@ -2,7 +2,7 @@ package org.jackie.compiler.javacintegration;
 
 import org.jackie.compiler.filemanager.FileObject;
 
-import javac.javax.tools.SimpleJavaFileObject;
+import javax.tools.SimpleJavaFileObject;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -1,8 +1,8 @@
 package org.jackie.compiler.javacintegration;
 
-import javac.com.sun.tools.javac.api.JavacTool;
-import javac.com.sun.source.util.JavacTask;
-import javac.javax.tools.JavaFileObject;
+import com.sun.tools.javac.api.JavacTool;
+import com.sun.source.util.JavacTask;
+import javax.tools.JavaFileObject;
 
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;

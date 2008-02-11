@@ -3,11 +3,11 @@ package org.jackie.compiler.javacintegration;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;
 
-import javac.javax.tools.FileObject;
-import javac.javax.tools.JavaFileManager;
-import javac.javax.tools.JavaFileObject;
-import javac.javax.tools.StandardLocation;
-import javac.javax.tools.JavaFileObject.Kind;
+import javax.tools.FileObject;
+import javax.tools.JavaFileManager;
+import javax.tools.JavaFileObject;
+import javax.tools.StandardLocation;
+import javax.tools.JavaFileObject.Kind;
 
 import java.io.IOException;
 import java.util.ArrayList;
