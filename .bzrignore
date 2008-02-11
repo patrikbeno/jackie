@@ -1,0 +1,8 @@
+*.ipr
+*.iws
+**/*.iml
+.project
+.settings
+**/target
+.idea
+test-output
