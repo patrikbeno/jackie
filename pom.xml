@@ -25,6 +25,7 @@
 			<modules>
 				<module>utils</module>
 				<module>jmodel</module>
+				<module>compiler</module>
 			</modules>
 		</profile>
 	</profiles>
