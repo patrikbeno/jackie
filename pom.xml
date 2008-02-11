@@ -24,6 +24,7 @@
 			</activation>
 			<modules>
 				<module>utils</module>
+				<module>jmodel</module>
 			</modules>
 		</profile>
 	</profiles>
