@@ -70,6 +70,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.4</version>
+				<configuration>
+					<forkMode>always</forkMode>
+					<argLine>-Xmx256m</argLine>
+					<!--<skip>true</skip>-->
+					<skipExec>true</skipExec>
+				</configuration>
 			</plugin>
 		</plugins>
 
