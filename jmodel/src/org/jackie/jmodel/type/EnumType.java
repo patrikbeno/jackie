@@ -1,6 +1,7 @@
 package org.jackie.jmodel.type;
 
 import org.jackie.jmodel.structure.JEnumContant;
+import org.jackie.jmodel.SpecialType;
 
 import java.util.List;
 import java.util.Set;
@@ -8,7 +9,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface EnumType extends ExtendedType {
+public interface EnumType extends SpecialType {
 
 	Set<String> getEnumConstantNames();
 

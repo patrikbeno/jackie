@@ -1,6 +1,7 @@
 package org.jackie.jmodel.type;
 
 import org.jackie.jmodel.structure.JAnnotationAttribute;
+import org.jackie.jmodel.SpecialType;
 
 import java.util.List;
 import java.util.Set;
@@ -10,7 +11,7 @@ import java.util.Set;
  *
  * @author Patrik Beno
  */
-public interface AnnotationType extends ExtendedType {
+public interface AnnotationType extends SpecialType {
 
 	/**
 	 * Names of the annotation attributes.

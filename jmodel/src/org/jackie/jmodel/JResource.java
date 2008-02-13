@@ -1,5 +1,7 @@
 package org.jackie.jmodel;
 
+import org.jackie.jmodel.props.Named;
+
 /**
  * @author Patrik Beno
  */

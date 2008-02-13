@@ -1,11 +1,11 @@
 package org.jackie.jmodel.structure;
 
-import org.jackie.jmodel.Annotated;
+import org.jackie.jmodel.props.Annotated;
 import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.Named;
-import org.jackie.jmodel.Typed;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.props.Named;
+import org.jackie.jmodel.props.Typed;
 import org.jackie.jmodel.code.CodeBlock;
-import org.jackie.jmodel.type.JClass;
 
 import java.util.List;
 
@@ -23,6 +23,5 @@ public interface JMethod extends JNode, Named, Typed, Annotated {
 	List<JLocalVariable> getLocalVariables();
 
 	CodeBlock getCodeBlock();
-
 
 }

@@ -1,9 +1,9 @@
-package org.jackie.jmodel.type;
+package org.jackie.jmodel;
 
 /**
  * @author Patrik Beno
  */
-public enum Nesting {
+public enum ClassNestingLevel {
 
 	/**
 	 * Top-level class

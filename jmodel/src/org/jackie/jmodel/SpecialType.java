@@ -1,7 +1,8 @@
-package org.jackie.jmodel.type;
+package org.jackie.jmodel;
 
-import org.jackie.jmodel.FQNamed;
-import org.jackie.jmodel.Named;
+import org.jackie.jmodel.props.FQNamed;
+import org.jackie.jmodel.props.Named;
+import org.jackie.jmodel.JClass;
 
 /**
  * Extended types are advanced views on regular classes (e.g. interface, annotation or enum).
@@ -9,7 +10,7 @@ import org.jackie.jmodel.Named;
  *
  * @author Patrik Beno
  */
-public interface ExtendedType extends Named, FQNamed {
+public interface SpecialType extends Named, FQNamed {
 
 	JClass getJClass();
 

@@ -1,4 +1,4 @@
-package org.jackie.jmodel;
+package org.jackie.jmodel.props;
 
 /**
  * @author Patrik Beno

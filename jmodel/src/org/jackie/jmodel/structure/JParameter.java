@@ -1,6 +1,6 @@
 package org.jackie.jmodel.structure;
 
-import org.jackie.jmodel.Annotated;
+import org.jackie.jmodel.props.Annotated;
 
 /**
  * @author Patrik Beno

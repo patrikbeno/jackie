@@ -1,4 +1,4 @@
-package org.jackie.jmodel;
+package org.jackie.jmodel.props;
 
 import org.jackie.jmodel.structure.JAnnotation;
 
