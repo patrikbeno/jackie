@@ -1,10 +1,9 @@
 package org.jackie.utils;
 
-import java.util.Arrays;
-
 /**
  * @author Patrik Beno
  */
+@SuppressWarnings({"ThrowableInstanceNeverThrown", "unchecked"})
 public class Assert {
 
 	static public void doAssert(boolean condition, String msg, Object... args) {
@@ -18,11 +17,9 @@ public class Assert {
 	}
 
 	static public AssertionError assertFailed(final Throwable thrown, String msg, Object... args) {
-		return new AssertionError(String.format(msg, args)) {
-			{
+		return new AssertionError(String.format(msg, args)) {{
 				initCause(thrown);
-			}
-		};
+		}};
 	}
 
 	static public <T> T typecast(Object o, Class<T> expected) {
