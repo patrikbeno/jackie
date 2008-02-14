@@ -44,7 +44,7 @@ public class JarFileManager implements FileManager {
 			JarEntry je;
 			while ((je = jin.getNextJarEntry()) != null) {
 				String pathname = je.getName();
-				FileObject fo = load(pathname, jin);
+				FileObject fo = new JarEntryFileObject(url.toExternalForm(), pathname);
 				fileobjects.put(je.getName(), fo);
 			}
 		} catch (IOException e) {

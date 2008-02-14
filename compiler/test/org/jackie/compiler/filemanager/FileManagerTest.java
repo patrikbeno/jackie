@@ -30,7 +30,8 @@ public class FileManagerTest {
 
       loading.stop();
 
-      Log.debug("Loaded %s pathnames (%s bytes) in %s msec", pathnames.size(), countBytes(fm), loading.duration());
+      Log.debug("Loaded %s pathnames (%s bytes) in %s msec (%s usec/entry)",
+					 pathnames.size(), countBytes(fm), loading.duration(), loading.duration()*1000/pathnames.size());
    }
 
    @Test(groups = {"perf"}, invocationCount = 5)
