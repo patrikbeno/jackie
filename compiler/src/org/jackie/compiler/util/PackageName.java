@@ -28,7 +28,7 @@ public class PackageName {
 			i = 0;
 		}
 
-		name = fqname.substring(i);
+		name = fqname.substring(i+1);
 		return name;
 	}
 

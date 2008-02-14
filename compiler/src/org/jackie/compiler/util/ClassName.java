@@ -87,8 +87,8 @@ public class ClassName {
 
 		getName(); // force parsing
 
-		int i = name.lastIndexOf(PACKAGE_SEP);
-		String candidate = (i != -1) ? name.substring(i) : name;
+		int i = name.lastIndexOf(CLASS_SEP);
+		String candidate = (i != -1) ? name.substring(i+1) : name;
 
 		simplename = getLocalName(candidate);
 		return simplename;
@@ -132,7 +132,7 @@ public class ClassName {
 	public String getLocalName(String binaryNamePart) {
 		int offset = 0;
 		for (; offset < binaryNamePart.length(); offset++) {
-			if (Character.isJavaIdentifierPart(binaryNamePart.charAt(offset))) {
+			if (Character.isJavaIdentifierStart(binaryNamePart.charAt(offset))) {
 				break;
 			}
 		}
