@@ -1,5 +1,8 @@
 package org.jackie.jmodel;
 
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * @author Patrik Beno
  */
@@ -17,7 +20,31 @@ public enum JPrimitive {
 	LONG(long.class, Long.class),
 
 	FLOAT(float.class, Float.class),
-	DOUBLE(double.class, Double.class),;
+	DOUBLE(double.class, Double.class),
+
+	;
+
+
+	static private final Map<Class,Class> primitivesByWrapper;
+	static private final Map<Class,Class> wrappersByPrimitive;
+
+	static {
+		primitivesByWrapper = new HashMap<Class, Class>();
+		wrappersByPrimitive = new HashMap<Class, Class>();
+		for (JPrimitive p : values()) {
+			primitivesByWrapper.put(p.getObjectWrapperClass(), p.getPrimitiveClass());
+			wrappersByPrimitive.put(p.getPrimitiveClass(), p.getObjectWrapperClass());
+		}
+	}
+
+	static public boolean isObjectWrapper(Class cls) {
+		return primitivesByWrapper.containsKey(cls);
+	}
+
+	static public Class getPrimitiveForObjectWrapper(Class cls) {
+		return wrappersByPrimitive.get(cls);
+	}
+
 
 	private final Class primitiveClass;
 	private final Class objectWrapperClass;
@@ -34,4 +61,5 @@ public enum JPrimitive {
 	public Class getObjectWrapperClass() {
 		return objectWrapperClass;
 	}
+
 }
