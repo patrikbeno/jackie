@@ -42,11 +42,27 @@ public class TypeRegistryTest {
 				Object[][].class.getName()
 		)));
 
+		Assert.notNull(r.getJClass(Object.class));
+		Assert.notNull(r.getJClass(Object[].class));
+		Assert.notNull(r.getJClass(Object[][].class));
+	}
+
+	public void multiregistry() {
+		MultiRegistry r = new MultiRegistry(Arrays.<TypeRegistry>asList(
+				new PrimitiveTypeRegistry(),
+				new JClassRegistry(new HashSet<String>(Arrays.asList(
+						Object.class.getName(),
+						String.class.getName()
+				)))
+		));
+
 		JClassImpl c;
 
-		c = r.getJClass(Object.class);
-		c = r.getJClass(Object[].class);
-		c = r.getJClass(Object[][].class);
+		Assert.notNull(r.getJClass(int.class));
+		Assert.notNull(r.getJClass(int[].class));
+		Assert.notNull(r.getJClass(String.class));
+		Assert.notNull(r.getJClass(String[].class));
+
 	}
 
 }
