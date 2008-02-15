@@ -1,11 +1,8 @@
 package org.jackie.compiler.typeregistry;
 
-import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.util.ClassName;
-import org.jackie.compiler.util.Context;
-import static org.jackie.compiler.util.Context.typeRegistry;
-import org.jackie.jmodel.type.ArrayType;
 
 import java.util.Map;
 

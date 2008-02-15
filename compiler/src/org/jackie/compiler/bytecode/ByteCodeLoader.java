@@ -3,6 +3,7 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.typeRegistry;
+
 import org.objectweb.asm.Type;
 
 /**

@@ -1,20 +1,20 @@
 package org.jackie.compiler.filemanager;
 
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.jar.JarInputStream;
-import java.util.jar.JarEntry;
-import java.net.URL;
-import java.io.InputStream;
+import org.jackie.utils.Assert;
+import org.jackie.utils.CyclicBuffer;
+
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-
-import org.jackie.utils.CyclicBuffer;
-import org.jackie.utils.Assert;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 /**
  * @author Patrik Beno

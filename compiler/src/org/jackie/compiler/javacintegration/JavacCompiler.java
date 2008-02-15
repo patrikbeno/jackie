@@ -1,16 +1,16 @@
 package org.jackie.compiler.javacintegration;
 
-import com.sun.tools.javac.api.JavacTool;
-import com.sun.source.util.JavacTask;
-import javax.tools.JavaFileObject;
-
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;
 
-import java.io.Writer;
+import com.sun.source.util.JavacTask;
+import com.sun.tools.javac.api.JavacTool;
+
+import javax.tools.JavaFileObject;
 import java.io.PrintWriter;
-import java.util.List;
+import java.io.Writer;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Patrik Beno

@@ -7,14 +7,12 @@ import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.typeRegistry;
 import org.jackie.compiler.util.EnumProxy;
 import org.jackie.compiler.util.Helper;
-import org.jackie.jmodel.props.Annotated;
-import org.jackie.jmodel.structure.JAnnotation;
 import org.jackie.jmodel.JPrimitive;
 import org.jackie.utils.Assert;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;

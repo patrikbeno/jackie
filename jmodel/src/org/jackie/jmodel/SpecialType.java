@@ -2,7 +2,6 @@ package org.jackie.jmodel;
 
 import org.jackie.jmodel.props.FQNamed;
 import org.jackie.jmodel.props.Named;
-import org.jackie.jmodel.JClass;
 
 /**
  * Extended types are advanced views on regular classes (e.g. interface, annotation or enum).

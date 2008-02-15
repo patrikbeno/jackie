@@ -1,8 +1,8 @@
 package org.jackie.jmodel.type;
 
 import org.jackie.jmodel.SpecialType;
-import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JField;
+import org.jackie.jmodel.structure.JMethod;
 
 import java.util.List;
 

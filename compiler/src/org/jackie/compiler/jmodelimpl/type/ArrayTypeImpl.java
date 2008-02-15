@@ -1,9 +1,5 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.SpecialType;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.type.ArrayType;
-import org.jackie.utils.Assert;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 
 /**

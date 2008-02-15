@@ -1,6 +1,7 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.List;

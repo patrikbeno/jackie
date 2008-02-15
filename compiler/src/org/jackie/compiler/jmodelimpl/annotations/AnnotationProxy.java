@@ -1,17 +1,17 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.utils.Assert;
 import org.jackie.compiler.util.Context;
 import org.jackie.jmodel.JPrimitive;
+import org.jackie.utils.Assert;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Array;
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
-import java.util.Map;
+import java.lang.reflect.Array;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Patrik Beno

@@ -1,13 +1,13 @@
 package org.jackie.jmodel.util;
 
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.SpecialType;
 import org.jackie.jmodel.type.AnnotationType;
 import org.jackie.jmodel.type.ArrayType;
 import org.jackie.jmodel.type.ClassType;
 import org.jackie.jmodel.type.EnumType;
 import org.jackie.jmodel.type.InterfaceType;
 import org.jackie.jmodel.type.PrimitiveType;
-import org.jackie.jmodel.SpecialType;
-import org.jackie.jmodel.JClass;
 
 /**
  * @author Patrik Beno

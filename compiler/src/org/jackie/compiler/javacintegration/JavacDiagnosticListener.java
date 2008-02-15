@@ -1,11 +1,11 @@
 package org.jackie.compiler.javacintegration;
 
+import org.jackie.utils.Assert;
+import org.jackie.utils.Log;
+
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 import javax.tools.JavaFileObject;
-
-import org.jackie.utils.Assert;
-import org.jackie.utils.Log;
 
 /**
  * @author Patrik Beno

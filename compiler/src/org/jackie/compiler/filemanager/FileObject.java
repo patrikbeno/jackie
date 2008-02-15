@@ -1,8 +1,8 @@
 package org.jackie.compiler.filemanager;
 
-import java.nio.charset.Charset;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
+import java.nio.charset.Charset;
 
 /**
  * @author Patrik Beno

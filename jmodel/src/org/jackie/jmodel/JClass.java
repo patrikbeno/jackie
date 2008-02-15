@@ -3,15 +3,10 @@ package org.jackie.jmodel;
 import org.jackie.jmodel.props.Annotated;
 import org.jackie.jmodel.props.FQNamed;
 import org.jackie.jmodel.props.Named;
-import org.jackie.jmodel.JPackage;
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.structure.ReferenceType;
-import org.jackie.jmodel.type.InterfaceType;
-import org.jackie.jmodel.type.EnumType;
-import org.jackie.jmodel.type.AnnotationType;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JTypeVariable;
+import org.jackie.jmodel.structure.ReferenceType;
 
 import javax.lang.model.element.NestingKind;
 import java.util.List;

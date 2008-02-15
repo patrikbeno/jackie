@@ -1,12 +1,11 @@
 package org.jackie.compiler.jmodelimpl;
 
-import org.jackie.jmodel.SpecialType;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
-import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
+import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
 
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Patrik Beno

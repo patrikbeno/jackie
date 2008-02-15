@@ -1,7 +1,7 @@
 package org.jackie.jmodel.type;
 
-import org.jackie.jmodel.structure.JAnnotationAttribute;
 import org.jackie.jmodel.SpecialType;
+import org.jackie.jmodel.structure.JAnnotationAttribute;
 
 import java.util.List;
 import java.util.Set;

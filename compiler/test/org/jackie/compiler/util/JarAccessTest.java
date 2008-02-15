@@ -2,8 +2,9 @@ package org.jackie.compiler.util;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
-import org.jackie.utils.TimedTask;
 import org.jackie.utils.Log;
+import org.jackie.utils.TimedTask;
+
 import org.testng.annotations.Test;
 
 import java.io.BufferedInputStream;
@@ -11,11 +12,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 

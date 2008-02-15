@@ -1,8 +1,7 @@
 package org.jackie.jmodel.structure;
 
-import org.jackie.jmodel.JNode;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.structure.JTypeParameter;
+import org.jackie.jmodel.JNode;
 
 import java.util.List;
 

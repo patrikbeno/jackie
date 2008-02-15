@@ -3,15 +3,14 @@ package org.jackie.compiler.javacintegration;
 import org.jackie.compiler.filemanager.FileObject;
 
 import javax.tools.SimpleJavaFileObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
-import java.nio.charset.Charset;
 import java.nio.channels.Channels;
+import java.nio.charset.Charset;
 
 /**
  * @author Patrik Beno

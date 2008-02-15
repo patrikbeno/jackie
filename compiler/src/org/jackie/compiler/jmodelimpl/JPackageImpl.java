@@ -3,7 +3,6 @@ package org.jackie.compiler.jmodelimpl;
 import org.jackie.jmodel.props.FQNamed;
 import org.jackie.utils.Stack;
 
-import java.util.List;
 import java.util.Set;
 
 /**

@@ -1,7 +1,8 @@
 package org.jackie.compiler.util;
 
-import org.testng.annotations.Test;
 import org.jackie.utils.Assert;
+
+import org.testng.annotations.Test;
 
 /**
  * @author Patrik Beno

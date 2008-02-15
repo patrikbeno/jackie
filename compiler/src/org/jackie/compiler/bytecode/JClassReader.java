@@ -3,6 +3,7 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
 import static org.jackie.compiler.util.Context.typeRegistry;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;

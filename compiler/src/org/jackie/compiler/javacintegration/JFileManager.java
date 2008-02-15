@@ -6,15 +6,14 @@ import org.jackie.utils.Assert;
 import javax.tools.FileObject;
 import javax.tools.JavaFileManager;
 import javax.tools.JavaFileObject;
-import javax.tools.StandardLocation;
 import javax.tools.JavaFileObject.Kind;
-
+import javax.tools.StandardLocation;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.HashSet;
 
 /**
  * @author Patrik Beno

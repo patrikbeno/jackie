@@ -1,7 +1,7 @@
 package org.jackie.jmodel.type;
 
-import org.jackie.jmodel.structure.JEnumContant;
 import org.jackie.jmodel.SpecialType;
+import org.jackie.jmodel.structure.JEnumContant;
 
 import java.util.List;
 import java.util.Set;

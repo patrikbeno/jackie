@@ -1,6 +1,5 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
 import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
 import org.jackie.jmodel.type.AnnotationType;
 

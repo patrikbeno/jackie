@@ -1,10 +1,7 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JPrimitive;
-import org.jackie.jmodel.type.PrimitiveType;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
-import org.jackie.utils.Assert;
+import org.jackie.jmodel.JPrimitive;
 
 /**
  * @author Patrik Beno

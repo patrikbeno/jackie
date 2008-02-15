@@ -1,11 +1,12 @@
 package org.jackie.compiler.util;
 
 import org.jackie.utils.Assert;
+
 import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**

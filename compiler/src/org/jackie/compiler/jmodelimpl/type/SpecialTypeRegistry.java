@@ -2,8 +2,8 @@ package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.jmodel.SpecialType;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrik Beno

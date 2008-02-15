@@ -5,8 +5,8 @@ import org.jackie.compiler.jmodelimpl.JPackageImpl;
 import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.util.PackageName;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrik Beno
