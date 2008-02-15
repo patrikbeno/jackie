@@ -4,6 +4,7 @@ import org.jackie.jmodel.props.FQNamed;
 import org.jackie.utils.Stack;
 
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Patrik Beno
@@ -18,6 +19,10 @@ public class JPackageImpl implements FQNamed {
 
 	public Set<JClassImpl> classes;
 
+	{
+		subpackages = new HashSet<JPackageImpl>();
+		classes = new HashSet<JClassImpl>();
+	}
 
 	public String getFQName() {
 		Stack<String> stack = new Stack<String>();

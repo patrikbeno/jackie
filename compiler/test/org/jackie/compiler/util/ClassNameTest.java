@@ -10,6 +10,13 @@ import org.testng.annotations.Test;
 @Test
 public class ClassNameTest {
 
+	public void arrays() {
+		ClassName clsname = new ClassName(int[].class);
+		Assert.expected("int[]", clsname.getFQName(), "getFQName()");
+		Assert.expected("int", clsname.getComponentType().getFQName(), "getComponentType().getFQName()");
+		Assert.expected(1, clsname.getDimensions(), "getDimensions()");
+	}
+
 	public void parseSimpleClassName() {
 		ClassName clsname = new ClassName("java.lang.Object");
 		Assert.expected("java.lang", clsname.getPackageName().getFQName(), "package name!");

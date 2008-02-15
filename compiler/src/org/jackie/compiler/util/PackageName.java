@@ -24,9 +24,6 @@ public class PackageName {
 		}
 
 		int i = fqname.lastIndexOf('.');
-		if (i == -1) {
-			i = 0;
-		}
 
 		name = fqname.substring(i+1);
 		return name;

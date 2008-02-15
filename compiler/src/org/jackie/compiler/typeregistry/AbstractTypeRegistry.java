@@ -48,7 +48,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 	}
 
 	public JClassImpl getJClass(Class cls) {
-		return getJClass(new ClassName(cls.getName()));
+		return getJClass(new ClassName(cls));
 	}
 
 	public JPackageImpl getJPackage(ClassName clsname) {
@@ -62,7 +62,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 	}
 
 	public JPackageImpl getJPackage(PackageName pckgname) {
-		JPackageImpl p = packages.get(pckgname.getFQName());
+		JPackageImpl p = (pckgname != null) ? packages.get(pckgname.getFQName()) : null;
 		if (p != null) {
 			return p;
 		}

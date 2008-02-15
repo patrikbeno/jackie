@@ -10,6 +10,7 @@
 			<package name="org.jackie.compiler.filemanager"/>
 			<package name="org.jackie.compiler.javacintegration"/>
 			<package name="org.jackie.compiler.util"/>
+			<package name="org.jackie.compiler.typeregistry"/>
 		</packages>
 	</test>
 </suite>

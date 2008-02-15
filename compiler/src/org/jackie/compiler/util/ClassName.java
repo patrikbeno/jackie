@@ -33,7 +33,7 @@ public class ClassName {
 
 
 	public ClassName(Class cls) {
-		fqname = cls.getName() + dup(ARRAY_DIM_FLAG, dimensions=countArrayDimenstions(cls));
+		fqname = unwrapComponentClass(cls).getName() + dup(ARRAY_DIM_FLAG, dimensions=countArrayDimenstions(cls));
 	}
 
 	public ClassName(Type asmtype) {
@@ -198,5 +198,13 @@ public class ClassName {
 
 	public boolean isArray() {
 		return getDimensions()>0;
+	}
+
+	protected Class unwrapComponentClass(Class cls) {
+		Class c = cls;
+		while (c.isArray()) {
+			c = c.getComponentType();
+		}
+		return c;
 	}
 }

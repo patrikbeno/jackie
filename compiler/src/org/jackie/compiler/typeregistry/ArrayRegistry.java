@@ -4,6 +4,7 @@ import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.util.ClassName;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -43,7 +44,11 @@ public class ArrayRegistry {
 
 	TypeRegistry master;
 
-	Map<Descriptor, JClassImpl> arrays;
+	Map<Descriptor, JClassImpl> arrays;  // todo use WeakRefs, automatic cleanup 
+
+	{
+		arrays = new HashMap<Descriptor, JClassImpl>();
+	}
 
 	public ArrayRegistry(TypeRegistry master) {
 		this.master = master;
