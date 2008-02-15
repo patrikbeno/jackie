@@ -9,3 +9,5 @@ test-output
 .idea
 .idea
 .idea
+.diff
+bzrdiff.sh
