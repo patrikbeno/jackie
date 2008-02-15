@@ -1,6 +1,7 @@
 package org.jackie.compiler.jmodelimpl;
 
 import org.jackie.jmodel.props.FQNamed;
+import org.jackie.utils.Stack;
 
 import java.util.List;
 import java.util.Set;
@@ -20,7 +21,15 @@ public class JPackageImpl implements FQNamed {
 
 
 	public String getFQName() {
-		return parent.getFQName() + "." + name;
+		Stack<String> stack = new Stack<String>();
+		for (JPackageImpl p = this; !p.isDefault(); p = p.parent) {
+			stack.push(p.name);
+		}
+		StringBuilder sb = new StringBuilder();
+		while (!stack.isEmpty()) {
+			sb.append(stack.pop()).append( stack.isEmpty() ? "" : "." );
+		}
+		return sb.toString();
 	}
 
 	public JPackageImpl addSubPackage(JPackageImpl pckg) {
@@ -45,4 +54,7 @@ public class JPackageImpl implements FQNamed {
 	}
 
 
+	public boolean isDefault() {
+		return name.isEmpty();
+	}
 }

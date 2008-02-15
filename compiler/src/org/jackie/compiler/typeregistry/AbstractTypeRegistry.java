@@ -47,6 +47,10 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return cls;
 	}
 
+	public JClassImpl getJClass(Class cls) {
+		return getJClass(new ClassName(cls.getName()));
+	}
+
 	public JPackageImpl getJPackage(ClassName clsname) {
 		JPackageImpl p = packages.get(clsname.getPackageFQName());
 		if (p != null) {

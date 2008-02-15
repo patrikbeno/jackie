@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class MultiRegistry implements TypeRegistry {
+public class MultiRegistry extends AbstractTypeRegistry {
 
 	protected List<TypeRegistry> dependencies;
 

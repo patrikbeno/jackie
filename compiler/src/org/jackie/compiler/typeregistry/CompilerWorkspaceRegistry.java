@@ -6,7 +6,7 @@ import org.jackie.compiler.util.ClassName;
 /**
  * @author Patrik Beno
  */
-public class CompilerWorkspaceRegistry implements TypeRegistry {
+public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 
 	protected TypeRegistry workspace;
 	protected TypeRegistry dependencies;

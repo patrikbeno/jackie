@@ -1,8 +1,10 @@
 package org.jackie.compiler.typeregistry;
 
-import org.jackie.compiler.jmodelimpl.ArrayTypeImpl;
+import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.util.Context;
+import static org.jackie.compiler.util.Context.typeRegistry;
 import org.jackie.jmodel.type.ArrayType;
 
 import java.util.Map;
@@ -77,7 +79,7 @@ public class ArrayRegistry {
 		cls = new JClassImpl();
 		cls.name = toClassName(desc);
 		cls.superclass = master.getJClass(new ClassName(Object.class));
-		cls.capabilities.put(ArrayType.class, new ArrayTypeImpl(cls, dimensions));
+		cls.addCapability(new ArrayTypeImpl(cls, master.getJClass(new ClassName(clsname)), dimensions));
 
 		arrays.put(desc, cls);
 		return cls;

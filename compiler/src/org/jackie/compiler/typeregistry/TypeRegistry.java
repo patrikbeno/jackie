@@ -12,4 +12,6 @@ public interface TypeRegistry {
 
 	JClassImpl getJClass(ClassName clsname);
 
+	JClassImpl getJClass(Class cls);
+
 }

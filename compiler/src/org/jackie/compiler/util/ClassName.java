@@ -1,6 +1,7 @@
 package org.jackie.compiler.util;
 
 import org.jackie.utils.Assert;
+import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,10 @@ public class ClassName {
 
 	public ClassName(Class cls) {
 		fqname = cls.getName() + dup(ARRAY_DIM_FLAG, dimensions=countArrayDimenstions(cls));
+	}
+
+	public ClassName(Type asmtype) {
+		fqname = asmtype.getClassName();
 	}
 
 	public ClassName(String fqname) {
