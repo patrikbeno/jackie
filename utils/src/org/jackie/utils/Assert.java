@@ -71,6 +71,6 @@ public class Assert {
 	static public void expected(Object expected, Object found, String msg, Object ... args) {
 		if (expected != null && expected.equals(found) || expected == null && found == null) { return; }
 
-		throw assertFailed(null, "Expected %s, found %s. %s", expected, found, String.format(msg, args));
+		throw assertFailed(null, "Expected [%s], found [%s]. %s", expected, found, String.format(msg, args));
 	}
 }
