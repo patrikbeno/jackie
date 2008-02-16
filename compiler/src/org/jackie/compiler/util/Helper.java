@@ -9,6 +9,10 @@ import org.jackie.compiler.jmodelimpl.type.PrimitiveTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
 import org.jackie.utils.Assert;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
+
 /**
  * @author Patrik Beno
  */
@@ -74,4 +78,15 @@ public class Helper {
 		return asSpecialType(cls, EnumTypeImpl.class);
 	}
 
+	static public <T> Iterable<T> iterable(Iterable<T> iterable) {
+		return (iterable != null) ? iterable : Collections.<T>emptyList();
+	}
+
+	static public <T> Collection<T> collection(Collection<T> col) {
+		return (col != null) ? col : Collections.<T>emptyList();
+	}
+
+	static public <K,V> Map<K,V> map(Map<K,V> map) {
+		return (map != null) ? map : Collections.<K,V>emptyMap();
+	}
 }
