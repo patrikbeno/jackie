@@ -43,6 +43,10 @@ public class Assert {
 		return new UnsupportedOperationException();
 	}
 
+	static public AssertionError unexpected(final Throwable thrown) {
+		return new AssertionError(String.format("Unexpected: %s", thrown.getClass())) {{ initCause(thrown); }};
+	}
+
 	static public AssertionError notYetHandled(final Throwable t) {
 		return new AssertionError(String.format("Not Yet Handled: %s", t.getClass().getName())) {{
 			initCause(t);
