@@ -76,11 +76,10 @@ public class ClassName {
 		}
 
 		int i = fqname.lastIndexOf(PACKAGE_SEP);
-		int offset = (i != -1) ? i : 0;
 		int arraypart = fqname.endsWith(ARRAY_DIM_FLAG) ? fqname.indexOf(ARRAY_DIM_FLAG) : fqname.length();
 		int arraydims = (fqname.length() - arraypart) / 2;
 
-		name = fqname.substring(offset, arraypart);
+		name = fqname.substring(i+1, arraypart);
 		dimensions = arraydims;
 
 		return name;
