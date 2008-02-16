@@ -1,5 +1,6 @@
 package org.jackie.compiler.filemanager;
 
+import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -12,4 +13,7 @@ public interface FileManager {
 	FileObject getFileObject(String pathname);
 
 	FileObject create(String pathname);
+
+	Iterable<FileObject> getFileObjects();
+
 }

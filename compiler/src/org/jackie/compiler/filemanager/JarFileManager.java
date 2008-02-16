@@ -1,17 +1,14 @@
 package org.jackie.compiler.filemanager;
 
 import org.jackie.utils.Assert;
-import org.jackie.utils.CyclicBuffer;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
@@ -19,77 +16,34 @@ import java.util.jar.JarInputStream;
 /**
  * @author Patrik Beno
  */
-public class JarFileManager implements FileManager {
+public class JarFileManager extends URLFileManager {
 
-	protected URL url;
+	protected File jarfile;
 
-	protected Map<String, FileObject> fileobjects;
-
-	{
-		init();
+	public JarFileManager(File jarfile) {
+		super(getBaseURL(jarfile));
+		this.jarfile = jarfile;
 	}
 
-	public JarFileManager(URL url) {
-		this.url = url;
-		loadIndex();
-	}
-
-	protected void init() {
-		fileobjects = new HashMap<String, FileObject>();
-	}
-
-	protected void loadIndex() {
+	protected Set<String> populatePathNames() {
 		try {
-			JarInputStream jin = new JarInputStream(url.openConnection().getInputStream());
-			JarEntry je;
-			while ((je = jin.getNextJarEntry()) != null) {
-				String pathname = je.getName();
-				FileObject fo = new JarEntryFileObject(url.toExternalForm(), pathname);
-				fileobjects.put(je.getName(), fo);
+			Set<String> entries = new HashSet<String>();
+			JarInputStream jin = new JarInputStream(new BufferedInputStream(new FileInputStream(jarfile)));
+			for (JarEntry je; (je = jin.getNextJarEntry()) != null;) {
+				entries.add(je.getName());
 			}
+			return entries;
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);
 		}
 	}
 
-	public URL getURL() {
-		return url;
+	static private URL getBaseURL(File f) {
+		try {
+			return new URL("jar:"+f.toURI()+"!/");
+		} catch (MalformedURLException e) {
+			throw Assert.notYetHandled(e);
+		}
 	}
 
-	public Set<String> getPathNames() {
-		return fileobjects.keySet();
-	}
-
-	public FileObject getFileObject(String pathname) {
-		FileObject found = fileobjects.get(pathname);
-		return found;
-	}
-
-	public FileObject create(String pathname) {
-		throw Assert.unsupported();
-	}
-
-	public Collection<FileObject> getFileObjects() {
-		return fileobjects.values();
-	}
-
-	protected FileObject load(String name, InputStream in) throws IOException {
-		ByteArrayFileObject fo = new ByteArrayFileObject(name);
-		WritableByteChannel dst = fo.getOutputChannel();
-
-		ReadableByteChannel cin = Channels.newChannel(in);
-		CyclicBuffer buf = new CyclicBuffer();
-
-		int read;
-		do {
-			read = buf.readFrom(cin);
-			buf.writeTo(dst);
-		} while (read != -1);
-
-		dst.close();
-
-		fo.makeReadOnly();
-
-		return fo;
-	}
 }

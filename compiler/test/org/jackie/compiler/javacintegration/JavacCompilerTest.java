@@ -4,7 +4,7 @@ import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.filemanager.InMemoryFileManager;
 import org.jackie.compiler.filemanager.JarFileManager;
-import org.jackie.compiler.filemanager.SourceFileObject;
+import org.jackie.compiler.filemanager.foimpl.SourceFileObject;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
@@ -28,7 +28,7 @@ public class JavacCompilerTest {
       Assert.doAssert(f.exists(), "Cannot find rt.jar");
 
       InMemoryFileManager sources = new InMemoryFileManager();
-      JarFileManager classpath = new JarFileManager(f.toURI().toURL());
+      JarFileManager classpath = new JarFileManager(f);
       InMemoryFileManager output = new InMemoryFileManager();
 
       TestSources.load(sources);
@@ -84,6 +84,10 @@ public class JavacCompilerTest {
       public FileObject create(String pathname) {
          throw Assert.unsupported();
       }
-   }
+
+		public Iterable<FileObject> getFileObjects() {
+			throw Assert.unsupported(); 
+		}
+	}
 
 }

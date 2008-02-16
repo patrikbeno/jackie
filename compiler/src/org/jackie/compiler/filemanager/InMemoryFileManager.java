@@ -1,5 +1,6 @@
 package org.jackie.compiler.filemanager;
 
+import org.jackie.compiler.filemanager.foimpl.ByteArrayFileObject;
 import static org.jackie.utils.Assert.doAssert;
 
 import java.util.HashMap;
@@ -9,15 +10,11 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class InMemoryFileManager implements FileManager {
+public class InMemoryFileManager extends AbstractFileManager implements FileManager {
 
 	protected Map<String, FileObject> artifacts;
 
 	{
-		init();
-	}
-
-	protected void init() {
 		artifacts = new HashMap<String, FileObject>();
 	}
 

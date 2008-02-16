@@ -1,6 +1,7 @@
-package org.jackie.compiler.filemanager;
+package org.jackie.compiler.filemanager.foimpl;
 
 import org.jackie.utils.Assert;
+import org.jackie.compiler.filemanager.FileObject;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -14,16 +15,13 @@ import java.nio.charset.Charset;
 /**
  * @author Patrik Beno
  */
-public class JarEntryFileObject implements FileObject {
+public class URLFileObject implements FileObject {
 
-	String baseurl;
-	String pathname;
+	protected URL base;
+	protected String pathname;
 
-	Long size;
-	Long lastmodified;
-
-	public JarEntryFileObject(String baseurl, String pathname) {
-		this.baseurl = baseurl;
+	public URLFileObject(URL base, String pathname) {
+		this.base = base;
 		this.pathname = pathname;
 	}
 
@@ -36,11 +34,11 @@ public class JarEntryFileObject implements FileObject {
 	}
 
 	public long getSize() {
-		return (size != null) ? size : (size = (long) con().getContentLength());
+		return con().getContentLength();
 	}
 
 	public long getLastModified() {
-		return (lastmodified != null) ? lastmodified : (lastmodified = con().getLastModified());
+		return con().getLastModified();
 	}
 
 	public ReadableByteChannel getInputChannel() {
@@ -52,12 +50,12 @@ public class JarEntryFileObject implements FileObject {
 	}
 
 	public WritableByteChannel getOutputChannel() {
-		throw Assert.unsupported();
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
-	URL url() {
+	protected URL url() {
 		try {
-			return new URL("jar:"+baseurl+"!/"+pathname);
+			return new URL(base, pathname);
 		} catch (MalformedURLException e) {
 			throw Assert.notYetHandled(e);
 		}
@@ -70,4 +68,5 @@ public class JarEntryFileObject implements FileObject {
 			throw Assert.notYetHandled(e);
 		}
 	}
+
 }

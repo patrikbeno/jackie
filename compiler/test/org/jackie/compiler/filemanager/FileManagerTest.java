@@ -12,10 +12,10 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
+@Test
 public class FileManagerTest {
 
-   @Test
-   public void loadJar() throws Exception {
+	public void loadJar() throws Exception {
 
       TimedTask loading = new TimedTask();
       loading.start();
@@ -24,7 +24,7 @@ public class FileManagerTest {
       File f = new File(jhome, "lib/rt.jar");
       doAssert(f.exists(), "Cannot load rt.jar");
 
-      JarFileManager fm = new JarFileManager(f.toURI().toURL());
+      JarFileManager fm = new JarFileManager(f);
       Set<String> pathnames = fm.getPathNames();
       doAssert(!pathnames.isEmpty(), "Failed to load path names.");
 
@@ -47,4 +47,16 @@ public class FileManagerTest {
       return size;
    }
 
+	public void classpath() {
+		ClassPathFileManager fm = new ClassPathFileManager(true, true);
+		fm.getPathNames();
+		fm.getFileObject(Object.class.getName());
+
+		long size=0;
+		for (FileObject fo : fm.getFileObjects()) {
+			size+=fo.getSize();
+		}
+
+		Log.debug("Available %s FileObjects (%s bytes)", fm.getPathNames().size(), size);
+	}
 }
