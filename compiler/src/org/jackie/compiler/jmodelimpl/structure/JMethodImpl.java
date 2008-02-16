@@ -10,10 +10,17 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class JMethodImpl {
+
+	public JClassImpl owner;
+
 	public String name;
 	public JClassImpl type;
 	public List<JParameterImpl> parameters;
 	public List<JClassImpl> exceptions;
 
 	public MethodNode asmnode;
+
+	public String toString() {
+		return String.format("%s() : %s", name, type);
+	}
 }

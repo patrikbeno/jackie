@@ -32,6 +32,8 @@ public class JMethodReader extends ByteCodeLoader {
 		jmethod.parameters = populateArgs(desc);
 		jmethod.exceptions = populateExceptions(exceptions);
 		jmethod.asmnode = new MethodNode(access, name, desc, signature, exceptions);
+		
+		jmethod.owner = jclass.addMethod(jmethod);
 	}
 
 	List<JParameterImpl> populateArgs(String desc) {

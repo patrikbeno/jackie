@@ -1,6 +1,7 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 
 /**
  * @author Patrik Beno
@@ -8,8 +9,10 @@ import org.jackie.compiler.jmodelimpl.JClassImpl;
 public class AnnotationAttributeImpl {
 
 	public JClassImpl annotype;
+	public JMethodImpl jmethod;
+
 	public String name;
 	public JClassImpl type;
-	public AnnotationAttributeValueImpl defaultValue;
 
+	public AnnotationAttributeValueImpl defaultValue;
 }

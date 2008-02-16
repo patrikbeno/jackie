@@ -20,7 +20,9 @@ public class AnnotationAttributeValueImpl {
 	public AnnotationAttributeValueImpl(AnnotationImpl annotation, AnnotationAttributeImpl attribute) {
 		this.annotation = annotation;
 		this.attribute = attribute;
-		annotation.attributes.add(this);
+		if (annotation != null) {
+			annotation.addAttributeValue(this);
+		}
 	}
 
 	public AnnotationAttributeValueImpl(AnnotationImpl annotation, AnnotationAttributeImpl attribute, Object value) {

@@ -4,20 +4,23 @@ import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.util.ClassName;
+import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.util.EnumProxy;
 import org.jackie.compiler.util.Helper;
-import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.JPrimitive;
 import org.jackie.utils.Assert;
 
 import org.objectweb.asm.Type;
+import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.tree.AnnotationNode;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Patrik Beno
@@ -28,6 +31,8 @@ public class AnnotatedImpl {
 
 	List<AnnotationImpl> annotations;
 
+	Set<Annotation> proxies;
+
 	public void addAsmNode(AnnotationNode anode) {
 		if (asmnodes == null) {
 			asmnodes = new ArrayList<AnnotationNode>();
@@ -36,6 +41,7 @@ public class AnnotatedImpl {
 	}
 
 	void buildfromAsmNodes() {
+		annotations = new ArrayList<AnnotationImpl>();
 		for (AnnotationNode an : asmnodes) {
 			AnnotationImpl a = toAnnotation(an);
 			annotations.add(a);
@@ -43,8 +49,10 @@ public class AnnotatedImpl {
 	}
 
 	AnnotationImpl toAnnotation(AnnotationNode an) {
-		JClassImpl jclass = context().typeRegistry().getJClass(new ClassName(an.desc));
-		AnnotationImpl anno = new AnnotationImpl(this, jclass.getCapability(AnnotationTypeImpl.class));
+		ClassName clsname = new ClassName(getType(an.desc));
+		JClassImpl jclass = context().typeRegistry().getJClass(clsname);
+		AnnotationImpl anno = new AnnotationImpl(
+				this, jclass.getCapability(AnnotationTypeImpl.class));
 
 		List asmvalues = (an.values != null) ? an.values : Collections.emptyList();
 		Iterator it = asmvalues.iterator();
@@ -54,6 +62,7 @@ public class AnnotatedImpl {
 			Object object = it.next();
 
 			AnnotationAttributeValueImpl value = createAttributeValue(anno, name, object);
+			anno.addAttributeValue(value);
 		}
 
 		return anno;

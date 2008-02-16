@@ -17,6 +17,7 @@ public class TypeRegistryTest {
 
 	public void primitives() {
 		PrimitiveTypeRegistry r = new PrimitiveTypeRegistry();
+		Assert.notNull(r.getJClass(void.class));
 		Assert.notNull(r.getJClass(boolean.class));
 		Assert.notNull(r.getJClass(byte.class));
 		Assert.notNull(r.getJClass(short.class));
@@ -25,6 +26,9 @@ public class TypeRegistryTest {
 		Assert.notNull(r.getJClass(float.class));
 		Assert.notNull(r.getJClass(double.class));
 		Assert.notNull(r.getJClass(char.class));
+
+		JClassImpl cls = r.getJClass(void.class);
+		Assert.expected("void", cls.getFQName(), "invalid class fqname");
 	}
 
 	public void primitiveArrays() {

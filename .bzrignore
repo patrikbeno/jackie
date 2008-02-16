@@ -12,3 +12,4 @@ test-output
 .diff
 bzrdiff.sh
 build.sh
+tmpsuite.xml
