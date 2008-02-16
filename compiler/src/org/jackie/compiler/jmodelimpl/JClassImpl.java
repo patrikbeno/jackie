@@ -2,7 +2,9 @@ package org.jackie.compiler.jmodelimpl;
 
 import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
+import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
+import org.jackie.compiler.util.LightList;
 
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,13 @@ public class JClassImpl {
 	public AnnotatedImpl annotations;
 
 	public List<JFieldImpl> fields;
+	public List<JMethodImpl> methods;
+
+	{
+		interfaces = new LightList<JClassImpl>();
+		fields = new LightList<JFieldImpl>();
+		methods = new LightList<JMethodImpl>();
+	}
 
 	public String getFQName() {
 		return jpackage.getFQName() + "." + name;
@@ -38,5 +47,9 @@ public class JClassImpl {
 	public JClassImpl addField(JFieldImpl field) {
 		fields.add(field);
 		return this;
+	}
+
+	public String toString() {
+		return getFQName();
 	}
 }

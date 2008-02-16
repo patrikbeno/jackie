@@ -4,9 +4,9 @@ import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.util.ClassName;
-import static org.jackie.compiler.util.Context.typeRegistry;
 import org.jackie.compiler.util.EnumProxy;
 import org.jackie.compiler.util.Helper;
+import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.JPrimitive;
 import org.jackie.utils.Assert;
 
@@ -43,7 +43,7 @@ public class AnnotatedImpl {
 	}
 
 	AnnotationImpl toAnnotation(AnnotationNode an) {
-		JClassImpl jclass = typeRegistry().getJClass(new ClassName(an.desc));
+		JClassImpl jclass = context().typeRegistry().getJClass(new ClassName(an.desc));
 		AnnotationImpl anno = new AnnotationImpl(this, jclass.getCapability(AnnotationTypeImpl.class));
 
 		List asmvalues = (an.values != null) ? an.values : Collections.emptyList();
@@ -75,13 +75,13 @@ public class AnnotatedImpl {
 			assert JPrimitive.isObjectWrapper(object.getClass());
 			return object;
 
-		} else if (jclass.equals(typeRegistry().getJClass(String.class))) {
+		} else if (jclass.equals(context().typeRegistry().getJClass(String.class))) {
 			assert object instanceof String;
 			return object;
 
-		} else if (jclass.equals(typeRegistry().getJClass(Class.class))) {
+		} else if (jclass.equals(context().typeRegistry().getJClass(Class.class))) {
 			assert object instanceof Type;
-			return typeRegistry().getJClass(new ClassName((Type) object));
+			return context().typeRegistry().getJClass(new ClassName((Type) object));
 
 		} else if (Helper.isAnnotation(jclass)) {
 			assert object instanceof AnnotationNode;

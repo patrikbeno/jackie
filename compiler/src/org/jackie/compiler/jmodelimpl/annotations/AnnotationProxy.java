@@ -1,6 +1,6 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.compiler.util.Context;
+import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.JPrimitive;
 import org.jackie.utils.Assert;
 
@@ -96,7 +96,7 @@ public class AnnotationProxy implements InvocationHandler {
 
 	protected Class load(String clsname) {
 		try {
-			return Class.forName(clsname, false, Context.annotationClassLoader());
+			return Class.forName(clsname, false, context().annotationClassLoader());
 		} catch (ClassNotFoundException e) {
 			throw Assert.notYetHandled(e);
 		}

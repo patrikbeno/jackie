@@ -15,4 +15,8 @@ public class JFieldImpl {
 	public JClassImpl type;
 
 	public AnnotatedImpl annotations;
+
+	public String toString() {
+		return String.format("%s : %s", name, type.getFQName());
+	}
 }

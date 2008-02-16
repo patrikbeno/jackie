@@ -58,7 +58,6 @@ public class ClassPathFileManager extends MultiFileManager {
 		for (File f : sorted) {
 			URLFileManager fm = (f.isFile()) ? new JarFileManager(f) : new DirFileManager(f);
 			managers.add(fm);
-			Log.debug("Created file manager for %s", f);
 		}
 		return managers;
 	}
