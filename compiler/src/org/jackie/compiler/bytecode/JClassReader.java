@@ -1,9 +1,11 @@
 package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
+import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.EnumTypeImpl;
-import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
+import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.context;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -19,10 +21,13 @@ import org.objectweb.asm.tree.AnnotationNode;
  */
 public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 
+	LoadLevel loadLevel;
 	JClassImpl jclass;
 
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		jclass = getJClassByBName(name);
+		ClassName clsname = getClassName(name);
+
+		jclass = getJClass(clsname);
 
 //		jclass.kind = toKind(access); // todo interface? enum? annotation?
 		if (isSet(access, Opcodes.ACC_ANNOTATION)) {
