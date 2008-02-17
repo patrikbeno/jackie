@@ -146,7 +146,7 @@ public class AnnotationProxy implements InvocationHandler {
 		for (int i=0; i<list.size(); i++) {
 			Object o = list.get(i);
 			Object converted = convert(o, type.getComponentType());
-			Array.set(array, i, converted);
+			Array.set(array, i, converted); // fixme possible bug - modifies original array
 		}
 		return array;
 	}
