@@ -9,7 +9,7 @@ import org.jackie.jmodel.props.Named;
  *
  * @author Patrik Beno
  */
-public interface SpecialType extends Named, FQNamed {
+public interface SpecialType extends Named, FQNamed, Editable {
 
 	JClass getJClass();
 

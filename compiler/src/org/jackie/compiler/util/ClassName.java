@@ -1,6 +1,7 @@
 package org.jackie.compiler.util;
 
 import org.jackie.utils.Assert;
+import org.jackie.jmodel.JClass;
 
 import org.objectweb.asm.Type;
 
@@ -47,6 +48,11 @@ public class ClassName {
 	public ClassName(String fqname, int dimensions) {
 		this.fqname = fqname + dup(ARRAY_DIM_FLAG, dimensions);
 		this.dimensions = dimensions;
+	}
+
+	public ClassName(JClass jclass) {
+		fqname = jclass.getFQName();
+		// todo this can be optimized, don't let it parse fqname from scratch
 	}
 
 

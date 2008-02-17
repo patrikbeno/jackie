@@ -11,6 +11,10 @@ import org.objectweb.asm.Type;
  */
 public class ByteCodeLoader extends AsmSupport {
 
+	protected JClassImpl getJClass(ClassName clsname) {
+		return context().typeRegistry().getJClass(clsname);
+	}
+
 	protected JClassImpl getJClassByBName(String bname) {
 		return context().typeRegistry().getJClass(getClassName(bname));
 	}

@@ -16,6 +16,8 @@ import java.util.Set;
  */
 public interface JClass extends FQNamed, Annotated, JNode, Named {
 
+	JClassEditor edit();
+
 	Set<Class<? extends SpecialType>> getSpecialTypeCapabilities();
 
 	<T extends SpecialType> boolean isSpecialType(Class<T> type);

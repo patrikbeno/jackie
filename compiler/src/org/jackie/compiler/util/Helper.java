@@ -12,6 +12,7 @@ import org.jackie.utils.Assert;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Iterator;
 
 /**
  * @author Patrik Beno
@@ -76,6 +77,31 @@ public class Helper {
 
 	static public EnumTypeImpl asEnum(JClassImpl cls) {
 		return asSpecialType(cls, EnumTypeImpl.class);
+	}
+
+	static public <T> Iterable<T> iterable(final T[] iterable) {
+		class IterableIterator implements Iterable<T>, Iterator<T> {
+
+			int offset;
+
+			public Iterator<T> iterator() {
+				return this;
+			}
+
+			public boolean hasNext() {
+				return offset < iterable.length;
+			}
+
+			public T next() {
+				return iterable[offset++];
+			}
+
+			public void remove() {
+				throw Assert.unsupported();
+			}
+		}
+
+		return (iterable != null && iterable.length>0) ? new IterableIterator() : Collections.<T>emptyList();
 	}
 
 	static public <T> Iterable<T> iterable(Iterable<T> iterable) {
