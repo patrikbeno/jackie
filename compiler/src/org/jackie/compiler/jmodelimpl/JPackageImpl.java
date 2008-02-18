@@ -59,6 +59,6 @@ public class JPackageImpl implements FQNamed {
 
 
 	public boolean isDefault() {
-		return name.isEmpty();
+		return name.length() == 0;
 	}
 }

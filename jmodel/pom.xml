@@ -5,8 +5,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>${parent.artifactId}.jmodel</artifactId>
-	<name>${artifactId}-${version}</name>
+	<artifactId>org.jackie.jmodel</artifactId>
+	<name>${pom.artifactId}-${pom.version}</name>
 
 	<parent>
 		<groupId>org.jackie</groupId>
@@ -16,9 +16,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>${groupId}</groupId>
-			<artifactId>${groupId}.utils</artifactId>
-			<version>${version}</version>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>${pom.groupId}.utils</artifactId>
+			<version>${pom.version}</version>
 		</dependency>
 	</dependencies>
 

@@ -5,8 +5,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>${parent.artifactId}.utils</artifactId>
-	<name>${artifactId}-${version}</name>
+	<artifactId>org.jackie.utils</artifactId>
+	<name>${pom.artifactId}-${pom.version}</name>
 
 	<parent>
 		<groupId>org.jackie</groupId>

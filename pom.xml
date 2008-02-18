@@ -6,14 +6,14 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>org.jackie</groupId>
-	<artifactId>${groupId}</artifactId>
+	<artifactId>org.jackie</artifactId>
 	<version>0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>${artifactId}-${version}</name>
+	<name>${pom.artifactId}-${pom.version}</name>
 	<description></description>
 	<inceptionYear>2007</inceptionYear>
-
+<!--
 	<profiles>
 		<profile>
 			<id>all</id>
@@ -29,6 +29,14 @@
 			</modules>
 		</profile>
 	</profiles>
+-->
+			<modules>
+				<module>utils</module>
+				<module>jmodel</module>
+				<module>compiler</module>
+			</modules>
+
+
 
 	<properties>
 		<build.dir>${basedir}/target</build.dir>

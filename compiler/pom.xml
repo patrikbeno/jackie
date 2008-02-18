@@ -5,8 +5,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>${parent.artifactId}.compiler</artifactId>
-	<name>${artifactId}-${version}</name>
+	<artifactId>org.jackie.compiler</artifactId>
+	<name>${pom.artifactId}-${pom.version}</name>
 
 	<parent>
 		<groupId>org.jackie</groupId>
@@ -16,14 +16,14 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>${groupId}</groupId>
-			<artifactId>${groupId}.utils</artifactId>
-			<version>${version}</version>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>${pom.groupId}.utils</artifactId>
+			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>${groupId}</groupId>
-			<artifactId>${groupId}.jmodel</artifactId>
-			<version>${version}</version>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>${pom.groupId}.jmodel</artifactId>
+			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>asm</groupId>
