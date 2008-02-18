@@ -5,6 +5,7 @@ package org.jackie.compiler.jmodelimpl;
  */
 public enum LoadLevel {
 
+	NONE,
 	CLASS,
 	API,
 	ANNOTATIONS,

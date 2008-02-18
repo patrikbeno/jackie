@@ -3,13 +3,13 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.structure.JParameterImpl;
+import org.jackie.compiler.util.Helper;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 import static org.objectweb.asm.Type.getReturnType;
 import org.objectweb.asm.tree.MethodNode;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +31,8 @@ public class JMethodReader extends ByteCodeLoader {
 		jmethod.type = getJClassByType(getReturnType(desc));
 		jmethod.parameters = populateArgs(desc);
 		jmethod.exceptions = populateExceptions(exceptions);
+		jmethod.accessMode = toAccessMode(access);
+		jmethod.flags = toFlags(access);
 		jmethod.asmnode = new MethodNode(access, name, desc, signature, exceptions);
 		
 		jmethod.owner = jclass.addMethod(jmethod);
@@ -38,7 +40,7 @@ public class JMethodReader extends ByteCodeLoader {
 
 	List<JParameterImpl> populateArgs(String desc) {
 		Type[] argtypes = Type.getArgumentTypes(desc);
-		if (empty(argtypes)) { return Collections.emptyList(); }
+		if (Helper.empty(argtypes)) { return Collections.emptyList(); }
 
 		List<JParameterImpl> args = new ArrayList<JParameterImpl>(argtypes.length);
 		for (int i=0; i<argtypes.length; i++) {
@@ -52,7 +54,7 @@ public class JMethodReader extends ByteCodeLoader {
 	}
 
 	List<JClassImpl> populateExceptions(String[] exceptions) {
-		if (empty(exceptions)) { return Collections.emptyList(); }
+		if (Helper.empty(exceptions)) { return Collections.emptyList(); }
 
 		List<JClassImpl> jexceptions = new ArrayList<JClassImpl>(exceptions.length);
 		for (String bname : exceptions) {
@@ -65,14 +67,6 @@ public class JMethodReader extends ByteCodeLoader {
 
 	MethodVisitor getMethodVisitor() {
 		return jmethod.asmnode;
-	}
-
-	static boolean empty(Object array) {
-		return array == null || Array.getLength(array)==0;
-	}
-
-	static int length(Object array) {
-		return (array != null) ?  Array.getLength(array) : 0;
 	}
 
 }

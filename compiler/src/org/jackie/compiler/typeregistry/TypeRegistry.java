@@ -2,7 +2,6 @@ package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
-import org.jackie.jmodel.JClass;
 
 /**
  * @author Patrik Beno

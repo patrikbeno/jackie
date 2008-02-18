@@ -4,15 +4,17 @@ import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.util.ConvertingList;
 import org.jackie.compiler.util.Convertor;
-import static org.jackie.compiler.util.Helper.map;
-import static org.jackie.compiler.util.Helper.iterable;
+import static org.jackie.compiler.util.Helper.*;
 import org.jackie.compiler.util.LightList;
+import org.jackie.jmodel.AccessMode;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JClassEditor;
 import org.jackie.jmodel.JPackage;
 import org.jackie.jmodel.SpecialType;
+import org.jackie.jmodel.props.Accessible;
 import org.jackie.jmodel.structure.JAnnotation;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;
@@ -29,8 +31,9 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class JClassImpl extends JNodeImpl {
+public class JClassImpl extends JNodeImpl implements Accessible {
 
+	public TypeRegistry registry;
 	public LoadLevel loadLevel;
 
 	public Map<Class<? extends SpecialTypeImpl>, SpecialTypeImpl> capabilities;
@@ -45,6 +48,12 @@ public class JClassImpl extends JNodeImpl {
 	public List<JFieldImpl> fields;
 	public List<JMethodImpl> methods;
 
+	public AccessMode accessMode;
+	public FlagsImpl flags;
+
+	//
+
+	public String source, debug; 
 
 
 	{
@@ -52,6 +61,10 @@ public class JClassImpl extends JNodeImpl {
 		fields = new LightList<JFieldImpl>();
 		methods = new LightList<JMethodImpl>();
 		annotations = new AnnotatedImpl();
+	}
+
+	public AccessMode getAccessMode() {
+		return accessMode;
 	}
 
 	public String getFQName() {
@@ -162,7 +175,7 @@ public class JClassImpl extends JNodeImpl {
 	public JClassEditor asJClassEditor() {
 		return new JClassEditor() {
 			public void setName(String name) {
-				throw Assert.notYetImplemented(); // todo implement this 
+				throw Assert.notYetImplemented(); // todo implement this
 			}
 
 			public void setPackage(JPackage jpackage) {

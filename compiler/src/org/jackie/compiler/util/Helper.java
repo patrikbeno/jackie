@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Iterator;
+import java.lang.reflect.Array;
 
 /**
  * @author Patrik Beno
@@ -114,5 +115,13 @@ public class Helper {
 
 	static public <K,V> Map<K,V> map(Map<K,V> map) {
 		return (map != null) ? map : Collections.<K,V>emptyMap();
+	}
+
+	public static boolean empty(Object array) {
+		return array == null || Array.getLength(array)==0;
+	}
+
+	public static int length(Object array) {
+		return (array != null) ?  Array.getLength(array) : 0;
 	}
 }

@@ -3,17 +3,15 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
-import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
-import org.jackie.compiler.jmodelimpl.type.EnumTypeImpl;
 import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.context;
+import static org.jackie.compiler.util.Helper.iterable;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.AnnotationNode;
 
 /**
@@ -28,26 +26,21 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		ClassName clsname = getClassName(name);
 
 		jclass = getJClass(clsname);
+		jclass.accessMode = toAccessMode(access);
+		jclass.flags = toFlags(access);
 
-//		jclass.kind = toKind(access); // todo interface? enum? annotation?
-		if (isSet(access, Opcodes.ACC_ANNOTATION)) {
-			jclass.addCapability(new AnnotationTypeImpl(jclass));
-		}
-		if (isSet(access, Opcodes.ACC_ENUM)) {
-			jclass.addCapability(new EnumTypeImpl(jclass));
-		}
+		// all classes except java.lang.Object have superclass defined
+		assert superName != null || jclass.getFQName().equals(Object.class.getName());
+		jclass.superclass = (superName != null) ? getJClassByBName(superName) : null;
 
-		if (superName != null) { // all classes except java.lang.Object have superclass defined
-			jclass.superclass = getJClassByBName(superName);
-		}
-
-		for (String iface : interfaces) {
+		for (String iface : iterable(interfaces)) {
 			jclass.interfaces.add(context().typeRegistry().getJClass(getClassName(iface)));
 		}
 	}
 
 	public void visitSource(String source, String debug) {
-		// todo implement this
+		jclass.source = source;
+		jclass.debug = debug;
 	}
 
 	public void visitOuterClass(String owner, String name, String desc) {
@@ -78,6 +71,9 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 				field.name = name;
 				field.type = getJClassByDesc(desc);
 				field.owner = jclass.addField(field);
+				field.accessMode = toAccessMode(access);
+				field.flags = toFlags(access);
+				
 				// todo value: register field initializer
 			}
 

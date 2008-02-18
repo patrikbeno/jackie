@@ -1,7 +1,9 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
+import org.jackie.compiler.jmodelimpl.FlagsImpl;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
+import org.jackie.jmodel.AccessMode;
 
 /**
  * @author Patrik Beno
@@ -15,6 +17,10 @@ public class JFieldImpl {
 	public JClassImpl type;
 
 	public AnnotatedImpl annotations;
+
+	public AccessMode accessMode;
+
+	public FlagsImpl flags;
 
 	{
 		annotations = new AnnotatedImpl();

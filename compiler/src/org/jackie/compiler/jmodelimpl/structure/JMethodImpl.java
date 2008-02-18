@@ -1,6 +1,8 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.FlagsImpl;
+import org.jackie.jmodel.AccessMode;
 
 import org.objectweb.asm.tree.MethodNode;
 
@@ -17,6 +19,9 @@ public class JMethodImpl {
 	public JClassImpl type;
 	public List<JParameterImpl> parameters;
 	public List<JClassImpl> exceptions;
+
+	public AccessMode accessMode;
+	public FlagsImpl flags;
 
 	public MethodNode asmnode;
 
