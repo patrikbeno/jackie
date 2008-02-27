@@ -1,7 +1,9 @@
 package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
+import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.util.Helper;
 import org.jackie.jmodel.AccessMode;
 import org.jackie.jmodel.Flag;
 import org.jackie.utils.Assert;
@@ -63,4 +65,42 @@ public class AsmSupport {
 			flags.set(flag);
 		}
 	}
+
+	private int check(FlagsImpl flags, Flag flag, int access) {
+		return flags.isSet(flag) ? access : 0;
+	}
+
+	protected int toAccessFlag(FlagsImpl flags) {
+		int access = 0;
+		access |= check(flags, Flag.ABSTRACT, Opcodes.ACC_ABSTRACT);
+		access |= check(flags, Flag.STATIC, Opcodes.ACC_STATIC);
+		access |= check(flags, Flag.FINAL, Opcodes.ACC_FINAL);
+		access |= check(flags, Flag.TRANSIENT, Opcodes.ACC_TRANSIENT);
+		access |= check(flags, Flag.VOLATILE, Opcodes.ACC_VOLATILE);
+		access |= check(flags, Flag.NATIVE, Opcodes.ACC_NATIVE);
+		access |= check(flags, Flag.SYNCHRONIZED, Opcodes.ACC_SYNCHRONIZED);
+		access |= check(flags, Flag.STRICTFP, Opcodes.ACC_STRICT);
+		access |= check(flags, Flag.DEPRECATED, Opcodes.ACC_DEPRECATED);
+		access |= check(flags, Flag.BRIDGE, Opcodes.ACC_BRIDGE);
+		access |= check(flags, Flag.SYNTHETIC, Opcodes.ACC_SYNTHETIC);
+		return access;
+	}
+
+	protected int toAccessFlag(AccessMode mode) {
+		int access = 0;
+		access |= AccessMode.PRIVATE.equals(mode) ? Opcodes.ACC_PRIVATE : 0;
+		access |= AccessMode.PROTECTED.equals(mode) ? Opcodes.ACC_PROTECTED : 0;
+		access |= AccessMode.PUBLIC.equals(mode) ? Opcodes.ACC_PUBLIC : 0;
+		// nothing else to do
+		return access;
+	}
+
+	protected int toAccessFlags(JClassImpl jcls) {
+		int access = 0;
+		access |= Helper.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
+		access |= Helper.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
+		access |= Helper.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
+		return access;
+	}
+
 }

@@ -6,6 +6,8 @@ import static org.jackie.compiler.util.Helper.iterable;
 import org.jackie.jmodel.type.AnnotationType;
 import org.jackie.utils.Assert;
 
+import org.objectweb.asm.AnnotationVisitor;
+
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Proxy;
@@ -49,6 +51,8 @@ public class AnnotationImpl {
 	}
 
 	public AnnotationImpl(AnnotatedImpl annotated, AnnotationTypeImpl type) {
+		assert annotated != null;
+		assert type != null;
 		this.annotated = annotated;
 		this.type = type;
 	}
@@ -92,5 +96,9 @@ public class AnnotationImpl {
 			attributes = new ArrayList<AnnotationAttributeValueImpl>();
 			attributes.add(value);
 		}
+	}
+
+	public void compile(AnnotationVisitor av) {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

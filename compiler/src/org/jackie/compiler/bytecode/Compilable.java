@@ -3,5 +3,8 @@ package org.jackie.compiler.bytecode;
 /**
  * @author Patrik Beno
  */
-public class JClassWriter {
+public interface Compilable<T> {
+
+	void compile(T t);
+
 }

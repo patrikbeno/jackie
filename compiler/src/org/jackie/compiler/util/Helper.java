@@ -5,15 +5,16 @@ import org.jackie.compiler.jmodelimpl.type.AnnotationTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.ClassTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.EnumTypeImpl;
+import org.jackie.compiler.jmodelimpl.type.InterfaceTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.PrimitiveTypeImpl;
 import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
 import org.jackie.utils.Assert;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
 import java.util.Iterator;
-import java.lang.reflect.Array;
+import java.util.Map;
 
 /**
  * @author Patrik Beno
@@ -39,7 +40,7 @@ public class Helper {
 	}
 
 	static public boolean isInterface(JClassImpl cls) {
-		throw Assert.notYetImplemented(); // todo implement this
+		return isSpecialType(cls, InterfaceTypeImpl.class);
 	}
 
 	static public boolean isAnnotation(JClassImpl cls) {

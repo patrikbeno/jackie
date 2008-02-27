@@ -1,9 +1,11 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
+import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.jmodel.AccessMode;
+import org.jackie.utils.Assert;
 
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.tree.MethodNode;
 
 import java.util.List;
@@ -27,5 +29,9 @@ public class JMethodImpl {
 
 	public String toString() {
 		return String.format("%s() : %s", name, type);
+	}
+
+	public void compile(MethodVisitor mv) {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

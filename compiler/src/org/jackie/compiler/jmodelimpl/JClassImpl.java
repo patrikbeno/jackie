@@ -1,5 +1,7 @@
 package org.jackie.compiler.jmodelimpl;
 
+import org.jackie.compiler.bytecode.AsmSupport;
+import org.jackie.compiler.bytecode.Compilable;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
 import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
@@ -21,6 +23,10 @@ import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JTypeVariable;
 import org.jackie.jmodel.structure.ReferenceType;
 import org.jackie.utils.Assert;
+
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.ClassVisitor;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -224,4 +230,98 @@ public class JClassImpl extends JNodeImpl implements Accessible {
 			return jcls.asJClass();
 		}
 	}
+
+
+	/// binary/bytecode stuff ///
+
+
+	protected String bcName() {
+		return getFQName().replace('.', '/');
+	}
+
+	protected String bcSignature() {
+		return null; // todo implement this
+	}
+
+	public String bcDesc() {
+		return bcName(); // fixme need to handle primitives/arrays/classes/...
+	}
+
+	public byte[] compile() {
+		ClassWriter cw = new ClassWriter(0);
+		ClassCompiler c = new ClassCompiler();
+		c.compile(cw);
+		return cw.toByteArray();
+	}
+
+	class ClassCompiler extends AsmSupport implements Compilable<ClassVisitor>  {
+
+		ClassVisitor cv;
+
+		public void compile(ClassVisitor cv) {
+			this.cv = cv;
+			init();
+			nesting();
+			bcannotations();
+			bcfields();
+			bcmethods();
+			done();
+		}
+
+		void init() {
+			int version = Opcodes.V1_5; // todo hardcoded class version number
+			int access = toAccessFlags(JClassImpl.this) | toAccessFlag(flags) | toAccessFlag(accessMode);
+			String bcSuperName = superclass != null ? superclass.bcName() : null;
+			cv.visit(version, access, bcName(), bcSignature(), bcSuperName, bcInterfaces());
+			// todo cw.visitSource();
+		}
+
+		void done() {
+			cv.visitEnd();
+		}
+
+		void nesting() {}
+
+		void bcannotations() {
+//				for (AnnotationImpl a : annotations) {
+//					AnnotationVisitor av = cw.visitAnnotation(a.type.jclass.bcDesc(), true); // everything is visible, what the hell?
+//					a.compile(av);
+//				}
+		}
+
+		void bcfields() {
+//				for (JFieldImpl f : fields) {
+//					int access = toAccessFlags(f.type) | toAccessFlag(f.flags) | toAccessFlag(f.accessMode);
+//					FieldVisitor fv = cw.visitField(access, f.name, f.type.bcDesc(), f.bcSignature(), null);
+//					f.compile(fv);
+//				}
+		}
+
+		void bcmethods() {
+//				for (JMethodImpl m : methods) {
+//					int access = toAccessFlags(m.type) | toAccessFlag(m.flags) | toAccessFlag(m.accessMode);
+//					MethodVisitor mv = cw.visitMethod(access, m.name, desc, signature, bcExceptions(m));
+//					m.compile(mv);
+//				}
+		}
+
+		String[] bcInterfaces() {
+			List<String> bcnames = new LightList<String>();
+			for (JClassImpl iface : interfaces) {
+				bcnames.add(iface.bcName());
+			}
+			return bcnames.toArray(new String[bcnames.size()]);
+		}
+
+		String[] bcExceptions(JMethodImpl m) {
+			List<String> bcnames = new LightList<String>();
+			for (JClassImpl ex : m.exceptions) {
+				bcnames.add(ex.bcName());
+			}
+			return bcnames.toArray(new String[bcnames.size()]);
+		}
+
+	}
+
+
 }

@@ -25,13 +25,17 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class AnnotatedImpl {
+public class AnnotatedImpl implements Iterable<AnnotationImpl> {
 
 	List<AnnotationNode> asmnodes;
 
 	List<AnnotationImpl> annotations;
 
 	Set<Annotation> proxies;
+
+	public Iterator<AnnotationImpl> iterator() {
+		return annotations.iterator();
+	}
 
 	public void addAsmNode(AnnotationNode anode) {
 		if (asmnodes == null) {

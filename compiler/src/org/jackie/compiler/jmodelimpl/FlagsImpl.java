@@ -40,6 +40,10 @@ public class FlagsImpl implements Flags {
 		}
 	}
 
+	public boolean isSet(Flag flag) {
+		return bits.get(flag.ordinal());
+	}
+
 	/// Flags ///
 
 	public boolean abstracT() {
