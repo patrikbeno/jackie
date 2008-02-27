@@ -36,6 +36,8 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		for (String iface : iterable(interfaces)) {
 			jclass.interfaces.add(context().typeRegistry().getJClass(getClassName(iface)));
 		}
+
+		context().specialtypes().applySpecialTypes(jclass, access);
 	}
 
 	public void visitSource(String source, String debug) {

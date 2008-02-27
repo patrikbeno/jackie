@@ -1,5 +1,6 @@
 package org.jackie.compiler.util;
 
+import org.jackie.compiler.jmodelimpl.type.SpecialTypes;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 
 /**
@@ -19,6 +20,11 @@ public class Context {
 	}
 
 	TypeRegistry typeRegistry;
+	SpecialTypes specialTypes;
+
+	{
+		specialTypes = new SpecialTypes(); // fixme hardcoded instance
+	}
 
 	protected Context(TypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
@@ -30,5 +36,9 @@ public class Context {
 
 	public ClassLoader annotationClassLoader() {
 		return Thread.currentThread().getContextClassLoader();
+	}
+
+	public SpecialTypes specialtypes() {
+		return specialTypes;
 	}
 }
