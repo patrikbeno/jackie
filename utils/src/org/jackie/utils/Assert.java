@@ -69,7 +69,8 @@ public class Assert {
 	}
 
 	static public void logNotYetImplemented() {
-		Log.warn("%s", notYetImplemented());
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[1];
+		Log.warn("Not Yet Implemented: at %s", ste);
 	}
 
 	static public void expected(Object expected, Object found, String msg, Object ... args) {
