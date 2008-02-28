@@ -13,29 +13,26 @@
 	<name>${pom.artifactId}-${pom.version}</name>
 	<description></description>
 	<inceptionYear>2007</inceptionYear>
-<!--
+
 	<profiles>
 		<profile>
-			<id>all</id>
+			<id>build.isolate</id>
 			<activation>
 				<property>
-					<name>all</name>
+					<name>build.isolate</name>
 				</property>
 			</activation>
-			<modules>
-				<module>utils</module>
-				<module>jmodel</module>
-				<module>compiler</module>
-			</modules>
+			<properties>
+				<build.dir>${user.home}/var/build/mvn/${pom.groupId}/${pom.artifactId}-${pom.version}</build.dir>
+			</properties>
 		</profile>
 	</profiles>
--->
-			<modules>
-				<module>utils</module>
-				<module>jmodel</module>
-				<module>compiler</module>
-			</modules>
 
+	<modules>
+		<module>utils</module>
+		<module>jmodel</module>
+		<module>compiler</module>
+	</modules>
 
 
 	<properties>
