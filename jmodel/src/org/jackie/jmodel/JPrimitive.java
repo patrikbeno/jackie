@@ -42,9 +42,12 @@ public enum JPrimitive {
 	}
 
 	static public Class getPrimitiveForObjectWrapper(Class cls) {
-		return wrappersByPrimitive.get(cls);
+		return primitivesByWrapper.get(cls);
 	}
 
+	static public Class getObjectWrapperForPrimitive(Class cls) {
+		return wrappersByPrimitive.get(cls);
+	}
 
 	private final Class primitiveClass;
 	private final Class objectWrapperClass;
