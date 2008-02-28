@@ -1,8 +1,8 @@
 package org.jackie.compiler.jmodelimpl;
 
+import static org.jackie.compiler.util.Helper.iterable;
 import org.jackie.jmodel.Flag;
 import org.jackie.jmodel.Flags;
-import static org.jackie.compiler.util.Helper.iterable;
 
 import java.lang.annotation.Annotation;
 import java.util.BitSet;

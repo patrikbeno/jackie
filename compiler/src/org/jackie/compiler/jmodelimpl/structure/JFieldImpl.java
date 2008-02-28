@@ -7,8 +7,8 @@ import org.jackie.compiler.jmodelimpl.annotations.AnnotationImpl;
 import org.jackie.jmodel.AccessMode;
 import org.jackie.utils.Assert;
 
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.FieldVisitor;
 
 /**
  * @author Patrik Beno

@@ -1,7 +1,7 @@
 package org.jackie.compiler.filemanager.foimpl;
 
-import org.jackie.utils.Assert;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.utils.Assert;
 
 import java.io.IOException;
 import java.net.URL;

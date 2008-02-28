@@ -3,8 +3,8 @@ package org.jackie.compiler.jmodelimpl;
 import org.jackie.jmodel.props.FQNamed;
 import org.jackie.utils.Stack;
 
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Patrik Beno

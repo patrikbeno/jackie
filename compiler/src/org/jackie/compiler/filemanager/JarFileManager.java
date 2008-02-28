@@ -2,10 +2,10 @@ package org.jackie.compiler.filemanager;
 
 import org.jackie.utils.Assert;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;

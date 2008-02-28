@@ -1,11 +1,11 @@
 package org.jackie.compiler.util;
 
-import java.util.Set;
+import java.lang.reflect.Array;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collections;
-import java.util.Collection;
-import java.lang.reflect.Array;
+import java.util.Set;
 
 /**
  * @author Patrik Beno

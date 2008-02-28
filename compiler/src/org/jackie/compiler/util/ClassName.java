@@ -1,7 +1,7 @@
 package org.jackie.compiler.util;
 
-import org.jackie.utils.Assert;
 import org.jackie.jmodel.JClass;
+import org.jackie.utils.Assert;
 
 import org.objectweb.asm.Type;
 

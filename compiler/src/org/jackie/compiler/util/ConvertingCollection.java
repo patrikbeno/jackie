@@ -1,8 +1,8 @@
 package org.jackie.compiler.util;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Iterator;
-import java.lang.reflect.Array;
 
 /**
  * @author Juraj Burian

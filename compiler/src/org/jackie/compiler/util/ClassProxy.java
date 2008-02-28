@@ -1,7 +1,7 @@
 package org.jackie.compiler.util;
 
-import org.jackie.utils.Assert;
 import static org.jackie.compiler.util.Context.context;
+import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno

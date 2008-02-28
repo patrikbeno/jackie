@@ -24,9 +24,9 @@ import org.jackie.jmodel.structure.JTypeVariable;
 import org.jackie.jmodel.structure.ReferenceType;
 import org.jackie.utils.Assert;
 
+import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.ClassVisitor;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
