@@ -271,7 +271,7 @@ public class JClassImpl extends JNodeImpl implements Accessible {
 		void init() {
 			int version = Opcodes.V1_5; // todo hardcoded class version number
 			int access = toAccessFlags(JClassImpl.this) | toAccessFlag(flags) | toAccessFlag(accessMode);
-			String bcSuperName = superclass != null ? superclass.bcName() : null;
+			String bcSuperName = (superclass != null) ? superclass.bcName() : null;
 			cv.visit(version, access, bcName(), bcSignature(), bcSuperName, bcInterfaces());
 			// todo cw.visitSource();
 		}

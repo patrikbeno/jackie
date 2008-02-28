@@ -1,5 +1,6 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
+import org.jackie.compiler.jmodelimpl.JClassImpl;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.JPrimitive;
 import org.jackie.utils.Assert;
@@ -80,7 +81,7 @@ public class AnnotationProxy implements InvocationHandler {
 			return _class;
 		}
 		//noinspection unchecked
-		_class = load(annotation.type.jclass.getFQName());
+		_class = load(annotation.type.jclass);
 		return _class;
 	}
 
@@ -94,9 +95,9 @@ public class AnnotationProxy implements InvocationHandler {
 		return c;
 	}
 
-	protected Class load(String clsname) {
+	protected Class load(JClassImpl jclass) {
 		try {
-			return Class.forName(clsname, false, context().annotationClassLoader());
+			return Class.forName(jclass.getFQName(), false, context().annotationClassLoader());
 		} catch (ClassNotFoundException e) {
 			throw Assert.notYetHandled(e);
 		}
@@ -113,7 +114,7 @@ public class AnnotationProxy implements InvocationHandler {
 
 	protected Object convert(Object value, Class type) {
 		if (type.isPrimitive()) {
-			assert JPrimitive.isObjectWrapper(type);
+			assert JPrimitive.isObjectWrapper(value.getClass());
 			return value;
 
 		} else if (String.class.equals(type)) {
@@ -121,8 +122,8 @@ public class AnnotationProxy implements InvocationHandler {
 			return value;
 
 		} else if (Class.class.equals(type)) {
-			assert value instanceof String;
-			return load((String) value);
+			assert value instanceof JClassImpl;
+			return load((JClassImpl) value);
 
 		} else if (type.isEnum()) {
 			assert value instanceof String;
@@ -130,7 +131,7 @@ public class AnnotationProxy implements InvocationHandler {
 			return Enum.valueOf(type, (String) value);
 
 		} else if (type.isAnnotation()) {
-			return new AnnotationProxy((AnnotationImpl) value);
+			return ((AnnotationImpl) value).proxy();
 
 		} else if (type.isArray()) {
 			return convertArray(value, type);
@@ -146,7 +147,7 @@ public class AnnotationProxy implements InvocationHandler {
 		for (int i=0; i<list.size(); i++) {
 			Object o = list.get(i);
 			Object converted = convert(o, type.getComponentType());
-			Array.set(array, i, converted); // fixme possible bug - modifies original array
+			Array.set(array, i, converted); // fixme possible bug - modifies original stringarray
 		}
 		return array;
 	}

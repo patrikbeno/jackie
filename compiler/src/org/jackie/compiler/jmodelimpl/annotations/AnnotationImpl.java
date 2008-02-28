@@ -92,10 +92,11 @@ public class AnnotationImpl {
 	}
 
 	public void addAttributeValue(AnnotationAttributeValueImpl value) {
+		assert value != null;
 		if (attributes == null) {
 			attributes = new ArrayList<AnnotationAttributeValueImpl>();
-			attributes.add(value);
 		}
+		attributes.add(value);
 	}
 
 	public void compile(AnnotationVisitor av) {

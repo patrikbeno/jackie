@@ -1,14 +1,22 @@
 package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationAttributeImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationAttributeValueImpl;
+import org.jackie.compiler.jmodelimpl.annotations.AnnotationImpl;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
-import static org.jackie.compiler.util.Helper.iterable;
+import org.jackie.compiler.util.ClassName;
+import static org.jackie.compiler.util.Context.context;
+import static org.jackie.compiler.util.Helper.*;
 
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AnnotationNode;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
@@ -49,7 +57,8 @@ public class AnnotationTypeImpl implements SpecialTypeImpl {
 			attr.name = m.name;
 			attr.type = m.type;
 			attr.jmethod = m;
-			attr.defaultValue = new AnnotationAttributeValueImpl(null, attr, m.asmnode.annotationDefault);
+			attr.defaultValue = new AnnotationAttributeValueImpl(
+					null, attr, convertAsmValue(m.type, m.asmnode.annotationDefault));
 
 			attrs.add(attr);
 		}
@@ -58,4 +67,57 @@ public class AnnotationTypeImpl implements SpecialTypeImpl {
 			attributes = attrs;
 		}
 	}
+
+	protected Object convertAsmValue(JClassImpl type, Object asmvalue) {
+
+		if (asmvalue == null) {
+			return null;
+		}
+
+		Object converted;
+
+		if (isEnum(type)) {
+			// enums are passed as String[2] { classname, constantname }
+			// save only constant name, enum type is remembered in annotation attribute
+			converted = ((String[]) asmvalue)[1];
+
+		} else if (asmvalue instanceof Type) {
+			Type asmtype = (Type) asmvalue;
+			converted = context().typeRegistry().getJClass(new ClassName(asmtype));
+
+		} else
+		if (asmvalue.getClass().isArray() && asmvalue.getClass().getComponentType().isPrimitive()) {
+			List list = new ArrayList(Array.getLength(asmvalue));
+			for (int i = 0; i < Array.getLength(asmvalue); i++) {
+				list.add(Array.get(asmvalue, i));
+			}
+			converted = list;
+
+		} else if (asmvalue instanceof AnnotationNode) {
+			AnnotatedImpl annotated = new AnnotatedImpl();
+			AnnotationImpl anno = annotated.toAnnotation((AnnotationNode) asmvalue);
+			converted = anno;
+
+		} else {
+			converted = asmvalue;
+		}
+
+		return converted;
+	}
+
+	void populate(AnnotationAttributeValueImpl attrvalue, Object asmvalue) {
+		if (asmvalue.getClass().isArray()) {
+			for (int i = 0; i < Array.getLength(asmvalue); i++) {
+				attrvalue.addValue(Array.get(asmvalue, i));
+			}
+
+		} else if (asmvalue instanceof Type) {
+			Type asmtype = (Type) asmvalue;
+			context().typeRegistry().getJClass(new ClassName(asmtype));
+
+		} else {
+			attrvalue.setValue(asmvalue);
+		}
+	}
+
 }

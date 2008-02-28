@@ -52,7 +52,7 @@ public class AnnotatedImpl implements Iterable<AnnotationImpl> {
 		}
 	}
 
-	AnnotationImpl toAnnotation(AnnotationNode an) {
+	public AnnotationImpl toAnnotation(AnnotationNode an) {
 		ClassName clsname = new ClassName(getType(an.desc));
 		JClassImpl jclass = context().typeRegistry().getJClass(clsname);
 		AnnotationImpl anno = new AnnotationImpl(
