@@ -1,4 +1,4 @@
-package org.jackie.compiler.util;
+package org.jackie.utils;
 
 /**
  * @author Juraj Burian

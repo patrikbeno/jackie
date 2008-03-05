@@ -1,4 +1,4 @@
-package org.jackie.compiler.util;
+package org.jackie.utils;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
