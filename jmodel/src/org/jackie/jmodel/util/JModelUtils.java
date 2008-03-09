@@ -1,13 +1,15 @@
 package org.jackie.jmodel.util;
 
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.SpecialType;
-import org.jackie.jmodel.type.AnnotationType;
-import org.jackie.jmodel.type.ArrayType;
-import org.jackie.jmodel.type.ClassType;
-import org.jackie.jmodel.type.EnumType;
-import org.jackie.jmodel.type.InterfaceType;
-import org.jackie.jmodel.type.PrimitiveType;
+import org.jackie.jmodel.JNode;
+import org.jackie.jmodel.extension.Extension;
+import org.jackie.jmodel.extension.Extensible;
+import org.jackie.jmodel.extension.enumtype.EnumType;
+import org.jackie.jmodel.extension.annotation.AnnotationType;
+import org.jackie.jmodel.extension.builtin.ArrayType;
+import org.jackie.jmodel.extension.base.ClassType;
+import org.jackie.jmodel.extension.base.InterfaceType;
+import org.jackie.jmodel.extension.builtin.PrimitiveType;
 
 /**
  * @author Patrik Beno
@@ -16,38 +18,38 @@ public class JModelUtils {
 
 	// type check methods
 
-	static public <T extends SpecialType> boolean isSpecialType(JClass cls, Class<T> type) {
-		return cls.isSpecialType(type);
+	static public <N extends JNode & Extensible, T extends Extension> boolean supportsExtension(N node, Class<T> type) {
+		return node.extensions().supports(type);
 	}
 
 	static public boolean isPrimitive(JClass cls) {
-		return isSpecialType(cls, PrimitiveType.class);
+		return supportsExtension(cls, PrimitiveType.class);
 	}
 
 	static public boolean isArray(JClass cls) {
-		return isSpecialType(cls, ArrayType.class);
+		return supportsExtension(cls, ArrayType.class);
 	}
 
 	static public boolean isClassType(JClass cls) {
-		return isSpecialType(cls, ClassType.class);
+		return supportsExtension(cls, ClassType.class);
 	}
 
 	static public boolean isInterface(JClass cls) {
-		return isSpecialType(cls, InterfaceType.class);
+		return supportsExtension(cls, InterfaceType.class);
 	}
 
 	static public boolean isAnnotation(JClass cls) {
-		return isSpecialType(cls, AnnotationType.class);
+		return supportsExtension(cls, AnnotationType.class);
 	}
 
 	static public boolean isEnum(JClass cls) {
-		return cls.isSpecialType(EnumType.class);
+		return supportsExtension(cls, EnumType.class);
 	}
 
 	/// get as type
 
-	static public <T extends SpecialType> T asSpecialType(JClass cls, Class<T> type) {
-		return cls.getSpecialTypeView(type);
+	static public <N extends JNode & Extensible, T extends Extension> T asSpecialType(N cls, Class<T> type) {
+		return cls.extensions().get(type);
 	}
 
 	static public PrimitiveType asPrimitive(JClass cls) {

@@ -3,8 +3,8 @@ package org.jackie.jmodel;
 /**
  * @author Patrik Beno
  */
-public interface Editable {
+public interface Editable<T extends Editor> {
 
-	JNodeEditor edit();
+	T edit();
 
 }

@@ -3,8 +3,8 @@ package org.jackie.jmodel.props;
 /**
  * @author Patrik Beno
  */
-public interface Accessible {
+public interface Flagged {
 
-	AccessMode getAccessMode();
+	Flags flags();
 
 }

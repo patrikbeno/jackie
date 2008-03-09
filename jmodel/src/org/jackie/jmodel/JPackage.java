@@ -8,12 +8,24 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface JPackage extends FQNamed, JNode, Named {
+public interface JPackage extends JNode, Named, FQNamed, Editable<JPackage.Editor> {
+
+	boolean isDefault();
 
 	JPackage getParentPackage();
 
 	Set<JPackage> getSubPackages();
 
 	Set<JClass> getClasses();
+
+	public interface Editor extends org.jackie.jmodel.Editor<JPackage> {
+
+		Editor setName(String name);
+
+		Editor setParent(JPackage parent);
+
+		Editor addClass(JClass jclass);
+
+	}
 
 }
