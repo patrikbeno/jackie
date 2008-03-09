@@ -1,30 +1,49 @@
 package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.compiler.bytecode.AsmSupport;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.jmodel.extension.ExtensionProvider;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.extension.Extension;
 
-import org.objectweb.asm.Opcodes;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Collections;
 
 /**
  * @author Patrik Beno
  */
 public class SpecialTypes extends AsmSupport {
-	public void applySpecialTypes(JClassImpl jclass, int access) {
 
-		jclass.addCapability(new ClassTypeImpl());
+	Set<ExtensionProvider> providers;
 
-		if (isSet(access, Opcodes.ACC_INTERFACE)) {
-			jclass.addCapability(new InterfaceTypeImpl());
+	{
+		providers = new HashSet<ExtensionProvider>();
 
+		// fixme hardcoded ExtensionProvider list
+		providers.add(new PrimitiveTypeProvider());
+
+		providers.add(new ClassTypeProvider());
+		providers.add(new InterfaceTypeProvider());
+		providers.add(new EnumTypeProvider());
+		providers.add(new AnnotationTypeProvider());
+
+		providers.add(new PackageTypeProvider());
+	}
+
+
+	public Map<Class<? extends Extension>, Extension> apply(JClass jclass) {
+		Map<Class<? extends Extension>, Extension> specials = null;
+		for (ExtensionProvider p : providers) {
+			Extension special = p.getExtension(jclass);
+			if (special != null) {
+				if (specials == null) {
+					specials = new HashMap<Class<? extends Extension>, Extension>();
+				}
+				specials.put(p.getType(), special);
+			}
 		}
-		if (isSet(access, Opcodes.ACC_ANNOTATION)) {
-			jclass.addCapability(new AnnotationTypeImpl(jclass));
-
-		}
-		if (isSet(access, Opcodes.ACC_ENUM)) {
-			jclass.addCapability(new EnumTypeImpl(jclass));
-
-		}
-
+		return (specials != null) ? specials : Collections.EMPTY_MAP;
 	}
 }

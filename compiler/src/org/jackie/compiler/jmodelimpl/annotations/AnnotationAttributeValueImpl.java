@@ -1,5 +1,9 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
+import org.jackie.jmodel.extension.annotation.JAnnotation;
+import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
+import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,28 +11,41 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationAttributeValueImpl {
+public class AnnotationAttributeValueImpl implements JAnnotationAttributeValue {
 
-	public AnnotationImpl annotation;
+	JAnnotation annotation;
 
-	public AnnotationAttributeImpl attribute;
+	JAnnotationAttribute attrdef;
 
 	/**
 	 * generic value of then attribute (does not depend on annotation or attribute type)
 	 */
-	public Object value;
+	Object value;
 
-	public AnnotationAttributeValueImpl(AnnotationImpl annotation, AnnotationAttributeImpl attribute) {
+
+	public AnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef) {
 		this.annotation = annotation;
-		this.attribute = attribute;
+		this.attrdef = attrdef;
 		if (annotation != null) {
-			annotation.addAttributeValue(this);
+			annotation.edit().addAttributeValue(this);
 		}
 	}
 
-	public AnnotationAttributeValueImpl(AnnotationImpl annotation, AnnotationAttributeImpl attribute, Object value) {
-		this(annotation, attribute);
+	public AnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef, Object value) {
+		this(annotation, attrdef);
 		this.value = value;
+	}
+
+	public JAnnotation getJAnnotation() {
+		return annotation;
+	}
+
+	public JAnnotationAttribute getAnnotationAttribute() {
+		return attrdef;
+	}
+
+	public Object getValue() {
+		return value;
 	}
 
 	public void setValue(Object value) {

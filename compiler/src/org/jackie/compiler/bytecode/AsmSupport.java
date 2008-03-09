@@ -1,15 +1,19 @@
 package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
-import org.jackie.compiler.util.Helper;
-import org.jackie.jmodel.AccessMode;
-import org.jackie.jmodel.Flag;
+import org.jackie.jmodel.props.AccessMode;
+import org.jackie.jmodel.props.Flag;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.util.JModelUtils;
 import org.jackie.utils.Assert;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+
+import java.util.Collections;
+import java.util.Arrays;
+import java.util.Set;
 
 /**
  * @author Patrik Beno
@@ -44,7 +48,7 @@ public class AsmSupport {
 		}
 	}
 
-	protected FlagsImpl toFlags(int access) {
+	protected Flag[] toFlags(int access) {
 		FlagsImpl flags = new FlagsImpl();
 		checkAndSet(flags, access, Opcodes.ACC_ABSTRACT, Flag.ABSTRACT);
 		checkAndSet(flags, access, Opcodes.ACC_STATIC, Flag.STATIC);
@@ -57,7 +61,10 @@ public class AsmSupport {
 		checkAndSet(flags, access, Opcodes.ACC_DEPRECATED, Flag.DEPRECATED);
 		checkAndSet(flags, access, Opcodes.ACC_BRIDGE, Flag.BRIDGE);
 		checkAndSet(flags, access, Opcodes.ACC_SYNTHETIC, Flag.SYNTHETIC);
-		return flags;
+		Set<Flag> all = flags.getAllSet();
+		Flag[] array = new Flag[all.size()];
+		all.toArray(array);
+		return array;
 	}
 
 	private void checkAndSet(FlagsImpl flags, int access, int asmflag, Flag flag) {
@@ -95,11 +102,11 @@ public class AsmSupport {
 		return access;
 	}
 
-	protected int toAccessFlags(JClassImpl jcls) {
+	protected int toAccessFlags(JClass jcls) {
 		int access = 0;
-		access |= Helper.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
-		access |= Helper.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
-		access |= Helper.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
+		access |= JModelUtils.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
+		access |= JModelUtils.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
+		access |= JModelUtils.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
 		return access;
 	}
 

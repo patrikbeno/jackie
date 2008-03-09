@@ -4,6 +4,7 @@ import org.jackie.compiler.common.TestCase;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.utils.Assert;
+import org.jackie.jmodel.JClass;
 
 import org.testng.annotations.Test;
 
@@ -16,8 +17,8 @@ public class ClassReaderTest {
 	public void readSample() throws Exception {
 		new TestCase() {{
 			readClass(Sample.class);
-			JClassImpl jclass = context().typeRegistry().getJClass(Sample.class);
-			Assert.expected(Sample.class.getSimpleName(), jclass.name, "invalid simple class name");
+			JClass jclass = context().typeRegistry().getJClass(Sample.class);
+			Assert.expected(Sample.class.getSimpleName(), jclass.getName(), "invalid simple class name");
 			Assert.expected(Sample.class.getName(), jclass.getFQName(), "invalid class fqname");
 		}};
 	}

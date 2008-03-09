@@ -1,48 +1,27 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
-import org.jackie.compiler.jmodelimpl.FlagsImpl;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
-import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
-import org.jackie.compiler.jmodelimpl.annotations.AnnotationImpl;
-import org.jackie.jmodel.AccessMode;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.props.AccessMode;
+import org.jackie.jmodel.props.Flag;
+import org.jackie.jmodel.structure.JField;
 import org.jackie.utils.Assert;
-
-import org.objectweb.asm.AnnotationVisitor;
-import org.objectweb.asm.FieldVisitor;
 
 /**
  * @author Patrik Beno
  */
-public class JFieldImpl {
+public class JFieldImpl extends JVariableImpl<JField,JField.Editor, JClass> implements JField{
 
-	public JClassImpl owner;
-
-	public String name;
-
-	public JClassImpl type;
-
-	public AnnotatedImpl annotations;
-
-	public AccessMode accessMode;
-
-	public FlagsImpl flags;
-
-	{
-		annotations = new AnnotatedImpl();
+	public AccessMode getAccessMode() {
+		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
-	public String toString() {
-		return String.format("%s : %s", name, type.getFQName());
-	}
+	public class Editor extends EditorImpl<JField,JField.Editor,JClass> implements JField.Editor {
+		public JField.Editor setAccessMode(AccessMode accessMode) {
+			throw Assert.notYetImplemented(); // todo implement this
+		}
 
-	public String bcSignature() {
-		throw Assert.notYetImplemented(); // todo implement this
-	}
-
-	public void compile(FieldVisitor fv) {
-		for (AnnotationImpl a : annotations) {
-			AnnotationVisitor av = fv.visitAnnotation(a.type.jclass.bcDesc(), true);
-			a.compile(av);
+		public JField.Editor setFlags(Flag... flags) {
+			throw Assert.notYetImplemented(); // todo implement this
 		}
 	}
 }

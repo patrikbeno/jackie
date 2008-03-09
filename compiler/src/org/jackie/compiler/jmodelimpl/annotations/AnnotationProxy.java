@@ -1,8 +1,11 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
 import static org.jackie.compiler.util.Context.context;
-import org.jackie.jmodel.JPrimitive;
+import org.jackie.jmodel.extension.builtin.JPrimitive;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.extension.annotation.JAnnotation;
+import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
+import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
 import org.jackie.utils.Assert;
 
 import java.lang.annotation.Annotation;
@@ -19,13 +22,13 @@ import java.util.Map;
  */
 public class AnnotationProxy implements InvocationHandler {
 
-	protected AnnotationImpl annotation;
+	protected JAnnotation annotation;
 
 	protected Class<? extends Annotation> _class;
 
 	protected WeakReference<Map<String, Object>> _cache;
 
-	public AnnotationProxy(AnnotationImpl annotation) {
+	public AnnotationProxy(JAnnotation annotation) {
 		this.annotation = annotation;
 	}
 
@@ -81,7 +84,7 @@ public class AnnotationProxy implements InvocationHandler {
 			return _class;
 		}
 		//noinspection unchecked
-		_class = load(annotation.type.jclass);
+		_class = load(annotation.getJAnnotationType().node());
 		return _class;
 	}
 
@@ -95,7 +98,7 @@ public class AnnotationProxy implements InvocationHandler {
 		return c;
 	}
 
-	protected Class load(JClassImpl jclass) {
+	protected Class load(JClass jclass) {
 		try {
 			return Class.forName(jclass.getFQName(), false, context().annotationClassLoader());
 		} catch (ClassNotFoundException e) {
@@ -104,12 +107,12 @@ public class AnnotationProxy implements InvocationHandler {
 	}
 
 	protected Object buildValue(String name, Class<?> type) {
-		AnnotationAttributeImpl attrdef = annotation.type.getAttributeImpl(name);
-		AnnotationAttributeValueImpl attr = annotation.getAttributeValue(attrdef);
+		JAnnotationAttribute attrdef = annotation.getJAnnotationType().getAttribute(name);
+		JAnnotationAttributeValue attr = annotation.getAttribute(name);
 		if (attr == null) {
-			attr = attrdef.defaultValue;
+			attr = attrdef.getDefaultValue();
 		}
-		return convert(attr.value, type);
+		return convert(attr.getValue(), type);
 	}
 
 	protected Object convert(Object value, Class type) {
@@ -122,8 +125,8 @@ public class AnnotationProxy implements InvocationHandler {
 			return value;
 
 		} else if (Class.class.equals(type)) {
-			assert value instanceof JClassImpl;
-			return load((JClassImpl) value);
+			assert value instanceof JClass;
+			return load((JClass) value);
 
 		} else if (type.isEnum()) {
 			assert value instanceof String;

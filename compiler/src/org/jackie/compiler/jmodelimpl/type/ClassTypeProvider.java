@@ -1,0 +1,51 @@
+package org.jackie.compiler.jmodelimpl.type;
+
+import org.jackie.compiler.jmodelimpl.attribute.impl.KindAttribute;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.extension.Extension;
+import org.jackie.jmodel.extension.ExtensionProvider;
+import org.jackie.jmodel.extension.builtin.JPrimitive;
+import org.jackie.jmodel.extension.base.ClassType;
+
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collections;
+
+/**
+ * @author Patrik Beno
+ */
+public class ClassTypeProvider implements ExtensionProvider<JClass> {
+
+	static private final Set<String> IGNORED_CLASS_NAMES;
+
+	static {
+		IGNORED_CLASS_NAMES = Collections.unmodifiableSet(new HashSet<String>(){{
+			for (JPrimitive p : JPrimitive.values()) {
+				add(p.getPrimitiveClass().getName());
+			}
+			add("package-info");
+		}});
+	}
+
+	public Class<? extends Extension> getType() {
+		return ClassType.class;
+	}
+
+	public Extension getExtension(JClass jclass) {
+
+		if (IGNORED_CLASS_NAMES.contains(jclass.getName())) {
+			return null;
+		}
+
+		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
+		assert kind != null;
+
+		switch (kind.getKind()) {
+			case CLASS:
+			case ENUM:
+				return new ClassTypeImpl(jclass);
+		}
+		
+		return null;
+	}
+}

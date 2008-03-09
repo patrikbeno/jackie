@@ -1,7 +1,7 @@
 package org.jackie.compiler.typeregistry;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
+import org.jackie.jmodel.JClass;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +13,7 @@ public class MultiRegistry extends AbstractTypeRegistry {
 
 	protected List<TypeRegistry> dependencies;
 
-	public MultiRegistry(TypeRegistry ... registries) {
+	public MultiRegistry(TypeRegistry... registries) {
 		this(Arrays.asList(registries));
 	}
 
@@ -30,9 +30,9 @@ public class MultiRegistry extends AbstractTypeRegistry {
 		return false;
 	}
 
-	public JClassImpl getJClass(ClassName clsname) {
+	public JClass getJClass(ClassName clsname) {
 		for (TypeRegistry r : dependencies) {
-			JClassImpl cls = r.getJClass(clsname);
+			JClass cls = r.getJClass(clsname);
 			if (cls != null) {
 				return cls;
 			}

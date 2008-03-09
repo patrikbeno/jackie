@@ -1,33 +1,41 @@
 package org.jackie.compiler.jmodelimpl;
 
 import org.jackie.jmodel.props.FQNamed;
+import org.jackie.jmodel.JPackage;
+import org.jackie.jmodel.JClass;
 import org.jackie.utils.Stack;
+import org.jackie.utils.Assert;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collections;
 
 /**
  * @author Patrik Beno
  */
-public class JPackageImpl implements FQNamed {
+public class JPackageImpl implements JPackage {
 
-	public JPackageImpl parent;
+	public JPackage parent;
 
 	public String name;
 
-	public Set<JPackageImpl> subpackages;
+	public Set<JPackage> subpackages;
 
-	public Set<JClassImpl> classes;
+	public Set<JClass> classes;
 
 	{
-		subpackages = new HashSet<JPackageImpl>();
-		classes = new HashSet<JClassImpl>();
+		subpackages = new HashSet<JPackage>();
+		classes = new HashSet<JClass>();
+	}
+
+	public String getName() {
+		return name;
 	}
 
 	public String getFQName() {
 		Stack<String> stack = new Stack<String>();
-		for (JPackageImpl p = this; !p.isDefault(); p = p.parent) {
-			stack.push(p.name);
+		for (JPackage p = this; !p.isDefault(); p = p.getParentPackage()) {
+			stack.push(p.getName());
 		}
 		StringBuilder sb = new StringBuilder();
 		while (!stack.isEmpty()) {
@@ -36,29 +44,43 @@ public class JPackageImpl implements FQNamed {
 		return sb.toString();
 	}
 
-	public JPackageImpl addSubPackage(JPackageImpl pckg) {
-		if (pckg.parent != null) {
-			// remove
-			pckg.parent.subpackages.remove(pckg);
-		}
-		subpackages.add(pckg);
-		pckg.parent = this;
-
-		return this;
-	}
-
-	public JPackageImpl addClass(JClassImpl jclass) {
-		if (jclass.jpackage != null) {
-			jclass.jpackage.classes.remove(jclass);
-		}
-		classes.add(jclass);
-		jclass.jpackage = this;
-
-		return this;
-	}
-
-
 	public boolean isDefault() {
-		return name.length() == 0;
+		return getParentPackage() == null && getName().equals("");
 	}
+
+	public JPackage getParentPackage() {
+		return parent;
+	}
+
+	public Set<JPackage> getSubPackages() {
+		return Collections.unmodifiableSet(subpackages);
+	}
+
+	public Set<JClass> getClasses() {
+		return Collections.unmodifiableSet(classes);
+	}
+
+	public Editor edit() {
+		return new Editor() {
+			public Editor setName(String name) {
+				JPackageImpl.this.name = name;
+				return this;
+			}
+
+			public Editor setParent(JPackage parent) {
+				JPackageImpl.this.parent = parent;
+				return this;
+			}
+
+			public Editor addClass(JClass jclass) {
+				classes.add(jclass);
+				return this;
+			}
+
+			public JPackage editable() {
+				return JPackageImpl.this;
+			}
+		};
+	}
+
 }

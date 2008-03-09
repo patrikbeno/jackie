@@ -31,7 +31,7 @@ public class JarAccessTest {
 		File f = new File(jhome, "lib/rt.jar");
 		doAssert(f.exists(), "Cannot load rt.jar");
 
-		// load all pathnames
+		// load supported pathnames
 		List<String> pathnames = new ArrayList<String>();
 		JarInputStream jin = new JarInputStream(new BufferedInputStream(new FileInputStream(f)));
 		for (JarEntry je; (je = jin.getNextJarEntry()) != null;) {

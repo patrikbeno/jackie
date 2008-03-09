@@ -1,9 +1,13 @@
 package org.jackie.compiler.typeregistry;
 
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.JPackageImpl;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.util.PackageName;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.JPackage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,19 +17,21 @@ import java.util.Map;
  */
 public abstract class AbstractTypeRegistry implements TypeRegistry {
 
-	protected Map<String, JPackageImpl> packages;
+	protected FileManager fileManager;
 
-	protected Map<String, JClassImpl> classes;
+	protected Map<String, JPackage> packages;
+
+	protected Map<String, JClass> classes;
 
 	protected ArrayRegistry arrays;
 
 	{
-		packages = new HashMap<String, JPackageImpl>();
-		classes = new HashMap<String, JClassImpl>();
+		packages = new HashMap<String, JPackage>();
+		classes = new HashMap<String, JClass>();
 		arrays = new ArrayRegistry(this);
 	}
 
-	public JClassImpl getJClass(ClassName clsname) {
+	public JClass getJClass(ClassName clsname) {
 		// check if available (for arrays, check their component type)
 		if (!hasJClass(clsname.isArray() ? clsname.getComponentType() : clsname)) {
 			return null;
@@ -36,7 +42,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 			return arrays.getArray(clsname);
 		}
 
-		JClassImpl cls = classes.get(clsname.getFQName());
+		JClass cls = classes.get(clsname.getFQName());
 		if (cls != null) {
 			return cls;
 		}
@@ -47,12 +53,24 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return cls;
 	}
 
-	public JClassImpl getJClass(Class cls) {
+	public JClass getJClass(Class cls) {
 		return getJClass(new ClassName(cls));
 	}
 
-	public JPackageImpl getJPackage(ClassName clsname) {
-		JPackageImpl p = packages.get(clsname.getPackageFQName());
+	public void loadJClass(JClass jclass, LoadLevel level) {
+//		try {
+//			ClassName clsname = new ClassName(jclass);
+//			FileObject fo = fileManager.getFileObject(clsname.getPathName());
+//			ClassReader cr = new ClassReader(Channels.newInputStream(fo.getInputChannel()));
+//			JClassReader reader = new JClassReader(jclass, level);
+//			cr.accept(reader, 0); // todo setup flags!
+//		} catch (IOException e) {
+//			throw Assert.notYetHandled(e);
+//		}
+	}
+
+	public JPackage getJPackage(ClassName clsname) {
+		JPackage p = packages.get(clsname.getPackageFQName());
 		if (p != null) {
 			return p;
 		}
@@ -61,8 +79,8 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return p;
 	}
 
-	public JPackageImpl getJPackage(PackageName pckgname) {
-		JPackageImpl p = (pckgname != null) ? packages.get(pckgname.getFQName()) : null;
+	public JPackage getJPackage(PackageName pckgname) {
+		JPackage p = (pckgname != null) ? packages.get(pckgname.getFQName()) : null;
 		if (p != null) {
 			return p;
 		}
@@ -73,29 +91,31 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return p;
 	}
 
-	protected JPackageImpl createPackage(PackageName pckgname) {
+	protected JPackage createPackage(PackageName pckgname) {
 		if (pckgname == null) {
-			JPackageImpl p = new JPackageImpl();
-			p.name = "";
+			JPackage p = new JPackageImpl();
+			p.edit().setName("");
 			return p;
 		}
 
-		JPackageImpl parent = getJPackage(pckgname.getParent());
+		JPackage parent = getJPackage(pckgname.getParent());
 
-		JPackageImpl p = new JPackageImpl();
-		p.name = pckgname.getName();
-		p.parent = parent.addSubPackage(p);
+		JPackage jpackage = new JPackageImpl();
+		jpackage.edit()
+				.setName(pckgname.getName())
+				.setParent(parent);
 
-		return p;
+		return jpackage;
 	}
 
-	protected JClassImpl createJClass(ClassName clsname) {
+	protected JClass createJClass(ClassName clsname) {
 
-		JClassImpl c = new JClassImpl();
-		c.name = clsname.getName();
-		c.jpackage = getJPackage(clsname.getPackageName()).addClass(c);
+		JClass jclass = new JClassImpl();
+		jclass.edit()
+				.setName(clsname.getName())
+				.setPackage(getJPackage(clsname.getPackageName()));
 
-		return c;
+		return jclass;
 	}
 
 }

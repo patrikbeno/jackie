@@ -9,6 +9,8 @@ import org.jackie.compiler.typeregistry.PrimitiveTypeRegistry;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.util.Context;
 import org.jackie.compiler.util.PathName;
+import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.utils.Assert;
 
 import org.objectweb.asm.ClassReader;
@@ -39,7 +41,7 @@ public abstract class TestCase {
 		try {
 			ClassReader cr = new ClassReader(
 					cls.getResourceAsStream(cls.getSimpleName() + ".class"));
-			JClassReader r = new JClassReader();
+			JClassReader r = new JClassReader(LoadLevel.CODE);
 			cr.accept(r, ClassReader.SKIP_CODE);
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);

@@ -30,7 +30,6 @@ public class ClassName {
 
 	List<String> packages;
 	List<String> classes;
-	private boolean array;
 
 
 	public ClassName(Class cls) {
@@ -148,6 +147,10 @@ public class ClassName {
 			}
 		}
 		return binaryNamePart.substring(offset);
+	}
+
+	public String getPathName() {
+		return getFQName().replace('.', '/') + ".class";
 	}
 
 	public Iterator<String> getPackagePathIterator() {

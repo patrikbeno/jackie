@@ -1,24 +1,23 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.extension.builtin.ArrayType;
+import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
  */
-public class ArrayTypeImpl implements SpecialTypeImpl {
+public class ArrayTypeImpl extends AbstractExtension<JClass> implements ArrayType {
 
-	/**
-	 * This array class (for array component, check {@link #componentType}
-	 */
-	public JClassImpl jclass;
-
-	public JClassImpl componentType;
-	public int dimensions;
-
-	public ArrayTypeImpl(JClassImpl jclass, JClassImpl componentType, int dimensions) {
-		this.jclass = jclass;
-		this.componentType = componentType;
-		this.dimensions = dimensions;
+	public ArrayTypeImpl(JClass node) {
+		super(node);
 	}
 
+	public JClass getComponentType() {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	public int getDimensions() {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
 }

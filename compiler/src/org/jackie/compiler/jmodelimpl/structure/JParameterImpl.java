@@ -1,17 +1,12 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jmodel.structure.JParameter;
 
 /**
  * @author Patrik Beno
  */
-public class JParameterImpl {
-
-	public String name;
-	public JClassImpl jclass;
-
-	public JParameterImpl(String name, JClassImpl jclass) {
-		this.name = name;
-		this.jclass = jclass;
+public class JParameterImpl extends JVariableImpl<JParameter,JParameter.Editor,JMethod> implements JParameter {
+	public class Editor extends EditorImpl<JParameter,JParameter.Editor,JMethod> {
 	}
 }

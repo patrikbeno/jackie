@@ -1,97 +1,58 @@
 package org.jackie.compiler.jmodelimpl;
 
 import static org.jackie.compiler.util.Helper.iterable;
-import org.jackie.jmodel.Flag;
-import org.jackie.jmodel.Flags;
+import static org.jackie.compiler.util.Helper.assertEditable;
+import org.jackie.jmodel.props.Flag;
+import org.jackie.jmodel.props.Flags;
+import org.jackie.utils.Assert;
+import org.jackie.utils.FlagSupport;
 
 import java.lang.annotation.Annotation;
 import java.util.BitSet;
+import java.util.Set;
 
 /**
  * @author Patrik Beno
  */
-@SuppressWarnings({"ClassExplicitlyAnnotation"})
-public class FlagsImpl implements Flags {
+public class FlagsImpl extends FlagSupport<Flag> implements Flags{
 
-	BitSet bits = new BitSet(Flag.values().length);
-
-
-	public void set(Flag flag) {
-		bits.set(flag.ordinal());
+	protected Class<Flag> type() {
+		return Flag.class;
 	}
 
-	public void set(Flag... flags) {
-		for (Flag f : iterable(flags)) {
-			set(f);
-		}
+	public Set<Flag> getAllSet() {
+		return all();
 	}
 
-	public void reset() {
-		bits.clear();
+	public Editor edit() {
+		assertEditable();
+		return new Editor() {
+
+			final FlagsImpl flags = FlagsImpl.this;
+
+			public Editor reset() {
+				flags.reset();
+				return this;
+			}
+
+			public Editor set(Flag... flags) {
+				setAll(flags);
+				return this;
+			}
+
+			public Editor add(Flag flag) {
+				flags.set(flag);
+				return this;
+			}
+
+			public Editor clear(Flag flag) {
+				flags.clear(flag);
+				return this;
+			}
+
+			public Flags editable() {
+				return flags;
+			}
+		};
 	}
-
-	public void reset(Flag flag) {
-		bits.clear(flag.ordinal());
-	}
-
-	public void reset(Flag... flags) {
-		for (Flag f : iterable(flags)) {
-			reset(f);
-		}
-	}
-
-	public boolean isSet(Flag flag) {
-		return bits.get(flag.ordinal());
-	}
-
-	/// Flags ///
-
-	public boolean abstracT() {
-		return bits.get(Flag.ABSTRACT.ordinal());
-	}
-
-	public boolean statiC() {
-		return bits.get(Flag.STATIC.ordinal());
-	}
-
-	public boolean finaL() {
-		return bits.get(Flag.FINAL.ordinal());
-	}
-
-	public boolean transienT() {
-		return bits.get(Flag.TRANSIENT.ordinal());
-	}
-
-	public boolean volatilE() {
-		return bits.get(Flag.VOLATILE.ordinal());
-	}
-
-	public boolean nativE() {
-		return bits.get(Flag.NATIVE.ordinal());
-	}
-
-	public boolean synchronizeD() {
-		return bits.get(Flag.SYNCHRONIZED.ordinal());
-	}
-
-	public boolean strictFP() {
-		return bits.get(Flag.STRICTFP.ordinal());
-	}
-
-	public boolean deprecated() {
-		return bits.get(Flag.DEPRECATED.ordinal());
-	}
-
-	public boolean bridge() {
-		return bits.get(Flag.BRIDGE.ordinal());
-	}
-
-	public boolean synthetic() {
-		return bits.get(Flag.SYNTHETIC.ordinal());
-	}
-
-	public Class<? extends Annotation> annotationType() {
-		return Flags.class;
-	}
-
 }

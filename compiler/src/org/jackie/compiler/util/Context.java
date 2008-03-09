@@ -2,6 +2,7 @@ package org.jackie.compiler.util;
 
 import org.jackie.compiler.jmodelimpl.type.SpecialTypes;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
@@ -40,5 +41,9 @@ public class Context {
 
 	public SpecialTypes specialtypes() {
 		return specialTypes;
+	}
+
+	public void checkEditable() {
+		Assert.logNotYetImplemented(); // todo implement this
 	}
 }

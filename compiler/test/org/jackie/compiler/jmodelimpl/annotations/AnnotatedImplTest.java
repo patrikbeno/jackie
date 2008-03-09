@@ -18,96 +18,97 @@ import static java.util.Arrays.asList;
  */
 public class AnnotatedImplTest extends TestCase {
 
-	@Test
-	public void primitives() {
-		Class cls = Explicit.class;
-		JClassImpl jcls = get(cls);
-		SampleAnnotation proxy = proxy(jcls);
-		SampleAnnotation real = real(cls);
-
-		Assert.expected(real.pboolean(), proxy.pboolean(), "pboolean");
-		Assert.expected(real.pchar(), proxy.pchar(), "pchar");
-		Assert.expected(real.pbyte(), proxy.pbyte(), "pbyte");
-		Assert.expected(real.pshort(), proxy.pshort(), "pshort");
-		Assert.expected(real.pint(), proxy.pint(), "pint");
-		Assert.expected(real.plong(), proxy.plong(), "plong");
-		Assert.expected(real.pfloat(), proxy.pfloat(), "pfloat");
-		Assert.expected(real.pdouble(), proxy.pdouble(), "pdouble");
-	}
-
-	@Test
-	void primitivearrays() {
-		Class cls = Explicit.class;
-		JClassImpl jcls = get(cls);
-		SampleAnnotation proxy = proxy(jcls);
-		SampleAnnotation real = real(cls);
-
-		doAssert(Arrays.equals(real.apboolean(), proxy.apboolean()), "apboolean");
-		doAssert(Arrays.equals(real.apchar(), proxy.apchar()), "apchar");
-		doAssert(Arrays.equals(real.apbyte(), proxy.apbyte()), "apbyte");
-		doAssert(Arrays.equals(real.apshort(), proxy.apshort()), "apshort");
-		doAssert(Arrays.equals(real.apint(), proxy.apint()), "apint");
-		doAssert(Arrays.equals(real.aplong(), proxy.aplong()), "aplong");
-		doAssert(Arrays.equals(real.apfloat(), proxy.apfloat()), "apfloat");
-		doAssert(Arrays.equals(real.apdouble(), proxy.apdouble()), "apdouble");
-	}
-
-	@Test
-	public void objects() {
-		Class cls = Explicit.class;
-		JClassImpl jcls = get(cls);
-		SampleAnnotation proxy = proxy(jcls);
-		SampleAnnotation real = real(cls);
-
-		Assert.expected(real.string(), proxy.string(), "string");
-		Assert.expected(real.clazz(), proxy.clazz(), "clazz");
-		Assert.expected(real.color(), proxy.color(), "color (enum)");
-		Assert.expected(real.annotation(), proxy.annotation(), "annotation");
-	}
-
-	@Test
-	public void defaults() {
-		test(Defaults.class);
-	}
-
-	@Test
-	public void explicit() {
-		test(Explicit.class);
-	}
-
-	void test(Class<?> cls) {
-		JClassImpl jcls = get(cls);
-		AnnotationImpl a = jcls.annotations.annotations.get(0); // fixme use/build lookup API
-		SampleAnnotation annotation = (SampleAnnotation) a.proxy();
-		SampleAnnotation real = cls.getAnnotation(SampleAnnotation.class);
-
-		Assert.expected(real.string(), annotation.string(), "invalid: string()");
-		Assert.expected(asList(real.astring()), asList(annotation.astring()), "invalid: stringarray()");
-	}
-
-
-	JClassImpl get(Class<?> cls) {
-		readClass(SampleAnnotation.class);
-		readClass(Retention.class);
-		readClass(RetentionPolicy.class);
-		readClass(Color.class);
-		readClass(NestedAnnotation.class);
-		readClass(cls);
-
-		JClassImpl jcls = context().typeRegistry().getJClass(cls);
-		jcls.annotations.buildfromAsmNodes();
-		return jcls;
-	}
-
-	SampleAnnotation proxy(JClassImpl jcls) {
-		AnnotationImpl a = jcls.annotations.annotations.get(0); // fixme use/build lookup API
-		SampleAnnotation annotation = (SampleAnnotation) a.proxy();
-		return annotation;
-	}
-
-	SampleAnnotation real(Class<?> cls) {
-		return cls.getAnnotation(SampleAnnotation.class);
-	}
+//	@Test
+//	public void primitives() {
+//		Class cls = Explicit.class;
+//		JClassImpl jcls = get(cls);
+//		SampleAnnotation proxy = proxy(jcls);
+//		SampleAnnotation real = real(cls);
+//
+//		Assert.expected(real.pboolean(), proxy.pboolean(), "pboolean");
+//		Assert.expected(real.pchar(), proxy.pchar(), "pchar");
+//		Assert.expected(real.pbyte(), proxy.pbyte(), "pbyte");
+//		Assert.expected(real.pshort(), proxy.pshort(), "pshort");
+//		Assert.expected(real.pint(), proxy.pint(), "pint");
+//		Assert.expected(real.plong(), proxy.plong(), "plong");
+//		Assert.expected(real.pfloat(), proxy.pfloat(), "pfloat");
+//		Assert.expected(real.pdouble(), proxy.pdouble(), "pdouble");
+//	}
+//
+//	@Test
+//	void primitivearrays() {
+//		Class cls = Explicit.class;
+//		JClassImpl jcls = get(cls);
+//		SampleAnnotation proxy = proxy(jcls);
+//		SampleAnnotation real = real(cls);
+//
+//		doAssert(Arrays.equals(real.apboolean(), proxy.apboolean()), "apboolean");
+//		doAssert(Arrays.equals(real.apchar(), proxy.apchar()), "apchar");
+//		doAssert(Arrays.equals(real.apbyte(), proxy.apbyte()), "apbyte");
+//		doAssert(Arrays.equals(real.apshort(), proxy.apshort()), "apshort");
+//		doAssert(Arrays.equals(real.apint(), proxy.apint()), "apint");
+//		doAssert(Arrays.equals(real.aplong(), proxy.aplong()), "aplong");
+//		doAssert(Arrays.equals(real.apfloat(), proxy.apfloat()), "apfloat");
+//		doAssert(Arrays.equals(real.apdouble(), proxy.apdouble()), "apdouble");
+//	}
+//
+//	@Test
+//	public void objects() {
+//		Class cls = Explicit.class;
+//		JClassImpl jcls = get(cls);
+//		SampleAnnotation proxy = proxy(jcls);
+//		SampleAnnotation real = real(cls);
+//
+//		Assert.expected(real.string(), proxy.string(), "string");
+//		Assert.expected(real.clazz(), proxy.clazz(), "clazz");
+//		Assert.expected(real.color(), proxy.color(), "color (enum)");
+//		Assert.expected(real.annotation(), proxy.annotation(), "annotation");
+//	}
+//
+//	@Test
+//	public void defaults() {
+//		test(Defaults.class);
+//	}
+//
+//	@Test
+//	public void explicit() {
+//		test(Explicit.class);
+//	}
+//
+//	void test(Class<?> cls) {
+//		JClassImpl jcls = get(cls);
+//		AnnotationImpl a = jcls.annotations.annotations.get(0); // fixme use/build lookup API
+//		SampleAnnotation annotation = (SampleAnnotation) a.proxy();
+//		SampleAnnotation real = cls.getAnnotation(SampleAnnotation.class);
+//
+//		Assert.expected(real.string(), annotation.string(), "invalid: string()");
+//		Assert.expected(asList(real.astring()), asList(annotation.astring()), "invalid: stringarray()");
+//	}
+//
+//
+//	JClassImpl get(Class<?> cls) {
+//		readClass(SampleAnnotation.class);
+//		readClass(Retention.class);
+//		readClass(RetentionPolicy.class);
+//		readClass(Color.class);
+//		readClass(NestedAnnotation.class);
+//		readClass(cls);
+//
+//		JClassImpl jcls = context().typeRegistry().getJClass(cls);
+//		jcls.annotations.buildfromAsmNodes();
+//		return jcls;
+//	}
+//
+//	SampleAnnotation proxy(JClassImpl jcls) {
+//		AnnotationImpl a = jcls.annotations.annotations.get(0); // fixme use/build lookup API
+//		SampleAnnotation annotation = (SampleAnnotation) a.proxy();
+//		return annotation;
+//	}
+//
+//	SampleAnnotation real(Class<?> cls) {
+//		return cls.getAnnotation(SampleAnnotation.class);
+//	}
+//}
 }
 
 @Retention(RetentionPolicy.RUNTIME)
@@ -143,7 +144,6 @@ public class AnnotatedImplTest extends TestCase {
 	Class[] aclazz() default {Object.class,String.class};
 	Color[] acolor() default {Color.RED,Color.GREEN,Color.BLUE};
 	NestedAnnotation[] aannotation() default {@NestedAnnotation(false),@NestedAnnotation(true)};
-
 }
 
 @SampleAnnotation

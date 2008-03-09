@@ -1,7 +1,7 @@
 package org.jackie.compiler.typeregistry;
 
-import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.util.ClassName;
+import org.jackie.jmodel.JClass;
 
 /**
  * @author Patrik Beno
@@ -15,8 +15,8 @@ public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 		return dependencies.hasJClass(clsname) || workspace.hasJClass(clsname);
 	}
 
-	public JClassImpl getJClass(ClassName clsname) {
-		JClassImpl cls;
+	public JClass getJClass(ClassName clsname) {
+		JClass cls;
 
 		cls = dependencies.getJClass(clsname);
 		if (cls != null) { return cls; }

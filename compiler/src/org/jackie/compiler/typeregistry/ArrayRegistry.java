@@ -1,8 +1,11 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
-import org.jackie.compiler.jmodelimpl.type.ArrayTypeImpl;
+import org.jackie.compiler.jmodelimpl.attribute.impl.Kind;
+import org.jackie.compiler.jmodelimpl.attribute.impl.KindAttribute;
 import org.jackie.compiler.util.ClassName;
+import static org.jackie.compiler.util.Context.context;
+import org.jackie.jmodel.JClass;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,7 +47,7 @@ public class ArrayRegistry {
 
 	TypeRegistry master;
 
-	Map<Descriptor, JClassImpl> arrays;  // todo use WeakRefs, automatic cleanup 
+	Map<Descriptor, JClassImpl> arrays;  // todo use WeakRefs, automatic cleanup
 
 	{
 		arrays = new HashMap<Descriptor, JClassImpl>();
@@ -72,24 +75,25 @@ public class ArrayRegistry {
 
 		Descriptor desc = new Descriptor(clsname, dimensions);
 
-		JClassImpl cls = arrays.get(desc);
-		if (cls != null) {
-			return cls;
+		JClassImpl jclass = arrays.get(desc);
+		if (jclass != null) {
+			return jclass;
 		}
 
+		ClassName classname = new ClassName(clsname, dimensions);
+		JClass component = master.getJClass(classname);
+
 		// create array on demand
-		cls = new JClassImpl();
-		cls.name = toClassName(desc);
-		cls.superclass = master.getJClass(new ClassName(Object.class));
-		cls.addCapability(new ArrayTypeImpl(cls, master.getJClass(new ClassName(clsname)), dimensions));
+		jclass = new JClassImpl();
+		jclass.edit()
+				.setName(classname.getName())
+				.setPackage(component.getJPackage())
+				.setSuperClass(context().typeRegistry().getJClass(Object.class));
+		jclass.attributes().edit()
+				.addAttribute(KindAttribute.class, new KindAttribute(Kind.ARRAY));
 
-		arrays.put(desc, cls);
-		return cls;
-	}
-
-	String toClassName(Descriptor desc) {
-		ClassName clsname = new ClassName(desc.clsname, desc.dimensions);
-		return clsname.getFQName();
+		arrays.put(desc, jclass);
+		return jclass;
 	}
 
 

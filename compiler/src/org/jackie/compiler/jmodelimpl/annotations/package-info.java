@@ -1,7 +1,7 @@
 /**
  * Provides model implementation for annotations.
  *
- * There is a representation of the {@link AnnotatedImpl annotated} element,
+ * There is a representation of the {@link AnnotationsImpl annotated} element,
  * the {@link AnnotationImpl annotation} itself with its {@link AnnotationAttributeImpl attributes}
  * and the {@link AnnotationAttributeValueImpl attribute values}.
  *

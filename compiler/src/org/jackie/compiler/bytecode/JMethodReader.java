@@ -1,9 +1,14 @@
 package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler.util.Helper;
+import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jmodel.structure.JParameter;
+import org.jackie.utils.Assert;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -19,46 +24,57 @@ import java.util.List;
  */
 public class JMethodReader extends ByteCodeLoader {
 
-	JClassImpl jclass;
-	JMethodImpl jmethod;
+	JClass jclass;
+	LoadLevel level;
+	JMethod jmethod;
 
-	public JMethodReader(JClassImpl jclass,
-								int access, String name, String desc, String signature, String[] exceptions) {
+	// saved for ASM MethodNode
+	int access;
+	String name, desc, signature;
+	String[] exceptions;
+
+	public JMethodReader(JClass jclass, LoadLevel level,
+								int access, String name, String desc, String signature,
+								String[] exceptions) {
 		this.jclass = jclass;
+		this.level = level;
 
 		jmethod = new JMethodImpl();
-		jmethod.name = name;
-		jmethod.type = getJClassByType(getReturnType(desc));
-		jmethod.parameters = populateArgs(desc);
-		jmethod.exceptions = populateExceptions(exceptions);
-		jmethod.accessMode = toAccessMode(access);
-		jmethod.flags = toFlags(access);
-		jmethod.asmnode = new MethodNode(access, name, desc, signature, exceptions);
-		
-		jmethod.owner = jclass.addMethod(jmethod);
+		jmethod.edit()
+				.setName(name)
+				.setType(getJClassByType(getReturnType(desc)))
+				.setParameters(populateArgs(desc))
+				.setExceptions(populateExceptions(exceptions))
+				.setAccessMode(toAccessMode(access))
+				.setFlags(toFlags(access));
+
 	}
 
-	List<JParameterImpl> populateArgs(String desc) {
+	List<JParameter> populateArgs(String desc) {
 		Type[] argtypes = Type.getArgumentTypes(desc);
 		if (Helper.empty(argtypes)) { return Collections.emptyList(); }
 
-		List<JParameterImpl> args = new ArrayList<JParameterImpl>(argtypes.length);
+		List<JParameter> args = new ArrayList<JParameter>(argtypes.length);
 		for (int i=0; i<argtypes.length; i++) {
 			Type t = argtypes[i];
-			JClassImpl c = getJClassByType(t);
-			JParameterImpl p = new JParameterImpl("p"+i, c); // default parameter naming
+			JClass c = getJClassByType(t);
+			JParameter p = new JParameterImpl();
+			p.edit()
+					.setName("p" + i)
+					.setType(c);
+
 			args.add(p);
 		}
 
 		return args;
 	}
 
-	List<JClassImpl> populateExceptions(String[] exceptions) {
+	List<JClass> populateExceptions(String[] exceptions) {
 		if (Helper.empty(exceptions)) { return Collections.emptyList(); }
 
-		List<JClassImpl> jexceptions = new ArrayList<JClassImpl>(exceptions.length);
+		List<JClass> jexceptions = new ArrayList<JClass>(exceptions.length);
 		for (String bname : exceptions) {
-			JClassImpl c = getJClassByBName(bname);
+			JClass c = getJClassByBName(bname);
 			jexceptions.add(c);
 		}
 
@@ -66,7 +82,8 @@ public class JMethodReader extends ByteCodeLoader {
 	}
 
 	MethodVisitor getMethodVisitor() {
-		return jmethod.asmnode;
+		Assert.logNotYetImplemented(); // todo implement getMethodVisitor()
+		return null;
 	}
 
 }

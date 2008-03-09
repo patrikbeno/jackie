@@ -1,76 +1,57 @@
 package org.jackie.compiler.jmodelimpl;
 
-import org.jackie.compiler.bytecode.AsmSupport;
-import org.jackie.compiler.bytecode.Compilable;
-import org.jackie.compiler.jmodelimpl.annotations.AnnotatedImpl;
-import org.jackie.compiler.jmodelimpl.structure.JFieldImpl;
-import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
-import org.jackie.compiler.jmodelimpl.type.SpecialTypeImpl;
-import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler.util.ConvertingList;
-import org.jackie.compiler.util.Convertor;
-import static org.jackie.compiler.util.Helper.*;
-import org.jackie.compiler.util.LightList;
-import org.jackie.jmodel.AccessMode;
+import static org.jackie.compiler.util.Helper.assertEditable;
+import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JClassEditor;
 import org.jackie.jmodel.JPackage;
-import org.jackie.jmodel.SpecialType;
-import org.jackie.jmodel.props.Accessible;
-import org.jackie.jmodel.structure.JAnnotation;
+import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.jmodel.attribute.Attributes;
+import org.jackie.jmodel.extension.Extensions;
+import org.jackie.jmodel.props.Flags;
+import org.jackie.jmodel.props.Flag;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.structure.JTypeVariable;
-import org.jackie.jmodel.structure.ReferenceType;
-import org.jackie.utils.Assert;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
-
-import java.lang.annotation.Annotation;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
  */
-public class JClassImpl extends JNodeImpl implements Accessible {
+public class JClassImpl implements JClass {
 
-	public TypeRegistry registry;
+	// infrastructure stuff
+
 	public LoadLevel loadLevel;
 
-	public Map<Class<? extends SpecialTypeImpl>, SpecialTypeImpl> capabilities;
+	// core model
 
-	public String name;
-	public JPackageImpl jpackage;
-	public JClassImpl superclass;
-	public List<JClassImpl> interfaces;
+	protected String name;
+	protected JPackage jpackage;
+	protected JClass superclass;
+	protected List<JClass> interfaces;
 
-	public AnnotatedImpl annotations;
+	protected Annotations annotations;
+	protected Attributes attributes;
 
-	public List<JFieldImpl> fields;
-	public List<JMethodImpl> methods;
+	protected List<JField> fields;
+	protected List<JMethod> methods;
 
-	public AccessMode accessMode;
-	public FlagsImpl flags;
+	protected AccessMode access;
+	protected FlagsImpl flags;
 
-	//
-
-	public String source, debug; 
-
+	protected Extensions extensions;
 
 	{
-		interfaces = new LightList<JClassImpl>();
-		fields = new LightList<JFieldImpl>();
-		methods = new LightList<JMethodImpl>();
-		annotations = new AnnotatedImpl();
+		loadLevel = LoadLevel.NAME;
+		access = AccessMode.PACKAGE;
 	}
 
-	public AccessMode getAccessMode() {
-		return accessMode;
+	/// JClass ///
+
+	public String getName() {
+		return name;
 	}
 
 	public String getFQName() {
@@ -81,247 +62,210 @@ public class JClassImpl extends JNodeImpl implements Accessible {
 		}
 	}
 
-	public <T extends SpecialTypeImpl> T getCapability(Class<T> type) {
-		return type.cast(map(capabilities).get(type));
+	public JPackage getJPackage() {
+		return jpackage;
 	}
 
-	public void addCapability(SpecialTypeImpl capability) {
-		if (capabilities == null) {
-			capabilities = new HashMap<Class<? extends SpecialTypeImpl>, SpecialTypeImpl>();
-		}
-		capabilities.put(capability.getClass(), capability);
+	public JClass getSuperClass() {
+		return superclass;
 	}
 
-	public JClassImpl addField(JFieldImpl field) {
-		fields.add(field);
-		return this;
+	public List<JClass> getInterfaces() {
+		return Collections.unmodifiableList(interfaces);
 	}
 
-	public JClassImpl addMethod(JMethodImpl jmethod) {
-		methods.add(jmethod);
-		return this;
+	public Flags flags() {
+		return flags;
 	}
 
-	public String toString() {
-		return getFQName();
+	public Annotations annotations() {
+		return annotations;
 	}
 
-	public JClass asJClass() {
-		return new JClass() {
-			public JClassEditor edit() {
-				return asJClassEditor();
-			}
-
-			public Set<Class<? extends SpecialType>> getSpecialTypeCapabilities() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public <T extends SpecialType> boolean isSpecialType(Class<T> type) {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public <T extends SpecialType> T getSpecialTypeView(Class<T> type) {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public String getName() {
-				return name;
-			}
-
-			public String getFQName() {
-				return JClassImpl.this.getFQName();
-			}
-
-			public JPackage getJPackage() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public JClass getSuperClass() {
-				return superclass.asJClass();
-			}
-
-			public ReferenceType getGenericSuperClass() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<JClass> getInterfaces() {
-				return new ConvertingList<JClass,JClassImpl>(interfaces, new JClassConvertor());
-			}
-
-			public List<ReferenceType> getGenericInterfaces() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<JTypeVariable> getTypeVariables() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<JField> getFields() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<? extends JMethod> getMethods() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<JAnnotation> getJAnnotations() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public List<? extends Annotation> getAnnotations() {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-
-			public <T extends Annotation> T getAnnotation(Class<T> type) {
-				throw Assert.notYetImplemented(); // todo implement this
-			}
-		};
+	public Attributes attributes() {
+		return attributes;
 	}
 
-	public JClassEditor asJClassEditor() {
-		return new JClassEditor() {
-			public void setName(String name) {
-				throw Assert.notYetImplemented(); // todo implement this
+	public List<JField> getFields() {
+		return Collections.unmodifiableList(fields);
+	}
+
+	public List<? extends JMethod> getMethods() {
+		return Collections.unmodifiableList(methods);
+	}
+
+
+	/// Accessible ///
+
+	public AccessMode getAccessMode() {
+		return access;
+	}
+
+
+	/// Extensions ///
+
+	public Extensions extensions() {
+		return extensions;
+	}
+	
+
+	/// Editable ///
+
+	public Editor edit() {
+		assertEditable();
+		return new Editor() {
+			public Editor setName(String name) {
+				JClassImpl.this.name = name;
+				return this;
 			}
 
-			public void setPackage(JPackage jpackage) {
-				throw Assert.notYetImplemented(); // todo implement this
+			public Editor setPackage(JPackage jpackage) {
+				JClassImpl.this.jpackage = jpackage;
+				return this;
 			}
 
-			public void setSuperClass(JClass jclass) {
-				JClassImpl c = getClassImpl(jclass);
+			public Editor setSuperClass(JClass jclass) {
+				JClassImpl.this.superclass = jclass;
+				return this;
 			}
 
-			public void setInterfaces(JClass ... ifaces) {
-				interfaces.clear();
-				for (JClass iface : iterable(ifaces)) {
+			public Editor setInterfaces(JClass... ifaces) {
+				for (JClass iface : ifaces) {
 					addInterface(iface);
 				}
+				return this;
 			}
 
-			public void addInterface(JClass iface) {
-				interfaces.add(getClassImpl(iface));
+			public Editor addInterface(JClass iface) {
+				if (interfaces == null) {
+					interfaces = new ArrayList<JClass>();
+				}
+				interfaces.add(iface);
+				return this;
 			}
 
-			public void setEnclosingClass(JClass jclass) {
-				throw Assert.notYetImplemented(); // todo implement this
+			public Editor setAccessMode(AccessMode accessMode) {
+				JClassImpl.this.access = accessMode;
+				return this;
 			}
 
-			public void setEnclosingMethod(JMethod jmethod) {
-				throw Assert.notYetImplemented(); // todo implement this
+			public Editor setFlags(Flag ... flags) {
+				JClassImpl.this.flags.reset().setAll(flags);
+				return this;
 			}
 
-			public void addField(JField jfield) {
-				throw Assert.notYetImplemented(); // todo implement this
+			public Editor addField(JField jfield) {
+				if (fields == null) {
+					fields = new ArrayList<JField>();
+				}
+				fields.add(jfield);
+				return this;
 			}
 
-			public void addMethod(JMethod jmethod) {
-				throw Assert.notYetImplemented(); // todo implement this
+			public Editor addMethod(JMethod jmethod) {
+				if (methods == null) {
+					methods = new ArrayList<JMethod>();
+				}
+				methods.add(jmethod);
+				return this;
 			}
 
-			public JClass node() {
-				return asJClass();
+			public JClass editable() {
+				return JClassImpl.this;
 			}
 		};
 	}
 
-	static class JClassConvertor extends Convertor<JClass,JClassImpl> {
-		public JClass execute(JClassImpl jcls) {
-			return jcls.asJClass();
-		}
-	}
-
-
-	/// binary/bytecode stuff ///
-
-
-	protected String bcName() {
-		return getFQName().replace('.', '/');
-	}
-
-	protected String bcSignature() {
-		return null; // todo implement this
-	}
-
-	public String bcDesc() {
-		return bcName(); // fixme need to handle primitives/arrays/classes/...
-	}
-
-	public byte[] compile() {
-		ClassWriter cw = new ClassWriter(0);
-		ClassCompiler c = new ClassCompiler();
-		c.compile(cw);
-		return cw.toByteArray();
-	}
-
-	class ClassCompiler extends AsmSupport implements Compilable<ClassVisitor>  {
-
-		ClassVisitor cv;
-
-		public void compile(ClassVisitor cv) {
-			this.cv = cv;
-			init();
-			nesting();
-			bcannotations();
-			bcfields();
-			bcmethods();
-			done();
-		}
-
-		void init() {
-			int version = Opcodes.V1_5; // todo hardcoded class version number
-			int access = toAccessFlags(JClassImpl.this) | toAccessFlag(flags) | toAccessFlag(accessMode);
-			String bcSuperName = (superclass != null) ? superclass.bcName() : null;
-			cv.visit(version, access, bcName(), bcSignature(), bcSuperName, bcInterfaces());
-			// todo cw.visitSource();
-		}
-
-		void done() {
-			cv.visitEnd();
-		}
-
-		void nesting() {}
-
-		void bcannotations() {
-//				for (AnnotationImpl a : annotations) {
-//					AnnotationVisitor av = cw.visitAnnotation(a.type.jclass.bcDesc(), true); // everything is visible, what the hell?
-//					a.compile(av);
-//				}
-		}
-
-		void bcfields() {
-//				for (JFieldImpl f : fields) {
-//					int access = toAccessFlags(f.type) | toAccessFlag(f.flags) | toAccessFlag(f.accessMode);
-//					FieldVisitor fv = cw.visitField(access, f.name, f.type.bcDesc(), f.bcSignature(), null);
-//					f.compile(fv);
-//				}
-		}
-
-		void bcmethods() {
-//				for (JMethodImpl m : methods) {
-//					int access = toAccessFlags(m.type) | toAccessFlag(m.flags) | toAccessFlag(m.accessMode);
-//					MethodVisitor mv = cw.visitMethod(access, m.name, desc, signature, bcExceptions(m));
-//					m.compile(mv);
-//				}
-		}
-
-		String[] bcInterfaces() {
-			List<String> bcnames = new LightList<String>();
-			for (JClassImpl iface : interfaces) {
-				bcnames.add(iface.bcName());
-			}
-			return bcnames.toArray(new String[bcnames.size()]);
-		}
-
-		String[] bcExceptions(JMethodImpl m) {
-			List<String> bcnames = new LightList<String>();
-			for (JClassImpl ex : m.exceptions) {
-				bcnames.add(ex.bcName());
-			}
-			return bcnames.toArray(new String[bcnames.size()]);
-		}
-
-	}
-
+//	/// binary/bytecode stuff ///
+//
+//
+//	protected String bcName() {
+//		return getFQName().replace('.', '/');
+//	}
+//
+//	protected String bcSignature() {
+//		return null; // todo implement this
+//	}
+//
+//	public String bcDesc() {
+//		return bcName(); // fixme need to handle primitives/arrays/classes/...
+//	}
+//
+//	public byte[] compile() {
+//		ClassWriter cw = new ClassWriter(0);
+//		ClassCompiler c = new ClassCompiler();
+//		c.compile(cw);
+//		return cw.toByteArray();
+//	}
+//
+//	class ClassCompiler extends AsmSupport implements Compilable<ClassVisitor>  {
+//
+//		ClassVisitor cv;
+//
+//		public void compile(ClassVisitor cv) {
+//			this.cv = cv;
+//			init();
+//			nesting();
+//			bcannotations();
+//			bcfields();
+//			bcmethods();
+//			done();
+//		}
+//
+//		void init() {
+//			int version = Opcodes.V1_5; // todo hardcoded class version number
+//			int access = toAccessFlags(asJClass()) | toAccessFlag(flags) | toAccessFlag(accessMode);
+//			String bcSuperName = (superclass != null) ? superclass.bcName() : null;
+//			cv.visit(version, access, bcName(), bcSignature(), bcSuperName, bcInterfaces());
+//			// todo cw.visitSource();
+//		}
+//
+//		void done() {
+//			cv.visitEnd();
+//		}
+//
+//		void nesting() {}
+//
+//		void bcannotations() {
+////				for (AnnotationImpl a : annotations) {
+////					AnnotationVisitor av = cw.visitAnnotation(a.type.jclass.bcDesc(), true); // everything is visible, what the hell?
+////					a.compile(av);
+////				}
+//		}
+//
+//		void bcfields() {
+////				for (JFieldImpl f : fields) {
+////					int access = toAccessFlags(f.type) | toAccessFlag(f.flags) | toAccessFlag(f.accessMode);
+////					FieldVisitor fv = cw.visitField(access, f.name, f.type.bcDesc(), f.bcSignature(), null);
+////					f.compile(fv);
+////				}
+//		}
+//
+//		void bcmethods() {
+////				for (JMethodImpl m : methods) {
+////					int access = toAccessFlags(m.type) | toAccessFlag(m.flags) | toAccessFlag(m.accessMode);
+////					MethodVisitor mv = cw.visitMethod(access, m.name, desc, signature, bcExceptions(m));
+////					m.compile(mv);
+////				}
+//		}
+//
+//		String[] bcInterfaces() {
+//			List<String> bcnames = new LightList<String>();
+//			for (JClassImpl iface : interfaces) {
+//				bcnames.add(iface.bcName());
+//			}
+//			return bcnames.toArray(new String[bcnames.size()]);
+//		}
+//
+//		String[] bcExceptions(JMethodImpl m) {
+//			List<String> bcnames = new LightList<String>();
+//			for (JClassImpl ex : m.exceptions) {
+//				bcnames.add(ex.bcName());
+//			}
+//			return bcnames.toArray(new String[bcnames.size()]);
+//		}
+//
+//	}
+//
 
 }
