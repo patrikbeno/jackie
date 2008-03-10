@@ -1,17 +1,9 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.compiler.common.TestCase;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
-import static org.jackie.compiler.util.Context.context;
-import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.doAssert;
-
-import org.testng.annotations.Test;
+import org.jackie.compiler.TestCase;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.Arrays;
-import static java.util.Arrays.asList;
 
 /**
  * @author Patrik Beno

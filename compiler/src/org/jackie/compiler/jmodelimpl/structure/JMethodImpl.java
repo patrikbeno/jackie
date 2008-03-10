@@ -1,6 +1,7 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
 import static org.jackie.compiler.util.Helper.assertEditable;
+import org.jackie.compiler.jmodelimpl.FlagsImpl;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.attribute.Attributes;
 import org.jackie.jmodel.code.CodeBlock;
@@ -11,6 +12,7 @@ import org.jackie.jmodel.props.Flags;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JParameter;
 import org.jackie.jmodel.structure.JVariable;
+import org.jackie.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,21 +23,21 @@ import java.util.List;
  */
 public class JMethodImpl implements JMethod {
 
-	String name;
-	JClass type;
+	protected String name;
+	protected JClass type;
 
-	AccessMode accessMode;
-	Flags flags;
+	protected AccessMode accessMode;
+	protected Flags flags;
 
-	Attributes attributes;
-	Extensions extensions;
+	protected Attributes attributes;
+	protected Extensions extensions;
 
-	JClass jclass;
-	List<JParameter> parameters;
-	List<JClass> exceptions;
-	List<JVariable> locals;
-
-	CodeBlock code;
+	protected JClass jclass;
+	protected List<JParameter> parameters;
+	protected List<JClass> exceptions;
+	protected List<JVariable> locals;
+    
+	protected CodeBlock code;
 
 
 	public String getName() {
@@ -76,6 +78,13 @@ public class JMethodImpl implements JMethod {
 		return code;
 	}
 
+	public Flags flags() {
+		if (flags == null) {
+			flags = new FlagsImpl();
+		}
+		return flags;
+	}
+
 	public Editor edit() {
 		assertEditable();
 		return new Editor() {
@@ -108,7 +117,7 @@ public class JMethodImpl implements JMethod {
 			}
 
 			public Editor setFlags(Flag ... flags) {
-				mthis.flags.edit().reset().set(flags);
+				mthis.flags().edit().reset().set(flags);
 				return this;
 			}
 
@@ -118,5 +127,4 @@ public class JMethodImpl implements JMethod {
 
 		};
 	}
-
 }

@@ -81,7 +81,7 @@ public class ArrayRegistry {
 		}
 
 		ClassName classname = new ClassName(clsname, dimensions);
-		JClass component = master.getJClass(classname);
+		JClass component = master.getJClass(classname.getComponentType());
 
 		// create array on demand
 		jclass = new JClassImpl();

@@ -1,7 +1,11 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.TestCase;
+import static org.jackie.compiler.util.Context.context;
+import org.jackie.compiler.util.Context;
 import org.jackie.utils.Assert;
+import org.jackie.jmodel.JClass;
 
 import org.testng.annotations.Test;
 
@@ -16,7 +20,10 @@ public class TypeRegistryTest {
 
 
 	public void primitives() {
+		Context.createContext();
 		PrimitiveTypeRegistry r = new PrimitiveTypeRegistry();
+		context().typeRegistry(r);
+
 		Assert.notNull(r.getJClass(void.class));
 		Assert.notNull(r.getJClass(boolean.class));
 		Assert.notNull(r.getJClass(byte.class));
@@ -27,12 +34,15 @@ public class TypeRegistryTest {
 		Assert.notNull(r.getJClass(double.class));
 		Assert.notNull(r.getJClass(char.class));
 
-//		JClassImpl cls = r.getJClass(void.class);
-//		Assert.expected("void", cls.getFQName(), "invalid class fqname");
+		JClass cls = r.getJClass(void.class);
+		Assert.expected("void", cls.getFQName(), "invalid class fqname");
 	}
 
 	public void primitiveArrays() {
+		Context.createContext();
 		PrimitiveTypeRegistry r = new PrimitiveTypeRegistry();
+		context().typeRegistry(r);
+
 		Assert.notNull(r.getJClass(int[].class));
 		Assert.notNull(r.getJClass(int[][].class));
 		Assert.notNull(r.getJClass(int[][][].class));
@@ -40,11 +50,13 @@ public class TypeRegistryTest {
 
 	public void classes() {
 
+		Context.createContext();
 		JClassRegistry r = new JClassRegistry(new HashSet<String>(Arrays.asList(
 				Object.class.getName(),
 				Object[].class.getName(),
 				Object[][].class.getName()
 		)));
+		context().typeRegistry(r);
 
 		Assert.notNull(r.getJClass(Object.class));
 		Assert.notNull(r.getJClass(Object[].class));
@@ -52,6 +64,7 @@ public class TypeRegistryTest {
 	}
 
 	public void multiregistry() {
+		Context.createContext();
 		MultiRegistry r = new MultiRegistry(Arrays.<TypeRegistry>asList(
 				new PrimitiveTypeRegistry(),
 				new JClassRegistry(new HashSet<String>(Arrays.asList(
@@ -59,8 +72,7 @@ public class TypeRegistryTest {
 						String.class.getName()
 				)))
 		));
-
-		JClassImpl c;
+		context().typeRegistry(r);
 
 		Assert.notNull(r.getJClass(int.class));
 		Assert.notNull(r.getJClass(int[].class));

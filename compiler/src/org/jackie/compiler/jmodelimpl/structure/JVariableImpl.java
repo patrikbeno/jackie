@@ -7,58 +7,53 @@ import org.jackie.jmodel.extension.Extensions;
 import org.jackie.jmodel.props.Flags;
 import org.jackie.jmodel.structure.JVariable;
 import org.jackie.utils.Assert;
+import org.jackie.compiler.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler.jmodelimpl.ExtensionsImpl;
+import org.jackie.compiler.jmodelimpl.FlagsImpl;
 
 /**
  * @author Patrik Beno
  */
-public class JVariableImpl<V extends JVariable<V,E,N>, E extends JVariable.Editor<V,E,N>, N extends JNode>
-		implements JVariable<V,E,N> {
+public abstract class JVariableImpl<N extends JNode> implements JVariable<N> {
+
+	protected N scope;
+	protected String name;
+	protected JClass type;
+	protected Flags flags;
+	protected Attributes attributes;
+	protected Extensions extensions;
 
 	public N scope() {
-		throw Assert.notYetImplemented(); // todo implement this
+		return scope;
 	}
 
 	public String getName() {
-		throw Assert.notYetImplemented(); // todo implement this
+		return name;
 	}
 
 	public JClass getType() {
-		throw Assert.notYetImplemented(); // todo implement this
+		return type;
 	}
 
 	public Flags flags() {
-		throw Assert.notYetImplemented(); // todo implement this
+		if (flags == null) {
+			flags = new FlagsImpl();
+		}
+		return flags;
 	}
 
 	public Attributes attributes() {
-		throw Assert.notYetImplemented(); // todo implement this
+		if (attributes == null) {
+			attributes = new AttributesImpl();
+		}
+		return attributes;
 	}
 
 	public Extensions extensions() {
-		throw Assert.notYetImplemented(); // todo implement this
+		if (extensions == null) {
+			extensions = new ExtensionsImpl();
+		}
+		return extensions;
 	}
 
-	public E edit() {
-		//noinspection unchecked
-		return (E) new EditorImpl<V,E,N>();
-	}
-
-	protected class EditorImpl<V extends JVariable<V,E,N>, E extends JVariable.Editor<V,E,N>, N extends JNode> implements Editor<V,E,N> {
-
-		public E setScope(V node) {
-			throw Assert.notYetImplemented(); // todo implement this
-		}
-
-		public E setName(String name) {
-			throw Assert.notYetImplemented(); // todo implement this
-		}
-
-		public E setType(JClass type) {
-			throw Assert.notYetImplemented(); // todo implement this
-		}
-
-		public V editable() {
-			throw Assert.notYetImplemented(); // todo implement this
-		}
-	}
 }

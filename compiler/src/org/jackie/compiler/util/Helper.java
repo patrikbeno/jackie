@@ -63,7 +63,7 @@ public class Helper {
 	}
 
 	static public void assertEditable() {
-		context().checkEditable();
+		context().assertEditable();
 	}
 
 	static public JClassImpl impl(JClass jclass) {

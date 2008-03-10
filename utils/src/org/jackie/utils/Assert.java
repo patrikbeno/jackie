@@ -36,7 +36,8 @@ public class Assert {
 	}
 
 	static public AssertionError notYetImplemented() {
-		return new AssertionError("Not Yet Implemented!");
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		return new AssertionError(String.format("Not Yet Implemented! %s", ste));
 	}
 
 	static public UnsupportedOperationException unsupported() {
@@ -69,7 +70,7 @@ public class Assert {
 	}
 
 	static public void logNotYetImplemented() {
-		StackTraceElement ste = Thread.currentThread().getStackTrace()[1];
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
 		Log.warn("Not Yet Implemented: at %s", ste);
 	}
 

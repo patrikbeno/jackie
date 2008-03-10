@@ -1,4 +1,4 @@
-package org.jackie.compiler.common;
+package org.jackie.compiler;
 
 import org.jackie.compiler.bytecode.JClassReader;
 import org.jackie.compiler.filemanager.ClassPathFileManager;
@@ -9,7 +9,7 @@ import org.jackie.compiler.typeregistry.PrimitiveTypeRegistry;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.util.Context;
 import org.jackie.compiler.util.PathName;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
+import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.utils.Assert;
 
@@ -28,13 +28,15 @@ public abstract class TestCase {
 	protected TypeRegistry typeregistry;
 
 	{
+		Context.createContext();
+
 		filemanager = new ClassPathFileManager();
 		typeregistry = new MultiRegistry(
 				new PrimitiveTypeRegistry(),
 				new JClassRegistry(extractClassNames(filemanager.getPathNames()))
 		);
 
-		Context.createContext(typeregistry);		
+		context().typeRegistry(typeregistry);
 	}
 
 	protected void readClass(Class cls) {

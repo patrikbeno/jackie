@@ -1,16 +1,13 @@
 package org.jackie.compiler.bytecode;
 
-import org.jackie.compiler.common.TestCase;
-import org.jackie.compiler.jmodelimpl.JClassImpl;
-import static org.jackie.compiler.util.Context.context;
-import org.jackie.jmodel.JClass;
+import org.jackie.compiler.TestCase;
 
 import org.testng.annotations.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
+//@Test
 public class ClassWriterTest extends TestCase {
 
 

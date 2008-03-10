@@ -1,6 +1,7 @@
 package org.jackie.compiler.jmodelimpl;
 
 import static org.jackie.compiler.util.Helper.assertEditable;
+import org.jackie.compiler.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JPackage;
@@ -78,11 +79,10 @@ public class JClassImpl implements JClass {
 		return flags;
 	}
 
-	public Annotations annotations() {
-		return annotations;
-	}
-
 	public Attributes attributes() {
+		if (attributes == null) {
+			attributes = new AttributesImpl();
+		}
 		return attributes;
 	}
 
@@ -114,6 +114,7 @@ public class JClassImpl implements JClass {
 	public Editor edit() {
 		assertEditable();
 		return new Editor() {
+			final JClassImpl cthis = JClassImpl.this;
 			public Editor setName(String name) {
 				JClassImpl.this.name = name;
 				return this;
@@ -150,7 +151,10 @@ public class JClassImpl implements JClass {
 			}
 
 			public Editor setFlags(Flag ... flags) {
-				JClassImpl.this.flags.reset().setAll(flags);
+				if (cthis.flags == null) {
+					cthis.flags = new FlagsImpl();
+				}
+				cthis.flags.reset().setAll(flags);
 				return this;
 			}
 

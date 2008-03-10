@@ -215,4 +215,8 @@ public class ClassName {
 		}
 		return c;
 	}
+
+	public String toString() {
+		return getFQName();
+	}
 }
