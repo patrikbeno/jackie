@@ -7,14 +7,20 @@ import org.jackie.jmodel.props.Flag;
 /**
  * @author Patrik Beno
  */
-public interface JParameter extends _JParameter<JParameter,JParameter.Editor,JMethod> {
+public interface JParameter extends JVariable<JMethod> {
 
-	public interface Editor extends JVariable.Editor<JParameter,Editor,JMethod> {
+	Editor edit();
+
+	public interface Editor extends JVariable.Editor<JParameter,JMethod> {
+
+		Editor setScope(JMethod node);
+
+		Editor setName(String name);
+
+		Editor setType(JClass type);
+
+		JParameter editable();
 	}
 
 }
 
-interface _JParameter<V extends JVariable<V,E,N>, E extends JVariable.Editor<V,E,N>, N extends JMethod>
-		extends JVariable<V,E,N>
-{
-}

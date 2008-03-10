@@ -11,13 +11,14 @@ import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.props.Flag;
 import org.jackie.jmodel.props.Named;
 import org.jackie.jmodel.props.Typed;
+import org.jackie.jmodel.props.Flagged;
 
 import java.util.List;
 
 /**
  * @author Patrik Beno
  */
-public interface JMethod extends JNode, Named, Typed, Attributed, Extensible, Editable<JMethod.Editor> {
+public interface JMethod extends JNode, Named, Typed, Flagged, Attributed, Extensible, Editable<JMethod.Editor> {
 
 	JClass getJClass();
 

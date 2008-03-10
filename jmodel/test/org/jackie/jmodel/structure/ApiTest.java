@@ -15,6 +15,8 @@ public class ApiTest {
 
 	JParameter jparam;
 	JField jfield;
+	JMethod jmethod;
+	JClass jclass;
 
 
 	void jfield() {
@@ -36,7 +38,7 @@ public class ApiTest {
 				.editable()
 				.edit()
 				.setName("bar")
-				.setScope(jfield)
+				.setScope(jclass)
 				.setAccessMode(AccessMode.PACKAGE)
 				.editable()
 				.edit()

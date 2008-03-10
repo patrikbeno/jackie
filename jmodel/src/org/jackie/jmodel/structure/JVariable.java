@@ -12,19 +12,17 @@ import org.jackie.jmodel.props.Typed;
 /**
  * @author Patrik Beno
  */
-public interface JVariable<V extends JVariable<V,E,N>, E extends JVariable.Editor<V,E,N>, N extends JNode>
-		extends JNode, Named, Typed, Flagged, Attributed, Extensible, Editable<E> {
+public interface JVariable<N extends JNode> extends JNode, Named, Typed, Flagged, Attributed, Extensible, Editable<JVariable.Editor> {
 
 	N scope();
 
-	public interface Editor<V extends JVariable<V,E,N>, E extends Editor<V,E,N>, N extends JNode>
-			extends org.jackie.jmodel.Editor<V> {
+	public interface Editor<T extends JVariable<N>, N extends JNode> extends org.jackie.jmodel.Editor<JVariable> {
 
-		E setScope(V node);
+		Editor setScope(N node);
 
-		E setName(String name);
+		Editor setName(String name);
 
-		E setType(JClass type);
+		Editor setType(JClass type);
 
 	}
 

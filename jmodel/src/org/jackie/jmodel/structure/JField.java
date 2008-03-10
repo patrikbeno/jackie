@@ -8,28 +8,23 @@ import org.jackie.jmodel.props.Flag;
 /**
  * @author Patrik Beno
  */
-public interface JField extends _JField<JField,JField.Editor,JClass> {
+public interface JField extends JVariable<JClass>, Accessible {
 
-	public interface Editor extends _JField.Editor<JField,Editor,JClass> {
+	Editor edit();
+
+	public interface Editor extends JVariable.Editor<JField, JClass> {
+
+		Editor setScope(JClass node);
+
+		Editor setName(String name);
+
+		Editor setType(JClass type);
+
+		Editor setAccessMode(AccessMode accessMode);
+
+		Editor setFlags(Flag... flags);
+
+		JField editable();
 	}
 
 }
-
-interface _JField<V extends JVariable<V,E,N>, E extends _JField.Editor<V,E,N>, N extends JClass>
-		extends JVariable<V,E,N>, Accessible
-{
-	interface Editor<V extends JVariable<V,E,N>, E extends Editor<V,E,N>, N extends JClass>
-			extends JVariable.Editor<V,E,N>
-	{
-
-		E setAccessMode(AccessMode accessMode);
-
-		E setFlags(Flag... flags);
-
-	}
-}
-
-
-
-
-
