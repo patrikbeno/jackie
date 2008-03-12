@@ -1,6 +1,9 @@
 package org.jackie.jmodel.extension.annotation;
 
 import org.jackie.jmodel.JNode;
+import org.jackie.jmodel.Editor;
+import org.jackie.jmodel.Editable;
+import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.props.Named;
 import org.jackie.jmodel.props.Typed;
 import org.jackie.jmodel.extension.annotation.AnnotationType;
@@ -13,7 +16,7 @@ import org.jackie.jmodel.extension.annotation.AnnotationType;
  *
  * @author Patrik Beno
  */
-public interface JAnnotationAttribute extends JNode, Named, Typed, Annotated {
+public interface JAnnotationAttribute extends JNode, Named, Typed, Annotated, Editable<JAnnotationAttribute.Editor> {
 
 	AnnotationType getJAnnotationType(); // owner
 
@@ -21,5 +24,15 @@ public interface JAnnotationAttribute extends JNode, Named, Typed, Annotated {
 	 * @return
 	 */
 	JAnnotationAttributeValue getDefaultValue();
+
+	public interface Editor extends org.jackie.jmodel.Editor<JAnnotationAttribute> {
+
+		Editor setName(String name);
+
+		Editor setType(JClass jclass);
+
+		Editor setDefaultValue(JAnnotationAttributeValue dflt);
+
+	}
 
 }

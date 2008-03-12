@@ -5,6 +5,8 @@ package org.jackie.jmodel;
  */
 public interface Editable<T extends Editor> {
 
+	boolean isEditable();
+
 	T edit();
 
 }

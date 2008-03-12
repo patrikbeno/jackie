@@ -9,10 +9,6 @@ import org.jackie.jmodel.JClass;
  */
 public class ApiTest {
 
-//	interface XField extends JField<XField,XField.XEditor,JClass> {
-//		interface XEditor extends JField.Editor<XField,XEditor,JClass> {}
-//	}
-
 	JParameter jparam;
 	JField jfield;
 	JMethod jmethod;

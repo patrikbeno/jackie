@@ -10,6 +10,8 @@ import org.jackie.jmodel.props.Flag;
  */
 public interface JField extends JVariable<JClass>, Accessible {
 
+	JClass getJClass();
+
 	Editor edit();
 
 	public interface Editor extends JVariable.Editor<JField, JClass> {
