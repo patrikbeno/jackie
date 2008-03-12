@@ -2,9 +2,15 @@ package org.jackie.compiler.util;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.Assert.doAssert;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jmodel.JClass;
+import org.jackie.jmodel.JNode;
+import org.jackie.jmodel.extension.base.ClassType;
+import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.jmodel.extension.Extensible;
 
 import java.lang.reflect.Array;
 import java.util.Collection;
@@ -62,11 +68,22 @@ public class Helper {
 		return (array != null) ?  Array.getLength(array) : 0;
 	}
 
-	static public void assertEditable() {
-		context().assertEditable();
+	static public void assertEditable(JClass jclass) {
+		TypeRegistry registry = typecast(jclass, JClassImpl.class).getTypeRegistry();
+		doAssert(registry.isEditable(),
+					"Not editable: %s (type registry: %s)", jclass.getFQName(), registry);
 	}
 
 	static public JClassImpl impl(JClass jclass) {
 		return typecast(jclass, JClassImpl.class);
 	}
+
+	static public ClassType asClassType(JClass jclass) {
+		return jclass.extensions().get(ClassType.class);
+	}
+
+	static public Annotations asAnnotations(Extensible extensible) {
+		return extensible.extensions().get(Annotations.class);
+	}
+
 }

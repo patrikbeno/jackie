@@ -1,9 +1,9 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import static org.jackie.compiler.util.Helper.assertEditable;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.extension.base.ClassNestingLevel;
 import org.jackie.jmodel.extension.base.ClassType;
+import org.jackie.jmodel.extension.annotation.Annotations;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.utils.Assert;
 
@@ -41,6 +41,14 @@ public class ClassTypeImpl extends AbstractExtension<JClass> implements ClassTyp
 
 	public List<JMethod> getMethods() {
 		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	public Annotations annotations() {
+		return node().extensions().get(Annotations.class);
+	}
+
+	public boolean isEditable() {
+		return node().isEditable();
 	}
 
 	public Editor edit() {

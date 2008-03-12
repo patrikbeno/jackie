@@ -84,7 +84,7 @@ public class ClassName {
 		int arraypart = fqname.endsWith(ARRAY_DIM_FLAG) ? fqname.indexOf(ARRAY_DIM_FLAG) : fqname.length();
 		int arraydims = (fqname.length() - arraypart) / 2;
 
-		name = fqname.substring(i+1, arraypart);
+		name = fqname.substring(i+1);
 		dimensions = arraydims;
 
 		return name;
@@ -97,8 +97,8 @@ public class ClassName {
 
 		getName(); // force parsing
 
-		int i = name.lastIndexOf(CLASS_SEP);
-		String candidate = (i != -1) ? name.substring(i+1) : name;
+		int i = getName().lastIndexOf(CLASS_SEP);
+		String candidate = (i != -1) ? getName().substring(i+1) : name;
 
 		simplename = getLocalName(candidate);
 		return simplename;

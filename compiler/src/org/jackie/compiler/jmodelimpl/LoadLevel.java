@@ -8,6 +8,11 @@ import org.jackie.utils.Assert;
 public enum LoadLevel {
 
 	/**
+	 * nothing, dummy instance
+	 */
+	NONE,
+
+	/**
 	 * placeholder, stub only (effectivlely nothing)
 	 */
 	NAME,
@@ -23,9 +28,9 @@ public enum LoadLevel {
 	API,
 
 	/**
-	 * class/field/method annotations
+	 * class/field/method attributes (e.g. annotations, etc)
 	 */
-	ANNOTATIONS,
+	ATTRIBUTES,
 
 	/**
 	 * method bodies

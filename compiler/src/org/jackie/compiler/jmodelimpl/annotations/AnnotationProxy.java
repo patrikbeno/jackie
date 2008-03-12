@@ -111,6 +111,7 @@ public class AnnotationProxy implements InvocationHandler {
 		JAnnotationAttributeValue attr = annotation.getAttribute(name);
 		if (attr == null) {
 			attr = attrdef.getDefaultValue();
+			assert attr != null;
 		}
 		return convert(attr.getValue(), type);
 	}

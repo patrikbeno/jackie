@@ -10,10 +10,19 @@ import org.testng.annotations.Test;
 @Test
 public class ClassNameTest {
 
-	public void arrays() {
+	public void primitiveArray() {
 		ClassName clsname = new ClassName(int[].class);
+		Assert.expected("int[]", clsname.getName(), "getName()");
 		Assert.expected("int[]", clsname.getFQName(), "getFQName()");
 		Assert.expected("int", clsname.getComponentType().getFQName(), "getComponentType().getFQName()");
+		Assert.expected(1, clsname.getDimensions(), "getDimensions()");
+	}
+
+	public void objectArray() {
+		ClassName clsname = new ClassName(String[].class);
+		Assert.expected("String[]", clsname.getName(), "getName()");
+		Assert.expected("java.lang.String[]", clsname.getFQName(), "getFQName()");
+		Assert.expected("java.lang.String", clsname.getComponentType().getFQName(), "getComponentType().getFQName()");
 		Assert.expected(1, clsname.getDimensions(), "getDimensions()");
 	}
 

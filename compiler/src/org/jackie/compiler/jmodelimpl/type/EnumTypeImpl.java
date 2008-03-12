@@ -33,6 +33,10 @@ public class EnumTypeImpl extends AbstractExtension<JClass> implements EnumType 
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
+	public boolean isEditable() {
+		return node().isEditable();
+	}
+
 	public Editor edit() {
 		return new Editor() {
 			public EnumType editable() {

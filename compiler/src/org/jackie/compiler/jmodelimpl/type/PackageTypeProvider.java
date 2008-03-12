@@ -14,7 +14,7 @@ public class PackageTypeProvider implements ExtensionProvider<JClass> {
 		return PackageType.class;
 	}
 
-	public Extension getExtension(JClass jclass) {
+	public Extension<JClass> getExtension(JClass jclass) {
 		// @failfast
 		if (!jclass.getName().equals("package-info")) {
 			return null;

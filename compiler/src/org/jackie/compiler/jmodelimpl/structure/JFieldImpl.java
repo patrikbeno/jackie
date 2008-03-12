@@ -19,6 +19,14 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 		return accessMode;
 	}
 
+	public JClass getJClass() {
+		return scope(); 
+	}
+
+	public boolean isEditable() {
+		return getJClass().isEditable();
+	}
+
 	public JField.Editor edit() {
 		return new Editor();
 	}

@@ -4,17 +4,15 @@ import static org.jackie.compiler.util.Helper.iterable;
 import static org.jackie.compiler.util.Helper.assertEditable;
 import org.jackie.jmodel.props.Flag;
 import org.jackie.jmodel.props.Flags;
-import org.jackie.utils.Assert;
 import org.jackie.utils.FlagSupport;
+import org.jackie.utils.Assert;
 
-import java.lang.annotation.Annotation;
-import java.util.BitSet;
 import java.util.Set;
 
 /**
  * @author Patrik Beno
  */
-public class FlagsImpl extends FlagSupport<Flag> implements Flags{
+public class FlagsImpl extends FlagSupport<Flag> implements Flags {
 
 	protected Class<Flag> type() {
 		return Flag.class;
@@ -24,8 +22,12 @@ public class FlagsImpl extends FlagSupport<Flag> implements Flags{
 		return all();
 	}
 
+	public boolean isEditable() {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
 	public Editor edit() {
-		assertEditable();
+//		assertEditable(this);
 		return new Editor() {
 
 			final FlagsImpl flags = FlagsImpl.this;

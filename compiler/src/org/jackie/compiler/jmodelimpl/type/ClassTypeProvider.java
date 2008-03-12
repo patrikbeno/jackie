@@ -31,7 +31,7 @@ public class ClassTypeProvider implements ExtensionProvider<JClass> {
 		return ClassType.class;
 	}
 
-	public Extension getExtension(JClass jclass) {
+	public Extension<JClass> getExtension(JClass jclass) {
 
 		if (IGNORED_CLASS_NAMES.contains(jclass.getName())) {
 			return null;

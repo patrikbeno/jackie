@@ -7,6 +7,7 @@ import org.jackie.compiler.typeregistry.JClassRegistry;
 import org.jackie.compiler.typeregistry.MultiRegistry;
 import org.jackie.compiler.typeregistry.PrimitiveTypeRegistry;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.typeregistry.EditAction;
 import org.jackie.compiler.util.Context;
 import org.jackie.compiler.util.PathName;
 import static org.jackie.compiler.util.Context.context;
@@ -33,21 +34,10 @@ public abstract class TestCase {
 		filemanager = new ClassPathFileManager();
 		typeregistry = new MultiRegistry(
 				new PrimitiveTypeRegistry(),
-				new JClassRegistry(extractClassNames(filemanager.getPathNames()))
+				new JClassRegistry(filemanager, extractClassNames(filemanager.getPathNames()))
 		);
 
 		context().typeRegistry(typeregistry);
-	}
-
-	protected void readClass(Class cls) {
-		try {
-			ClassReader cr = new ClassReader(
-					cls.getResourceAsStream(cls.getSimpleName() + ".class"));
-			JClassReader r = new JClassReader(LoadLevel.CODE);
-			cr.accept(r, ClassReader.SKIP_CODE);
-		} catch (IOException e) {
-			throw Assert.notYetHandled(e);
-		}
 	}
 
 	protected Set<String> extractClassNames(Set<String> pathnames) {

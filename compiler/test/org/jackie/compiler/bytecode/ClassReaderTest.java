@@ -14,7 +14,6 @@ import org.testng.annotations.Test;
 public class ClassReaderTest extends TestCase {
 
 	public void readSample() throws Exception {
-		readClass(Sample.class);
 		JClass jclass = context().typeRegistry().getJClass(Sample.class);
 		Assert.expected(Sample.class.getSimpleName(), jclass.getName(), "invalid simple class name");
 		Assert.expected(Sample.class.getName(), jclass.getFQName(), "invalid class fqname");

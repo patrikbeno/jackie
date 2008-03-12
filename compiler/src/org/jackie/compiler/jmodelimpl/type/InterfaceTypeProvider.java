@@ -15,7 +15,7 @@ public class InterfaceTypeProvider implements ExtensionProvider<JClass> {
 		return InterfaceType.class;
 	}
 
-	public Extension getExtension(JClass jclass) {
+	public Extension<JClass> getExtension(JClass jclass) {
 		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
 		assert kind != null;
 

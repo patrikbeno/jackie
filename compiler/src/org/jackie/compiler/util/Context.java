@@ -1,10 +1,8 @@
 package org.jackie.compiler.util;
 
-import org.jackie.compiler.jmodelimpl.type.SpecialTypes;
+import org.jackie.compiler.jmodelimpl.type.ExtensionManager;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.utils.Assert;
 import org.jackie.utils.JackieException;
-import static org.jackie.utils.Assert.doAssert;
 
 /**
  * @author Patrik Beno
@@ -23,11 +21,11 @@ public class Context {
 	}
 
 	TypeRegistry typeRegistry;
-	SpecialTypes specialTypes;
+	ExtensionManager extensionManager;
 	boolean editable;
 
 	{
-		specialTypes = new SpecialTypes(); // fixme hardcoded instance
+		extensionManager = new ExtensionManager(); // fixme hardcoded instance
 		editable = true;
 	}
 
@@ -44,13 +42,8 @@ public class Context {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
-	public SpecialTypes specialtypes() {
-		return specialTypes;
+	public ExtensionManager extensionSupport() {
+		return extensionManager;
 	}
 
-	public void assertEditable() {
-		if (!editable) {
-			throw new JackieException("Model not editable!");
-		}
-	}
 }

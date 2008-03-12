@@ -1,6 +1,7 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.jmodel.JClass;
 
 /**
@@ -10,6 +11,12 @@ public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 
 	protected TypeRegistry workspace;
 	protected TypeRegistry dependencies;
+
+	public CompilerWorkspaceRegistry(TypeRegistry workspace, TypeRegistry dependencies) {
+		super(null);
+		this.workspace = workspace;
+		this.dependencies = dependencies;
+	}
 
 	public boolean hasJClass(ClassName clsname) {
 		return dependencies.hasJClass(clsname) || workspace.hasJClass(clsname);

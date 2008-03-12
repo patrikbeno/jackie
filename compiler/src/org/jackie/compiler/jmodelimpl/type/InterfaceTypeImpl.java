@@ -25,6 +25,10 @@ public class InterfaceTypeImpl extends AbstractExtension<JClass> implements Inte
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
+	public boolean isEditable() {
+		return node().isEditable();
+	}
+
 	public Editor edit() {
 		throw Assert.notYetImplemented(); // todo implement this
 	}

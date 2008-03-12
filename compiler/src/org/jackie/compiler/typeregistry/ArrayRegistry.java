@@ -1,11 +1,14 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.compiler.jmodelimpl.attribute.impl.Kind;
 import org.jackie.compiler.jmodelimpl.attribute.impl.KindAttribute;
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.util.Helper;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.JClass;
+import org.jackie.utils.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -71,29 +74,33 @@ public class ArrayRegistry {
 		return getArray(componentType, dimensions);
 	}
 
-	public JClassImpl getArray(String clsname, int dimensions) {
+	public JClassImpl getArray(final String clsname, final int dimensions) {
+		return EditAction.run(master, new EditAction<JClassImpl>() {
+			protected JClassImpl run() {
+				Descriptor desc = new Descriptor(clsname, dimensions);
 
-		Descriptor desc = new Descriptor(clsname, dimensions);
+				JClassImpl jclass = arrays.get(desc);
+				if (jclass != null) {
+					return jclass;
+				}
 
-		JClassImpl jclass = arrays.get(desc);
-		if (jclass != null) {
-			return jclass;
-		}
+				ClassName classname = new ClassName(clsname, dimensions);
+				JClass component = master.getJClass(classname.getComponentType());
 
-		ClassName classname = new ClassName(clsname, dimensions);
-		JClass component = master.getJClass(classname.getComponentType());
+				// create array on demand
+				jclass = new JClassImpl(classname.getName(), component.getJPackage(), master);
+				jclass.loadLevel = LoadLevel.CODE; // array - no bytecode (consider fully loaded) 
 
-		// create array on demand
-		jclass = new JClassImpl();
-		jclass.edit()
-				.setName(classname.getName())
-				.setPackage(component.getJPackage())
-				.setSuperClass(context().typeRegistry().getJClass(Object.class));
-		jclass.attributes().edit()
-				.addAttribute(KindAttribute.class, new KindAttribute(Kind.ARRAY));
+				jclass.edit()
+					.setSuperClass(context().typeRegistry().getJClass(Object.class));
+				jclass.attributes().edit()
+					.addAttribute(KindAttribute.class, new KindAttribute(Kind.ARRAY));
 
-		arrays.put(desc, jclass);
-		return jclass;
+				arrays.put(desc, jclass);
+
+				return jclass;
+			}
+		});
 	}
 
 

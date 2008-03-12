@@ -5,6 +5,7 @@ import org.jackie.jmodel.JPackage;
 import org.jackie.jmodel.JClass;
 import org.jackie.utils.Stack;
 import org.jackie.utils.Assert;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,8 @@ import java.util.Collections;
  * @author Patrik Beno
  */
 public class JPackageImpl implements JPackage {
+
+	protected TypeRegistry typeRegistry;
 
 	public JPackage parent;
 
@@ -58,6 +61,10 @@ public class JPackageImpl implements JPackage {
 
 	public Set<JClass> getClasses() {
 		return Collections.unmodifiableSet(classes);
+	}
+
+	public boolean isEditable() {
+		return typeRegistry.isEditable();
 	}
 
 	public Editor edit() {

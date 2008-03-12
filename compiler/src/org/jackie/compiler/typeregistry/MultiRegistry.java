@@ -1,7 +1,9 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.jmodel.JClass;
+import org.jackie.utils.Assert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class MultiRegistry extends AbstractTypeRegistry {
+public class MultiRegistry implements TypeRegistry {
 
 	protected List<TypeRegistry> dependencies;
 
@@ -19,6 +21,14 @@ public class MultiRegistry extends AbstractTypeRegistry {
 
 	public MultiRegistry(List<TypeRegistry> dependencies) {
 		this.dependencies = dependencies;
+	}
+
+	public boolean isEditable() {
+		return false;
+	}
+
+	public void setEditable(boolean editable) {
+		throw Assert.unsupported();
 	}
 
 	public boolean hasJClass(ClassName clsname) {
@@ -39,4 +49,13 @@ public class MultiRegistry extends AbstractTypeRegistry {
 		}
 		return null;
 	}
+
+	public JClass getJClass(Class cls) {
+		return getJClass(new ClassName(cls));
+	}
+
+	public void loadJClass(JClass jclass, LoadLevel level) {
+		throw Assert.unsupported(); 
+	}
+
 }

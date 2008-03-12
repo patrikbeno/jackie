@@ -15,7 +15,7 @@ public class EnumTypeProvider implements ExtensionProvider<JClass> {
 		return EnumType.class;
 	}
 
-	public EnumType getExtension(JClass jclass) {
+	public Extension<JClass> getExtension(JClass jclass) {
 		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
 		assert kind != null;
 

@@ -4,8 +4,16 @@ import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.util.EnumProxy;
 import static org.jackie.compiler.util.Helper.assertEditable;
+import static org.jackie.compiler.util.Helper.iterable;
+import org.jackie.compiler.jmodelimpl.attribute.impl.RuntimeVisibleAnnotationsAttribute;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JNode;
+import org.jackie.jmodel.Editable;
+import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jmodel.structure.JField;
+import org.jackie.jmodel.structure.JParameter;
+import org.jackie.jmodel.attribute.Attributed;
+import org.jackie.jmodel.attribute.Attributes;
 import org.jackie.jmodel.extension.annotation.AnnotationType;
 import org.jackie.jmodel.extension.annotation.JAnnotation;
 import org.jackie.jmodel.extension.builtin.ArrayType;
@@ -36,17 +44,21 @@ public class AnnotationsImpl implements Annotations {
 
 	List<JAnnotation> annotations;
 
-	List<AnnotationNode> asmnodes;
+	public AnnotationsImpl(JNode node) {
+		this.node = node;
+	}
 
 	public JNode node() {
 		return node;
 	}
 
 	public List<JAnnotation> getJAnnotations() {
+		buildJAnnotations();
 		return Collections.unmodifiableList(annotations);
 	}
 
 	public List<? extends Annotation> getAnnotations() {
+		buildJAnnotations();
 		List<Annotation> proxies = new ArrayList<Annotation>();
 		for (JAnnotation anno : annotations) {
 			AnnotationImpl impl = typecast(anno, AnnotationImpl.class);
@@ -57,6 +69,8 @@ public class AnnotationsImpl implements Annotations {
 
 	public <T extends Annotation> T getAnnotation(Class<T> type) {
 		assert type != null;
+		buildJAnnotations();
+
 		for (JAnnotation anno : annotations) {
 			if (type.getName().equals(anno.getJAnnotationType().node().getFQName())) {
 				AnnotationImpl impl = typecast(anno, AnnotationImpl.class);
@@ -70,8 +84,12 @@ public class AnnotationsImpl implements Annotations {
 	/// Editable ///
 
 
+	public boolean isEditable() {
+		return node() instanceof Editable && ((Editable) node()).isEditable();
+	}
+
 	public Editor edit() {
-		assertEditable();
+		assertEditable(findJClass());
 		return new Editor() {
 			public Editor addAnnotation(JAnnotation annotation) {
 				annotations.add(annotation);
@@ -87,96 +105,41 @@ public class AnnotationsImpl implements Annotations {
 
 	//////////////////
 
-
-
-
-	public void addAsmNode(AnnotationNode anode) {
-		if (asmnodes == null) {
-			asmnodes = new ArrayList<AnnotationNode>();
-		}
-		asmnodes.add(anode);
-	}
-
-	void buildfromAsmNodes() {
-		annotations = new ArrayList<JAnnotation>();
-		for (AnnotationNode an : asmnodes) {
-			JAnnotation a = toAnnotation(an);
-			annotations.add(a);
-		}
-	}
-
-	public JAnnotation toAnnotation(AnnotationNode an) {
-		ClassName clsname = new ClassName(getType(an.desc));
-		JClass jclass = context().typeRegistry().getJClass(clsname);
-		JAnnotation anno = new AnnotationImpl(
-				jclass.extensions().get(AnnotationType.class), this);
-
-		List asmvalues = (an.values != null) ? an.values : Collections.emptyList();
-		Iterator it = asmvalues.iterator();
-		while (it.hasNext()) {
-			String name = (String) it.next();
-			assert it.hasNext();
-			Object object = it.next();
-
-			JAnnotationAttributeValue value = createAttributeValue(anno, name, object);
-			anno.edit().addAttributeValue(value);
-		}
-
-		return anno;
-	}
-
-	JAnnotationAttributeValue createAttributeValue(JAnnotation anno, String name, Object object) {
-		JAnnotationAttribute attrdef = anno.getJAnnotationType().getAttribute(name);
-		assert attrdef != null;
-
-		Object converted = convert(attrdef.getType(), object);
-		JAnnotationAttributeValue value = new AnnotationAttributeValueImpl(anno, attrdef, converted);
-
-		return value;
-	}
-
-	Object convert(JClass jclass, Object object) {
-
-		if (JModelUtils.isPrimitive(jclass)) {
-			assert JPrimitive.isObjectWrapper(object.getClass());
-			return object;
-
-		} else if (jclass.equals(context().typeRegistry().getJClass(String.class))) {
-			assert object instanceof String;
-			return object;
-
-		} else if (jclass.equals(context().typeRegistry().getJClass(Class.class))) {
-			assert object instanceof Type;
-			return context().typeRegistry().getJClass(new ClassName((Type) object));
-
-		} else if (JModelUtils.isAnnotation(jclass)) {
-			assert object instanceof AnnotationNode;
-			return toAnnotation((AnnotationNode) object);
-
-		} else if (JModelUtils.isEnum(jclass)) {
-			assert object instanceof String[] && Array.getLength(object)==2;
-			String[] names = (String[]) object;
-			ClassName clsname = new ClassName(Type.getObjectType(names[0]));
-			return new EnumProxy(clsname.getFQName(), names[1]);
-
-		} else if (JModelUtils.isArray(jclass)) {
-			assert object instanceof List;
-			ArrayType array = JModelUtils.asArray(jclass);
-			return convertArray(array.getComponentType(), (List) object);
-
+	protected JClass findJClass() {
+		// todo find something better (less if/else, more robustness)
+		if (node() instanceof JClass) {
+			return (JClass) node();
+		} else if (node() instanceof JMethod) {
+			return ((JMethod) node()).getJClass();
+		} else if (node() instanceof JField) {
+			return ((JField) node()).getType();
+		} else if (node() instanceof JParameter) {
+			return ((JParameter) node()).scope().getJClass();
 		} else {
-			throw Assert.invariantFailed("Annotation attribute type not handled: %s", jclass);
+			throw Assert.invariantFailed("cannot find owning JClass for %s", this);
 		}
 	}
 
-	List convertArray(JClass jclass, List list) {
-		List converted = new ArrayList(list.size());
-		for (Object object : list) {
-			//noinspection unchecked
-			converted.add(convert(jclass, object));
+	protected void buildJAnnotations() {
+		if (annotations != null) {
+			return;
 		}
-		return converted;
+
+		Attributes attrs = typecast(node, Attributed.class).attributes();
+		RuntimeVisibleAnnotationsAttribute rtannos = attrs
+				.getAttribute(RuntimeVisibleAnnotationsAttribute.class);
+
+		List<JAnnotation> annotations = new ArrayList<JAnnotation>();
+
+		for (AnnotationNode anode : rtannos.getAnnotationNodes()) {
+			JAnnotation anno = new AnnotationImpl(anode, this);
+			annotations.add(anno);
+		}
+
+		this.annotations = annotations;
 	}
+
+
 }
 
 

@@ -2,6 +2,8 @@ package org.jackie.compiler.jmodelimpl.structure;
 
 import static org.jackie.compiler.util.Helper.assertEditable;
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
+import org.jackie.compiler.jmodelimpl.ExtensionsImpl;
+import org.jackie.compiler.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.attribute.Attributes;
 import org.jackie.jmodel.code.CodeBlock;
@@ -12,7 +14,6 @@ import org.jackie.jmodel.props.Flags;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.jmodel.structure.JParameter;
 import org.jackie.jmodel.structure.JVariable;
-import org.jackie.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +40,10 @@ public class JMethodImpl implements JMethod {
     
 	protected CodeBlock code;
 
+	public JMethodImpl(JClass jclass) {
+		this.jclass = jclass;
+	}
+
 
 	public String getName() {
 		return name;
@@ -49,10 +54,16 @@ public class JMethodImpl implements JMethod {
 	}
 
 	public Attributes attributes() {
+		if (attributes == null) {
+			attributes = new AttributesImpl();
+		}
 		return attributes;
 	}
 
 	public Extensions extensions() {
+		if (extensions == null) {
+			extensions = new ExtensionsImpl(this);
+		}
 		return extensions;
 	}
 
@@ -85,8 +96,12 @@ public class JMethodImpl implements JMethod {
 		return flags;
 	}
 
+	public boolean isEditable() {
+		return getJClass().isEditable();
+	}
+
 	public Editor edit() {
-		assertEditable();
+		assertEditable(getJClass());
 		return new Editor() {
 
 			final JMethodImpl mthis = JMethodImpl.this;

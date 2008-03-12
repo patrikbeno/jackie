@@ -1,6 +1,7 @@
 package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
+import org.jackie.compiler.jmodelimpl.attribute.impl.Kind;
 import org.jackie.compiler.util.ClassName;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.props.Flag;
@@ -108,6 +109,18 @@ public class AsmSupport {
 		access |= JModelUtils.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
 		access |= JModelUtils.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
 		return access;
+	}
+
+	protected Kind toKind(int access) {
+		if (isSet(access, Opcodes.ACC_ENUM)) {
+			return Kind.ENUM;
+		} else if (isSet(access, Opcodes.ACC_ANNOTATION)) {
+			return Kind.ANNOTATION;
+		} else if (isSet(access, Opcodes.ACC_INTERFACE)) {
+			return Kind.INTERFACE;
+		} else {
+			return Kind.CLASS;
+		}
 	}
 
 }

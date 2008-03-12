@@ -11,6 +11,10 @@ import org.jackie.utils.Assert;
  */
 public class JParameterImpl extends JVariableImpl<JMethod> implements JParameter {
 
+	public boolean isEditable() {
+		return scope().isEditable();
+	}
+
 	public Editor edit() {
 		return new Editor();
 	}

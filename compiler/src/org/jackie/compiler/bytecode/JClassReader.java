@@ -9,6 +9,7 @@ import static org.jackie.compiler.util.Helper.impl;
 import org.jackie.compiler.jmodelimpl.attribute.impl.EnclosingMethodAttribute;
 import org.jackie.compiler.jmodelimpl.attribute.impl.InnerClassesAttribute;
 import org.jackie.compiler.jmodelimpl.attribute.impl.RuntimeVisibleAnnotationsAttribute;
+import org.jackie.compiler.jmodelimpl.attribute.impl.KindAttribute;
 import org.jackie.utils.Assert;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.attribute.Attributes;
@@ -38,6 +39,9 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		ClassName clsname = getClassName(name);
 		jclass = getJClass(clsname);
 
+		jclass.attributes().edit()
+				.addAttribute(KindAttribute.class, new KindAttribute(toKind(access)));
+
 		// all classes except java.lang.Object have superclass defined
 		assert superName != null || jclass.getFQName().equals(Object.class.getName());
 
@@ -54,11 +58,11 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 	}
 
 	public void visitSource(String source, String debug) {
-		if (atLeast(LoadLevel.ANNOTATIONS)) {
+		if (atLeast(LoadLevel.ATTRIBUTES)) {
 			return;
 		}
 
-		Assert.logNotYetImplemented(); // todo implement SourceFile attribute
+		// todo implement SourceFile attribute
 
 //		jclass.source = source;
 //		jclass.debug = debug;
@@ -75,7 +79,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 	}
 
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-		if (atLeast(LoadLevel.ANNOTATIONS)) {
+		if (atLeast(LoadLevel.ATTRIBUTES)) {
 			return null;
 		}
 		return loadAnnotation(jclass.attributes(), desc);
@@ -149,7 +153,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 	}
 
 	protected AnnotationVisitor loadAnnotation(Attributes attributes, String desc) {
-		if (impl(jclass).loadLevel.atLeast(LoadLevel.ANNOTATIONS)) {
+		if (impl(jclass).loadLevel.atLeast(LoadLevel.ATTRIBUTES)) {
 			return null;
 		}
 

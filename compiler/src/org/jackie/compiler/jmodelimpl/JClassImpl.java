@@ -1,7 +1,10 @@
 package org.jackie.compiler.jmodelimpl;
 
 import static org.jackie.compiler.util.Helper.assertEditable;
+import static org.jackie.compiler.util.Context.context;
+import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JPackage;
@@ -16,6 +19,7 @@ import org.jackie.jmodel.structure.JMethod;
 import java.util.List;
 import java.util.Collections;
 import java.util.ArrayList;
+import static java.util.Collections.emptyList;
 
 /**
  * @author Patrik Beno
@@ -24,6 +28,7 @@ public class JClassImpl implements JClass {
 
 	// infrastructure stuff
 
+	protected TypeRegistry typeRegistry;
 	public LoadLevel loadLevel;
 
 	// core model
@@ -44,9 +49,29 @@ public class JClassImpl implements JClass {
 
 	protected Extensions extensions;
 
+
 	{
-		loadLevel = LoadLevel.NAME;
+		loadLevel = LoadLevel.NONE;
 		access = AccessMode.PACKAGE;
+	}
+
+
+	public JClassImpl(String name, JPackage jpackage, TypeRegistry typeRegistry) {
+		this.name = name;
+		this.jpackage = jpackage;
+		this.typeRegistry = typeRegistry;
+	}
+
+	public TypeRegistry getTypeRegistry() {
+		return typeRegistry;
+	}
+
+	protected void checkLoaded(LoadLevel min) {
+		if (this.loadLevel.atLeast(min)) {
+			return;
+		}
+
+		typeRegistry.loadJClass(this, min);
 	}
 
 	/// JClass ///
@@ -68,18 +93,22 @@ public class JClassImpl implements JClass {
 	}
 
 	public JClass getSuperClass() {
+		checkLoaded(LoadLevel.CLASS);
 		return superclass;
 	}
 
 	public List<JClass> getInterfaces() {
+		checkLoaded(LoadLevel.CLASS);
 		return Collections.unmodifiableList(interfaces);
 	}
 
 	public Flags flags() {
+		checkLoaded(LoadLevel.CLASS);
 		return flags;
 	}
 
 	public Attributes attributes() {
+		checkLoaded(LoadLevel.ATTRIBUTES);
 		if (attributes == null) {
 			attributes = new AttributesImpl();
 		}
@@ -87,10 +116,18 @@ public class JClassImpl implements JClass {
 	}
 
 	public List<JField> getFields() {
+		checkLoaded(LoadLevel.API);
+		if (fields == null) { 
+			return emptyList();
+		}
 		return Collections.unmodifiableList(fields);
 	}
 
 	public List<? extends JMethod> getMethods() {
+		checkLoaded(LoadLevel.API);
+		if (methods == null) {
+			return emptyList();
+		}
 		return Collections.unmodifiableList(methods);
 	}
 
@@ -98,6 +135,7 @@ public class JClassImpl implements JClass {
 	/// Accessible ///
 
 	public AccessMode getAccessMode() {
+		checkLoaded(LoadLevel.CLASS);
 		return access;
 	}
 
@@ -105,14 +143,22 @@ public class JClassImpl implements JClass {
 	/// Extensions ///
 
 	public Extensions extensions() {
+		if (extensions == null) {
+			extensions = new ExtensionsImpl(this); 
+		}
 		return extensions;
 	}
 	
 
 	/// Editable ///
 
+	public boolean isEditable() {
+		return typeRegistry.isEditable();
+	}
+
 	public Editor edit() {
-		assertEditable();
+		assertEditable(this);
+		checkLoaded(LoadLevel.ATTRIBUTES);
 		return new Editor() {
 			final JClassImpl cthis = JClassImpl.this;
 			public Editor setName(String name) {
@@ -180,7 +226,11 @@ public class JClassImpl implements JClass {
 		};
 	}
 
-//	/// binary/bytecode stuff ///
+	public String toString() {
+		return getFQName();
+	}
+
+	//	/// binary/bytecode stuff ///
 //
 //
 //	protected String bcName() {

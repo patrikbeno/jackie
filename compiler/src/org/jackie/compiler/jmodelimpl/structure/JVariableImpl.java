@@ -51,7 +51,7 @@ public abstract class JVariableImpl<N extends JNode> implements JVariable<N> {
 
 	public Extensions extensions() {
 		if (extensions == null) {
-			extensions = new ExtensionsImpl();
+			extensions = new ExtensionsImpl(this);
 		}
 		return extensions;
 	}

@@ -1,21 +1,30 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.JPackageImpl;
 import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.util.PackageName;
+import org.jackie.compiler.bytecode.JClassReader;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JPackage;
+import org.jackie.utils.Assert;
+import org.objectweb.asm.ClassReader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.io.IOException;
+import java.nio.channels.Channels;
 
 /**
  * @author Patrik Beno
  */
 public abstract class AbstractTypeRegistry implements TypeRegistry {
+
+	protected boolean editable;
 
 	protected FileManager fileManager;
 
@@ -25,13 +34,27 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 
 	protected ArrayRegistry arrays;
 
+	protected JClass loading; // currently loading (avoid recursion)
+
 	{
 		packages = new HashMap<String, JPackage>();
 		classes = new HashMap<String, JClass>();
 		arrays = new ArrayRegistry(this);
 	}
 
-	public JClass getJClass(ClassName clsname) {
+	protected AbstractTypeRegistry(FileManager fileManager) {
+		this.fileManager = fileManager;
+	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	public JClass getJClass(final ClassName clsname) {
 		// check if available (for arrays, check their component type)
 		if (!hasJClass(clsname.isArray() ? clsname.getComponentType() : clsname)) {
 			return null;
@@ -47,8 +70,13 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 			return cls;
 		}
 
-		cls = createJClass(clsname);
-		classes.put(clsname.getFQName(), cls);
+		cls = EditAction.run(this, new EditAction<JClass>() {
+			protected JClass run() {
+				JClass cls = createJClass(clsname);
+				classes.put(clsname.getFQName(), cls);
+				return cls;
+			}
+		});
 
 		return cls;
 	}
@@ -57,16 +85,37 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return getJClass(new ClassName(cls));
 	}
 
-	public void loadJClass(JClass jclass, LoadLevel level) {
-//		try {
-//			ClassName clsname = new ClassName(jclass);
-//			FileObject fo = fileManager.getFileObject(clsname.getPathName());
-//			ClassReader cr = new ClassReader(Channels.newInputStream(fo.getInputChannel()));
-//			JClassReader reader = new JClassReader(jclass, level);
-//			cr.accept(reader, 0); // todo setup flags!
-//		} catch (IOException e) {
-//			throw Assert.notYetHandled(e);
-//		}
+	public void loadJClass(final JClass jclass, final LoadLevel level) {
+
+		assert jclass != null;
+		assert level != null;
+
+		if (loading != null) {
+			return;
+		}
+
+		EditAction.run(this, new EditAction<Object>() {
+			protected Object run() {
+				try {
+					loading = jclass;
+
+					ClassName clsname = new ClassName(jclass);
+					assert fileManager != null;
+					FileObject fo = fileManager.getFileObject(clsname.getPathName());
+					ClassReader cr = new ClassReader(Channels.newInputStream(fo.getInputChannel()));
+					JClassReader reader = new JClassReader(level);
+					cr.accept(reader, 0); // todo setup flags!
+
+					return null;
+
+				} catch (IOException e) {
+					throw Assert.notYetHandled(e);
+
+				} finally {
+					loading = null;
+				}
+			}
+		});
 	}
 
 	public JPackage getJPackage(ClassName clsname) {
@@ -109,12 +158,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 	}
 
 	protected JClass createJClass(ClassName clsname) {
-
-		JClass jclass = new JClassImpl();
-		jclass.edit()
-				.setName(clsname.getName())
-				.setPackage(getJPackage(clsname.getPackageName()));
-
+		JClass jclass = new JClassImpl(clsname.getName(), getJPackage(clsname.getPackageName()), this);
 		return jclass;
 	}
 

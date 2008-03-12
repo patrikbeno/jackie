@@ -15,7 +15,7 @@ public class AnnotationTypeProvider implements ExtensionProvider<JClass> {
 		return AnnotationType.class;
 	}
 
-	public Extension getExtension(JClass jclass) {
+	public Extension<JClass> getExtension(JClass jclass) {
 		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
 		assert kind != null;
 

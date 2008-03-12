@@ -2,6 +2,8 @@ package org.jackie.compiler.bytecode;
 
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.jmodelimpl.LoadLevel;
+import org.jackie.compiler.jmodelimpl.attribute.impl.AnnotationDefaultAttribute;
+import org.jackie.compiler.jmodelimpl.attribute.impl.CodeAttribute;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler.util.Helper;
@@ -12,6 +14,7 @@ import org.jackie.utils.Assert;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.AnnotationVisitor;
 import static org.objectweb.asm.Type.getReturnType;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -39,7 +42,7 @@ public class JMethodReader extends ByteCodeLoader {
 		this.jclass = jclass;
 		this.level = level;
 
-		jmethod = new JMethodImpl();
+		jmethod = new JMethodImpl(jclass);
 		jmethod.edit()
 				.setName(name)
 				.setType(getJClassByType(getReturnType(desc)))
@@ -48,6 +51,7 @@ public class JMethodReader extends ByteCodeLoader {
 				.setAccessMode(toAccessMode(access))
 				.setFlags(toFlags(access));
 
+		jclass.edit().addMethod(jmethod);
 	}
 
 	List<JParameter> populateArgs(String desc) {
@@ -82,8 +86,14 @@ public class JMethodReader extends ByteCodeLoader {
 	}
 
 	MethodVisitor getMethodVisitor() {
-		Assert.logNotYetImplemented(); // todo implement getMethodVisitor()
-		return null;
+		return new MethodNode(access, name, desc, signature, exceptions) {
+			public void visitEnd() {
+				super.visitEnd();
+				jmethod.attributes().edit().addAttribute(
+						AnnotationDefaultAttribute.class,
+						new AnnotationDefaultAttribute(annotationDefault));
+			}
+		};
 	}
 
 }

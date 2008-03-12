@@ -5,21 +5,25 @@ import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.extension.ExtensionProvider;
 import org.jackie.jmodel.extension.builtin.JPrimitive;
 import org.jackie.jmodel.extension.builtin.PrimitiveType;
+import org.jackie.jmodel.extension.builtin.ArrayType;
+import org.jackie.compiler.jmodelimpl.attribute.impl.KindAttribute;
+import org.jackie.compiler.jmodelimpl.attribute.impl.Kind;
 
 /**
  * @author Patrik Beno
  */
-public class PrimitiveTypeProvider implements ExtensionProvider<JClass> {
+public class ArrayTypeProvider implements ExtensionProvider<JClass> {
 
 	public Class<? extends Extension> getType() {
-		return PrimitiveType.class;
+		return ArrayType.class;
 	}
 
 	public Extension<JClass> getExtension(JClass jclass) {
-		if (JPrimitive.forClassName(jclass.getFQName()) == null) {
+		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
+		if (kind == null || !kind.getKind().equals(Kind.ARRAY)) {
 			return null;
 		}
 
-		return new PrimitiveTypeImpl(jclass);
+		return new ArrayTypeImpl(jclass);
 	}
 }

@@ -9,6 +9,10 @@ import org.jackie.jmodel.JClass;
  */
 public interface TypeRegistry {
 
+	boolean isEditable();
+
+	void setEditable(boolean editable);
+
 	boolean hasJClass(ClassName clsname);
 
 	JClass getJClass(ClassName clsname);

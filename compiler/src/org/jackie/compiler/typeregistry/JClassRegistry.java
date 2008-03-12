@@ -1,6 +1,7 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.compiler.util.ClassName;
+import org.jackie.compiler.filemanager.FileManager;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,8 +13,14 @@ public class JClassRegistry extends AbstractTypeRegistry {
 
 	protected Set<String> index;
 
-	public JClassRegistry(Set<String> index) {
+
+	public JClassRegistry(FileManager fileManager, Set<String> index) {
+		super(fileManager);
 		this.index = new HashSet<String>(index);
+	}
+
+	public JClassRegistry(Set<String> index) {
+		this(null, index);
 	}
 
 	public boolean hasJClass(ClassName clsname) {

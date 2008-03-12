@@ -14,7 +14,7 @@ public class RuntimeVisibleAnnotationsAttribute extends Attribute implements JAt
 
 	static public final String NAME = "RuntimeVisibeAnnotations"; 
 
-	List<AnnotationNode> annos;
+	protected List<AnnotationNode> annos;
 
 	public RuntimeVisibleAnnotationsAttribute() {
 		super(NAME);
@@ -29,5 +29,9 @@ public class RuntimeVisibleAnnotationsAttribute extends Attribute implements JAt
 			annos = new ArrayList<AnnotationNode>();
 		}
 		annos.add(anno);
+	}
+
+	public List<AnnotationNode> getAnnotationNodes() {
+		return annos;
 	}
 }
