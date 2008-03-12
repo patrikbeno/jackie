@@ -22,6 +22,7 @@ public class Assert {
 		}};
 	}
 
+	// todo optimize; make this effectivelly inlinable
 	static public <T> T typecast(Object o, Class<T> expected) {
 		if (o == null) {
 			return null;
