@@ -7,7 +7,7 @@ import org.jackie.jmodel.JClass;
 /**
  * @author Patrik Beno
  */
-public class ApiTest {
+public class ApiUsageCompilableOnlyTest {
 
 	JParameter jparam;
 	JField jfield;
