@@ -22,7 +22,8 @@
 				</property>
 			</activation>
 			<properties>
-				<build.dir>${user.home}/var/build/mvn/${pom.groupId}/${pom.artifactId}-${pom.version}</build.dir>
+				<build.dir>${user.home}/var/build/mvn/${pom.groupId}/${pom.artifactId}-${pom.version}
+				</build.dir>
 			</properties>
 		</profile>
 	</profiles>
@@ -73,12 +74,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4</version>
 				<configuration>
 					<forkMode>always</forkMode>
 					<argLine>-Xmx256m</argLine>
-					<!--<skip>true</skip>-->
+					<skip>true</skip>
 					<skipExec>true</skipExec>
+					<suiteXmlFiles>
+						<suiteXmlFile>test/suite.xml</suiteXmlFile>
+					</suiteXmlFiles>
+					<useSystemClassLoader>true</useSystemClassLoader>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -89,17 +93,43 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.7</version>
+			<version>5.2</version>
 			<classifier>jdk15</classifier>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
+	<pluginRepositories>
+		<pluginRepository>
+			<id>apache.snapshots</id>
+			<url>http://cvs.apache.org/maven-snapshot-repository</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>howardlewisship</id>
+			<url>http://howardlewisship.com/repository</url>
+		</pluginRepository>
+	</pluginRepositories>
 	<repositories>
 		<repository>
 			<!-- needed by surefire for testng support -->
 			<id>M2-snapshots</id>
 			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
+		</repository>
+		<repository>
+			<id>apache.snapshots</id>
+			<url>http://cvs.apache.org/maven-snapshot-repository</url>
+		</repository>
+		<repository>
+			<id>jboss</id>
+			<url>http://repository.jboss.com/maven2</url>
+		</repository>
+		<repository>
+			<id>mojavelinux</id>
+			<url>http://repository.mojavelinux.com/maven2</url>
+		</repository>
+		<repository>
+			<id>howardlewisship</id>
+			<url>http://howardlewisship.com/repository</url>
 		</repository>
 	</repositories>
 
