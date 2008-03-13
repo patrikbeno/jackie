@@ -1,0 +1,18 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="org.jackie.compiler">
+	<test name="main">
+		<groups>
+			<run>
+				<exclude name="perf"/>
+			</run>
+		</groups>
+		<packages>
+			<package name="org.jackie.compiler.bytecode"/>
+			<!--<package name="org.jackie.compiler.filemanager"/>-->
+			<!--<package name="org.jackie.compiler.javacintegration"/>-->
+			<!--<package name="org.jackie.compiler.util"/>-->
+			<!--<package name="org.jackie.compiler.typeregistry"/>-->
+			<!--<package name="org.jackie.compiler.jmodelimpl.annotations"/>-->
+		</packages>
+	</test>
+</suite>

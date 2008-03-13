@@ -13,6 +13,7 @@ import org.jackie.compiler.util.PathName;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.jmodelimpl.LoadLevel;
 import org.jackie.utils.Assert;
+import org.jackie.utils.Log;
 
 import org.objectweb.asm.ClassReader;
 

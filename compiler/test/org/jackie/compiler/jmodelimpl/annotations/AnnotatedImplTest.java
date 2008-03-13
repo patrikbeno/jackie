@@ -85,9 +85,13 @@ public class AnnotatedImplTest extends TestCase {
 	void test(Class<?> cls) {
 		JClass jcls = get(cls);
 		Annotations annotations = jcls.extensions().get(Annotations.class);
-//		JAnnotation a = annotations.getJAnnotations().get(0); // fixme API
+		assert annotations != null;
+
 		SampleAnnotation proxy = annotations.getAnnotation(SampleAnnotation.class);
+		assert proxy != null;
+
 		SampleAnnotation real = cls.getAnnotation(SampleAnnotation.class);
+		assert real != null;
 
 		Assert.expected(real.string(), proxy.string(), "invalid: string()");
 		Assert.expected(asList(real.astring()), asList(proxy.astring()), "invalid: stringarray()");
