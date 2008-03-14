@@ -4,12 +4,10 @@
 .project
 .settings
 **/target
-.idea
 test-output
-.idea
-.idea
-.idea
-.diff
+.idea/**
+.diff/**
 bzrdiff.sh
 build.sh
 tmpsuite.xml
+_doc
