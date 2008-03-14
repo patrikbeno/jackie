@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>${pom.groupId}.compiler_api</artifactId>
+			<artifactId>${pom.groupId}.compiler</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>

@@ -99,12 +99,12 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.2</version>
+			<version>5.6</version>
 			<classifier>jdk15</classifier>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<!--
+<!--
 	<pluginRepositories>
 		<pluginRepository>
 			<id>apache.snapshots</id>
@@ -115,7 +115,9 @@
 			<url>http://howardlewisship.com/repository</url>
 		</pluginRepository>
 	</pluginRepositories>
+-->
 	<repositories>
+<!--
 		<repository>
 			<id>M2-snapshots</id>
 			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
@@ -124,6 +126,7 @@
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
 		</repository>
+-->
 		<repository>
 			<id>jboss</id>
 			<url>http://repository.jboss.com/maven2</url>
@@ -137,6 +140,5 @@
 			<url>http://howardlewisship.com/repository</url>
 		</repository>
 	</repositories>
-	-->
 
 </project>
