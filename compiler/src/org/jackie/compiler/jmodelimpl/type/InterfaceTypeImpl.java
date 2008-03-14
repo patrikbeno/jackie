@@ -1,7 +1,7 @@
 package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.base.InterfaceType;
+import org.jackie.java5.base.InterfaceType;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;
 import org.jackie.utils.Assert;

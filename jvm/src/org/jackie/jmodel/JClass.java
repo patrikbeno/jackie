@@ -1,6 +1,5 @@
 package org.jackie.jmodel;
 
-import org.jackie.jmodel.extension.annotation.Annotated;
 import org.jackie.jmodel.attribute.Attributed;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.props.Accessible;
@@ -8,7 +7,6 @@ import org.jackie.jmodel.props.FQNamed;
 import org.jackie.jmodel.props.Flag;
 import org.jackie.jmodel.props.Flagged;
 import org.jackie.jmodel.props.Named;
-import org.jackie.jmodel.extension.Extensions;
 import org.jackie.jmodel.extension.Extensible;
 import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JMethod;

@@ -1,4 +1,4 @@
-package org.jackie.jmodel.extension.enumtype;
+package org.jackie.java5.enumtype;
 
 import org.jackie.jmodel.props.Named;
 import org.jackie.jmodel.structure.JField;

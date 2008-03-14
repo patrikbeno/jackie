@@ -1,4 +1,4 @@
-package org.jackie.jmodel.extension.extra;
+package org.jackie.java5.extra;
 
 import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.JClass;

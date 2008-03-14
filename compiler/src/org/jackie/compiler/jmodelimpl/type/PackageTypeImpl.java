@@ -1,8 +1,7 @@
 package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.extra.PackageType;
-import org.jackie.utils.Assert;
+import org.jackie.java5.extra.PackageType;
 
 /**
  * @author Patrik Beno

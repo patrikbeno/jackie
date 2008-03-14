@@ -4,19 +4,18 @@ import static org.jackie.compiler.util.Context.context;
 import static org.jackie.compiler.util.Helper.iterable;
 import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.util.EnumProxy;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
-import org.jackie.jmodel.extension.annotation.Annotated;
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
-import org.jackie.jmodel.extension.annotation.Annotations;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.Extensible;
+import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.annotation.Annotated;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.jmodel.extension.builtin.JPrimitive;
 import org.jackie.jmodel.extension.builtin.ArrayType;
+import org.jackie.jmodel.extension.builtin.PrimitiveType;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.util.JModelUtils;
 import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.typecast;
+import org.jackie.java5.enumtype.EnumType;
 import org.objectweb.asm.tree.AnnotationNode;
 import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.Type;
@@ -111,7 +110,7 @@ public class AnnotationImpl implements JAnnotation {
 
 	Object convert(JClass jclass, Object object) {
 
-		if (JModelUtils.isPrimitive(jclass)) {
+		if (jclass.extensions().supports(PrimitiveType.class)) {
 			assert JPrimitive.isObjectWrapper(object.getClass());
 			return object;
 
@@ -123,19 +122,19 @@ public class AnnotationImpl implements JAnnotation {
 			assert object instanceof Type;
 			return context().typeRegistry().getJClass(new ClassName((Type) object));
 
-		} else if (JModelUtils.isAnnotation(jclass)) {
+		} else if (jclass.extensions().supports(AnnotationType.class)) {
 			assert object instanceof AnnotationNode;
 			return new AnnotationImpl((AnnotationNode) object, this);
 
-		} else if (JModelUtils.isEnum(jclass)) {
+		} else if (jclass.extensions().supports(EnumType.class)) {
 			assert object instanceof String[] && Array.getLength(object)==2;
 			String[] names = (String[]) object;
 			ClassName clsname = new ClassName(Type.getObjectType(names[0]));
 			return new EnumProxy(clsname.getFQName(), names[1]);
 
-		} else if (JModelUtils.isArray(jclass)) {
+		} else if (jclass.extensions().supports(ArrayType.class)) {
 			assert object instanceof List;
-			ArrayType array = JModelUtils.asArray(jclass);
+			ArrayType array = jclass.extensions().get(ArrayType.class);
 			return convertArray(array.getComponentType(), (List) object);
 
 		} else {

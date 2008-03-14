@@ -2,19 +2,17 @@ package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.compiler.bytecode.AsmSupport;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationsProvider;
-import org.jackie.compiler.typeregistry.EditAction;
 import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.extension.Extensible;
 import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.extension.ExtensionProvider;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
-import org.jackie.jmodel.extension.annotation.Annotations;
-import org.jackie.jmodel.extension.base.ClassType;
-import org.jackie.jmodel.extension.base.InterfaceType;
+import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.base.ClassType;
+import org.jackie.java5.base.InterfaceType;
 import org.jackie.jmodel.extension.builtin.PrimitiveType;
 import org.jackie.jmodel.extension.builtin.ArrayType;
-import org.jackie.jmodel.extension.enumtype.EnumType;
-import org.jackie.jmodel.extension.extra.PackageType;
+import org.jackie.java5.enumtype.EnumType;
+import org.jackie.java5.extra.PackageType;
 import static org.jackie.utils.Assert.typecast;
 
 import java.util.HashMap;

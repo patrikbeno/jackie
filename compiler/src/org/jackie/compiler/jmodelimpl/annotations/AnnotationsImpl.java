@@ -1,8 +1,5 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.compiler.util.ClassName;
-import static org.jackie.compiler.util.Context.context;
-import org.jackie.compiler.util.EnumProxy;
 import static org.jackie.compiler.util.Helper.assertEditable;
 import static org.jackie.compiler.util.Helper.iterable;
 import org.jackie.compiler.jmodelimpl.attribute.impl.RuntimeVisibleAnnotationsAttribute;
@@ -14,25 +11,16 @@ import org.jackie.jmodel.structure.JField;
 import org.jackie.jmodel.structure.JParameter;
 import org.jackie.jmodel.attribute.Attributed;
 import org.jackie.jmodel.attribute.Attributes;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.builtin.ArrayType;
-import org.jackie.jmodel.extension.builtin.JPrimitive;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
-import org.jackie.jmodel.extension.annotation.Annotations;
-import org.jackie.jmodel.util.JModelUtils;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
-import org.objectweb.asm.Type;
 import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 /**

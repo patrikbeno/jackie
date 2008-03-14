@@ -1,4 +1,4 @@
-package org.jackie.jmodel.extension.base;
+package org.jackie.java5.base;
 
 /**
  * @author Patrik Beno

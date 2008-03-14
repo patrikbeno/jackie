@@ -3,13 +3,11 @@ package org.jackie.compiler.util;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.utils.Assert.doAssert;
-import static org.jackie.compiler.util.Context.context;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.extension.base.ClassType;
-import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.java5.base.ClassType;
+import org.jackie.java5.annotation.Annotations;
 import org.jackie.jmodel.extension.Extensible;
 
 import java.lang.reflect.Array;

@@ -1,10 +1,8 @@
-package org.jackie.jmodel.extension.base;
+package org.jackie.java5.base;
 
 import org.jackie.jmodel.Editable;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.Editor;
 import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.extension.annotation.Annotated;
 import org.jackie.jmodel.structure.JMethod;
 
 import java.util.List;
@@ -13,7 +11,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface ClassType extends Extension<JClass>, Editable<ClassType.Editor>, Annotated {
+public interface ClassType extends Extension<JClass>, Editable<ClassType.Editor> {
 
 	/// nesting
 

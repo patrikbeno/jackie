@@ -5,7 +5,7 @@ import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.extension.ExtensionProvider;
 import org.jackie.jmodel.extension.builtin.JPrimitive;
-import org.jackie.jmodel.extension.base.ClassType;
+import org.jackie.java5.base.ClassType;
 
 import java.util.Set;
 import java.util.HashSet;

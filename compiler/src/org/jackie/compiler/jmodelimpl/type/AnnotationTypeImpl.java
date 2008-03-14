@@ -1,6 +1,5 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.compiler.jmodelimpl.annotations.AnnotationsImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationAttributeImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationAttributeValueImpl;
 import org.jackie.compiler.jmodelimpl.annotations.AnnotationImpl;
@@ -9,13 +8,11 @@ import org.jackie.compiler.util.ClassName;
 import static org.jackie.compiler.util.Context.context;
 import static org.jackie.compiler.util.Helper.iterable;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.util.JModelUtils;
 import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
-import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
@@ -154,12 +151,13 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 
 		Object converted;
 
-		if (JModelUtils.isEnum(jmethod.getType())) {
+		// fixme JModelUtils obsoleted
+		/*if (JModelUtils.isEnum(jmethod.getType())) {
 			// enums are passed as String[2] { classname, constantname }
 			// save only constant name, enum type is remembered in annotation attribute
 			converted = ((String[]) asmvalue)[1];
 
-		} else if (asmvalue instanceof Type) {
+		} else*/ if (asmvalue instanceof Type) {
 			Type asmtype = (Type) asmvalue;
 			converted = context().typeRegistry().getJClass(new ClassName(asmtype));
 

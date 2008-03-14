@@ -3,9 +3,9 @@ package org.jackie.compiler.jmodelimpl.annotations;
 import static org.jackie.compiler.util.Context.context;
 import org.jackie.jmodel.extension.builtin.JPrimitive;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationAttributeValue;
 import org.jackie.utils.Assert;
 
 import java.lang.annotation.Annotation;

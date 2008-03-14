@@ -1,12 +1,11 @@
-package org.jackie.jmodel.extension.annotation;
+package org.jackie.java5.annotation;
 
 import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.Editor;
 import org.jackie.jmodel.Editable;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.props.Named;
 import org.jackie.jmodel.props.Typed;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
+import org.jackie.java5.annotation.AnnotationType;
 
 /**
  * Annotation attribute declaration (actually special view on a method declaration in

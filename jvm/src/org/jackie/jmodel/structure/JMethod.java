@@ -3,7 +3,6 @@ package org.jackie.jmodel.structure;
 import org.jackie.jmodel.Editable;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.extension.annotation.Annotated;
 import org.jackie.jmodel.extension.Extensible;
 import org.jackie.jmodel.attribute.Attributed;
 import org.jackie.jmodel.code.CodeBlock;

@@ -1,6 +1,6 @@
-package org.jackie.jmodel.extension.annotation;
+package org.jackie.java5.annotation;
 
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.Editable;
 import org.jackie.jmodel.JClass;

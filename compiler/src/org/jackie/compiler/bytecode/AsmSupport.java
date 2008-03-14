@@ -6,14 +6,11 @@ import org.jackie.compiler.util.ClassName;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.props.Flag;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.util.JModelUtils;
 import org.jackie.utils.Assert;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
-import java.util.Collections;
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -104,11 +101,12 @@ public class AsmSupport {
 	}
 
 	protected int toAccessFlags(JClass jcls) {
-		int access = 0;
-		access |= JModelUtils.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
-		access |= JModelUtils.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
-		access |= JModelUtils.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
-		return access;
+		throw Assert.notYetImplemented(); // fixme JModelUtils obsoleted
+//		int access = 0;
+//		access |= JModelUtils.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
+//		access |= JModelUtils.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
+//		access |= JModelUtils.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
+//		return access;
 	}
 
 	protected Kind toKind(int access) {

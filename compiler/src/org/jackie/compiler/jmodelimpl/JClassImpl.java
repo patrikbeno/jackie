@@ -1,14 +1,12 @@
 package org.jackie.compiler.jmodelimpl;
 
 import static org.jackie.compiler.util.Helper.assertEditable;
-import static org.jackie.compiler.util.Context.context;
-import org.jackie.compiler.util.ClassName;
 import org.jackie.compiler.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jmodel.props.AccessMode;
 import org.jackie.jmodel.JClass;
 import org.jackie.jmodel.JPackage;
-import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.java5.annotation.Annotations;
 import org.jackie.jmodel.attribute.Attributes;
 import org.jackie.jmodel.extension.Extensions;
 import org.jackie.jmodel.props.Flags;

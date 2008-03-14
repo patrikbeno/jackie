@@ -1,9 +1,8 @@
-package org.jackie.jmodel.extension.enumtype;
+package org.jackie.java5.enumtype;
 
 import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.extension.enumtype.JEnumContant;
+import org.jackie.java5.enumtype.JEnumContant;
 import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.Editor;
 import org.jackie.jmodel.JClass;
 
 import java.util.List;

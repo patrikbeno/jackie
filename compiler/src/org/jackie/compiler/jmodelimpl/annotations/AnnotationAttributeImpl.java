@@ -1,12 +1,11 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
 import org.jackie.jmodel.JClass;
-import static org.jackie.jmodel.util.JModelUtils.asAnnotation;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
+import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
-import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
 import static org.jackie.compiler.util.Helper.asAnnotations;
 
@@ -37,7 +36,7 @@ public class AnnotationAttributeImpl implements JAnnotationAttribute {
 	/// AnnotationAttribute ///
 
 	public AnnotationType getJAnnotationType() {
-		return asAnnotation(jmethod.getJClass());
+		return jmethod.getJClass().extensions().get(AnnotationType.class);
 	}
 
 	public JAnnotationAttributeValue getDefaultValue() {

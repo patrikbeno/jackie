@@ -3,11 +3,11 @@ package org.jackie.compiler.jmodelimpl.annotations;
 import org.jackie.compiler.TestCase;
 import static org.jackie.compiler.util.Context.context;
 import static org.jackie.compiler.util.Helper.asClassType;
+import static org.jackie.compiler.util.Helper.asAnnotations;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.annotation.Annotations;
+import org.jackie.java5.annotation.Annotations;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Retention;
@@ -103,7 +103,7 @@ public class AnnotatedImplTest extends TestCase {
 	}
 
 	SampleAnnotation proxy(JClass jcls) {
-		return asClassType(jcls).annotations().getAnnotation(SampleAnnotation.class);
+		return asAnnotations(jcls).getAnnotation(SampleAnnotation.class);
 	}
 
 	SampleAnnotation real(Class<?> cls) {

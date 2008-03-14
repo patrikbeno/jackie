@@ -2,7 +2,7 @@ package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.jmodel.extension.Extension;
 import org.jackie.jmodel.extension.ExtensionProvider;
-import org.jackie.jmodel.extension.extra.PackageType;
+import org.jackie.java5.extra.PackageType;
 import org.jackie.jmodel.JClass;
 
 /**

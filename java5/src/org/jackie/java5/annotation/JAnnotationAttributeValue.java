@@ -1,4 +1,4 @@
-package org.jackie.jmodel.extension.annotation;
+package org.jackie.java5.annotation;
 
 import org.jackie.jmodel.JNode;
 

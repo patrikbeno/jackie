@@ -1,8 +1,8 @@
 package org.jackie.compiler.jmodelimpl.annotations;
 
-import org.jackie.jmodel.extension.annotation.JAnnotation;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationAttributeValue;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;

@@ -1,8 +1,8 @@
-package org.jackie.jmodel.extension.annotation;
+package org.jackie.java5.annotation;
 
 import org.jackie.jmodel.Editable;
 import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.extension.annotation.AnnotationType;
+import org.jackie.java5.annotation.AnnotationType;
 
 import java.util.List;
 

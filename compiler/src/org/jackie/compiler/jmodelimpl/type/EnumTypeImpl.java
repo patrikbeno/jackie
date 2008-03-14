@@ -1,8 +1,8 @@
 package org.jackie.compiler.jmodelimpl.type;
 
 import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.enumtype.EnumType;
-import org.jackie.jmodel.extension.enumtype.JEnumContant;
+import org.jackie.java5.enumtype.EnumType;
+import org.jackie.java5.enumtype.JEnumContant;
 import org.jackie.utils.Assert;
 
 import java.util.Set;
