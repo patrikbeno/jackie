@@ -29,9 +29,15 @@
 	</profiles>
 
 	<modules>
-		<module>utils</module>
+		<!-- apis -->
 		<module>jvm</module>
 		<module>compiler</module>
+
+		<!-- implementations -->
+		<module>utils</module>
+		<module>compiler_impl</module>
+
+		<!-- plugins -->
 		<module>java5</module>
 	</modules>
 
