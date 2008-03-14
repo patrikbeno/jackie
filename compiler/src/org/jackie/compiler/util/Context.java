@@ -22,11 +22,9 @@ public class Context {
 
 	TypeRegistry typeRegistry;
 	ExtensionManager extensionManager;
-	boolean editable;
 
 	{
 		extensionManager = new ExtensionManager(); // fixme hardcoded instance
-		editable = true;
 	}
 
 
