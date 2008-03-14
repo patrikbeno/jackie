@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>org.jackie.compiler_api</artifactId>
+	<artifactId>org.jackie.compiler</artifactId>
 	<name>${pom.artifactId}-${pom.version}</name>
 
 	<parent>
