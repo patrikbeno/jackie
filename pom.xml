@@ -30,8 +30,9 @@
 
 	<modules>
 		<module>utils</module>
-		<module>jmodel</module>
+		<module>jvm</module>
 		<module>compiler</module>
+		<module>java5</module>
 	</modules>
 
 
@@ -78,7 +79,6 @@
 					<forkMode>always</forkMode>
 					<argLine>-Xmx256m</argLine>
 					<skip>true</skip>
-					<skipExec>true</skipExec>
 					<suiteXmlFiles>
 						<suiteXmlFile>test/suite.xml</suiteXmlFile>
 					</suiteXmlFiles>
@@ -98,7 +98,7 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	<!--
 	<pluginRepositories>
 		<pluginRepository>
 			<id>apache.snapshots</id>
@@ -111,7 +111,6 @@
 	</pluginRepositories>
 	<repositories>
 		<repository>
-			<!-- needed by surefire for testng support -->
 			<id>M2-snapshots</id>
 			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
 		</repository>
@@ -132,5 +131,6 @@
 			<url>http://howardlewisship.com/repository</url>
 		</repository>
 	</repositories>
+	-->
 
 </project>

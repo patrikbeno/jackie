@@ -5,7 +5,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>org.jackie.compiler</artifactId>
+	<artifactId>org.jackie.java5</artifactId>
 	<name>${pom.artifactId}-${pom.version}</name>
 
 	<parent>
@@ -24,16 +24,6 @@
 			<groupId>${pom.groupId}</groupId>
 			<artifactId>${pom.groupId}.jvm</artifactId>
 			<version>${pom.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<version>3.1</version>
-		</dependency>
-		<dependency>
-			<groupId>javac</groupId>
-			<artifactId>javac</artifactId>
-			<version>1.7-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
