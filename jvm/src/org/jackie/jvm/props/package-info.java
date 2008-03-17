@@ -1,5 +1,5 @@
 /**
  * @author Patrik Beno
  */
-package ;
+package org.jackie.jvm.props;
 
