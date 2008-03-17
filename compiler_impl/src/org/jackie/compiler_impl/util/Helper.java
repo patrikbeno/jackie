@@ -3,7 +3,7 @@ package org.jackie.compiler_impl.util;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;
 
 import java.lang.reflect.Array;

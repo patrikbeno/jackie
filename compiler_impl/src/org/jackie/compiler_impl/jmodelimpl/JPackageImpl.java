@@ -3,7 +3,7 @@ package org.jackie.compiler_impl.jmodelimpl;
 import org.jackie.jvm.JPackage;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Stack;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 import java.util.HashSet;
 import java.util.Set;

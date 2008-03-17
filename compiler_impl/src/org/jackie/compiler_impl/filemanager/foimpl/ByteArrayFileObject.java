@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.filemanager.foimpl;
 
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileObject;
 import static org.jackie.utils.Assert.doAssert;
 
 import java.io.ByteArrayInputStream;

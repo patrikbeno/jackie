@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.javacintegration;
 
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileObject;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.IOException;

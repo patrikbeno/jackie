@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.javacintegration;
 
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
 import org.jackie.utils.Assert;
 import org.jackie.utils.IOHelper;

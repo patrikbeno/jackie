@@ -2,7 +2,7 @@ package org.jackie.compiler_impl.jmodelimpl;
 
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.LoadLevel;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.JClass;

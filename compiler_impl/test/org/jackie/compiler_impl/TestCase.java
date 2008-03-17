@@ -1,11 +1,11 @@
 package org.jackie.compiler_impl;
 
 import org.jackie.compiler_impl.filemanager.ClassPathFileManager;
-import org.jackie.compiler_impl.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
 import org.jackie.compiler_impl.typeregistry.PrimitiveTypeRegistry;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.Context;
 import org.jackie.compiler_impl.util.PathName;
 import static org.jackie.compiler.Context.context;

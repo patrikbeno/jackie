@@ -5,7 +5,7 @@
  * Type registries are merely a memory/storage for types; they cannot do anything reasonable about
  * them (like loading or parsing class files...)
  *
- * @see org.jackie.compiler.TypeRegistry
+ * @see org.jackie.compiler.typeregistry.TypeRegistry
  * @see PrimitiveTypeRegistry
  * @see AbstractTypeRegistry
  * @see ArrayRegistry

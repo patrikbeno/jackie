@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.javacintegration;
 
-import org.jackie.compiler_impl.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;
 
 import javax.tools.FileObject;
@@ -123,7 +123,7 @@ public class JFileManager implements JavaFileManager {
 	protected JFO getClassJFO(String clsname, Kind kind) {
 		FileManager fm = selectFileManager(kind);
 		String pathname = toPathName(clsname, kind);
-		org.jackie.compiler_impl.filemanager.FileObject fobject = fm.getFileObject(pathname);
+		org.jackie.compiler.filemanager.FileObject fobject = fm.getFileObject(pathname);
 		JFO jfo = new JFO(fobject, kind);
 		return jfo;
 	}
@@ -155,7 +155,7 @@ public class JFileManager implements JavaFileManager {
 				continue;
 			}
 
-			org.jackie.compiler_impl.filemanager.FileObject fobject = sources.getFileObject(name);
+			org.jackie.compiler.filemanager.FileObject fobject = sources.getFileObject(name);
 			JFO jfo = new JFO(fobject, Kind.SOURCE);
 			jfos.add(jfo);
 		}

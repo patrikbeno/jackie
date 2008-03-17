@@ -1,14 +1,14 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.compiler_impl.filemanager.FileManager;
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.JPackageImpl;
 import org.jackie.compiler.LoadLevel;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.PackageName;
 import org.jackie.compiler_impl.bytecode.JClassReader;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;

@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 /**
  * @author Patrik Beno

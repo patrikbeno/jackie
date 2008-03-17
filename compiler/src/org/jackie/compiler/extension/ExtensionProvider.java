@@ -1,6 +1,8 @@
-package org.jackie.jvm.extension;
+package org.jackie.compiler.extension;
 
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.extension.Extensible;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * @author Patrik Beno

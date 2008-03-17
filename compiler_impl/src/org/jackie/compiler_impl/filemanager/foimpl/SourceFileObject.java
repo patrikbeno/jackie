@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.filemanager.foimpl;
 
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.utils.Assert;
 
 import java.io.IOException;

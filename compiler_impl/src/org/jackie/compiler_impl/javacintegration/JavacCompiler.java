@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.javacintegration;
 
-import org.jackie.compiler_impl.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;
 
 import com.sun.source.util.JavacTask;

@@ -2,7 +2,7 @@ package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.utils.ClassName;
 import org.jackie.jvm.JClass;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 /**
  * @author Patrik Beno

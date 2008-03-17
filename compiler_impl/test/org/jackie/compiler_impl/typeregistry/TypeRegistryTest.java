@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.Context;
 import static org.jackie.compiler.Context.context;
 import org.jackie.utils.Assert;

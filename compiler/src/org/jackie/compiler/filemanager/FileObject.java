@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.filemanager;
+package org.jackie.compiler.filemanager;
 
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;

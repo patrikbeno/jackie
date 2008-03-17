@@ -1,7 +1,7 @@
 package org.jackie.compiler_impl.javacintegration;
 
-import org.jackie.compiler_impl.filemanager.FileManager;
-import org.jackie.compiler_impl.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
 import org.jackie.compiler_impl.filemanager.JarFileManager;
 import org.jackie.compiler_impl.filemanager.foimpl.SourceFileObject;

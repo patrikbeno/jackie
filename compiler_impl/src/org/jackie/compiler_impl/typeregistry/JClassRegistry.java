@@ -1,7 +1,7 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.utils.ClassName;
-import org.jackie.compiler_impl.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileManager;
 
 import java.util.HashSet;
 import java.util.Set;

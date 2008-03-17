@@ -1,7 +1,7 @@
 package org.jackie.compiler;
 
-import org.jackie.compiler.ExtensionManager;
-import org.jackie.compiler.TypeRegistry;
+import org.jackie.compiler.extension.ExtensionManager;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 /**
  * @author Patrik Beno

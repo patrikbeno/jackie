@@ -1,6 +1,6 @@
 package org.jackie.compiler_impl;
 
-import org.jackie.compiler_impl.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
 import org.jackie.utils.Assert;

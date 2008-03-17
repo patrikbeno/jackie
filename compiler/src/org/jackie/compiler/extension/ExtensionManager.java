@@ -1,7 +1,7 @@
-package org.jackie.compiler;
+package org.jackie.compiler.extension;
 
 import org.jackie.jvm.extension.Extension;
-import org.jackie.jvm.extension.ExtensionProvider;
+import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.JNode;
 import static org.jackie.utils.Assert.typecast;
 

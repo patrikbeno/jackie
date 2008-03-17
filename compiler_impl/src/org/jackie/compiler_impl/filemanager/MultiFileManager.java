@@ -1,5 +1,8 @@
 package org.jackie.compiler_impl.filemanager;
 
+import org.jackie.compiler.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;

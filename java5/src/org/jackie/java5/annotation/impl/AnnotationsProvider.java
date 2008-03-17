@@ -1,6 +1,6 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jvm.extension.ExtensionProvider;
+import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.jvm.JNode;
