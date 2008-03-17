@@ -1,0 +1,29 @@
+package org.jackie.compiler_impl.typeregistry;
+
+import org.jackie.compiler.TypeRegistry;
+
+/**
+ * @author Patrik Beno
+ */
+public abstract class EditAction<T> {
+
+	static public <T> T run(TypeRegistry registry, EditAction<T> action) {
+		boolean editable = registry.isEditable();
+		try {
+			registry.setEditable(true);
+			action.prepare();
+			return action.run();
+
+		} finally {
+			action.done();
+			registry.setEditable(editable);
+		}
+
+	}
+
+	protected void prepare() {}
+
+	protected abstract T run();
+
+	protected void done() {}
+}
