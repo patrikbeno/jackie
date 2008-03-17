@@ -5,7 +5,7 @@ import org.jackie.compiler.LoadLevel;
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.compiler.attribute.Kind;
 import org.jackie.utils.ClassName;
-import org.jackie.jmodel.extension.builtin.JPrimitive;
+import org.jackie.jvm.extension.builtin.JPrimitive;
 
 /**
  * @author Patrik Beno

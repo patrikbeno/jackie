@@ -1,7 +1,7 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jmodel.extension.builtin.JPrimitive;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.jvm.JClass;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;

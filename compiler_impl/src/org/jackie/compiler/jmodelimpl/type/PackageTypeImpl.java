@@ -1,6 +1,6 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.java5.extra.PackageType;
 
 /**

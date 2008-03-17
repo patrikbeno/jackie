@@ -1,12 +1,9 @@
 package org.jackie.compiler.jmodelimpl.structure;
 
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.props.AccessMode;
-import org.jackie.jmodel.props.Flag;
-import org.jackie.jmodel.structure.JField;
-import org.jackie.jmodel.structure.JVariable;
-import org.jackie.utils.Assert;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.props.AccessMode;
+import org.jackie.jvm.props.Flag;
+import org.jackie.jvm.structure.JField;
 
 /**
  * @author Patrik Beno

@@ -5,9 +5,9 @@ import org.jackie.java5.annotation.impl.AnnotationDefaultAttribute;
 import org.jackie.compiler.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler.util.Helper;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.structure.JParameter;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.structure.JMethod;
+import org.jackie.jvm.structure.JParameter;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;

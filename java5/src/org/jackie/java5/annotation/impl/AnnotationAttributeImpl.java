@@ -1,8 +1,8 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jvm.structure.JMethod;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
 import org.jackie.java5.annotation.Annotations;

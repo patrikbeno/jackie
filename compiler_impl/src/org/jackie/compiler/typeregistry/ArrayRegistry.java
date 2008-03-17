@@ -7,7 +7,7 @@ import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.utils.ClassName;
 import static org.jackie.compiler.Context.context;
 import org.jackie.compiler.TypeRegistry;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 import java.util.HashMap;
 import java.util.Map;

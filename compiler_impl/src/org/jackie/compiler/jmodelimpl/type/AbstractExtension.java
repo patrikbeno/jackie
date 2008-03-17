@@ -1,7 +1,7 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.extension.Extension;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * @author Patrik Beno

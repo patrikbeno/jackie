@@ -1,9 +1,9 @@
 package org.jackie.java5.annotation;
 
 import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
 
 import java.util.List;
 import java.util.Set;
@@ -35,7 +35,7 @@ public interface AnnotationType extends Extension<JClass>, Editable<AnnotationTy
 	List<JAnnotationAttribute> getAttributes();
 
 
-	public interface Editor extends org.jackie.jmodel.Editor<AnnotationType> {
+	public interface Editor extends org.jackie.jvm.Editor<AnnotationType> {
 
 		Editor addAtribute(JAnnotationAttribute attribute);
 

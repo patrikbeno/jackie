@@ -3,7 +3,7 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.TestCase;
 import static org.jackie.compiler.Context.context;
 import org.jackie.utils.Assert;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 import org.testng.annotations.Test;
 

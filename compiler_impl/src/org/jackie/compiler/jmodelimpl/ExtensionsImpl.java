@@ -1,8 +1,8 @@
 package org.jackie.compiler.jmodelimpl;
 
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.extension.Extensions;
-import org.jackie.jmodel.JNode;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.extension.Extensions;
+import org.jackie.jvm.JNode;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.compiler.Context.context;
 

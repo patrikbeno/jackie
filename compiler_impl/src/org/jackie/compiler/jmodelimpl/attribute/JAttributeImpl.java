@@ -1,7 +1,6 @@
 package org.jackie.compiler.jmodelimpl.attribute;
 
-import org.jackie.jmodel.attribute.JAttribute;
-import org.jackie.utils.Assert;
+import org.jackie.jvm.attribute.JAttribute;
 
 /**
  * @author Patrik Beno

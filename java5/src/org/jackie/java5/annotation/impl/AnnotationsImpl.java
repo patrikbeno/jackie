@@ -1,13 +1,13 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.structure.JField;
-import org.jackie.jmodel.structure.JParameter;
-import org.jackie.jmodel.attribute.Attributed;
-import org.jackie.jmodel.attribute.Attributes;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.structure.JMethod;
+import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JParameter;
+import org.jackie.jvm.attribute.Attributed;
+import org.jackie.jvm.attribute.Attributes;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;

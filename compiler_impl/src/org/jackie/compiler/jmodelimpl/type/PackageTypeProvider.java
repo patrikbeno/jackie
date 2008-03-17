@@ -1,9 +1,9 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.extension.ExtensionProvider;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.extension.ExtensionProvider;
 import org.jackie.java5.extra.PackageType;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 /**
  * @author Patrik Beno

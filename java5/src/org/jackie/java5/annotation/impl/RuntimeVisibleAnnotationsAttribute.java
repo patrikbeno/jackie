@@ -2,7 +2,7 @@ package org.jackie.java5.annotation.impl;
 
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.tree.AnnotationNode;
-import org.jackie.jmodel.attribute.JAttribute;
+import org.jackie.jvm.attribute.JAttribute;
 
 import java.util.List;
 import java.util.ArrayList;

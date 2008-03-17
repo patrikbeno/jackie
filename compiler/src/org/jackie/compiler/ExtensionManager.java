@@ -1,8 +1,8 @@
 package org.jackie.compiler;
 
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.extension.ExtensionProvider;
-import org.jackie.jmodel.JNode;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.extension.ExtensionProvider;
+import org.jackie.jvm.JNode;
 import static org.jackie.utils.Assert.typecast;
 
 import java.util.Map;

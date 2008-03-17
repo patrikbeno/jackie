@@ -1,6 +1,6 @@
 package org.jackie.compiler.jmodelimpl.code;
 
-import org.jackie.jmodel.code.CodeBlock;
+import org.jackie.jvm.code.CodeBlock;
 
 /**
  * @author Patrik Beno

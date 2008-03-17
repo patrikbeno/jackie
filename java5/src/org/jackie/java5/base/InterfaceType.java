@@ -1,10 +1,10 @@
 package org.jackie.java5.base;
 
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.structure.JField;
-import org.jackie.jmodel.structure.JMethod;
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JMethod;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public interface InterfaceType extends Extension<JClass>, Editable<InterfaceType
 	List<JMethod> getInterfaceMethods();
 
 
-	public interface Editor extends org.jackie.jmodel.Editor<InterfaceType> {
+	public interface Editor extends org.jackie.jvm.Editor<InterfaceType> {
 
 	}
 

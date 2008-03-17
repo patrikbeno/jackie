@@ -1,9 +1,9 @@
 package org.jackie.java5.enumtype;
 
-import org.jackie.jmodel.extension.Extension;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.java5.enumtype.JEnumContant;
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
 
 import java.util.List;
 import java.util.Set;
@@ -21,7 +21,7 @@ public interface EnumType extends Extension<JClass>, Editable<EnumType.Editor> {
 
 	List<JEnumContant> getEnumContants();
 
-	public interface Editor extends org.jackie.jmodel.Editor<EnumType> {
+	public interface Editor extends org.jackie.jvm.Editor<EnumType> {
 		
 	}
 

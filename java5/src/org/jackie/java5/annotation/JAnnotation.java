@@ -1,7 +1,7 @@
 package org.jackie.java5.annotation;
 
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JNode;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JNode;
 import org.jackie.java5.annotation.AnnotationType;
 
 import java.util.List;
@@ -24,9 +24,9 @@ public interface JAnnotation extends JNode, Editable<JAnnotation.Editor> {
 	/**
 	 * Element this annotation annotates (is attached to): class, field, method, ...
 	 * @see JClass
-	 * @see org.jackie.jmodel.structure.JField
-	 * @see org.jackie.jmodel.structure.JMethod
-	 * @see org.jackie.jmodel.structure.JParameter
+	 * @see org.jackie.jvm.structure.JField
+	 * @see org.jackie.jvm.structure.JMethod
+	 * @see org.jackie.jvm.structure.JParameter
 	 * @return annotated element or null if there is none (this is the case when annotation is nested in another annotation)
 	 */
 	Annotated getAnnotatedElement();
@@ -59,7 +59,7 @@ public interface JAnnotation extends JNode, Editable<JAnnotation.Editor> {
 	Editor edit();
 
 
-	public interface Editor extends org.jackie.jmodel.Editor<JAnnotation> {
+	public interface Editor extends org.jackie.jvm.Editor<JAnnotation> {
 
 		Editor addAttributeValue(JAnnotationAttributeValue value);
 

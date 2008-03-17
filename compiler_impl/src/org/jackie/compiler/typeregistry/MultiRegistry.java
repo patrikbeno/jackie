@@ -3,7 +3,7 @@ package org.jackie.compiler.typeregistry;
 import org.jackie.utils.ClassName;
 import org.jackie.compiler.LoadLevel;
 import org.jackie.compiler.TypeRegistry;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
 
 import java.util.Arrays;

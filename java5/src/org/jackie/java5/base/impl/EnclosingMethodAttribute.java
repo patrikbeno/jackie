@@ -1,7 +1,7 @@
 package org.jackie.java5.base.impl;
 
 import org.objectweb.asm.Attribute;
-import org.jackie.jmodel.attribute.JAttribute;
+import org.jackie.jvm.attribute.JAttribute;
 
 /**
  * @author Patrik Beno

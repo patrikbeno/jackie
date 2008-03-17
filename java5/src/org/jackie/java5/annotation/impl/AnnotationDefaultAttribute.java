@@ -1,6 +1,6 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jmodel.attribute.JAttribute;
+import org.jackie.jvm.attribute.JAttribute;
 
 /**
  * @author Patrik Beno

@@ -3,9 +3,9 @@ package org.jackie.compiler.bytecode;
 import org.jackie.compiler.jmodelimpl.FlagsImpl;
 import org.jackie.compiler.attribute.Kind;
 import org.jackie.utils.ClassName;
-import org.jackie.jmodel.props.AccessMode;
-import org.jackie.jmodel.props.Flag;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.props.AccessMode;
+import org.jackie.jvm.props.Flag;
+import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
 
 import org.objectweb.asm.Opcodes;

@@ -1,6 +1,6 @@
 package org.jackie.java5.annotation;
 
-import org.jackie.jmodel.JNode;
+import org.jackie.jvm.JNode;
 
 /**
  * Represents value of the annotation attribute in an annotation instance

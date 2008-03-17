@@ -9,8 +9,8 @@ import org.jackie.utils.ClassName;
 import org.jackie.utils.PackageName;
 import org.jackie.compiler.bytecode.JClassReader;
 import org.jackie.compiler.TypeRegistry;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.JPackage;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
 import org.objectweb.asm.ClassReader;
 

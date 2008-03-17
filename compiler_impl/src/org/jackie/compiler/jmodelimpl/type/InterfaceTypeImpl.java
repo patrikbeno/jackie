@@ -1,9 +1,9 @@
 package org.jackie.compiler.jmodelimpl.type;
 
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.java5.base.InterfaceType;
-import org.jackie.jmodel.structure.JField;
-import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
 
 import java.util.List;

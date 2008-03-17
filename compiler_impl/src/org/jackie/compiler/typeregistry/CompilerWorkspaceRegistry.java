@@ -1,7 +1,7 @@
 package org.jackie.compiler.typeregistry;
 
 import org.jackie.utils.ClassName;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.compiler.TypeRegistry;
 
 /**

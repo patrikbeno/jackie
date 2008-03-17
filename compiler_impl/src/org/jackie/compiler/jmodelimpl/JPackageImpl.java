@@ -1,7 +1,7 @@
 package org.jackie.compiler.jmodelimpl;
 
-import org.jackie.jmodel.JPackage;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JPackage;
+import org.jackie.jvm.JClass;
 import org.jackie.utils.Stack;
 import org.jackie.compiler.TypeRegistry;
 

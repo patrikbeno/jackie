@@ -1,7 +1,7 @@
 package org.jackie.java5.enumtype;
 
-import org.jackie.jmodel.props.Named;
-import org.jackie.jmodel.structure.JField;
+import org.jackie.jvm.props.Named;
+import org.jackie.jvm.structure.JField;
 
 /**
  * @author Patrik Beno

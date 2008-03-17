@@ -4,7 +4,7 @@ import static org.jackie.utils.Assert.typecast;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.compiler.jmodelimpl.JClassImpl;
 import org.jackie.compiler.TypeRegistry;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 import java.lang.reflect.Array;
 

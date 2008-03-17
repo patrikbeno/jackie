@@ -1,6 +1,6 @@
 package org.jackie.compiler.jmodelimpl.attribute.impl;
 
-import org.jackie.jmodel.attribute.JAttribute;
+import org.jackie.jvm.attribute.JAttribute;
 import org.objectweb.asm.tree.MethodNode;
 
 /**

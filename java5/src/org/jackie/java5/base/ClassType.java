@@ -1,9 +1,9 @@
 package org.jackie.java5.base;
 
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.extension.Extension;
-import org.jackie.jmodel.structure.JMethod;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.structure.JMethod;
 
 import java.util.List;
 import java.util.Set;
@@ -32,7 +32,7 @@ public interface ClassType extends Extension<JClass>, Editable<ClassType.Editor>
 	List<JMethod> getMethods();
 
 
-	public static interface Editor extends org.jackie.jmodel.Editor<ClassType> {
+	public static interface Editor extends org.jackie.jvm.Editor<ClassType> {
 
 		void addConstructor(JMethod ctor);
 

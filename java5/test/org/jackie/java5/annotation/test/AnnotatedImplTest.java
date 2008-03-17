@@ -2,7 +2,7 @@ package org.jackie.java5.annotation.test;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 import org.jackie.java5.annotation.Annotations;
 import static org.jackie.compiler.Context.context;
 import org.testng.annotations.Test;

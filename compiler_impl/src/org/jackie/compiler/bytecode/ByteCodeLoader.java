@@ -2,7 +2,7 @@ package org.jackie.compiler.bytecode;
 
 import org.jackie.utils.ClassName;
 import static org.jackie.compiler.Context.context;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 import org.objectweb.asm.Type;
 

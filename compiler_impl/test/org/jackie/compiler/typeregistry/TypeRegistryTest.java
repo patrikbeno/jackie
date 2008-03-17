@@ -4,7 +4,7 @@ import org.jackie.compiler.TypeRegistry;
 import org.jackie.compiler.Context;
 import static org.jackie.compiler.Context.context;
 import org.jackie.utils.Assert;
-import org.jackie.jmodel.JClass;
+import org.jackie.jvm.JClass;
 
 import org.testng.annotations.Test;
 

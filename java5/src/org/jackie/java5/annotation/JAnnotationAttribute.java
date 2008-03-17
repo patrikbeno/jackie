@@ -1,10 +1,10 @@
 package org.jackie.java5.annotation;
 
-import org.jackie.jmodel.JNode;
-import org.jackie.jmodel.Editable;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.props.Named;
-import org.jackie.jmodel.props.Typed;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.props.Named;
+import org.jackie.jvm.props.Typed;
 import org.jackie.java5.annotation.AnnotationType;
 
 /**
@@ -24,7 +24,7 @@ public interface JAnnotationAttribute extends JNode, Named, Typed, Annotated, Ed
 	 */
 	JAnnotationAttributeValue getDefaultValue();
 
-	public interface Editor extends org.jackie.jmodel.Editor<JAnnotationAttribute> {
+	public interface Editor extends org.jackie.jvm.Editor<JAnnotationAttribute> {
 
 		Editor setName(String name);
 

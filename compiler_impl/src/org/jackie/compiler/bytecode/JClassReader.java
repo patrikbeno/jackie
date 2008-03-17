@@ -11,9 +11,9 @@ import org.jackie.java5.base.impl.InnerClassesAttribute;
 import org.jackie.java5.annotation.impl.RuntimeVisibleAnnotationsAttribute;
 import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
-import org.jackie.jmodel.JClass;
-import org.jackie.jmodel.attribute.Attributes;
-import org.jackie.jmodel.structure.JField;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.Attributes;
+import org.jackie.jvm.structure.JField;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
