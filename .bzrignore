@@ -12,3 +12,5 @@ build.sh
 tmpsuite.xml
 _doc
 .idea
+.classpath
+.eclipse
