@@ -34,11 +34,17 @@
 		<module>compiler</module>
 
 		<!-- implementations -->
-		<module>utils</module>
 		<module>compiler_impl</module>
 
 		<!-- plugins -->
 		<module>java5</module>
+
+		<!-- support -->
+		<module>utils</module>
+		<module>context</module>
+
+		<!-- test -->
+		<module>test</module>
 	</modules>
 
 
