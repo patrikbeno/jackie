@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class Compiler {
+public class CompilerImpl {
 
 	protected FileManager sources;
 
