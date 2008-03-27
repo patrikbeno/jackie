@@ -80,4 +80,8 @@ public class Assert {
 
 		throw assertFailed(null, "Expected [%s], found [%s]. %s", expected, found, String.format(msg, args));
 	}
+
+	static public boolean NOT(boolean expression) {
+		return !expression;
+	}
 }
