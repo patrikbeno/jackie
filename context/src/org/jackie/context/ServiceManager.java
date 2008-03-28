@@ -24,7 +24,7 @@ public class ServiceManager implements ContextObject {
 	static public ServiceManager serviceManager() {
 		ServiceManager instance = context(ServiceManager.class);
 		if (instance == null) {
-			context().set(ServiceManager.class, new ServiceManager());
+			context().set(ServiceManager.class, instance=new ServiceManager());
 		}
 		return instance;
 	}
