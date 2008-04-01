@@ -5,7 +5,6 @@ import org.jackie.java5.annotation.impl.AnnotationAttributeValueImpl;
 import org.jackie.java5.annotation.impl.AnnotationImpl;
 import org.jackie.java5.annotation.impl.AnnotationDefaultAttribute;
 import org.jackie.utils.ClassName;
-import static org.jackie.compiler.Context.context;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.java5.annotation.JAnnotationAttribute;
@@ -14,6 +13,8 @@ import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -159,7 +160,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 
 		} else*/ if (asmvalue instanceof Type) {
 			Type asmtype = (Type) asmvalue;
-			converted = context().typeRegistry().getJClass(new ClassName(asmtype.getClassName()));
+			converted = context(TypeRegistry.class).getJClass(new ClassName(asmtype.getClassName()));
 
 		} else
 		if (asmvalue.getClass().isArray() && asmvalue.getClass().getComponentType().isPrimitive()) {
@@ -190,7 +191,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 //
 //		} else if (asmvalue instanceof Type) {
 //			Type asmtype = (Type) asmvalue;
-//			context().typeRegistry().getJClass(new ClassName(asmtype));
+//			context(TypeRegistry.class).getJClass(new ClassName(asmtype));
 //
 //		} else {
 //			attrvalue.setValue(asmvalue);

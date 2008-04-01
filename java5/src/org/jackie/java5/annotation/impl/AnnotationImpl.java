@@ -14,7 +14,8 @@ import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
 import org.jackie.utils.ClassName;
 import org.jackie.java5.enumtype.EnumType;
-import org.jackie.compiler.Context;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.objectweb.asm.tree.AnnotationNode;
 import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.Type;
@@ -70,7 +71,7 @@ public class AnnotationImpl implements JAnnotation {
 
 	private AnnotationImpl(AnnotationNode anode, Object owner) {
 		ClassName clsname = new ClassName(Type.getType(anode.desc).getClassName());
-		JClass jclass = Context.context().typeRegistry().getJClass(clsname);
+		JClass jclass = context(TypeRegistry.class).getJClass(clsname);
 		AnnotationType type = jclass.extensions().get(AnnotationType.class);
 
 		init(type, owner);
@@ -113,13 +114,13 @@ public class AnnotationImpl implements JAnnotation {
 			assert JPrimitive.isObjectWrapper(object.getClass());
 			return object;
 
-		} else if (jclass.equals(Context.context().typeRegistry().getJClass(String.class))) {
+		} else if (jclass.equals(context(TypeRegistry.class).getJClass(String.class))) {
 			assert object instanceof String;
 			return object;
 
-		} else if (jclass.equals(Context.context().typeRegistry().getJClass(Class.class))) {
+		} else if (jclass.equals(context(TypeRegistry.class).getJClass(Class.class))) {
 			assert object instanceof Type;
-			return Context.context().typeRegistry().getJClass(new ClassName(((Type) object).getClassName()));
+			return context(TypeRegistry.class).getJClass(new ClassName(((Type) object).getClassName()));
 
 		} else if (jclass.extensions().supports(AnnotationType.class)) {
 			assert object instanceof AnnotationNode;
@@ -210,7 +211,7 @@ public class AnnotationImpl implements JAnnotation {
 		}
 
 		try {
-			ClassLoader cl = Context.context().annotationClassLoader();
+			ClassLoader cl = Thread.currentThread().getContextClassLoader();//fixme context().annotationClassLoader();
 			Class cls = Class.forName(type.node().getFQName(), false, cl);
 
 			//noinspection UnusedAssignment

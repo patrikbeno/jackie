@@ -3,11 +3,12 @@ package org.jackie.compiler.typeregistry;
 import org.jackie.utils.ClassName;
 import org.jackie.jvm.JClass;
 import org.jackie.compiler.LoadLevel;
+import org.jackie.context.ContextObject;
 
 /**
  * @author Patrik Beno
  */
-public interface TypeRegistry {
+public interface TypeRegistry extends ContextObject {
 
 	boolean isEditable();
 

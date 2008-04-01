@@ -4,7 +4,8 @@ import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.jvm.JClass;
 import org.jackie.java5.annotation.Annotations;
-import static org.jackie.compiler.Context.context;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Retention;
@@ -96,7 +97,7 @@ public class AnnotatedImplTest { // fixme extends TestCase
 
 
 	JClass get(Class<?> cls) {
-		return context().typeRegistry().getJClass(cls);
+		return context(TypeRegistry.class).getJClass(cls);
 	}
 
 	SampleAnnotation proxy(JClass jcls) {

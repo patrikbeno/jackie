@@ -1,14 +1,15 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
+import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
-import org.jackie.jvm.JNode;
 import static org.jackie.utils.Assert.typecast;
-import static org.jackie.compiler.Context.context;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.compiler.extension.ExtensionManager;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashMap;
 
 /**
  * @author Patrik Beno
@@ -44,7 +45,7 @@ public class ExtensionsImpl implements Extensions {
 
 		// todo optimize extension lookup: positive lookups fall here only once; false lookups (nonexistent or unsupported extensions) will repeat this on every lookup
 
-		ext = context().extensionSupport().apply(jnode, type);
+		ext = context(ExtensionManager.class).apply(jnode, type);
 		if (ext == null) {
 			return null;
 		}

@@ -1,10 +1,10 @@
 package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler.LoadLevel;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.utils.ClassName;
-import static org.jackie.compiler.Context.context;
 import static org.jackie.compiler_impl.util.Helper.impl;
 import org.jackie.java5.base.impl.EnclosingMethodAttribute;
 import org.jackie.java5.base.impl.InnerClassesAttribute;
@@ -13,7 +13,7 @@ import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
-import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JField;import static org.jackie.context.ContextManager.context;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -51,7 +51,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 				.setSuperClass((superName != null) ? getJClassByBName(superName) : null);
 
 		for (String iname : CollectionsHelper.iterable(interfaces)) {
-			JClass iface = context().typeRegistry().getJClass(getClassName(iname));
+			JClass iface = context(TypeRegistry.class).getJClass(getClassName(iname));
 			jclass.edit().addInterface(iface);
 		}
 

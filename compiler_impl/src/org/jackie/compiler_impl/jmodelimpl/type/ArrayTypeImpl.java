@@ -3,7 +3,7 @@ package org.jackie.compiler_impl.jmodelimpl.type;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.ArrayType;
 import org.jackie.utils.ClassName;
-import static org.jackie.compiler.Context.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;import static org.jackie.context.ContextManager.context;
 
 /**
  * @author Patrik Beno
@@ -23,7 +23,7 @@ public class ArrayTypeImpl extends AbstractExtension<JClass> implements ArrayTyp
 		}
 
 		ClassName clsname = new ClassName(node().getFQName());
-		component = context().typeRegistry().getJClass(clsname.getComponentType());
+		component = context(TypeRegistry.class).getJClass(clsname.getComponentType());
 		dimensions = clsname.getDimensions();
 
 		return component;

@@ -5,9 +5,8 @@ import org.jackie.compiler.LoadLevel;
 import org.jackie.compiler.attribute.Kind;
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.utils.ClassName;
-import static org.jackie.compiler.Context.context;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.jvm.JClass;
+import org.jackie.jvm.JClass;import static org.jackie.context.ContextManager.context;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -91,7 +90,7 @@ public class ArrayRegistry {
 				jclass.loadLevel = LoadLevel.CODE; // array - no bytecode (consider fully loaded) 
 
 				jclass.edit()
-					.setSuperClass(context().typeRegistry().getJClass(Object.class));
+					.setSuperClass(context(TypeRegistry.class).getJClass(Object.class));
 				jclass.attributes().edit()
 					.addAttribute(KindAttribute.class, new KindAttribute(Kind.ARRAY));
 

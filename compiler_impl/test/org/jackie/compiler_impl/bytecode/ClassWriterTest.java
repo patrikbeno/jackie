@@ -11,7 +11,7 @@ public class ClassWriterTest extends TestCase {
 
 //	public void compile() {
 //		readClass(Sample.class);
-//		final JClass jclass = context().typeRegistry().getJClass(Sample.class);
+//		final JClass jclass = context(TypeRegistry.class).getJClass(Sample.class);
 //		final byte[] bytes = jclass.compile();
 //		new ClassLoader() {{
 //			Class<?> cls = defineClass(jclass.getFQName(), bytes, 0, bytes.length);

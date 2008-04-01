@@ -1,9 +1,9 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.utils.ClassName;
-import static org.jackie.compiler.Context.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;
-
+import org.jackie.utils.ClassName;
+import static org.jackie.context.ContextManager.context;
 import org.objectweb.asm.Type;
 
 /**
@@ -12,19 +12,19 @@ import org.objectweb.asm.Type;
 public class ByteCodeLoader extends AsmSupport {
 
 	protected JClass getJClass(ClassName clsname) {
-		return context().typeRegistry().getJClass(clsname);
+		return context(TypeRegistry.class).getJClass(clsname);
 	}
 
 	protected JClass getJClassByBName(String bname) {
-		return context().typeRegistry().getJClass(getClassName(bname));
+		return context(TypeRegistry.class).getJClass(getClassName(bname));
 	}
 
 	protected JClass getJClassByDesc(String desc) {
-		return context().typeRegistry().getJClass(getClassNameByDesc(desc));
+		return context(TypeRegistry.class).getJClass(getClassNameByDesc(desc));
 	}
 
 	protected JClass getJClassByType(Type type) {
-		return context().typeRegistry().getJClass(new ClassName(type.getClassName()));
+		return context(TypeRegistry.class).getJClass(new ClassName(type.getClassName()));
 	}
 
 }

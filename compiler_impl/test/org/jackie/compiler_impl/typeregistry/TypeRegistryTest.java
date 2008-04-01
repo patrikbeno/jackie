@@ -1,10 +1,10 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler.Context;
-import static org.jackie.compiler.Context.context;
 import org.jackie.utils.Assert;
 import org.jackie.jvm.JClass;
+import static org.jackie.context.ContextManager.newContext;
+import static org.jackie.context.ContextManager.context;
 
 import org.testng.annotations.Test;
 
@@ -19,9 +19,9 @@ public class TypeRegistryTest {
 
 
 	public void primitives() {
-		Context.createContext();
+		newContext();
 		PrimitiveTypeRegistry r = new PrimitiveTypeRegistry();
-		context().typeRegistry(r);
+		context().set(TypeRegistry.class, r);
 
 		Assert.notNull(r.getJClass(void.class));
 		Assert.notNull(r.getJClass(boolean.class));
@@ -38,9 +38,9 @@ public class TypeRegistryTest {
 	}
 
 	public void primitiveArrays() {
-		Context.createContext();
+		newContext();
 		PrimitiveTypeRegistry r = new PrimitiveTypeRegistry();
-		context().typeRegistry(r);
+		context().set(TypeRegistry.class, r);
 
 		Assert.notNull(r.getJClass(int[].class));
 		Assert.notNull(r.getJClass(int[][].class));
@@ -49,13 +49,13 @@ public class TypeRegistryTest {
 
 	public void classes() {
 
-		Context.createContext();
+		newContext();
 		JClassRegistry r = new JClassRegistry(new HashSet<String>(Arrays.asList(
 				Object.class.getName(),
 				Object[].class.getName(),
 				Object[][].class.getName()
 		)));
-		context().typeRegistry(r);
+		context().set(TypeRegistry.class, r);
 
 		Assert.notNull(r.getJClass(Object.class));
 		Assert.notNull(r.getJClass(Object[].class));
@@ -63,7 +63,7 @@ public class TypeRegistryTest {
 	}
 
 	public void multiregistry() {
-		Context.createContext();
+		newContext();
 		MultiRegistry r = new MultiRegistry(Arrays.<TypeRegistry>asList(
 				new PrimitiveTypeRegistry(),
 				new JClassRegistry(new HashSet<String>(Arrays.asList(
@@ -71,7 +71,7 @@ public class TypeRegistryTest {
 						String.class.getName()
 				)))
 		));
-		context().typeRegistry(r);
+		context().set(TypeRegistry.class, r);
 
 		Assert.notNull(r.getJClass(int.class));
 		Assert.notNull(r.getJClass(int[].class));
