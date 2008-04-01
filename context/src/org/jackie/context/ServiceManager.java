@@ -15,16 +15,14 @@ import java.net.URL;
 /**
  * @author Patrik Beno
  */
-public class ServiceManager implements ContextObject {
+public class ServiceManager extends Loader implements ContextObject {
 
-	static private final String RESOURCE = "META-INF/org.jackie/services.properties";
-
-//	static private final ServiceManager INSTANCE = new ServiceManager();
 
 	static public ServiceManager serviceManager() {
 		ServiceManager instance = context(ServiceManager.class);
 		if (instance == null) {
-			context().set(ServiceManager.class, instance=new ServiceManager());
+			instance = new ServiceManager();
+			context().set(ServiceManager.class, instance);
 		}
 		return instance;
 	}
@@ -33,11 +31,14 @@ public class ServiceManager implements ContextObject {
 		return serviceManager().getService(type);
 	}
 
-	protected Map<Class,Class> classByInterface;
+
+	public ServiceManager() {
+		super("META-INF/org.jackie/services.properties");
+	}
+
 	protected Map<Class,Service> instanceByInterface;
 
 	{
-		classByInterface = new HashMap<Class, Class>();
 		instanceByInterface = new HashMap<Class, Service>();
 		loadResources();
 	}
@@ -66,48 +67,6 @@ public class ServiceManager implements ContextObject {
 			throw Assert.notYetHandled(e);
 		}
 
-	}
-
-	void loadResources() {
-		try {
-			ClassLoader cl = Thread.currentThread().getContextClassLoader();
-			Enumeration<URL> e = cl.getResources(RESOURCE);
-			while (e.hasMoreElements()) {
-				URL url = e.nextElement();
-				Log.debug("Loading service mapping from %s", url);
-				Properties props = new Properties();
-				props.load(url.openStream());
-				load(props);
-			}
-
-		} catch (IOException e) {
-			throw Assert.notYetHandled(e);
-		}
-	}
-
-	void load(Properties props) {
-		Enumeration<?> names = props.propertyNames();
-		while (names.hasMoreElements()) {
-			String name = (String) names.nextElement();
-			String implname = props.getProperty(name);
-			try {
-				Class iface = load(name);
-				Class impl = load(implname);
-				classByInterface.put(iface, impl);
-			} catch (Exception e) {
-				Assert.logNotYetImplemented();
-			}
-		}
-	}
-
-	Class load(String clsname) {
-		try {
-			ClassLoader cl = Thread.currentThread().getContextClassLoader();
-			Class<?> cls = Class.forName(clsname, false, cl);
-			return cls;
-		} catch (ClassNotFoundException e) {
-			throw Assert.notYetHandled(e);
-		}
 	}
 
 }
