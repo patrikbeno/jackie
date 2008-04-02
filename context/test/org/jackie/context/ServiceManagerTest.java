@@ -1,6 +1,8 @@
 package org.jackie.context;
 
 import static org.jackie.context.ServiceManager.service;
+import static org.jackie.context.ContextManager.newContext;
+import static org.jackie.context.ContextManager.closeContext;
 import org.testng.annotations.Test;
 
 /**
@@ -10,7 +12,12 @@ import org.testng.annotations.Test;
 public class ServiceManagerTest {
 
 	public void loadService() {
-		service(TestService.class).test();
+		newContext();
+		try {
+			service(TestService.class).test();
+		} finally {
+			closeContext();
+		}
 	}
 
 }

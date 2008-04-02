@@ -1,16 +1,18 @@
-package org.jackie.compiler_impl;
+package org.jackie.test.java5.annotation;
 
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.filemanager.ClassPathFileManager;
-import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
 import org.jackie.compiler_impl.typeregistry.PrimitiveTypeRegistry;
+import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.util.PathName;
-import static org.jackie.context.ContextManager.*;
+import static org.jackie.context.ContextManager.newContext;
+import static org.jackie.context.ContextManager.context;
+import static org.jackie.context.ContextManager.closeContext;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.HashSet;
 
 /**
  * @author Patrik Beno

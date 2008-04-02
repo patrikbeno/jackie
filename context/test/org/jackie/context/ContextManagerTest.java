@@ -34,12 +34,14 @@ public class ContextManagerTest {
 	}
 
 	public void unauthorizedClose() {
+		newContext();
 		try {
-			newContext();
 			close();
 			assert false;
 		} catch (AssertionError e) {
 			Log.debug("%s", e);
+		} finally {
+			closeContext();
 		}
 	}
 
