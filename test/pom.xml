@@ -45,6 +45,13 @@
 			<artifactId>${pom.groupId}.compiler_impl</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>5.6</version>
+			<classifier>jdk15</classifier>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 </project>
