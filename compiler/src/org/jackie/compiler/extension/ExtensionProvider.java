@@ -11,6 +11,6 @@ public interface ExtensionProvider<T extends JNode & Extensible> {
 
 	Class<? extends Extension> getType();
 
-	Extension getExtension(T node);
+	Extension<T> getExtension(T node);
 
 }

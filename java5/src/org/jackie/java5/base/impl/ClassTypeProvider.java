@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.jmodelimpl.type;
+package org.jackie.java5.base.impl;
 
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.compiler.extension.ExtensionProvider;

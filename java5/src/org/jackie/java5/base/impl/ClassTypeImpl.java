@@ -1,9 +1,10 @@
-package org.jackie.compiler_impl.jmodelimpl.type;
+package org.jackie.java5.base.impl;
 
 import org.jackie.jvm.JClass;
 import org.jackie.java5.base.ClassNestingLevel;
 import org.jackie.java5.base.ClassType;
 import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.AbstractExtension;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
 

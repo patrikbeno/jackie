@@ -129,9 +129,9 @@ public class AnnotationProxy implements InvocationHandler {
 			return load((JClass) value);
 
 		} else if (type.isEnum()) {
-			assert value instanceof String;
+			assert value instanceof String[];
 			//noinspection unchecked
-			return Enum.valueOf(type, (String) value);
+			return Enum.valueOf(type, ((String[])value)[1]);
 
 		} else if (type.isAnnotation()) {
 			return ((AnnotationImpl) value).proxy();

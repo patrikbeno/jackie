@@ -1,18 +1,18 @@
-package org.jackie.compiler_impl.jmodelimpl.type;
+package org.jackie.java5.annotation.impl;
 
-import org.jackie.jvm.extension.Extension;
-import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.java5.base.InterfaceType;
 import org.jackie.jvm.JClass;
 import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.compiler.extension.ExtensionProvider;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.java5.annotation.AnnotationType;
 
 /**
  * @author Patrik Beno
  */
-public class InterfaceTypeProvider implements ExtensionProvider<JClass> {
+public class AnnotationTypeProvider implements ExtensionProvider<JClass> {
 
 	public Class<? extends Extension> getType() {
-		return InterfaceType.class;
+		return AnnotationType.class;
 	}
 
 	public Extension<JClass> getExtension(JClass jclass) {
@@ -20,9 +20,8 @@ public class InterfaceTypeProvider implements ExtensionProvider<JClass> {
 		assert kind != null;
 
 		switch (kind.getKind()) {
-			case INTERFACE:
 			case ANNOTATION:
-				return new InterfaceTypeImpl(jclass);
+				return new AnnotationTypeImpl(jclass);
 		}
 		return null;
 	}

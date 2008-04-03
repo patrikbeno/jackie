@@ -6,6 +6,7 @@ import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.JNode;
 import static org.jackie.utils.Assert.typecast;
+import org.jackie.utils.Assert;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class ExtensionManagerImpl extends Loader implements ExtensionManager {
 
 	{
 		providers = new HashMap<Class<? extends Extension>, ExtensionProvider>();
+		loadResources();
 
 //		// fixme hardcoded ExtensionProvider list
 //		providers.put(PrimitiveType.class, new PrimitiveTypeProvider());
@@ -39,9 +41,26 @@ public class ExtensionManagerImpl extends Loader implements ExtensionManager {
 
 	public <T extends Extension> T apply(JNode jnode, Class<T> extensionType ) {
 		ExtensionProvider provider = providers.get(extensionType);
+		if (provider == null) {
+			Class cls = classByInterface.get(extensionType);
+			assert cls != null : extensionType;
+			provider = newInstance(cls, ExtensionProvider.class);
+			providers.put(extensionType, provider);
+		}
+
 		T ext = typecast(provider.getExtension(jnode), extensionType);
 		return ext;
+
 	}
 
+	protected <T> T newInstance(Class cls, Class<T> type) {
+		try {
+			return typecast(cls.newInstance(), type);
+		} catch (InstantiationException e) {
+			throw Assert.notYetHandled(e);
+		} catch (IllegalAccessException e) {
+			throw Assert.notYetHandled(e);
+		}
+	}
 
 }

@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.jmodelimpl.type;
+package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.impl.AnnotationAttributeImpl;
 import org.jackie.java5.annotation.impl.AnnotationAttributeValueImpl;
@@ -11,6 +11,7 @@ import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.AbstractExtension;
 import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
 import static org.jackie.context.ContextManager.context;
