@@ -22,9 +22,6 @@ public class CompilerImpl {
 
 		compileJavaSources();
 		compileByteCode();
-
-
-
 	}
 
 	private void compileJavaSources() {

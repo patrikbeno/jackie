@@ -1,6 +1,5 @@
 package org.jackie.context;
 
-import static org.jackie.utils.Assert.NOT;
 import static org.jackie.utils.Assert.doAssert;
 
 import java.util.Map;

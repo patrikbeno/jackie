@@ -1,5 +1,6 @@
 package org.jackie.compiler_impl.typeregistry;
 
+import org.jackie.compiler.bytecode.JClassParser;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
@@ -9,6 +10,7 @@ import org.jackie.utils.ClassName;
 import org.jackie.utils.PackageName;
 import org.jackie.compiler_impl.bytecode.JClassReader;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.context.ServiceManager;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
@@ -98,19 +100,15 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 			protected Object run() {
 				try {
 					loading = jclass;
-
 					ClassName clsname = new ClassName(jclass.getFQName());
 					assert fileManager != null;
 					FileObject fo = fileManager.getFileObject(clsname.getPathName());
-					ClassReader cr = new ClassReader(Channels.newInputStream(fo.getInputChannel()));
-					JClassReader reader = new JClassReader(level);
-					cr.accept(reader, 0); // todo setup flags!
-
+					ServiceManager.serviceManager().
+					getService(JClassParser.class).
+					execute(Channels.newInputStream(fo.getInputChannel()), level);
 					return null;
-
 				} catch (IOException e) {
 					throw Assert.notYetHandled(e);
-
 				} finally {
 					loading = null;
 				}

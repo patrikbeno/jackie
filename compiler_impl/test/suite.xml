@@ -1,11 +1,6 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="org.jackie.compiler_impl">
+<suite name="org.jackie.compiler_impl" parallel="false" annotations="1.5" verbose="0">
 	<test name="main">
-		<groups>
-			<run>
-				<exclude name="perf"/>
-			</run>
-		</groups>
 		<packages>
 			<package name="org.jackie.compiler_impl.bytecode"/>
 			<!--<package name="org.jackie.compiler.filemanager"/>-->
@@ -16,3 +11,4 @@
 		</packages>
 	</test>
 </suite>
+
