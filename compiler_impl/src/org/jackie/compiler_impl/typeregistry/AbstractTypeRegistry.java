@@ -11,6 +11,7 @@ import org.jackie.utils.PackageName;
 import org.jackie.compiler_impl.bytecode.JClassReader;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.context.ServiceManager;
+import static org.jackie.context.ServiceManager.service;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
@@ -103,9 +104,9 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 					ClassName clsname = new ClassName(jclass.getFQName());
 					assert fileManager != null;
 					FileObject fo = fileManager.getFileObject(clsname.getPathName());
-					ServiceManager.serviceManager().
-					getService(JClassParser.class).
-					execute(Channels.newInputStream(fo.getInputChannel()), level);
+					service(JClassParser.class).execute(
+							Channels.newInputStream(fo.getInputChannel()),
+							level);
 					return null;
 				} catch (IOException e) {
 					throw Assert.notYetHandled(e);
