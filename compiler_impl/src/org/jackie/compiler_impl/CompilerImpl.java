@@ -1,5 +1,6 @@
 package org.jackie.compiler_impl;
 
+import org.jackie.compiler.Compiler;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
@@ -10,7 +11,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class CompilerImpl {
+public class CompilerImpl implements Compiler {
 
 	protected FileManager sources;
 
@@ -21,6 +22,7 @@ public class CompilerImpl {
 	public void compile() {
 
 		compileJavaSources();
+
 		compileByteCode();
 	}
 
