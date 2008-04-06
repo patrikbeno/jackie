@@ -6,6 +6,7 @@ import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
 import org.jackie.utils.Assert;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,7 +28,8 @@ public class CompilerImpl implements Compiler {
 	}
 
 	private void compileJavaSources() {
-		JavacCompiler javac = new JavacCompiler(
+		List<String> options = Arrays.asList("-g"/*, "-source", "1.5", "-target", "1.5"*/);
+		JavacCompiler javac = new JavacCompiler(options,
 				sources, new MultiFileManager(dependencies), workspace);
 		javac.compile();
 	}

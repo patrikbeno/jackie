@@ -22,8 +22,10 @@ public class JavacCompiler {
 	protected FileManager classpath;
 
 	protected FileManager output;
+	
+	protected List<String> options;
 
-	public JavacCompiler(FileManager sources, FileManager classpath, FileManager output) {
+	public JavacCompiler(List<String> options, FileManager sources, FileManager classpath, FileManager output) {
 		this.sources = sources;
 		this.classpath = classpath;
 		this.output = output;
@@ -33,7 +35,6 @@ public class JavacCompiler {
 		JavacTool javac = JavacTool.create();
 		JFileManager jfm = new JFileManager(sources, classpath, output);
 		Writer out = new PrintWriter(System.out);
-		List<String> options = Arrays.asList("-g"/*, "-source", "1.5", "-target", "1.5"*/);
 		List<JavaFileObject> units = jfm.getJavaSourceFiles();
 		JavacTask task = javac.getTask(out, jfm, new JavacDiagnosticListener(), options, null, units);
 		Boolean success = task.call();

@@ -12,7 +12,9 @@ import org.jackie.utils.TimedTask;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -23,6 +25,7 @@ public class JavacCompilerTest {
    @Test
    public void compile() throws Exception {
 
+	  List<String> options = Arrays.asList("-g"/*, "-source", "1.5", "-target", "1.5"*/);
       String jhome = System.getProperty("java.home");
       File f = new File(jhome, "lib/rt.jar");
       Assert.doAssert(f.exists(), "Cannot find rt.jar");
@@ -36,6 +39,7 @@ public class JavacCompilerTest {
       TimedTask compilation = new TimedTask().start();
 
       JavacCompiler compiler = new JavacCompiler(
+    		options,
             sources,
             classpath,
             output
