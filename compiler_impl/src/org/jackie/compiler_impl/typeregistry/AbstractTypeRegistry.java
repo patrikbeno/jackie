@@ -1,11 +1,11 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.compiler.bytecode.JClassParser;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler_impl.JClassParser;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.JPackageImpl;
-import org.jackie.compiler.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.PackageName;
 import org.jackie.compiler_impl.bytecode.JClassReader;
@@ -25,7 +25,7 @@ import java.nio.channels.Channels;
 /**
  * @author Patrik Beno
  */
-public abstract class AbstractTypeRegistry implements TypeRegistry {
+public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader {
 
 	protected boolean editable;
 
@@ -88,7 +88,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry {
 		return getJClass(new ClassName(cls));
 	}
 
-	public void loadJClass(final JClass jclass, final LoadLevel level) {
+	public void load(final JClass jclass, final LoadLevel level) {
 
 		assert jclass != null;
 		assert level != null;

@@ -1,9 +1,9 @@
-package org.jackie.compiler.bytecode;
+package org.jackie.compiler_impl;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jackie.compiler.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.context.Service;
 
 /**

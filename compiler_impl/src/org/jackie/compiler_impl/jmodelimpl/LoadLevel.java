@@ -1,4 +1,4 @@
-package org.jackie.compiler;
+package org.jackie.compiler_impl.jmodelimpl;
 
 /**
  * @author Patrik Beno

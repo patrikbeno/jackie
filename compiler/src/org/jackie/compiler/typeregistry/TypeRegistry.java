@@ -1,9 +1,8 @@
 package org.jackie.compiler.typeregistry;
 
-import org.jackie.utils.ClassName;
-import org.jackie.jvm.JClass;
-import org.jackie.compiler.LoadLevel;
 import org.jackie.context.ContextObject;
+import org.jackie.jvm.JClass;
+import org.jackie.utils.ClassName;
 
 /**
  * @author Patrik Beno
@@ -19,6 +18,4 @@ public interface TypeRegistry extends ContextObject {
 	JClass getJClass(ClassName clsname);
 
 	JClass getJClass(Class cls);
-
-	void loadJClass(JClass jClass, LoadLevel level);
 }

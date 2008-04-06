@@ -1,7 +1,7 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.compiler.LoadLevel;
 import org.jackie.java5.annotation.impl.AnnotationDefaultAttribute;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler_impl.util.Helper;

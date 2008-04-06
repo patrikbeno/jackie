@@ -3,9 +3,9 @@ package org.jackie.compiler_impl.asmintegration;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.jackie.compiler.LoadLevel;
-import org.jackie.compiler.bytecode.JClassParser;
+import org.jackie.compiler_impl.JClassParser;
 import org.jackie.compiler_impl.bytecode.JClassReader;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.objectweb.asm.ClassReader;
 
 /**

@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.compiler.LoadLevel;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.utils.ClassName;
 import static org.jackie.compiler_impl.util.Helper.impl;

@@ -1,7 +1,7 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
-import org.jackie.compiler.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler.attribute.Kind;
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.utils.ClassName;
