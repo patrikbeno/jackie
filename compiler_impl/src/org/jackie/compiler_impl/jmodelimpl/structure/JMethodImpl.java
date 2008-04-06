@@ -4,6 +4,9 @@ import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler_impl.bytecode.BCClassContext;
+import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.code.CodeBlock;
@@ -14,6 +17,10 @@ import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.utils.Assert;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +29,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JMethodImpl implements JMethod {
+public class JMethodImpl implements JMethod, Compilable {
 
 	protected String name;
 	protected JClass type;
@@ -130,7 +137,7 @@ public class JMethodImpl implements JMethod {
 				mthis.accessMode = accessMode;
 				return this;
 			}
-
+			             
 			public Editor setFlags(Flag ... flags) {
 				mthis.flags().edit().reset().set(flags);
 				return this;
@@ -140,6 +147,48 @@ public class JMethodImpl implements JMethod {
 				return JMethodImpl.this;
 			}
 
+		};
+	}
+
+	public void compile() {
+		new ByteCodeBuilder() {
+
+			JMethod mthis;
+			MethodVisitor mv;
+
+			protected void run() {
+				mthis = JMethodImpl.this;
+				mv = cv().visitMethod(
+						toAccessFlag(mthis.flags()),
+						mthis.getName(), bcDesc(mthis), bcSignature(mthis),
+						bcExceptions());
+				context(BCClassContext.class).methodVisitor = mv;
+
+// annotations are handled via extensions which this the core is unaware of... fire some event				
+//				bcAnnotations();
+//				bcParameterAnnotations();
+
+				bcCode();
+
+				mv.visitEnd();
+				context(BCClassContext.class).methodVisitor = null;
+			}
+
+			String[] bcExceptions() {
+				if (mthis.getExceptions().isEmpty()) {
+					return null;
+				}
+
+				List<String> clsnames = new ArrayList<String>();
+				for (JClass jcls : mthis.getExceptions()) {
+					clsnames.add(bcName(jcls));
+				}
+				return clsnames.toArray(new String[clsnames.size()]);
+			}
+
+			void bcCode() {
+				throw Assert.notYetImplemented(); // todo implement this
+			}
 		};
 	}
 }

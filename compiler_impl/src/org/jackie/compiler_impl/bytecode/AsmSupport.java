@@ -5,8 +5,10 @@ import org.jackie.compiler.attribute.Kind;
 import org.jackie.utils.ClassName;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
+import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
@@ -24,6 +26,18 @@ public class AsmSupport {
 
 	protected ClassName getClassNameByDesc(String desc) {
 		return new ClassName(Type.getType(desc).getClassName());
+	}
+
+	protected String bcName(JClass jcls) {
+		return jcls.getFQName().replace('.', '/');
+	}
+
+	protected String bcSignature() {
+		return null; // todo implement this
+	}
+
+	public String bcDesc(JClass jcls) {
+		return bcName(jcls); // fixme need to handle primitives/arrays/classes/...
 	}
 
 	protected boolean isSet(int access, int mask) {
@@ -73,6 +87,10 @@ public class AsmSupport {
 
 	private int check(FlagsImpl flags, Flag flag, int access) {
 		return flags.isSet(flag) ? access : 0;
+	}
+
+	protected int toAccessFlag(Flags flags) {
+		return toAccessFlag(typecast(flags, FlagsImpl.class));
 	}
 
 	protected int toAccessFlag(FlagsImpl flags) {

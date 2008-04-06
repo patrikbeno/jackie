@@ -8,6 +8,7 @@ import org.jackie.utils.Assert;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Patrik Beno
@@ -53,6 +54,14 @@ public class MultiRegistry implements TypeRegistry {
 
 	public JClass getJClass(Class cls) {
 		return getJClass(new ClassName(cls));
+	}
+
+	public Set<String> getJClassIndex() {
+		throw Assert.notYetImplemented(); // todo implement this 
+	}
+
+	public Iterable<JClass> jclasses() {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 	public void loadJClass(JClass jclass, LoadLevel level) {

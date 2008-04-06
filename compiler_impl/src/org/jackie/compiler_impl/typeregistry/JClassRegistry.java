@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.utils.ClassName;
+import org.jackie.utils.Assert;
 import org.jackie.compiler.filemanager.FileManager;
 
 import java.util.HashSet;
@@ -26,5 +27,9 @@ public class JClassRegistry extends AbstractTypeRegistry {
 	public boolean hasJClass(ClassName clsname) {
 		assert !clsname.isArray();
 		return index.contains(clsname.getFQName());
+	}
+
+	public Set<String> getJClassIndex() {
+		throw Assert.notYetImplemented(); // todo implement this 
 	}
 }

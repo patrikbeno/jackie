@@ -5,7 +5,11 @@ import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler.attribute.KindAttribute;
 import org.jackie.compiler.attribute.Kind;
 import org.jackie.utils.ClassName;
+import org.jackie.utils.Assert;
 import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.jvm.JClass;
+
+import java.util.Set;
 
 /**
  * @author Patrik Beno
@@ -19,6 +23,14 @@ public class PrimitiveTypeRegistry extends AbstractTypeRegistry {
 	public boolean hasJClass(ClassName clsname) {
 		checkInitialized();
 		return classes.containsKey(clsname.getFQName());
+	}
+
+	public Set<String> getJClassIndex() {
+		throw Assert.notYetImplemented(); // todo implement this 
+	}
+
+	public Iterable<JClass> jclasses() {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 

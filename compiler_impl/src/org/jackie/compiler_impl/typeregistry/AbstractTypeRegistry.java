@@ -19,6 +19,7 @@ import org.objectweb.asm.ClassReader;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.io.IOException;
 import java.nio.channels.Channels;
 
@@ -86,6 +87,10 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 
 	public JClass getJClass(Class cls) {
 		return getJClass(new ClassName(cls));
+	}
+
+	public Iterable<JClass> jclasses() {
+		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
 	public void load(final JClass jclass, final LoadLevel level) {
