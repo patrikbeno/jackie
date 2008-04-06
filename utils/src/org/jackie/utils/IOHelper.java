@@ -2,6 +2,8 @@ package org.jackie.utils;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
 
 /**
  * @author Patrik Beno
@@ -24,6 +26,16 @@ public class IOHelper {
 			}
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e); // todo ignore exception
+		}
+	}
+
+	static public void write(ByteBuffer buf, WritableByteChannel ch) {
+		try {
+			while (buf.hasRemaining()) {
+				ch.write(buf);
+			}
+		} catch (IOException e) {
+			throw Assert.notYetHandled(e);
 		}
 	}
 
