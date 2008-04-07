@@ -4,12 +4,14 @@ import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
 import static org.jackie.utils.Assert.typecast;
+import org.jackie.utils.Assert;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.compiler.extension.ExtensionManager;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * @author Patrik Beno
@@ -53,5 +55,25 @@ public class ExtensionsImpl implements Extensions {
 		extensions.put(type, ext);
 
 		return typecast(ext, type);
+	}
+
+	public Iterator<Extension> iterator() {
+		return new Iterator<Extension>() {
+
+			Iterator<Map.Entry<Class<? extends Extension>, Extension>> it
+					= extensions.entrySet().iterator();
+
+			public boolean hasNext() {
+				return it.hasNext();
+			}
+
+			public Extension next() {
+				return it.next().getValue();
+			}
+
+			public void remove() {
+				it.remove();
+			}
+		};
 	}
 }

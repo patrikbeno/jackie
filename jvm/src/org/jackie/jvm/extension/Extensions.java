@@ -5,7 +5,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface Extensions {
+public interface Extensions extends Iterable<Extension> {
 
 	<T extends Extension> Set<Class<T>> supported();
 
