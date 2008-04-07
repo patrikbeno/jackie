@@ -24,7 +24,7 @@ public abstract class TestCase {
 		filemanager = new ClassPathFileManager();
 		typeregistry = new MultiRegistry(
 				new PrimitiveTypeRegistry(),
-				new JClassRegistry(filemanager, extractClassNames(filemanager.getPathNames()))
+				new JClassRegistry(filemanager)
 		);
 
 	}
@@ -38,18 +38,6 @@ public abstract class TestCase {
 			closeContext();
 		}
 
-	}
-
-
-	protected Set<String> extractClassNames(Set<String> pathnames) {
-		Set<String> classes = new HashSet<String>(pathnames.size());
-		for (String s : pathnames) {
-			PathName pathname = new PathName(s);
-			if (pathname.isClass()) {
-				classes.add(pathname.getClassName());
-			}
-		}
-		return classes;
 	}
 
 }
