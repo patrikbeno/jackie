@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.javacintegration;
+package org.jackie.test.compiler;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;

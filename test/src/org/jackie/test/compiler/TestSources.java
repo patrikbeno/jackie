@@ -1,7 +1,7 @@
-package org.jackie.compiler_impl.javacintegration;
+package org.jackie.test.compiler;
 
 import org.jackie.compiler.filemanager.FileObject;
-import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
+import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.utils.Assert;
 import org.jackie.utils.IOHelper;
 
@@ -18,7 +18,7 @@ import java.util.zip.ZipInputStream;
  */
 public class TestSources {
 
-   static public void load(InMemoryFileManager fm) {
+   static public void load(FileManager fm) {
       try {
          Class cls = TestSources.class;
          ZipInputStream zip = new ZipInputStream(cls.getResourceAsStream(cls.getSimpleName()+".zip"));
