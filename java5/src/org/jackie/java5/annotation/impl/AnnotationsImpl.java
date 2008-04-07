@@ -12,6 +12,7 @@ import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import org.jackie.compiler.spi.Compilable;
 import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationsImpl implements Annotations {
+public class AnnotationsImpl implements Annotations, Compilable {
 
 	JNode node;
 
@@ -125,6 +126,11 @@ public class AnnotationsImpl implements Annotations {
 	}
 
 
+	public void compile() {
+		for (JAnnotation ann : getJAnnotations()) {
+			// todo implement
+		}
+	}
 }
 
 
