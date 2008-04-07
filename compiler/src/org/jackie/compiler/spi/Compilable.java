@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.bytecode;
+package org.jackie.compiler.spi;
 
 /**
  * @author Patrik Beno
