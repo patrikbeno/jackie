@@ -75,6 +75,7 @@ public class JMethodReader extends ByteCodeLoader {
 		List<JClass> jexceptions = new ArrayList<JClass>(exceptions.length);
 		for (String bname : exceptions) {
 			JClass c = getJClassByBName(bname);
+			assert c != null;
 			jexceptions.add(c);
 		}
 

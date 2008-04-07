@@ -5,7 +5,7 @@ import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compiler_impl.bytecode.BCClassContext;
-import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
@@ -19,7 +19,6 @@ import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.utils.Assert;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
@@ -160,7 +159,8 @@ public class JMethodImpl implements JMethod, Compilable {
 				mthis = JMethodImpl.this;
 				mv = cv().visitMethod(
 						toAccessFlag(mthis.flags()),
-						mthis.getName(), bcDesc(mthis), bcSignature(mthis),
+						mthis.getName(), bcDesc(mthis),
+						null, // signature
 						bcExceptions());
 				context(BCClassContext.class).methodVisitor = mv;
 
@@ -187,7 +187,7 @@ public class JMethodImpl implements JMethod, Compilable {
 			}
 
 			void bcCode() {
-				throw Assert.notYetImplemented(); // todo implement this
+				Assert.logNotYetImplemented(); // todo implement this
 			}
 		};
 	}

@@ -16,7 +16,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import static org.jackie.utils.Assert.typecast;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import static org.jackie.context.ContextManager.context;
 import org.objectweb.asm.Opcodes;
@@ -104,11 +104,14 @@ public class JClassImpl implements JClass, Compilable {
 
 	public List<JClass> getInterfaces() {
 		checkLoaded(LoadLevel.CLASS);
-		return Collections.unmodifiableList(interfaces);
+		return interfaces != null ? Collections.unmodifiableList(interfaces) : Collections.<JClass>emptyList();
 	}
 
 	public Flags flags() {
 		checkLoaded(LoadLevel.CLASS);
+		if (flags == null) {
+			flags = new FlagsImpl();
+		}
 		return flags;
 	}
 
@@ -255,10 +258,11 @@ public class JClassImpl implements JClass, Compilable {
 
 			void bcinit() {
 				int version = Opcodes.V1_5; // todo hardcoded class version number
-				int access = toAccessFlags(cthis) | toAccessFlag(flags) | toAccessFlag(cthis.getAccessMode());
+				int access = toAccessFlag(flags()) | toAccessFlag(getAccessMode());
 				String bcSuperName = (superclass != null) ? bcName(superclass) : null;
 				cv().visit(version, access,
-							  bcName(cthis), bcSignature(),
+							  bcName(cthis),
+							  null, // signature
 							  bcSuperName,
 							  bcNames(cthis.getInterfaces())
 				);

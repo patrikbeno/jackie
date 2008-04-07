@@ -5,5 +5,5 @@ import org.jackie.context.Service;
 /**
  * @author Patrik Beno
  */
-public interface Compiler {
+public interface CompilerFactory extends Service {
 }

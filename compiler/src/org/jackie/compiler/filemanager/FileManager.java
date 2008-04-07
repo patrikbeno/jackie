@@ -13,6 +13,8 @@ public interface FileManager {
 
 	FileObject create(String pathname);
 
+	void remove(String pathname);
+
 	Iterable<FileObject> getFileObjects();
 
 }

@@ -27,9 +27,26 @@ public class JavacCompiler {
 	protected List<String> options;
 
 	public JavacCompiler(List<String> options, FileManager sources, FileManager classpath, FileManager output) {
+		this.options = options;
 		this.sources = sources;
 		this.classpath = classpath;
 		this.output = output;
+	}
+
+	public FileManager getSources() {
+		return sources;
+	}
+
+	public FileManager getClasspath() {
+		return classpath;
+	}
+
+	public FileManager getOutput() {
+		return output;
+	}
+
+	public List<String> getOptions() {
+		return options;
 	}
 
 	public void compile() {

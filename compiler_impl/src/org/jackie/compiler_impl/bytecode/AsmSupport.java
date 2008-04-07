@@ -32,11 +32,7 @@ public class AsmSupport {
 		return jcls.getFQName().replace('.', '/');
 	}
 
-	protected String bcSignature() {
-		return null; // todo implement this
-	}
-
-	public String bcDesc(JClass jcls) {
+	protected String bcDesc(JClass jcls) {
 		return bcName(jcls); // fixme need to handle primitives/arrays/classes/...
 	}
 
@@ -83,48 +79,6 @@ public class AsmSupport {
 		if (isSet(access, asmflag)) {
 			flags.set(flag);
 		}
-	}
-
-	private int check(FlagsImpl flags, Flag flag, int access) {
-		return flags.isSet(flag) ? access : 0;
-	}
-
-	protected int toAccessFlag(Flags flags) {
-		return toAccessFlag(typecast(flags, FlagsImpl.class));
-	}
-
-	protected int toAccessFlag(FlagsImpl flags) {
-		int access = 0;
-		access |= check(flags, Flag.ABSTRACT, Opcodes.ACC_ABSTRACT);
-		access |= check(flags, Flag.STATIC, Opcodes.ACC_STATIC);
-		access |= check(flags, Flag.FINAL, Opcodes.ACC_FINAL);
-		access |= check(flags, Flag.TRANSIENT, Opcodes.ACC_TRANSIENT);
-		access |= check(flags, Flag.VOLATILE, Opcodes.ACC_VOLATILE);
-		access |= check(flags, Flag.NATIVE, Opcodes.ACC_NATIVE);
-		access |= check(flags, Flag.SYNCHRONIZED, Opcodes.ACC_SYNCHRONIZED);
-		access |= check(flags, Flag.STRICTFP, Opcodes.ACC_STRICT);
-		access |= check(flags, Flag.DEPRECATED, Opcodes.ACC_DEPRECATED);
-		access |= check(flags, Flag.BRIDGE, Opcodes.ACC_BRIDGE);
-		access |= check(flags, Flag.SYNTHETIC, Opcodes.ACC_SYNTHETIC);
-		return access;
-	}
-
-	protected int toAccessFlag(AccessMode mode) {
-		int access = 0;
-		access |= AccessMode.PRIVATE.equals(mode) ? Opcodes.ACC_PRIVATE : 0;
-		access |= AccessMode.PROTECTED.equals(mode) ? Opcodes.ACC_PROTECTED : 0;
-		access |= AccessMode.PUBLIC.equals(mode) ? Opcodes.ACC_PUBLIC : 0;
-		// nothing else to do
-		return access;
-	}
-
-	protected int toAccessFlags(JClass jcls) {
-		throw Assert.notYetImplemented(); // fixme JModelUtils obsoleted
-//		int access = 0;
-//		access |= JModelUtils.isInterface(jcls) ? Opcodes.ACC_INTERFACE : 0;
-//		access |= JModelUtils.isAnnotation(jcls) ? Opcodes.ACC_ANNOTATION : 0;
-//		access |= JModelUtils.isEnum(jcls) ? Opcodes.ACC_ENUM : 0;
-//		return access;
 	}
 
 	protected Kind toKind(int access) {

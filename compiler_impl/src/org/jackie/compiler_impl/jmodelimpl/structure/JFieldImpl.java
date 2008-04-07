@@ -4,10 +4,8 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
-import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
-import org.jackie.compiler_impl.bytecode.BCClassContext;
-import org.jackie.utils.Assert;
 import static org.jackie.context.ContextManager.context;
 import org.objectweb.asm.FieldVisitor;
 
@@ -76,7 +74,8 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 			protected void run() {
 				FieldVisitor fv = cv().visitField(
 						toAccessFlag(getAccessMode()),
-						getName(), bcDesc(fthis), bcSignature(fthis),
+						getName(), bcDesc(fthis),
+						null, // signature
 						null);
 				fv.visitEnd();
 			}

@@ -34,4 +34,8 @@ public class InMemoryFileManager extends AbstractFileManager implements FileMana
 		artifacts.put(pathname, fobject);
 		return fobject;
 	}
+
+	public void remove(String pathname) {
+		artifacts.remove(pathname);
+	}
 }

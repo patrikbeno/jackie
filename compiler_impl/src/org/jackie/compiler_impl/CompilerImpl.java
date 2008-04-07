@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl;
 
 import org.jackie.compiler.Compiler;
+import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.context.CompilerContext;
 import org.jackie.compiler.filemanager.FileManager;
@@ -8,7 +9,10 @@ import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
 import org.jackie.compiler_impl.bytecode.BCClassContext;
-import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler_impl.typeregistry.JClassRegistry;
+import org.jackie.compiler_impl.typeregistry.CompilerWorkspaceRegistry;
+import org.jackie.compiler_impl.typeregistry.MultiRegistry;
+import org.jackie.compiler.spi.Compilable;
 import static org.jackie.context.ContextManager.context;
 import static org.jackie.context.ContextManager.newContext;
 import static org.jackie.context.ContextManager.closeContext;
@@ -20,6 +24,7 @@ import org.objectweb.asm.ClassWriter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.nio.ByteBuffer;
 
 /**
@@ -34,8 +39,31 @@ public class CompilerImpl implements Compiler {
 	protected List<FileManager> dependencies;
 
 	public void compile() {
-		compileJavaSources();
-		compileByteCode();
+		newContext();
+		try {
+			context().set(CompilerContext.class, new CompilerContext());
+			context().set(ExtensionManager.class, new ExtensionManagerImpl());
+
+			compileJavaSources();
+
+			context().set(TypeRegistry.class, new CompilerWorkspaceRegistry(
+					new JClassRegistry(workspace),
+					new MultiRegistry(toRegistryList(dependencies))
+			));
+
+			compileByteCode();
+
+		} finally {
+			closeContext();
+		}
+	}
+
+	protected List<TypeRegistry> toRegistryList(List<FileManager> dependencies) {
+		List<TypeRegistry> regs = new ArrayList<TypeRegistry>();
+		for (FileManager d : dependencies) {
+			regs.add(new JClassRegistry(d));
+		}
+		return regs;
 	}
 
 	void compileJavaSources() {
@@ -46,8 +74,7 @@ public class CompilerImpl implements Compiler {
 	}
 
 	void compileByteCode() {
-		TypeRegistry tr = context(CompilerContext.class).workspace.typeRegistry;
-		for (JClass jcls : tr.jclasses()) {
+		for (JClass jcls : context(TypeRegistry.class).jclasses()) {
 			compile(jcls);
 		}
 	}
@@ -64,6 +91,7 @@ public class CompilerImpl implements Compiler {
 			typecast(jcls, Compilable.class).compile();
 
 			ClassName clsname = new ClassName(jcls.getFQName());
+			workspace.remove(clsname.getPathName());
 			FileObject fo = workspace.create(clsname.getPathName());
 
 			IOHelper.write(

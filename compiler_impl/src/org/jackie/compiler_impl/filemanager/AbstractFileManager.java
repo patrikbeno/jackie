@@ -39,4 +39,8 @@ public abstract class AbstractFileManager implements FileManager {
 	public FileObject create(String pathname) {
 		throw Assert.unsupported();
 	}
+
+	public void remove(String pathname) {
+		throw Assert.unsupported(); 
+	}
 }

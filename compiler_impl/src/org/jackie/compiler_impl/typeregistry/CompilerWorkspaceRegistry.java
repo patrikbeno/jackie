@@ -40,4 +40,8 @@ public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 	public Set<String> getJClassIndex() {
 		throw Assert.notYetImplemented(); // todo implement this 
 	}
+
+	public Iterable<JClass> jclasses() {
+		return workspace.jclasses();
+	}
 }

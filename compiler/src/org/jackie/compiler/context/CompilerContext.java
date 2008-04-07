@@ -10,4 +10,8 @@ public class CompilerContext implements ContextObject {
 
 	public Workspace workspace;
 
+	{
+		workspace = new Workspace();
+	}
+
 }

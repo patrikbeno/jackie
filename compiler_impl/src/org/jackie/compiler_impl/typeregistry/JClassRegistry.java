@@ -4,9 +4,11 @@ import org.jackie.utils.ClassName;
 import org.jackie.utils.Assert;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler_impl.util.PathName;
+import org.jackie.jvm.JClass;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Iterator;
 
 /**
  * @author Patrik Beno
@@ -17,7 +19,7 @@ public class JClassRegistry extends AbstractTypeRegistry {
 
 	public JClassRegistry(FileManager fileManager) {
 		super(fileManager);
-		this.index = extractClassNames(fileManager.getPathNames());
+		rebuildIndex();
 	}
 
 	public JClassRegistry(Set<String> index) {
@@ -25,6 +27,9 @@ public class JClassRegistry extends AbstractTypeRegistry {
 		this.index = new HashSet<String>(index);
 	}
 
+	public void rebuildIndex() {
+		this.index = extractClassNames(fileManager.getPathNames());
+	}
 
 	protected Set<String> extractClassNames(Set<String> pathnames) {
 		Set<String> classes = new HashSet<String>(pathnames.size());
@@ -45,4 +50,28 @@ public class JClassRegistry extends AbstractTypeRegistry {
 	public Set<String> getJClassIndex() {
 		throw Assert.notYetImplemented(); // todo implement this 
 	}
+
+	public Iterable<JClass> jclasses() {
+		return new Iterable<JClass>() {
+			public Iterator<JClass> iterator() {
+				return new Iterator<JClass>() {
+
+					Iterator<String> it = index.iterator();
+
+					public boolean hasNext() {
+						return it.hasNext();
+					}
+
+					public JClass next() {
+						return getJClass(new ClassName(it.next()));
+					}
+
+					public void remove() {
+						throw Assert.unsupported();
+					}
+				};
+			}
+		};
+	}
+
 }
