@@ -87,11 +87,13 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.2</version>
 				<configuration>
 					<argLine>-Xmx256m</argLine>
 					<skip>false</skip>
 					<testFailureIgnore>true</testFailureIgnore>
 					<suiteXmlFiles>
+						<suiteXmlFile>src/testng.xml</suiteXmlFile>
 						<suiteXmlFile>test/suite.xml</suiteXmlFile>
 					</suiteXmlFiles>
 					<useSystemClassLoader>true</useSystemClassLoader>
@@ -111,8 +113,9 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-<!--
+
 	<pluginRepositories>
+<!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
@@ -121,8 +124,9 @@
 			<id>howardlewisship</id>
 			<url>http://howardlewisship.com/repository</url>
 		</pluginRepository>
-	</pluginRepositories>
 -->
+	</pluginRepositories>
+	
 	<repositories>
 <!--
 		<repository>
