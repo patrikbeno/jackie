@@ -9,11 +9,11 @@ import org.jackie.jvm.JPackage;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
-import org.jackie.utils.LightList;
 import static org.jackie.utils.Assert.typecast;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.Compilable;
@@ -247,7 +247,7 @@ public class JClassImpl implements JClass, Compilable {
 				cthis = JClassImpl.this;
 				//
 				bcinit();
-				bcannotations();
+				bcextensions();
 				bcfields();
 				bcmethods();
 				bcdone();
@@ -257,7 +257,11 @@ public class JClassImpl implements JClass, Compilable {
 				int version = Opcodes.V1_5; // todo hardcoded class version number
 				int access = toAccessFlags(cthis) | toAccessFlag(flags) | toAccessFlag(cthis.getAccessMode());
 				String bcSuperName = (superclass != null) ? bcName(superclass) : null;
-				cv().visit(version, access, bcName(cthis), bcSignature(), bcSuperName, bcInterfaces());
+				cv().visit(version, access,
+							  bcName(cthis), bcSignature(),
+							  bcSuperName,
+							  bcNames(cthis.getInterfaces())
+				);
 				// todo cw.visitSource();
 			}
 
@@ -265,47 +269,25 @@ public class JClassImpl implements JClass, Compilable {
 				cv().visitEnd();
 			}
 
-			void bcannotations() {
-//				for (AnnotationImpl a : annotations) {
-//					AnnotationVisitor av = cw.visitAnnotation(a.type.jclass.bcDesc(), true); // everything is visible, what the hell?
-//					a.compile(av);
-//				}
+			void bcextensions() {
+				for (Extension ext : extensions()) {
+					if (ext instanceof Compilable) {
+						((Compilable) ext).compile();
+					}
+				}
 			}
 
+
 			void bcfields() {
-//				for (JFieldImpl f : fields) {
-//					int access = toAccessFlags(f.type) | toAccessFlag(f.flags) | toAccessFlag(f.accessMode);
-//					FieldVisitor fv = cw.visitField(access, f.name, f.type.bcDesc(), f.bcSignature(), null);
-//					f.compile(fv);
-//				}
+				for (JField f : getFields()) {
+					typecast(f, Compilable.class).compile();
+				}
 			}
 
 			void bcmethods() {
-//				for (JMethodImpl m : methods) {
-//					int access = toAccessFlags(m.type) | toAccessFlag(m.flags) | toAccessFlag(m.accessMode);
-//					MethodVisitor mv = cw.visitMethod(access, m.name, desc, signature, bcExceptions(m));
-//					m.compile(mv);
-//				}
 				for (JMethod m : cthis.getMethods()) {
 					typecast(m, Compilable.class).compile();
 				}
-			}
-
-			String[] bcInterfaces() {
-//			List<String> bcnames = new LightList<String>();
-//			for (JClassImpl iface : interfaces) {
-//				bcnames.add(iface.bcName());
-//			}
-//			return bcnames.toArray(new String[bcnames.size()]);
-				return null;
-			}
-
-			String[] bcExceptions(JMethod m) {
-				List<String> bcnames = new LightList<String>();
-				for (JClass ex : m.getExceptions()) {
-					bcnames.add(bcName(ex));
-				}
-				return bcnames.toArray(new String[bcnames.size()]);
 			}
 
 		};

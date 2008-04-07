@@ -4,11 +4,17 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
+import org.jackie.compiler_impl.bytecode.Compilable;
+import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
+import org.jackie.compiler_impl.bytecode.BCClassContext;
+import org.jackie.utils.Assert;
+import static org.jackie.context.ContextManager.context;
+import org.objectweb.asm.FieldVisitor;
 
 /**
  * @author Patrik Beno
  */
-public class JFieldImpl extends JVariableImpl<JClass> implements JField {
+public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compilable {
 
 	protected AccessMode accessMode;
 
@@ -60,5 +66,20 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 		public JField editable() {
 			return fthis;
 		}
+	}
+
+	public void compile() {
+		new ByteCodeBuilder() {
+
+			JField fthis = JFieldImpl.this;
+
+			protected void run() {
+				FieldVisitor fv = cv().visitField(
+						toAccessFlag(getAccessMode()),
+						getName(), bcDesc(fthis), bcSignature(fthis),
+						null);
+				fv.visitEnd();
+			}
+		};
 	}
 }
