@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class RuntimeVisibleAnnotationsAttribute extends Attribute implements JAttribute {
 
-	static public final String NAME = "RuntimeVisibeAnnotations"; 
+	static public final String NAME = "RuntimeVisibleAnnotations"; 
 
 	protected List<AnnotationNode> annos;
 
