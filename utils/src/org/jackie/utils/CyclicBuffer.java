@@ -45,6 +45,10 @@ public final class CyclicBuffer {
 		this.bb = ByteBuffer.wrap(buf);
 	}
 
+	public void reset() {
+		head = tail = 0;
+	}
+
 	public int capacity() {
 		return capacity;
 	}
