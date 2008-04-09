@@ -4,7 +4,9 @@ import org.jackie.jvm.extension.Extension;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.java5.base.InterfaceType;
 import org.jackie.jvm.JClass;
-import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.JAttribute;
 
 /**
  * @author Patrik Beno
@@ -16,10 +18,10 @@ public class InterfaceTypeProvider implements ExtensionProvider<JClass> {
 	}
 
 	public Extension<JClass> getExtension(JClass jclass) {
-		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
+		JAttribute kind = jclass.attributes().getAttribute("Kind");
 		assert kind != null;
 
-		switch (kind.getKind()) {
+		switch ((Kind) kind.getValue()) {
 			case INTERFACE:
 			case ANNOTATION:
 				return new InterfaceTypeImpl(jclass);

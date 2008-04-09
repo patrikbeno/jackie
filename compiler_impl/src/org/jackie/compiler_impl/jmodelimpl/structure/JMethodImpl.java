@@ -17,6 +17,7 @@ import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
+import org.jackie.jvm.structure.JCode;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.utils.Assert;
 import org.objectweb.asm.MethodVisitor;
@@ -44,7 +45,7 @@ public class JMethodImpl implements JMethod, Compilable {
 	protected List<JClass> exceptions;
 	protected List<JVariable> locals;
     
-	protected CodeBlock code;
+	protected JCode code;
 
 	public JMethodImpl(JClass jclass) {
 		this.jclass = jclass;
@@ -91,8 +92,8 @@ public class JMethodImpl implements JMethod, Compilable {
 		return Collections.unmodifiableList(locals);
 	}
 
-	public CodeBlock getCodeBlock() {
-		return code;
+	public JCode getJCode() {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 	public Flags flags() {

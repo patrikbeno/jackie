@@ -3,9 +3,9 @@ package org.jackie.java5.annotation.impl;
 import org.jackie.java5.annotation.impl.AnnotationAttributeImpl;
 import org.jackie.java5.annotation.impl.AnnotationAttributeValueImpl;
 import org.jackie.java5.annotation.impl.AnnotationImpl;
-import org.jackie.java5.annotation.impl.AnnotationDefaultAttribute;
 import org.jackie.utils.ClassName;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotation;
@@ -96,9 +96,9 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 			attrs.add(attr);
 
 			// setup default
-			AnnotationDefaultAttribute adflt =
-					m.attributes().getAttribute(AnnotationDefaultAttribute.class);
-			Object dflt = convertAsmValue(m, adflt.value);
+			JAttribute adflt =
+					m.attributes().getAttribute("AnnotationDefault");
+			Object dflt = adflt != null ? convertAsmValue(m, adflt.getValue()) : null;
 
 			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
 		}

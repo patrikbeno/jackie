@@ -4,21 +4,22 @@ import org.jackie.jvm.Editable;
 
 import java.util.Set;
 import java.util.Map;
+import java.util.List;
 
 /**
  * @author Patrik Beno
  */
 public interface Attributes extends Editable<Attributes.Editor> {
 
-	Set<Class<? extends JAttribute>> getAttributeTypes();
+	Set<String> getAttributeNames();
 
-	Map<Class<? extends JAttribute>, JAttribute> getAttributes();
+	List<JAttribute> getAttributes();
 
-	<T extends JAttribute> T getAttribute(Class<T> type);
+	JAttribute getAttribute(String name);
 
 	public interface Editor extends org.jackie.jvm.Editor<Attributes> {
 
-		<T extends JAttribute> Editor addAttribute(Class<T> type, T attribute);
+		Editor addAttribute(JAttribute attribute);
 
 	}
 

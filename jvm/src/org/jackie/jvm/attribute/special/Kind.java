@@ -1,4 +1,4 @@
-package org.jackie.compiler.attribute;
+package org.jackie.jvm.attribute.special;
 
 /**
  * @author Patrik Beno

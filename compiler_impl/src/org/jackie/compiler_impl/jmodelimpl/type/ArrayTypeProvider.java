@@ -1,11 +1,12 @@
 package org.jackie.compiler_impl.jmodelimpl.type;
 
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.special.KindAttribute;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.extension.builtin.ArrayType;
-import org.jackie.compiler.attribute.KindAttribute;
-import org.jackie.compiler.attribute.Kind;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.JAttribute;
 
 /**
  * @author Patrik Beno
@@ -17,8 +18,8 @@ public class ArrayTypeProvider implements ExtensionProvider<JClass> {
 	}
 
 	public Extension<JClass> getExtension(JClass jclass) {
-		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
-		if (kind == null || !kind.getKind().equals(Kind.ARRAY)) {
+		JAttribute kind = jclass.attributes().getAttribute("Kind");
+		if (kind == null || !kind.getValue().equals(Kind.ARRAY)) {
 			return null;
 		}
 

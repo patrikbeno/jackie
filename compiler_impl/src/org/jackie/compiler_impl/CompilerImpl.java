@@ -20,12 +20,22 @@ import org.jackie.jvm.JClass;
 import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.IOHelper;
+import org.jackie.utils.Assert;
+import org.jackie.utils.CyclicBuffer;
 import org.objectweb.asm.ClassWriter;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.jar.JarOutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.WritableByteChannel;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author Patrik Beno
@@ -53,9 +63,14 @@ public class CompilerImpl implements Compiler {
 
 			compileByteCode();
 
+			save();
+
 		} finally {
 			closeContext();
 		}
+	}
+
+	protected void save() {
 	}
 
 	protected List<TypeRegistry> toRegistryList(List<FileManager> dependencies) {
@@ -94,9 +109,11 @@ public class CompilerImpl implements Compiler {
 			workspace.remove(clsname.getPathName());
 			FileObject fo = workspace.create(clsname.getPathName());
 
+			WritableByteChannel out = fo.getOutputChannel();
 			IOHelper.write(
 					ByteBuffer.wrap(cw.toByteArray()),
-					fo.getOutputChannel());
+					out);
+			IOHelper.close(out);
 
 
 		} finally {

@@ -1,18 +1,25 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.java5.annotation.impl.AnnotationDefaultAttribute;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler_impl.util.Helper;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
+import org.jackie.utils.Assert;
+import static org.jackie.context.ServiceManager.service;
+import org.jackie.compiler.spi.AttributeFactory;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.Attribute;
+import org.objectweb.asm.AnnotationVisitor;
 import static org.objectweb.asm.Type.getReturnType;
 import org.objectweb.asm.tree.MethodNode;
+import org.objectweb.asm.tree.AnnotationNode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -37,6 +44,11 @@ public class JMethodReader extends ByteCodeLoader {
 								String[] exceptions) {
 		this.jclass = jclass;
 		this.level = level;
+
+		this.name = name;
+		this.desc = desc;
+		this.signature = signature;
+		this.exceptions = exceptions;
 
 		jmethod = new JMethodImpl(jclass);
 		jmethod.edit()
@@ -84,11 +96,25 @@ public class JMethodReader extends ByteCodeLoader {
 
 	MethodVisitor getMethodVisitor() {
 		return new MethodNode(access, name, desc, signature, exceptions) {
+
+			public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
+				AnnotationNode anno = new AnnotationNode(desc);
+				jmethod.attributes().edit().addAttribute(
+						new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+				return anno;
+
+			}
+
+			public void visitAttribute(Attribute attr) {
+				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
+			}
+
 			public void visitEnd() {
 				super.visitEnd();
-				jmethod.attributes().edit().addAttribute(
-						AnnotationDefaultAttribute.class,
-						new AnnotationDefaultAttribute(annotationDefault));
+				if (annotationDefault != null) {
+					jmethod.attributes().edit().addAttribute(
+							new JAttributeImpl<Object>("AnnotationDefault", annotationDefault));
+				}
 			}
 		};
 	}

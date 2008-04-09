@@ -27,7 +27,7 @@ public interface JMethod extends JNode, Named, Typed, Flagged, Attributed, Exten
 
 	List<JVariable> getLocalVariables();
 
-	CodeBlock getCodeBlock();
+	JCode getJCode();
 
 
 	public interface Editor extends org.jackie.jvm.Editor<JMethod> {

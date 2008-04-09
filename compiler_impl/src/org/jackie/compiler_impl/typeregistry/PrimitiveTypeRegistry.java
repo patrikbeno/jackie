@@ -2,8 +2,8 @@ package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.compiler.attribute.KindAttribute;
-import org.jackie.compiler.attribute.Kind;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.Assert;
 import org.jackie.jvm.extension.builtin.JPrimitive;
@@ -47,7 +47,7 @@ public class PrimitiveTypeRegistry extends AbstractTypeRegistry {
 				JClassImpl jclass = new JClassImpl(p.getPrimitiveClass().getName(), null, this);
 				jclass.loadLevel = LoadLevel.CODE; // mark as loaded (primitives are unloadable)
 				jclass.attributes().edit()
-						.addAttribute(KindAttribute.class, new KindAttribute(Kind.PRIMITIVE));
+						.addAttribute(new KindAttribute(Kind.PRIMITIVE));
 
 				classes.put(jclass.getFQName(), jclass);
 			}

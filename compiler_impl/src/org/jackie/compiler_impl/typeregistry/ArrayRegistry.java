@@ -2,8 +2,8 @@ package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.compiler.attribute.Kind;
-import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.special.KindAttribute;
 import org.jackie.utils.ClassName;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;import static org.jackie.context.ContextManager.context;
@@ -92,7 +92,7 @@ public class ArrayRegistry {
 				jclass.edit()
 					.setSuperClass(context(TypeRegistry.class).getJClass(Object.class));
 				jclass.attributes().edit()
-					.addAttribute(KindAttribute.class, new KindAttribute(Kind.ARRAY));
+					.addAttribute(new KindAttribute(Kind.ARRAY));
 
 				arrays.put(desc, jclass);
 

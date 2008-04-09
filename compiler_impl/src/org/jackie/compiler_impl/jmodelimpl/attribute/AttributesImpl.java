@@ -3,29 +3,42 @@ package org.jackie.compiler_impl.jmodelimpl.attribute;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.CollectionsHelper.iterable;
 
 import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Collections;
+import java.util.List;
+import java.util.HashSet;
+import java.util.ArrayList;
+import static java.util.Collections.unmodifiableSet;
+import static java.util.Collections.unmodifiableList;
 
 /**
  * @author Patrik Beno
  */
 public class AttributesImpl implements Attributes {
 
-	Map<Class<? extends JAttribute>, JAttribute> attributes;
+	List<JAttribute> attributes;
 
-	public Set<Class<? extends JAttribute>> getAttributeTypes() {
-		return (attributes == null) ? Collections.emptySet() : (Set) attributes.keySet();
+	public Set<String> getAttributeNames() {
+		Set<String> names = new HashSet<String>();
+		for (JAttribute a : iterable(attributes)) {
+			names.add(a.getName());
+		}
+		return names;
 	}
 
-	public Map<Class<? extends JAttribute>, JAttribute> getAttributes() {
-		return (attributes == null) ? Collections.emptyMap() : (Map) Collections.unmodifiableMap(attributes);
+	public List<JAttribute> getAttributes() {
+		return attributes != null ? unmodifiableList(attributes) : Collections.<JAttribute>emptyList();
 	}
 
-	public <T extends JAttribute> T getAttribute(Class<T> type) {
-		return (attributes == null) ? null : (T) attributes.get(type);
+	public JAttribute getAttribute(String name) {
+		for (JAttribute a : iterable(attributes)) {
+			if (a.getName().equals(name)) {
+				return a;
+			}
+		}
+		return null;
 	}
 
 	public boolean isEditable() {
@@ -34,11 +47,16 @@ public class AttributesImpl implements Attributes {
 
 	public Editor edit() {
 		return new Editor() {
-			public <T extends JAttribute> Editor addAttribute(Class<T> type, T attribute) {
+			public Editor addAttribute(JAttribute attribute) {
+				JAttribute a = getAttribute(attribute.getName());
 				if (attributes == null) {
-					attributes = new HashMap<Class<? extends JAttribute>, JAttribute>();
+					attributes = new ArrayList<JAttribute>();
 				}
-				attributes.put(type, attribute);
+				if (a != null) {
+					a.edit().setNext(attribute);
+				} else {
+					attributes.add(attribute);
+				}
 				return this;
 			}
 

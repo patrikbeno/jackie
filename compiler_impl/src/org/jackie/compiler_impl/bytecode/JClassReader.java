@@ -1,19 +1,19 @@
 package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.compiler.spi.AttributeFactory;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.utils.ClassName;
 import static org.jackie.compiler_impl.util.Helper.impl;
-import org.jackie.java5.base.impl.EnclosingMethodAttribute;
-import org.jackie.java5.base.impl.InnerClassesAttribute;
-import org.jackie.java5.annotation.impl.RuntimeVisibleAnnotationsAttribute;
 import org.jackie.utils.Assert;
 import org.jackie.utils.CollectionsHelper;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.structure.JField;import static org.jackie.context.ContextManager.context;
+import static org.jackie.context.ServiceManager.service;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -40,7 +40,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		jclass = getJClass(clsname);
 
 		jclass.attributes().edit()
-				.addAttribute(KindAttribute.class, new KindAttribute(toKind(access)));
+				.addAttribute(new KindAttribute(toKind(access)));
 
 		// all classes except java.lang.Object have superclass defined
 		assert superName != null || jclass.getFQName().equals(Object.class.getName());
@@ -73,21 +73,21 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				EnclosingMethodAttribute.class,
-				new EnclosingMethodAttribute(owner, name, desc)
-		);
+				new JAttributeImpl<String[]>("EnclosingMethod", new String[] {owner,name,desc}));
 	}
 
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 		if (atLeast(LoadLevel.ATTRIBUTES)) {
 			return null;
 		}
-		return loadAnnotation(jclass.attributes(), desc);
+		AnnotationNode anno = new AnnotationNode(desc);
+		jclass.attributes().edit().addAttribute(
+				new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+		return anno;
 	}
 
 	public void visitAttribute(Attribute attr) {
-		// todo implement this
-		Assert.logNotYetImplemented();
+		jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
 	}
 
 	public void visitInnerClass(String name, String outerName, String innerName, int access) {
@@ -95,9 +95,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				InnerClassesAttribute.class,
-				new InnerClassesAttribute(name, outerName, innerName, access)
-		);
+				new JAttributeImpl<Object[]>("InnerClasses", new Object[]{name,outerName,innerName,access}));
 	}
 
 	public FieldVisitor visitField(final int access, final String name, final String desc, final String signature, final Object value) {
@@ -117,16 +115,19 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 						.setAccessMode(toAccessMode(access))
 						.setFlags(toFlags(access));
 
-				// todo value: register field initializer
+				jfield.attributes().edit().addAttribute(
+						new JAttributeImpl<Object>("ConstantValue", value));
 			}
 
 			public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
-				return loadAnnotation(jfield.attributes(), desc);
+				AnnotationNode anno = new AnnotationNode(desc);
+				jfield.attributes().edit().addAttribute(
+						new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+				return anno;
 			}
 
 			public void visitAttribute(Attribute attr) {
-				// todo implement this
-				Assert.logNotYetImplemented();
+				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
 			}
 
 			public void visitEnd() {
@@ -151,28 +152,5 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 	protected boolean atLeast(LoadLevel level) {
 		return impl(jclass).loadLevel.atLeast(level);
 	}
-
-	protected AnnotationVisitor loadAnnotation(Attributes attributes, String desc) {
-		if (impl(jclass).loadLevel.atLeast(LoadLevel.ATTRIBUTES)) {
-			return null;
-		}
-
-		RuntimeVisibleAnnotationsAttribute attr;
-
-		attr = attributes.getAttribute(RuntimeVisibleAnnotationsAttribute.class);
-		if (attr == null) {
-			attributes.edit().addAttribute(
-					RuntimeVisibleAnnotationsAttribute.class,
-					attr = new RuntimeVisibleAnnotationsAttribute()
-			);
-		}
-
-		AnnotationNode anno = new AnnotationNode(desc);
-		attr.add(anno);
-
-		return anno;
-
-	}
-
 
 }

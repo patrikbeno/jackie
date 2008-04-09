@@ -28,6 +28,17 @@ import java.util.HashMap;
  */
 public abstract class ByteCodeBuilder extends AsmSupport {
 
+	static final private Map<String,String> MAPPING = new HashMap<String, String>() {{
+			put("void", 	"V");
+			put("char", 	"C");
+			put("byte", 	"B");
+			put("short", 	"S");
+			put("int", 		"I");
+			put("long", 	"J");
+			put("float", 	"F");
+			put("double", 	"D");
+	}};
+
 	{
 		init();
 		run();
@@ -56,17 +67,6 @@ public abstract class ByteCodeBuilder extends AsmSupport {
 		}
 		return bcnames.toArray(new String[bcnames.size()]);
 	}
-
-	static private Map<String,String> MAPPING = new HashMap<String, String>() {{
-			put("void", 	"V");
-			put("char", 	"C");
-			put("byte", 	"B");
-			put("short", 	"S");
-			put("int", 		"I");
-			put("long", 	"J");
-			put("float", 	"F");
-			put("double", 	"D");
-	}};
 
 	protected String bcDesc(JClass jcls) {
 		StringBuilder sb = new StringBuilder();

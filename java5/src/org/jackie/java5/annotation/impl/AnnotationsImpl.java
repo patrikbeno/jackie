@@ -8,6 +8,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.Attributes;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.utils.Assert;
@@ -112,13 +113,12 @@ public class AnnotationsImpl implements Annotations, Compilable {
 		}
 
 		Attributes attrs = typecast(node, Attributed.class).attributes();
-		RuntimeVisibleAnnotationsAttribute rtannos = attrs
-				.getAttribute(RuntimeVisibleAnnotationsAttribute.class);
 
 		List<JAnnotation> annotations = new ArrayList<JAnnotation>();
 
-		for (AnnotationNode anode : rtannos.getAnnotationNodes()) {
-			JAnnotation anno = new AnnotationImpl(anode, this);
+		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
+			assert attr.getValue() instanceof AnnotationNode;
+			JAnnotation anno = new AnnotationImpl((AnnotationNode) attr.getValue(), this);
 			annotations.add(anno);
 		}
 

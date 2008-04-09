@@ -1,6 +1,8 @@
 package org.jackie.java5.base.impl;
 
-import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.Extension;
@@ -37,10 +39,10 @@ public class ClassTypeProvider implements ExtensionProvider<JClass> {
 			return null;
 		}
 
-		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
+		JAttribute kind = jclass.attributes().getAttribute("Kind");
 		assert kind != null;
 
-		switch (kind.getKind()) {
+		switch ((Kind) kind.getValue()) {
 			case CLASS:
 			case ENUM:
 				return new ClassTypeImpl(jclass);

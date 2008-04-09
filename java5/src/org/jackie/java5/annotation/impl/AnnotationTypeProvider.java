@@ -1,7 +1,9 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.jvm.JClass;
-import org.jackie.compiler.attribute.KindAttribute;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.java5.annotation.AnnotationType;
@@ -16,10 +18,10 @@ public class AnnotationTypeProvider implements ExtensionProvider<JClass> {
 	}
 
 	public Extension<JClass> getExtension(JClass jclass) {
-		KindAttribute kind = jclass.attributes().getAttribute(KindAttribute.class);
+		JAttribute kind = jclass.attributes().getAttribute("Kind");
 		assert kind != null;
 
-		switch (kind.getKind()) {
+		switch ((Kind) kind.getValue()) {
 			case ANNOTATION:
 				return new AnnotationTypeImpl(jclass);
 		}

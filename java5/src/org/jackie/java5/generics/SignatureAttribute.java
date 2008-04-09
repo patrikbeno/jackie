@@ -1,19 +1,14 @@
 package org.jackie.java5.generics;
 
 import org.jackie.jvm.attribute.JAttribute;
+import org.jackie.jvm.spi.AbstractJAttribute;
 
 /**
  * @author Patrik Beno
  */
-public class SignatureAttribute implements JAttribute {
+public class SignatureAttribute extends AbstractJAttribute {
 
-	protected String signature;
-
-	public String getName() {
-		return "Signature";
-	}
-
-	public SignatureAttribute(String signature) {
-		this.signature = signature;
+	public SignatureAttribute(Object value) {
+		super("Signature", value);
 	}
 }
