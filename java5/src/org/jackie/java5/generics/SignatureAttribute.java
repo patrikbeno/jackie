@@ -1,6 +1,5 @@
 package org.jackie.java5.generics;
 
-import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.spi.AbstractJAttribute;
 
 /**

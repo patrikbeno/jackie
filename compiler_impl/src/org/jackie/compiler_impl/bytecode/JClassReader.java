@@ -1,20 +1,16 @@
 package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler.spi.AttributeFactory;
-import org.jackie.jvm.attribute.special.KindAttribute;
-import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
-import org.jackie.utils.ClassName;
 import static org.jackie.compiler_impl.util.Helper.impl;
-import org.jackie.utils.Assert;
-import org.jackie.utils.CollectionsHelper;
+import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.structure.JField;import static org.jackie.context.ContextManager.context;
-import static org.jackie.context.ServiceManager.service;
-
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.structure.JField;
+import org.jackie.utils.ClassName;
+import org.jackie.utils.CollectionsHelper;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;

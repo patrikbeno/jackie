@@ -1,9 +1,9 @@
 package org.jackie.compiler_impl.filemanager;
 
-import org.jackie.compiler_impl.filemanager.foimpl.ByteArrayFileObject;
-import static org.jackie.utils.Assert.doAssert;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler_impl.filemanager.foimpl.ByteArrayFileObject;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.util.HashMap;
 import java.util.Map;

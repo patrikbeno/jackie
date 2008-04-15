@@ -1,17 +1,16 @@
 package org.jackie.compiler_impl.jmodelimpl.attribute;
 
-import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.attribute.Attributes;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 
-import java.util.Set;
-import java.util.Collections;
-import java.util.List;
-import java.util.HashSet;
 import java.util.ArrayList;
-import static java.util.Collections.unmodifiableSet;
+import java.util.Collections;
 import static java.util.Collections.unmodifiableList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author Patrik Beno

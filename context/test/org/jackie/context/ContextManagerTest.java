@@ -1,10 +1,8 @@
 package org.jackie.context;
 
-import org.testng.annotations.Test;
-import static org.jackie.context.ContextManager.newContext;
-import static org.jackie.context.ContextManager.context;
-import static org.jackie.context.ContextManager.closeContext;
+import static org.jackie.context.ContextManager.*;
 import org.jackie.utils.Log;
+import org.testng.annotations.Test;
 
 /**
  * @author Patrik Beno

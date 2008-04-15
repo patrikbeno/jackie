@@ -6,11 +6,7 @@ import org.jackie.compiler_impl.filemanager.ClassPathFileManager;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
 import org.jackie.compiler_impl.typeregistry.PrimitiveTypeRegistry;
-import org.jackie.compiler_impl.util.PathName;
 import static org.jackie.context.ContextManager.*;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Patrik Beno

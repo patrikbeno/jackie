@@ -1,34 +1,33 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.Annotated;
-import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.JAnnotationAttributeValue;
-import org.jackie.java5.annotation.Annotations;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.jvm.extension.builtin.JPrimitive;
-import org.jackie.jvm.extension.builtin.ArrayType;
-import org.jackie.jvm.extension.builtin.PrimitiveType;
-import org.jackie.jvm.JClass;
-import org.jackie.utils.Assert;
-import org.jackie.utils.CollectionsHelper;
-import org.jackie.utils.ClassName;
-import org.jackie.java5.enumtype.EnumType;
-import static org.jackie.context.ContextManager.context;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.objectweb.asm.tree.AnnotationNode;
-import static org.objectweb.asm.Type.getType;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.java5.annotation.Annotated;
+import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.enumtype.EnumType;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.builtin.ArrayType;
+import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.jvm.extension.builtin.PrimitiveType;
+import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
+import org.jackie.utils.CollectionsHelper;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Array;
+import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-import java.util.Iterator;
 import static java.util.Collections.emptyList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Patrik Beno

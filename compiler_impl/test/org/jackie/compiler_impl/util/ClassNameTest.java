@@ -2,7 +2,6 @@ package org.jackie.compiler_impl.util;
 
 import org.jackie.utils.Assert;
 import org.jackie.utils.ClassName;
-
 import org.testng.annotations.Test;
 
 /**

@@ -1,7 +1,6 @@
 package org.jackie.compiler.context;
 
 import org.jackie.context.ContextObject;
-import org.jackie.compiler.typeregistry.TypeRegistry;
 
 /**
  * @author Patrik Beno

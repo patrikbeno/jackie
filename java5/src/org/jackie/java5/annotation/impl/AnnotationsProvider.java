@@ -1,10 +1,10 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.jvm.extension.Extension;
 import org.jackie.java5.annotation.Annotations;
-import org.jackie.jvm.JNode;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 

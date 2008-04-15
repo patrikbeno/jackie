@@ -1,9 +1,10 @@
 package org.jackie.compiler_impl.jmodelimpl.type;
 
+import org.jackie.compiler.typeregistry.TypeRegistry;
+import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.ArrayType;
 import org.jackie.utils.ClassName;
-import org.jackie.compiler.typeregistry.TypeRegistry;import static org.jackie.context.ContextManager.context;
 
 /**
  * @author Patrik Beno

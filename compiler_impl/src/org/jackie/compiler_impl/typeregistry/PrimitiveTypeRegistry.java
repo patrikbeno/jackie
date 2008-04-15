@@ -2,12 +2,12 @@ package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.jvm.attribute.special.KindAttribute;
-import org.jackie.jvm.attribute.special.Kind;
-import org.jackie.utils.ClassName;
-import org.jackie.utils.Assert;
-import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
 
 import java.util.Set;
 

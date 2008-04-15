@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.filemanager;
 
-import org.jackie.compiler_impl.filemanager.foimpl.URLFileObject;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler_impl.filemanager.foimpl.URLFileObject;
 
 import java.net.URL;
 import java.util.Collections;

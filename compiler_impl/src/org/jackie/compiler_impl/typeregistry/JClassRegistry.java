@@ -1,14 +1,14 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.utils.ClassName;
-import org.jackie.utils.Assert;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler_impl.util.PathName;
 import org.jackie.jvm.JClass;
+import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
 
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * @author Patrik Beno

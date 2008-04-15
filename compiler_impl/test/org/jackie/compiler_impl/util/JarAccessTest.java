@@ -4,7 +4,6 @@ import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
-
 import org.testng.annotations.Test;
 
 import java.io.BufferedInputStream;

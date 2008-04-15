@@ -1,17 +1,16 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
+import org.jackie.compiler.extension.ExtensionManager;
+import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
 import static org.jackie.utils.Assert.typecast;
-import org.jackie.utils.Assert;
-import static org.jackie.context.ContextManager.context;
-import org.jackie.compiler.extension.ExtensionManager;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Iterator;
 
 /**
  * @author Patrik Beno

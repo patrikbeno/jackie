@@ -1,16 +1,12 @@
 package org.jackie.context;
 
+import static org.jackie.context.ContextManager.context;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
-import static org.jackie.context.ContextManager.context;
 
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Properties;
+import java.util.Map;
 import java.util.NoSuchElementException;
-import java.io.IOException;
-import java.net.URL;
 
 /**
  * @author Patrik Beno

@@ -1,12 +1,9 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.utils.Assert;
+import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
-import static org.jackie.context.ContextManager.newContext;
-import static org.jackie.context.ContextManager.context;
-import static org.jackie.context.ContextManager.closeContext;
-
+import org.jackie.utils.Assert;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

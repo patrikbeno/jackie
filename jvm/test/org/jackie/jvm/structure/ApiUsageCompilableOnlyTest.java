@@ -1,8 +1,8 @@
 package org.jackie.jvm.structure;
 
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
-import org.jackie.jvm.JClass;
 
 /**
  * @author Patrik Beno

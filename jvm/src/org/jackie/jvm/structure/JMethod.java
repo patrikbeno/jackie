@@ -3,14 +3,13 @@ package org.jackie.jvm.structure;
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
-import org.jackie.jvm.extension.Extensible;
 import org.jackie.jvm.attribute.Attributed;
-import org.jackie.jvm.code.CodeBlock;
+import org.jackie.jvm.extension.Extensible;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
+import org.jackie.jvm.props.Flagged;
 import org.jackie.jvm.props.Named;
 import org.jackie.jvm.props.Typed;
-import org.jackie.jvm.props.Flagged;
 
 import java.util.List;
 

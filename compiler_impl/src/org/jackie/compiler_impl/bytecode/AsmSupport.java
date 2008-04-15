@@ -1,13 +1,12 @@
 package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.special.Kind;
-import org.jackie.utils.ClassName;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
-import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
-
+import org.jackie.utils.ClassName;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 

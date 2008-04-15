@@ -1,10 +1,10 @@
 package org.jackie.java5.base;
 
+import org.jackie.jvm.Editable;
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
-import org.jackie.jvm.Editable;
-import org.jackie.jvm.JClass;
 
 import java.util.List;
 

@@ -1,20 +1,19 @@
 package org.jackie.java5.annotation.impl;
 
+import org.jackie.compiler.spi.Compilable;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
-import org.jackie.jvm.Editable;
-import org.jackie.jvm.structure.JMethod;
-import org.jackie.jvm.structure.JField;
-import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JMethod;
+import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
-import org.jackie.compiler.spi.Compilable;
-import static org.objectweb.asm.Type.getType;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.annotation.Annotation;

@@ -1,11 +1,10 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.compiler_impl.TestCase;
-import org.jackie.utils.Assert;
-import org.jackie.jvm.JClass;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler_impl.TestCase;
 import static org.jackie.context.ContextManager.context;
-
+import org.jackie.jvm.JClass;
+import org.jackie.utils.Assert;
 import org.testng.annotations.Test;
 
 /**

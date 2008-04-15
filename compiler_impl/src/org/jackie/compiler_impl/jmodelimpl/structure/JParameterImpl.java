@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
-import org.jackie.jvm.JClass;
 
 /**
  * @author Patrik Beno

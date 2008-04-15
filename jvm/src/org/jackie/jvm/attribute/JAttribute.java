@@ -1,11 +1,9 @@
 package org.jackie.jvm.attribute;
 
-import org.jackie.jvm.props.Named;
-import org.jackie.jvm.JNode;
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.Editor;
-
-import java.util.Iterator;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.props.Named;
 
 /**
  * @author Patrik Beno

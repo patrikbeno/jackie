@@ -1,8 +1,7 @@
 package org.jackie.compiler_impl.filemanager;
 
-import org.jackie.utils.Assert;
 import org.jackie.compiler_impl.filemanager.foimpl.URLFileObject;
-
+import org.jackie.utils.Assert;
 import org.testng.annotations.Test;
 
 import java.io.File;

@@ -1,9 +1,8 @@
 package org.jackie.java5.annotation;
 
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 
 import java.util.List;
 import java.util.Set;

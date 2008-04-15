@@ -1,24 +1,23 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
-import static org.jackie.compiler_impl.util.Helper.assertEditable;
-import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
-import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
-import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
-import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
+import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
+import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
+import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
+import static org.jackie.compiler_impl.util.Helper.assertEditable;
+import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
-import org.jackie.jvm.code.CodeBlock;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.structure.JCode;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
-import org.jackie.jvm.structure.JCode;
-import static org.jackie.context.ContextManager.context;
 import org.jackie.utils.Assert;
 import org.objectweb.asm.MethodVisitor;
 

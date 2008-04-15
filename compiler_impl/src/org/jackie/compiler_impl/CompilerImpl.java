@@ -1,41 +1,30 @@
 package org.jackie.compiler_impl;
 
 import org.jackie.compiler.Compiler;
-import org.jackie.compiler.extension.ExtensionManager;
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.context.CompilerContext;
+import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
-import org.jackie.compiler_impl.bytecode.BCClassContext;
-import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.CompilerWorkspaceRegistry;
+import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
-import org.jackie.compiler.spi.Compilable;
-import static org.jackie.context.ContextManager.context;
-import static org.jackie.context.ContextManager.newContext;
-import static org.jackie.context.ContextManager.closeContext;
+import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
 import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.IOHelper;
-import org.jackie.utils.Assert;
-import org.jackie.utils.CyclicBuffer;
 import org.objectweb.asm.ClassWriter;
 
+import java.nio.ByteBuffer;
+import java.nio.channels.WritableByteChannel;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.jar.JarOutputStream;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
-import java.nio.channels.WritableByteChannel;
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 /**
  * @author Patrik Beno

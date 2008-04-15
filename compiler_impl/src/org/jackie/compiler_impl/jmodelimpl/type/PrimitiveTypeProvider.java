@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl.type;
 
+import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.Extension;
-import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.jvm.extension.builtin.PrimitiveType;
 

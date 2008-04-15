@@ -1,7 +1,7 @@
 package org.jackie.jvm.extension.builtin;
 
-import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * @author Patrik Beno

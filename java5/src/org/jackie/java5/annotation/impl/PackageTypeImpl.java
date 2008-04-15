@@ -1,8 +1,8 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.jvm.JClass;
-import org.jackie.java5.extra.PackageType;
 import org.jackie.java5.AbstractExtension;
+import org.jackie.java5.extra.PackageType;
+import org.jackie.jvm.JClass;
 
 /**
  * @author Patrik Beno

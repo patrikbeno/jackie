@@ -1,7 +1,7 @@
 package org.jackie.java5.extra;
 
-import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * Represents package class (one compiled from package-info.java)

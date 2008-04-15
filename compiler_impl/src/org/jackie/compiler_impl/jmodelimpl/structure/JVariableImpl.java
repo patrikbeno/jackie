@@ -1,14 +1,14 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
+import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
+import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
+import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.structure.JVariable;
-import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
-import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
-import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 
 /**
  * @author Patrik Beno

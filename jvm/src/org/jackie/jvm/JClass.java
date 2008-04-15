@@ -1,13 +1,13 @@
 package org.jackie.jvm;
 
 import org.jackie.jvm.attribute.Attributed;
+import org.jackie.jvm.extension.Extensible;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Accessible;
 import org.jackie.jvm.props.FQNamed;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flagged;
 import org.jackie.jvm.props.Named;
-import org.jackie.jvm.extension.Extensible;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 

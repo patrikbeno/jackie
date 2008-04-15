@@ -1,12 +1,11 @@
 package org.jackie.java5.enumtype.impl;
 
-import org.jackie.jvm.attribute.special.KindAttribute;
-import org.jackie.jvm.attribute.special.Kind;
-import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.jvm.JClass;
-import org.jackie.jvm.extension.Extension;
 import org.jackie.java5.enumtype.EnumType;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.JAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * @author Patrik Beno

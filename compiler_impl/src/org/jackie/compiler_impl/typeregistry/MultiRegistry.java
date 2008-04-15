@@ -1,10 +1,10 @@
 package org.jackie.compiler_impl.typeregistry;
 
-import org.jackie.utils.ClassName;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
 
 import java.util.Arrays;
 import java.util.List;

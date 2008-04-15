@@ -1,8 +1,8 @@
 package org.jackie.java5.base.impl;
 
-import org.jackie.jvm.JClass;
-import org.jackie.java5.base.InterfaceType;
 import org.jackie.java5.AbstractExtension;
+import org.jackie.java5.base.InterfaceType;
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;

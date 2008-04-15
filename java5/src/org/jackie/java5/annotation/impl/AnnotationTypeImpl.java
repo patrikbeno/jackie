@@ -1,31 +1,28 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.java5.annotation.impl.AnnotationAttributeImpl;
-import org.jackie.java5.annotation.impl.AnnotationAttributeValueImpl;
-import org.jackie.java5.annotation.impl.AnnotationImpl;
-import org.jackie.utils.ClassName;
+import org.jackie.compiler.typeregistry.TypeRegistry;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.java5.AbstractExtension;
+import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.Annotations;
-import org.jackie.java5.AbstractExtension;
 import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
-import static org.jackie.context.ContextManager.context;
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
 
 /**
  * @author Patrik Beno

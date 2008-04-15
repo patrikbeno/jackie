@@ -1,10 +1,9 @@
 package org.jackie.compiler_impl.filemanager;
 
+import org.jackie.compiler.filemanager.FileObject;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
-import org.jackie.compiler.filemanager.FileObject;
-
 import org.testng.annotations.Test;
 
 import java.io.File;

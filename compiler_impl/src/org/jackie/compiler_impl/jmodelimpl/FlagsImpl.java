@@ -2,8 +2,8 @@ package org.jackie.compiler_impl.jmodelimpl;
 
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flags;
-import org.jackie.utils.FlagSupport;
 import org.jackie.utils.Assert;
+import org.jackie.utils.FlagSupport;
 
 import java.util.Set;
 

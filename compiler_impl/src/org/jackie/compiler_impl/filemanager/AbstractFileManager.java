@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.filemanager;
 
-import org.jackie.utils.Assert;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.utils.Assert;
 
 import java.util.Iterator;
 

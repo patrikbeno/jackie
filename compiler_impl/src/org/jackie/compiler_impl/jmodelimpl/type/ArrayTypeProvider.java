@@ -1,12 +1,11 @@
 package org.jackie.compiler_impl.jmodelimpl.type;
 
-import org.jackie.jvm.JClass;
-import org.jackie.jvm.attribute.special.KindAttribute;
-import org.jackie.jvm.extension.Extension;
 import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.jvm.extension.builtin.ArrayType;
-import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;
+import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.extension.builtin.ArrayType;
 
 /**
  * @author Patrik Beno

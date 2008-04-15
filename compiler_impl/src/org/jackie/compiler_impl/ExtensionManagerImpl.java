@@ -1,15 +1,15 @@
 package org.jackie.compiler_impl;
 
-import org.jackie.context.Loader;
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.jvm.extension.Extension;
+import org.jackie.context.Loader;
 import org.jackie.jvm.JNode;
-import static org.jackie.utils.Assert.typecast;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrik Beno

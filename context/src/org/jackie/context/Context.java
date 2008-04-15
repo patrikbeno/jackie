@@ -2,8 +2,8 @@ package org.jackie.context;
 
 import static org.jackie.utils.Assert.doAssert;
 
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrik Beno

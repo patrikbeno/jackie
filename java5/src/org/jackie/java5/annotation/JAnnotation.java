@@ -2,7 +2,6 @@ package org.jackie.java5.annotation;
 
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JNode;
-import org.jackie.java5.annotation.AnnotationType;
 
 import java.util.List;
 

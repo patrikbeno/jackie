@@ -2,27 +2,22 @@ package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.JClassParser;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.JPackageImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.utils.ClassName;
-import org.jackie.utils.PackageName;
-import org.jackie.compiler_impl.bytecode.JClassReader;
-import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.context.ServiceManager;
 import static org.jackie.context.ServiceManager.service;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
-import org.objectweb.asm.ClassReader;
+import org.jackie.utils.ClassName;
+import org.jackie.utils.PackageName;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.Iterator;
 import java.io.IOException;
 import java.nio.channels.Channels;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Patrik Beno
