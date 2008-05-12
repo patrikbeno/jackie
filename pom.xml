@@ -42,6 +42,7 @@
 		<!-- support -->
 		<module>utils</module>
 		<module>context</module>
+		<module>event</module>
 
 		<!-- test -->
 		<module>test</module>
