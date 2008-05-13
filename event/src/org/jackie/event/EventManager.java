@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.ArrayList;
+import java.util.HashMap;
 import static java.util.Collections.emptyList;
 
 /**
@@ -18,6 +19,10 @@ public class EventManager implements Service {
 
 	Map<Class, EventDispatcherProxy> proxies;
 
+	{
+		listenersByType = new HashMap<Class, List<Event>>();
+		proxies = new HashMap<Class, EventDispatcherProxy>();
+	}
 
 	public <T extends Event> void registerEventListener(Class<T> type, T listener) {
 		List<Event> listeners = listenersByType.get(type);

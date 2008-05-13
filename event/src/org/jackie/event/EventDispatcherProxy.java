@@ -7,6 +7,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.List;
 
 /**
  * @author Patrik Beno
@@ -28,7 +29,12 @@ public class EventDispatcherProxy implements InvocationHandler {
 			return m.invoke(this, args);
 		}
 
-		for (Event e : manager.getListeners(type)) {
+		List<? extends Event> listeners = manager.getListeners(type);
+		if (!listeners.isEmpty()) {
+			Log.debug("Dispatching event %s.%s to %s listeners", type.getSimpleName(), method.getName(), listeners.size());
+		}
+
+		for (Event e : listeners) {
 			invoke(e, method, args);
 		}
 
