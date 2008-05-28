@@ -69,7 +69,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<String[]>("EnclosingMethod", new String[] {owner,name,desc}));
+				new JAttributeImpl<String[]>(BuiltinAttribute.EnclosingMethod.name(), new String[] {owner,name,desc}));
 	}
 
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -78,7 +78,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		}
 		AnnotationNode anno = new AnnotationNode(desc);
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+				new JAttributeImpl<AnnotationNode>(BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
 		return anno;
 	}
 
@@ -91,7 +91,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<Object[]>("InnerClasses", new Object[]{name,outerName,innerName,access}));
+				new JAttributeImpl<Object[]>(BuiltinAttribute.InnerClasses.name(), new Object[]{name,outerName,innerName,access}));
 	}
 
 	public FieldVisitor visitField(final int access, final String name, final String desc, final String signature, final Object value) {
@@ -112,13 +112,13 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 						.setFlags(toFlags(access));
 
 				jfield.attributes().edit().addAttribute(
-						new JAttributeImpl<Object>("ConstantValue", value));
+						new JAttributeImpl<Object>(BuiltinAttribute.ConstantValue.name(), value));
 			}
 
 			public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 				AnnotationNode anno = new AnnotationNode(desc);
 				jfield.attributes().edit().addAttribute(
-						new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+						new JAttributeImpl<AnnotationNode>(BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
 				return anno;
 			}
 
