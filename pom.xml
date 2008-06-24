@@ -10,8 +10,6 @@
 	<packaging>pom</packaging>
 
 	<name>${pom.artifactId}-${pom.version}</name>
-	<description></description>
-	<inceptionYear>2007</inceptionYear>
 
 	<profiles>
 		<profile>
