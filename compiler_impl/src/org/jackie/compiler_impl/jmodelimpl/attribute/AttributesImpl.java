@@ -4,6 +4,8 @@ import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
+import static org.jackie.event.Events.events;
+import org.jackie.compiler.attribute.AttributeListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,14 +50,15 @@ public class AttributesImpl implements Attributes {
 		return new Editor() {
 			public Editor addAttribute(JAttribute attribute) {
 				JAttribute a = getAttribute(attribute.getName());
-				if (attributes == null) {
-					attributes = new ArrayList<JAttribute>();
-				}
 				if (a != null) {
 					a.edit().setNext(attribute);
 				} else {
+					if (attributes == null) {
+						attributes = new ArrayList<JAttribute>();
+					}
 					attributes.add(attribute);
 				}
+				events(AttributeListener.class).attributeAdded(attribute);
 				return this;
 			}
 
