@@ -2,7 +2,7 @@ package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.extension.Lifecycle;
-import org.jackie.compiler.attribute.AttributeListener;
+import org.jackie.compiler.event.AttributeListener;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;

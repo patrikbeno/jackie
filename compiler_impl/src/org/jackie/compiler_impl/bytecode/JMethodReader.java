@@ -8,6 +8,8 @@ import org.jackie.compiler_impl.util.Helper;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
+import static org.jackie.event.Events.events;
+import org.jackie.compiler.event.MethodListener;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.MethodVisitor;
@@ -110,6 +112,7 @@ public class JMethodReader extends ByteCodeLoader {
 					jmethod.attributes().edit().addAttribute(
 							new JAttributeImpl<Object>("AnnotationDefault", annotationDefault));
 				}
+				events(MethodListener.class).loaded(jmethod);
 			}
 		};
 	}

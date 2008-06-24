@@ -1,4 +1,4 @@
-package org.jackie.compiler.attribute;
+package org.jackie.compiler.event;
 
 import org.jackie.event.Event;
 import org.jackie.jvm.attribute.JAttribute;

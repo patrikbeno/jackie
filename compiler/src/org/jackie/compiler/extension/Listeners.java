@@ -10,10 +10,4 @@ public interface Listeners {
 	interface ProjectListener {}
 	interface ModuleListener {}
 	interface PackageListener {}
-	interface ClassListener {}
-	interface FieldListener {}
-	interface MethodListener {}
-	interface AnnotationListener {}
-	interface AttributeListener {}
-
 }

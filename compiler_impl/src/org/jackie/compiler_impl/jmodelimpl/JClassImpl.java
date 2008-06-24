@@ -73,7 +73,7 @@ public class JClassImpl implements JClass, Compilable {
 			return;
 		}
 
-		((JClassLoader)typeRegistry).load(this, min);
+		typecast(typeRegistry, JClassLoader.class).load(this, min);
 	}
 
 	/// JClass ///

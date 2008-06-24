@@ -5,7 +5,7 @@ import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.event.Events.events;
-import org.jackie.compiler.attribute.AttributeListener;
+import org.jackie.compiler.event.AttributeListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
