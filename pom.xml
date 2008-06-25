@@ -42,6 +42,7 @@
 		<module>utils</module>
 		<module>context</module>
 		<module>event</module>
+		<module>asmtools</module>
 
 		<!-- test -->
 		<module>test</module>
