@@ -1,11 +1,12 @@
 package org.jackie.event;
 
 import org.jackie.context.Service;
+import static org.jackie.context.ServiceManager.service;
 import org.jackie.utils.Assert;
+import org.jackie.event.impl.EventDispatcherProxy;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import static java.util.Collections.emptyList;
@@ -22,6 +23,11 @@ public class EventManager implements Service {
 	{
 		listenersByType = new HashMap<Class, List<Event>>();
 		proxies = new HashMap<Class, EventDispatcherProxy>();
+	}
+
+
+	static public EventManager eventManager() {
+		return service(EventManager.class);
 	}
 
 	public <T extends Event> void registerEventListener(Class<T> type, T listener) {
