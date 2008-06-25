@@ -1,7 +1,9 @@
-package org.jackie.event;
+package org.jackie.event.impl;
 
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
+import org.jackie.event.EventManager;
+import org.jackie.event.Event;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;

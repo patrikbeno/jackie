@@ -23,4 +23,8 @@ public class JavaHelper {
 		return condition == true;
 	}
 
+	static public boolean isSet(int flags, int test) {
+		return (flags & test) == test;
+	}
+
 }
