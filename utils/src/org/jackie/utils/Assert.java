@@ -55,6 +55,12 @@ public class Assert {
 		}};
 	}
 
+	static public AssertionError invariantFailed(Throwable thrown, String msg, Object ... args) {
+		AssertionError ex = new AssertionError(String.format(msg, args));
+		ex.initCause(thrown);
+		return ex;
+	}
+
 	static public AssertionError invariantFailed(String msg, Object ... args) {
 		return new AssertionError(String.format(msg, args));
 	}
