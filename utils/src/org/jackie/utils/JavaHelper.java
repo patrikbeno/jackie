@@ -1,5 +1,8 @@
 package org.jackie.utils;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Constructor;
+
 /**
  * @author Patrik Beno
  */
@@ -25,6 +28,23 @@ public class JavaHelper {
 
 	static public boolean isSet(int flags, int test) {
 		return (flags & test) == test;
+	}
+
+
+	static public Constructor getConstructor(Class cls, Class... args) {
+		try {
+			return cls.getConstructor(args);
+		} catch (NoSuchMethodException e) {
+			throw Assert.notYetHandled(e);
+		}
+	}
+
+	static public Method getMethod(Class cls, String name, Class... args) {
+		try {
+			return cls.getMethod(name, args);
+		} catch (NoSuchMethodException e) {
+			throw Assert.notYetHandled(e);
+		}
 	}
 
 }
