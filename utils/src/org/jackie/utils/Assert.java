@@ -76,6 +76,14 @@ public class Assert {
 		}
 	}
 
+	static public <T> T NOTNULL(T t, String message) {
+		if (t == null) {
+			throw new AssertionError(String.format("Unexpected NULL: %s", message));
+		}
+
+		return t;
+	}
+
 	static public void logNotYetImplemented() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
 		Log.warn("Not Yet Implemented: at %s", ste);
