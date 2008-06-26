@@ -18,7 +18,7 @@ public class ReflectHelper<T> {
 		this.type = type;
 	}
 
-	public ConstructorHelper getConstructor(Class ... args) {
+	public ConstructorHelper<T> getConstructor(Class ... args) {
 		return new ConstructorHelper<T>(type, args);
 	}
 
