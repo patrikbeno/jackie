@@ -35,7 +35,6 @@ public class ClassBuilderTest {
 						mv.visitVarInsn(ALOAD, 0);
 						mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
 						mv.visitInsn(RETURN);
-						mv.visitMaxs(1, 1);
 					}
 				});
 			}

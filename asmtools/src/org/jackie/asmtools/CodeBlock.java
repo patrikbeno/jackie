@@ -37,8 +37,6 @@ public abstract class CodeBlock implements Opcodes {
 		this.mv = codeblock.mv;
 	}
 
-
-
 	public void execute() {
 		label(lstart);
 		body();
@@ -88,14 +86,18 @@ public abstract class CodeBlock implements Opcodes {
 		mv.visitLdcInsn(Type.getType(cls));
 	}
 
+	protected void cast(Class type) {
+		mv.visitTypeInsn(CHECKCAST, Type.getInternalName(type));
+	}
+
 	protected void load(Variable var) {
-		int opcode = Type.getType(var.type).getOpcode(IALOAD);
-		mv.visitIntInsn(opcode, var.index);
+		int opcode = var.type.isPrimitive() ? Type.getType(var.type).getOpcode(IALOAD) : ALOAD;
+		mv.visitVarInsn(opcode, var.index);
 	}
 
 	protected void store(Variable var) {
-		int opcode = Type.getType(var.type).getOpcode(IASTORE);
-		mv.visitIntInsn(opcode, var.index);
+		int opcode = var.type.isPrimitive() ? Type.getType(var.type).getOpcode(IASTORE) : ASTORE;
+		mv.visitVarInsn(opcode, var.index);
 	}
 
 	protected void newInstance(Constructor constructor) {
@@ -137,6 +139,10 @@ public abstract class CodeBlock implements Opcodes {
 
 	protected void pop() {
 		mv.visitInsn(POP);
+	}
+
+	protected void nop() {
+		mv.visitInsn(NOP);
 	}
 
 	protected void dup() {

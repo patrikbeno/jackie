@@ -7,8 +7,8 @@ import org.objectweb.asm.Label;
  */
 public class Variable {
 
-	String name;
-	Class type;
+	public String name;
+	public Class type;
 	int index;
 
 	Label start;
@@ -28,5 +28,9 @@ public class Variable {
 		this.end = end;
 		this.parameter = parameter;
 		this.synthetic = synthetic;
+	}
+
+	public String toString() {
+		return String.format("Variable(#%s %s:%s)", index, name, type);
 	}
 }

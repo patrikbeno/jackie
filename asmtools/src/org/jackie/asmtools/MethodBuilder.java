@@ -3,6 +3,7 @@ package org.jackie.asmtools;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.Opcodes;
+import static org.jackie.utils.JavaHelper.FALSE;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -18,7 +19,12 @@ public abstract class MethodBuilder extends CodeBlock {
 
 	protected MethodBuilder(ClassBuilder classBuilder, String name, Class type, Class ... args) {
 		this.classBuilder = classBuilder;
-		methodInfo = new MethodInfo(this, name, type, args, exceptions(), ACC_PUBLIC);
+
+		this.methodInfo = new MethodInfo(this, name, type, args, exceptions(), ACC_PUBLIC);
+		this.mv = classBuilder.cv.visitMethod(
+				ACC_PUBLIC, methodInfo.name,
+				Type.getMethodDescriptor(Type.getType(methodInfo.type), argtypes()),
+				null, typesToStrings(exceptions()));
 	}
 
 	//	public MethodBuilder(ClassVisitor cv, Constructor constructor) {
@@ -43,12 +49,8 @@ public abstract class MethodBuilder extends CodeBlock {
 	}
 
 	public void execute() {
-		mv = classBuilder.cv.visitMethod(
-				ACC_PUBLIC, methodInfo.name,
-				Type.getMethodDescriptor(Type.getType(methodInfo.type), argtypes()),
-				null, typesToStrings(exceptions()));
-
-		if (methodInfo.isStatic()) {
+		methodInfo.variables.setMethodVisitor(mv);
+		if (FALSE(methodInfo.isStatic())) {
 			declareVariable("this", Object.class); // fixme this:type
 		}
 		for (Class<?> ptype : methodInfo.parameters) {

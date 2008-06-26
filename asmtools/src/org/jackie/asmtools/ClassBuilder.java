@@ -4,6 +4,10 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.util.TraceClassVisitor;
+
+import java.io.PrintWriter;
 
 /**
  * @author Patrik Beno
@@ -14,7 +18,7 @@ public abstract class ClassBuilder implements Opcodes {
 
 	public byte[] build() {
 		try {
-			ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS+ClassWriter.COMPUTE_FRAMES);
+			ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 			this.cv = cw;
 			execute();
 			return cw.toByteArray();
