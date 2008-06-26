@@ -1,5 +1,9 @@
 package org.jackie.context;
 
+import static org.jackie.utils.Assert.doAssert;
+import static org.jackie.utils.Assert.NOTNULL;
+import org.jackie.utils.Assert;
+
 /**
  * @author Patrik Beno
  */
@@ -27,6 +31,10 @@ public class ContextManager {
 		return contextManager().getCurrentContext().get(type);
 	}
 
+	public boolean hasContext() {
+		return tlContext.get() != null;
+	}
+
 	///
 
 	ThreadLocal<Context> tlContext;
@@ -38,14 +46,13 @@ public class ContextManager {
 	///
 
 	protected Context beginNewContext() {
-		Context ctx = new Context(getCurrentContext());
+		Context ctx = new Context(tlContext.get());
 		tlContext.set(ctx);
 		return ctx;
 	}
 
 	protected Context closeCurrentContext() {
-		Context ctx = tlContext.get();
-		assert ctx != null;
+		Context ctx = getCurrentContext();
 
 		ctx.authorizeClose();
 
@@ -56,7 +63,7 @@ public class ContextManager {
 	}
 
 	public Context getCurrentContext() {
-		return tlContext.get();
+		return NOTNULL(tlContext.get(), "No Context!");
 	}
 
 

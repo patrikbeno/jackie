@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 public class ContextManagerTest {
 
 	public void test() {
-		assert context() == null;
+		assert !contextManager().hasContext();
 
 		newContext();
 		try {
@@ -28,7 +28,7 @@ public class ContextManagerTest {
 		} finally {
 		   closeContext();
 		}
-		assert context() == null;
+		assert !contextManager().hasContext();
 	}
 
 	public void unauthorizedClose() {
