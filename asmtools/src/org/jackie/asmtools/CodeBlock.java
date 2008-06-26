@@ -32,6 +32,13 @@ public abstract class CodeBlock implements Opcodes {
 	protected CodeBlock() {
 	}
 
+	protected CodeBlock(CodeBlock codeblock) {
+		this.methodInfo = codeblock.methodInfo;
+		this.mv = codeblock.mv;
+	}
+
+
+
 	public void execute() {
 		label(lstart);
 		body();

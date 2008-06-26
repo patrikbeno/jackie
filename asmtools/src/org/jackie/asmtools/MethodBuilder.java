@@ -61,6 +61,10 @@ public abstract class MethodBuilder extends CodeBlock {
 		mv.visitEnd();
 	}
 
+	protected void execute(CodeBlock codeBlock) {
+		codeBlock.execute();
+	}
+
 	private Type[] argtypes() {
 		Type[] types = new Type[methodInfo.parameters.length];
 		for (int i = 0; i < methodInfo.parameters.length; i++) {
