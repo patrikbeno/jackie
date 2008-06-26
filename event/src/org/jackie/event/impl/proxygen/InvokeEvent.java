@@ -2,7 +2,6 @@ package org.jackie.event.impl.proxygen;
 
 import org.jackie.asmtools.CodeBlock;
 import org.jackie.asmtools.Variable;
-import org.jackie.utils.Assert;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 
@@ -17,6 +16,7 @@ public class InvokeEvent extends CodeBlock {
 	protected Method eventMethod;
 
 	public InvokeEvent(CodeBlock parent, Method eventMethod) {
+		super(parent);
 		this.eventMethod = eventMethod;
 	}
 
@@ -26,10 +26,8 @@ public class InvokeEvent extends CodeBlock {
 
 		// code:: EventManager.eventManager().getListeners(type).iterator()
 		{
-			invoke(Refs.EventManager$eventManager);
 			push(eventMethod.getDeclaringClass());
-			invoke(Refs.EventManager$getListeners);
-			invoke(Refs.Set$iterator);
+			invoke(ClassProxyHelper.ClassProxyHelper$eventListeners);
 			store(iterator);
 		}
 
@@ -40,11 +38,12 @@ public class InvokeEvent extends CodeBlock {
 
 			label(lcontinue);
 			load(iterator);
-			invoke(Refs.Iterator$hasNext);
+			invoke(ClassProxyHelper.Iterator$hasNext);
 			jumpif(false, lbreak);
 
 			load(iterator);
-			invoke(Refs.Iterator$next);
+			invoke(ClassProxyHelper.Iterator$next);
+			cast(next.type);
 			store(next);
 
 			tryinvoke(next);
@@ -61,7 +60,7 @@ public class InvokeEvent extends CodeBlock {
 		Label lcatch = new Label();
 		Label lcatchend = new Label();
 
-		mv.visitTryCatchBlock(ltry, ltryend, lcatch, Type.getDescriptor(Throwable.class));
+		mv.visitTryCatchBlock(ltry, ltryend, lcatch, Type.getInternalName(Throwable.class));
 
 		label(ltry);
 		dispatch(next); // guarded methodInfo invocation
@@ -69,7 +68,7 @@ public class InvokeEvent extends CodeBlock {
 		jump(lcatchend); // try bock success
 
 		label(lcatch);
-		invoke(Refs.ClassProxyHelper$onException);
+		invokeVoid(ClassProxyHelper.ClassProxyHelper$onException);
 		label(lcatchend);
 	}
 
@@ -78,7 +77,7 @@ public class InvokeEvent extends CodeBlock {
 		for (Variable v : methodInfo.variables.methodParameters(true)) {
 			load(v);
 		}
-		invoke(eventMethod);
+		invokeVoid(eventMethod);
 	}
 
 }

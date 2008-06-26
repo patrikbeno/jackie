@@ -14,32 +14,38 @@ import org.jackie.utils.Log;
 @Test
 public class EventTest {
 
-	static public interface TestEvents extends Event {
-		void simpleEvent();
+	static public interface ITestEvents extends Event {
+		void testEvent();
+	}
+
+	static public class CTestEvents implements Event {
+		public void testEvent() {}
 	}
 
 	static class Ctx implements ContextObject {
 		int listenerInvocations;
 	}
 
-	public void testSendEvent() {
+	@Test
+	public void sendEvent() {
 		newContext();
 		try {
-			events(TestEvents.class).simpleEvent();
+			events(ITestEvents.class).testEvent();
 		} finally {
 			closeContext();
 		}
 	}
 
-	public void testEventListener() {
+	@Test
+	public void interfaceEvents() {
 		newContext();
 		try {
 			context().set(Ctx.class, new Ctx());
 
-			Events.registerEventListener(TestEvents.class, listener());
-			Events.registerEventListener(TestEvents.class, listener());
+			Events.registerEventListener(ITestEvents.class, listener());
+			Events.registerEventListener(ITestEvents.class, listener());
 
-			events(TestEvents.class).simpleEvent();
+			events(ITestEvents.class).testEvent();
 
 			assert context(Ctx.class).listenerInvocations == 2;
 
@@ -48,11 +54,38 @@ public class EventTest {
 		}
 	}
 
-	TestEvents listener() {
-		return new TestEvents() {
-			public void simpleEvent() {
+	@Test
+	public void classEvents() {
+		newContext();
+		try {
+			context().set(Ctx.class, new Ctx());
+
+			Events.registerEventListener(CTestEvents.class, clistener());
+			Events.registerEventListener(CTestEvents.class, clistener());
+
+			events(CTestEvents.class).testEvent();
+
+			assert context(Ctx.class).listenerInvocations == 2;
+
+		} finally {
+			closeContext();
+		}
+	}
+
+	ITestEvents listener() {
+		return new ITestEvents() {
+			public void testEvent() {
 				context(Ctx.class).listenerInvocations++;
-				Log.debug("TestEvents.simpleEvent(): in listener !");
+				Log.debug("ITestEvents.testEvent(): in listener !");
+			}
+		};
+	}
+
+	CTestEvents clistener() {
+		return new CTestEvents() {
+			public void testEvent() {
+				context(Ctx.class).listenerInvocations++;
+				Log.debug("CTestEvents.testEvent(): in listener !");
 			}
 		};
 	}

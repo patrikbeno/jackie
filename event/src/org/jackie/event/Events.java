@@ -7,16 +7,20 @@ import static org.jackie.context.ServiceManager.service;
  */
 public class Events {
 
+	static public EventManager eventManager() {
+		return service(EventManager.class);
+	}
+
 	static public <T extends Event> T events(Class<T> type) {
-		return service(EventManager.class).getEventDispatcher(type);
+		return eventManager().getEventDispatcher(type);
 	}
 
 	static public <T extends Event> void registerEventListener(Class<T> type, T listener) {
-		service(EventManager.class).registerEventListener(type, listener);
+		eventManager().registerEventListener(type, listener);
 	}
 	              
 	static public <T extends Event> void unregisterEventListener(T listener) {
-		service(EventManager.class).unregisterEventListener(listener);
+		eventManager().unregisterEventListener(listener);
 	}
 
 }

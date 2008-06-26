@@ -4,6 +4,8 @@ import org.jackie.context.Service;
 import static org.jackie.context.ServiceManager.service;
 import org.jackie.utils.Assert;
 import org.jackie.event.impl.EventDispatcherProxy;
+import org.jackie.event.impl.EventProxyProvider;
+import org.jackie.event.impl.proxygen.ClassProxyBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -14,46 +16,13 @@ import static java.util.Collections.emptyList;
 /**
  * @author Patrik Beno
  */
-public class EventManager implements Service {
+public interface EventManager extends Service {
 
-	Map<Class, List<Event>> listenersByType;
+	<T extends Event> void registerEventListener(Class<T> type, T listener);
 
-	Map<Class, EventDispatcherProxy> proxies;
+	<T extends Event> void unregisterEventListener(T listener);
 
-	{
-		listenersByType = new HashMap<Class, List<Event>>();
-		proxies = new HashMap<Class, EventDispatcherProxy>();
-	}
+	<T extends Event> List<T> getListeners(Class<T> type);
 
-
-	static public EventManager eventManager() {
-		return service(EventManager.class);
-	}
-
-	public <T extends Event> void registerEventListener(Class<T> type, T listener) {
-		List<Event> listeners = listenersByType.get(type);
-		if (listeners == null) {
-			listeners = new ArrayList<Event>();
-			listenersByType.put(type, listeners);
-		}
-		listeners.add(listener);
-	}
-
-	public <T extends Event> void unregisterEventListener(T listener) {
-		throw Assert.notYetImplemented(); // todo implement this
-	}
-
-	public <T extends Event> List<T> getListeners(Class<T> type) {
-		List<Event> listeners = listenersByType.get(type);
-		return (listeners != null) ? new ArrayList(listeners) : emptyList();
-	}
-
-	public <T extends Event> T getEventDispatcher(Class<T> type) {
-		EventDispatcherProxy proxy = proxies.get(type);
-		if (proxy == null) {
-			proxy = new EventDispatcherProxy(this, type);
-			proxies.put(type, proxy);
-		}
-		return type.cast(proxy.getProxy());
-	}
+	<T extends Event> T getEventDispatcher(Class<T> type);
 }

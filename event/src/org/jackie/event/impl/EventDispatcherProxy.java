@@ -1,9 +1,9 @@
 package org.jackie.event.impl;
 
+import org.jackie.event.Event;
+import org.jackie.event.Events;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
-import org.jackie.event.EventManager;
-import org.jackie.event.Event;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -16,12 +16,10 @@ import java.util.List;
  */
 public class EventDispatcherProxy implements InvocationHandler {
 
-	EventManager manager;
 	Class<? extends Event> type;
 	Event proxy;
 
-	public EventDispatcherProxy(EventManager manager, Class<? extends Event> type) {
-		this.manager = manager;
+	public EventDispatcherProxy(Class<? extends Event> type) {
 		this.type = type;
 	}
 
@@ -31,7 +29,7 @@ public class EventDispatcherProxy implements InvocationHandler {
 			return m.invoke(this, args);
 		}
 
-		List<? extends Event> listeners = manager.getListeners(type);
+		List<? extends Event> listeners = Events.eventManager().getListeners(type);
 		if (!listeners.isEmpty()) {
 			Log.debug("Dispatching event %s.%s to %s listeners", type.getSimpleName(), method.getName(), listeners.size());
 		}
