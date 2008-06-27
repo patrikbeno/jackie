@@ -9,7 +9,6 @@ import org.jackie.compiler_impl.javacintegration.JavacCompiler;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
-
 import org.testng.annotations.Test;
 
 import java.io.File;

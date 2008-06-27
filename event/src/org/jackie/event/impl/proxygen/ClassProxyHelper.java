@@ -4,9 +4,9 @@ import org.jackie.event.Event;
 import static org.jackie.event.Events.eventManager;
 import org.jackie.utils.Assert;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Set;
-import java.lang.reflect.Method;
 
 /**
  * @author Patrik Beno

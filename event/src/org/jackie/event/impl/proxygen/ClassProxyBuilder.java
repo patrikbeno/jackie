@@ -1,22 +1,19 @@
 package org.jackie.event.impl.proxygen;
 
-import org.objectweb.asm.Type;
-import static org.jackie.utils.JavaHelper.FALSE;
-import org.jackie.utils.Log;
-import static org.jackie.utils.Assert.doAssert;
-import org.jackie.asmtools.MethodBuilder;
 import org.jackie.asmtools.ClassBuilder;
 import org.jackie.asmtools.ConstructorBuilder;
+import org.jackie.asmtools.MethodBuilder;
 import org.jackie.event.Event;
 import org.jackie.event.EventManagerException;
 import org.jackie.event.impl.MethodDef;
+import static org.jackie.utils.JavaHelper.FALSE;
+import org.jackie.utils.Log;
+import org.objectweb.asm.Type;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

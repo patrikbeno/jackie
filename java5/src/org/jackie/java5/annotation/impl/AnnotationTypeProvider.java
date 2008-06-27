@@ -1,14 +1,14 @@
 package org.jackie.java5.annotation.impl;
 
+import org.jackie.compiler.event.AttributeListener;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.extension.Lifecycle;
-import org.jackie.compiler.event.AttributeListener;
+import org.jackie.event.Events;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.attribute.special.Kind;
 import org.jackie.jvm.extension.Extension;
-import org.jackie.event.Events;
 
 /**
  * @author Patrik Beno

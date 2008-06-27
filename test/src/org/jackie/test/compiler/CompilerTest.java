@@ -5,21 +5,21 @@ import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler_impl.CompilerImpl;
 import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
 import org.jackie.compiler_impl.filemanager.JarFileManager;
+import org.jackie.utils.Assert;
 import org.jackie.utils.CyclicBuffer;
 import org.jackie.utils.IOHelper;
-import org.jackie.utils.Assert;
 import org.testng.annotations.Test;
 
-import java.io.File;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.zip.ZipEntry;
-import java.util.jar.JarOutputStream;
+import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
-import java.nio.channels.Channels;
+import java.util.Arrays;
+import java.util.jar.JarOutputStream;
+import java.util.zip.ZipEntry;
 
 /**
  * @author Patrik Beno

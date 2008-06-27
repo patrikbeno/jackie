@@ -1,15 +1,15 @@
 package org.jackie.compiler_impl.bytecode;
 
+import org.jackie.compiler.event.MethodListener;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
 import org.jackie.compiler_impl.util.Helper;
+import static org.jackie.event.Events.events;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
-import static org.jackie.event.Events.events;
-import org.jackie.compiler.event.MethodListener;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.MethodVisitor;

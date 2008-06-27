@@ -1,7 +1,7 @@
 package org.jackie.test.compiler;
 
-import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.filemanager.FileManager;
+import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.utils.Assert;
 import org.jackie.utils.IOHelper;
 

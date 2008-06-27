@@ -1,15 +1,11 @@
 package org.jackie.asmtools.test;
 
-import sun.misc.HexDumpEncoder;
 import org.jackie.asmtools.ClassBuilder;
 import org.jackie.asmtools.ConstructorBuilder;
 import org.jackie.asmtools.MethodBuilder;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.util.TraceClassVisitor;
 import org.testng.annotations.Test;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
 
 /**
  * @author Patrik Beno

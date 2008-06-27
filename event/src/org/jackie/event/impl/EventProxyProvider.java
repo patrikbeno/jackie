@@ -2,10 +2,8 @@ package org.jackie.event.impl;
 
 import org.jackie.event.Event;
 import org.jackie.event.impl.proxygen.ClassProxyBuilder;
-import static org.jackie.utils.Assert.typecast;
-import static org.jackie.utils.Assert.doAssert;
+import static org.jackie.utils.Assert.*;
 import org.jackie.utils.ReflectHelper;
-import org.jackie.utils.Assert;
 
 import java.util.Map;
 import java.util.WeakHashMap;

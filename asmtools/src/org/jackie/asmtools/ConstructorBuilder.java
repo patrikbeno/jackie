@@ -1,7 +1,5 @@
 package org.jackie.asmtools;
 
-import org.jackie.utils.Assert;
-
 /**
  * @author Patrik Beno
  */

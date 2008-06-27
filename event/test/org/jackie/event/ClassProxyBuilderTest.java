@@ -1,16 +1,11 @@
 package org.jackie.event;
 
 import static org.jackie.context.ContextManager.*;
-import org.jackie.event.impl.proxygen.ClassProxyBuilder;
 import static org.jackie.event.Events.eventManager;
+import org.jackie.event.impl.proxygen.ClassProxyBuilder;
 import static org.jackie.utils.Assert.expected;
-import static org.jackie.utils.Assert.invariantFailed;
 import org.jackie.utils.ObjectWrapper;
 import org.testng.annotations.Test;
-import org.objectweb.asm.util.TraceClassVisitor;
-import org.objectweb.asm.ClassReader;
-
-import java.io.PrintWriter;
 
 /**
  * @author Patrik Beno

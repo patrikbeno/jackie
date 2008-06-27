@@ -1,19 +1,19 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.event.ClassListener;
 import org.jackie.compiler.event.FieldListener;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import static org.jackie.compiler_impl.util.Helper.impl;
 import static org.jackie.context.ContextManager.context;
+import static org.jackie.event.Events.events;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.special.KindAttribute;
 import org.jackie.jvm.structure.JField;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
-import static org.jackie.event.Events.events;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;

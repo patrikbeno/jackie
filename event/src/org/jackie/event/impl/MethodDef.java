@@ -1,12 +1,11 @@
 package org.jackie.event.impl;
 
 import static org.jackie.utils.JavaHelper.FALSE;
-import org.jackie.utils.Log;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.Formatter;
 import java.util.Formattable;
+import java.util.Formatter;
 
 /**
  * @author Patrik Beno

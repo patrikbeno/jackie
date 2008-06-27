@@ -1,7 +1,7 @@
 package org.jackie.utils;
 
-import java.lang.reflect.Method;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * @author Patrik Beno

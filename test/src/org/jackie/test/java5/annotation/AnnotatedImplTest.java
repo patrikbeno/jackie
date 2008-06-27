@@ -1,19 +1,17 @@
 package org.jackie.test.java5.annotation;
 
+import org.jackie.compiler.typeregistry.TypeRegistry;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.java5.annotation.Annotations;
+import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
-import org.jackie.jvm.JClass;
-import org.jackie.java5.annotation.Annotations;
-import static org.jackie.context.ContextManager.context;
-import static org.jackie.context.ContextManager.newContext;
-import static org.jackie.context.ContextManager.closeContext;
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.testng.annotations.Test;
 
-import java.util.Arrays;
-import static java.util.Arrays.asList;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Arrays;
+import static java.util.Arrays.asList;
 
 /**
  * @author Patrik Beno

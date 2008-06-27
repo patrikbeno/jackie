@@ -1,14 +1,7 @@
 package org.jackie.asmtools;
 
-import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.Opcodes;
 import static org.jackie.utils.JavaHelper.FALSE;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Constructor;
-import java.util.List;
+import org.objectweb.asm.Type;
 
 /**
  * @author Patrik Beno

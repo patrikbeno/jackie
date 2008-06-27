@@ -2,16 +2,15 @@ package org.jackie.asmtools;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.JavaHelper.FALSE;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.lang.reflect.Field;
 
 /**
  * @author Patrik Beno

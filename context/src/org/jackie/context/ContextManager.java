@@ -1,8 +1,6 @@
 package org.jackie.context;
 
-import static org.jackie.utils.Assert.doAssert;
 import static org.jackie.utils.Assert.NOTNULL;
-import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
