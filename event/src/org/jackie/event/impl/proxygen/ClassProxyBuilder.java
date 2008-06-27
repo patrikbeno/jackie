@@ -1,17 +1,22 @@
 package org.jackie.event.impl.proxygen;
 
-import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import static org.jackie.utils.JavaHelper.FALSE;
-import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
+import static org.jackie.utils.Assert.doAssert;
 import org.jackie.asmtools.MethodBuilder;
 import org.jackie.asmtools.ClassBuilder;
 import org.jackie.asmtools.ConstructorBuilder;
 import org.jackie.event.Event;
+import org.jackie.event.EventManagerException;
+import org.jackie.event.impl.MethodDef;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author Patrik Beno
@@ -23,6 +28,7 @@ public class ClassProxyBuilder extends ClassBuilder {
 	Class<?> type;
 
 	public ClassProxyBuilder(Class<? extends Event> type) {
+		validateEventClass(type);
 		this.type = type;
 	}
 
@@ -46,16 +52,57 @@ public class ClassProxyBuilder extends ClassBuilder {
 	}
 
 	protected void methods() {
-		for (final Method m : superclass().getMethods()) {
-			if (FALSE(Event.class.isAssignableFrom(m.getDeclaringClass()))) { continue; }
-			
-			Log.debug("Generating event proxy bytecode for %s", m);
+		List<MethodDef> methods = gatherValidMethods(superclass());
+
+		for (MethodDef mdef : methods) {
+			final Method m = mdef.getMethod();
+			Log.debug("Generating event proxy bytecode for %s.%s", superclass().getName(), mdef);
 			execute(new MethodBuilder(this, m.getName(), m.getReturnType(), m.getParameterTypes()) {
 				protected void body() {
-					execute(new InvokeEvent(this, m));
+					execute(new InvokeEvent(this, superclass(), m));
 					doreturn();
 				}
 			});
+		}
+	}
+
+	List<MethodDef> gatherValidMethods(Class cls) {
+		List<MethodDef> mdefs = new LinkedList<MethodDef>();
+		for (Method method : cls.getDeclaredMethods()) {
+			checkValidEventMethod(method);
+			mdefs.add(new MethodDef(method));
+		}
+		for (Class iface : cls.getInterfaces()) {
+			mdefs.addAll(gatherValidMethods(iface));
+		}
+		return mdefs;
+	}
+
+	void validateEventClass(Class cls) {
+		boolean valid = true;
+
+		valid &= Event.class.isAssignableFrom(cls);
+		valid &= Modifier.isPublic(cls.getModifiers());
+
+		if (!valid) {
+			throw new EventManagerException(
+					"Invalid event class: %s. Must be declared \"public\" and \"extends/implements %s\"",
+					cls, Event.class);
+		}
+	}
+
+	void checkValidEventMethod(Method method) {
+		boolean valid = true;
+
+		valid &= FALSE(Modifier.isStatic(method.getModifiers()));
+		valid &= FALSE(Modifier.isNative(method.getModifiers()));
+		valid &= Modifier.isPublic(method.getModifiers());
+		valid &= method.getReturnType().equals(void.class);
+
+		if (!valid) {
+			throw new EventManagerException(
+					"Invalid event method: %s. Must be declared \"public void\" and cannot be static or native.",
+					method);
 		}
 	}
 

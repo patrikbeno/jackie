@@ -13,20 +13,23 @@ import java.util.Iterator;
  */
 public class InvokeEvent extends CodeBlock {
 
+
+	protected Class eventClass;
 	protected Method eventMethod;
 
-	public InvokeEvent(CodeBlock parent, Method eventMethod) {
+	public InvokeEvent(CodeBlock parent, Class eventClass, Method eventMethod) {
 		super(parent);
+		this.eventClass = eventClass;
 		this.eventMethod = eventMethod;
 	}
 
 	protected void body() {
 		Variable iterator = declareVariable("iterator", Iterator.class);
-		Variable next = declareVariable("next", eventMethod.getDeclaringClass());
+		Variable next = declareVariable("next", eventClass);
 
 		// code:: EventManager.eventManager().getListeners(type).iterator()
 		{
-			push(eventMethod.getDeclaringClass());
+			push(eventClass);
 			invoke(ClassProxyHelper.ClassProxyHelper$eventListeners);
 			store(iterator);
 		}

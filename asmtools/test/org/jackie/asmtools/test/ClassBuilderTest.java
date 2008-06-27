@@ -52,10 +52,10 @@ public class ClassBuilderTest {
 		};
 
 		final byte[] bytes = cb.build();
-		new HexDumpEncoder().encode(bytes, System.out);
 
-		ClassReader cr = new ClassReader(bytes);
-		cr.accept(new TraceClassVisitor(new PrintWriter(System.out)), 0);
+//		new HexDumpEncoder().encode(bytes, System.out);
+//		ClassReader cr = new ClassReader(bytes);
+//		cr.accept(new TraceClassVisitor(new PrintWriter(System.out)), 0);
 
 		Class c = Class.forName("test.Generated", true, new ClassLoader(getClass().getClassLoader()) {
 			protected Class<?> findClass(String name) throws ClassNotFoundException {
