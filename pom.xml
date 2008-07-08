@@ -21,8 +21,8 @@
 				</property>
 			</activation>
 			<properties>
-				<build.dir>${user.home}/var/build/mvn/${pom.groupId}/${pom.artifactId}-${pom.version}
-				</build.dir>
+				<build.home>${user.home}/var/build/mvn</build.home>
+				<build.dir>${build.home}/${pom.groupId}/${pom.artifactId}-${pom.version}</build.dir>
 			</properties>
 		</profile>
 	</profiles>
@@ -35,10 +35,10 @@
 		<!-- implementations -->
 		<module>compiler_impl</module>
 
-		<!-- plugins -->
+		<!-- jackie plugins/extensions -->
 		<module>java5</module>
 
-		<!-- support -->
+		<!-- supporting stuff -->
 		<module>utils</module>
 		<module>context</module>
 		<module>event</module>
@@ -50,7 +50,11 @@
 
 
 	<properties>
-		<build.dir>${basedir}/target</build.dir>
+		<build.dir>${basedir}/target</build.dir><!-- allow overriding compiler output -->
+
+		<!-- versions -->
+		<surefire.plugin>2.8-SNAPSHOT</surefire.plugin>
+		<testng.version>5.7</testng.version>
 	</properties>
 
 	<build>
@@ -88,17 +92,14 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.4.2</version>
+				<version>${surefire.plugin}</version>
 				<configuration>
+					<forkMode>once</forkMode>
+					<useSystemClassLoader>true</useSystemClassLoader>
+					<useManifestOnlyJar>false</useManifestOnlyJar>
 					<argLine>-Xmx256m</argLine>
 					<skip>false</skip>
 					<testFailureIgnore>true</testFailureIgnore>
-					<suiteXmlFiles>
-						<suiteXmlFile>src/testng.xml</suiteXmlFile>
-						<suiteXmlFile>test/suite.xml</suiteXmlFile>
-					</suiteXmlFiles>
-					<useSystemClassLoader>true</useSystemClassLoader>
-					<redirectTestOutputToFile>true</redirectTestOutputToFile>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -109,14 +110,13 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>5.7</version>
+			<version>${testng.version}</version>
 			<classifier>jdk15</classifier>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<pluginRepositories>
-<!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
@@ -125,11 +125,9 @@
 			<id>howardlewisship</id>
 			<url>http://howardlewisship.com/repository</url>
 		</pluginRepository>
--->
 	</pluginRepositories>
 	
 	<repositories>
-<!--
 		<repository>
 			<id>M2-snapshots</id>
 			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
@@ -138,7 +136,6 @@
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
 		</repository>
--->
 		<repository>
 			<id>jboss</id>
 			<url>http://repository.jboss.com/maven2</url>
