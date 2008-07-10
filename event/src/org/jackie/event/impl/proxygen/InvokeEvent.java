@@ -27,7 +27,7 @@ public class InvokeEvent extends CodeBlock {
 		Variable iterator = declareVariable("iterator", Iterator.class);
 		Variable next = declareVariable("next", eventClass);
 
-		// code:: EventManager.eventManager().getListeners(type).iterator()
+		// code:: ClassProxyHelper.eventListeners(type) : Iterator
 		{
 			push(eventClass);
 			invoke(ClassProxyHelper.ClassProxyHelper$eventListeners);
