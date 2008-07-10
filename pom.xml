@@ -53,8 +53,8 @@
 		<build.dir>${basedir}/target</build.dir><!-- allow overriding compiler output -->
 
 		<!-- versions -->
-		<surefire.plugin>2.8-SNAPSHOT</surefire.plugin>
-		<testng.version>5.7</testng.version>
+		<surefire.plugin>2.4.2</surefire.plugin>
+		<testng.version>5.6</testng.version>
 	</properties>
 
 	<build>
