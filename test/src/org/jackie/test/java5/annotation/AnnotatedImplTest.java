@@ -6,6 +6,7 @@ import org.jackie.java5.annotation.Annotations;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
+import static org.jackie.utils.Assert.NOTNULL;
 import org.testng.annotations.Test;
 
 import java.lang.annotation.Retention;
@@ -95,7 +96,8 @@ public class AnnotatedImplTest extends TestCase {
 	void test(final Class<?> cls) {
 		run(new Runnable() {
 			public void run() {
-				JClass jcls = get(cls);
+				JClass jcls = NOTNULL(get(cls), "No JClass for %s", cls);
+
 				Annotations annotations = jcls.extensions().get(Annotations.class);
 				assert annotations != null;
 
@@ -106,7 +108,8 @@ public class AnnotatedImplTest extends TestCase {
 				assert real != null;
 
 				Assert.expected(real.string(), proxy.string(), "invalid: string()");
-				Assert.expected(asList(real.astring()), asList(proxy.astring()), "invalid: stringarray()");
+				Assert.expected(asList(real.astring()), asList(proxy.astring()),
+									 "invalid: stringarray()");
 			}
 		});
 	}
