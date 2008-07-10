@@ -76,9 +76,9 @@ public class Assert {
 		}
 	}
 
-	static public <T> T NOTNULL(T t, String message) {
+	static public <T> T NOTNULL(T t, String message, Object ... args) {
 		if (t == null) {
-			throw new AssertionError(String.format("Unexpected NULL: %s", message));
+			throw new AssertionError(String.format("Unexpected NULL: %s", String.format(message, args)));
 		}
 
 		return t;
