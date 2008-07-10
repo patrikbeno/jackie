@@ -13,6 +13,8 @@ import java.util.WeakHashMap;
  */
 public class EventProxyProvider {
 
+	static private final boolean ENABLE_EVENT_DISPATCHER_PROXY = false;
+
 	class ProxyClassLoader extends ClassLoader {
 		ProxyClassLoader(ClassLoader parent) {
 			super(parent);
@@ -38,8 +40,9 @@ public class EventProxyProvider {
 		Event event = proxies.get(type);
 		if (event != null) { return typecast(event, type); }
 
-		if (type.isInterface()) {
+		if (ENABLE_EVENT_DISPATCHER_PROXY && type.isInterface()) {
 			event = new EventDispatcherProxy(type).getProxy();
+			
 		} else {
 			ClassProxyBuilder builder = new ClassProxyBuilder(type);
 			ProxyClassLoader cl = getProxyClassLoader(type);

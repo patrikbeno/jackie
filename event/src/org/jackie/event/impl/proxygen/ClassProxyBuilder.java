@@ -34,7 +34,11 @@ public class ClassProxyBuilder extends ClassBuilder {
 	}
 
 	protected Class superclass() {
-		return type;
+		return type.isInterface() ? super.superclass() : type;
+	}
+
+	protected Class[] interfaces() {
+		return type.isInterface() ? new Class[]{type} : null;
 	}
 
 	protected void constructors() {
@@ -49,14 +53,14 @@ public class ClassProxyBuilder extends ClassBuilder {
 	}
 
 	protected void methods() {
-		List<MethodDef> methods = gatherValidMethods(superclass());
+		List<MethodDef> methods = gatherValidMethods(type);
 
 		for (MethodDef mdef : methods) {
 			final Method m = mdef.getMethod();
 			Log.debug("Generating event proxy bytecode for %s.%s", superclass().getName(), mdef);
 			execute(new MethodBuilder(this, m.getName(), m.getReturnType(), m.getParameterTypes()) {
 				protected void body() {
-					execute(new InvokeEvent(this, superclass(), m));
+					execute(new InvokeEvent(this, type, m));
 					doreturn();
 				}
 			});
