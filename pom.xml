@@ -98,7 +98,7 @@
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<useManifestOnlyJar>false</useManifestOnlyJar>
 					<argLine>-Xmx256m</argLine>
-					<skip>false</skip>
+					<skip>true</skip>
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
