@@ -23,6 +23,7 @@ public class ClassProxyBuilderTest {
 
 	static public abstract class SampleEvents extends EventBase implements EventInterface {
 		public void valid() {}
+		public void validWithPatameter(String s) {}
 		public void inheritedOverriden() {}
 	}
 
