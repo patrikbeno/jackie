@@ -54,7 +54,7 @@ public class Variables {
 		List<Variable> selected = new ArrayList<Variable>();
 		for (Variable v : variables) {
 			if (excludeSynthetic && v.synthetic) { continue; }
-			if (FALSE(v.parameter)) { break; }
+			if (!v.synthetic && FALSE(v.parameter)) { break; }
 			selected.add(v);
 		}
 		return selected;

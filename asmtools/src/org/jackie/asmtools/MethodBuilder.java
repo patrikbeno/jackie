@@ -44,7 +44,7 @@ public abstract class MethodBuilder extends CodeBlock {
 	public void execute() {
 		methodInfo.variables.setMethodVisitor(mv);
 		if (FALSE(methodInfo.isStatic())) {
-			declareVariable("this", Object.class); // fixme this:type
+			declareVariable("this", Object.class).synthetic(); // fixme this:type
 		}
 		for (Class<?> ptype : methodInfo.parameters) {
 			declareParameter(String.format("p%s", this.methodInfo.variables.size()), ptype);

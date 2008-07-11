@@ -30,6 +30,11 @@ public class Variable {
 		this.synthetic = synthetic;
 	}
 
+	public Variable synthetic() {
+		this.synthetic = true;
+		return this;
+	}
+
 	public String toString() {
 		return String.format("Variable(#%s %s:%s)", index, name, type);
 	}
