@@ -117,10 +117,12 @@
 	</dependencies>
 
 	<pluginRepositories>
+<!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
 		</pluginRepository>
+-->
 		<pluginRepository>
 			<id>howardlewisship</id>
 			<url>http://howardlewisship.com/repository</url>
@@ -128,13 +130,15 @@
 	</pluginRepositories>
 	
 	<repositories>
-		<repository>
-			<id>M2-snapshots</id>
-			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
-		</repository>
+<!--
 		<repository>
 			<id>apache.snapshots</id>
 			<url>http://cvs.apache.org/maven-snapshot-repository</url>
+		</repository>
+-->
+		<repository>
+			<id>M2-snapshots</id>
+			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
 		</repository>
 		<repository>
 			<id>jboss</id>
