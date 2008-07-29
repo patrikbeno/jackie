@@ -1,6 +1,7 @@
 package org.jackie.context;
 
 import static org.jackie.context.ContextManager.*;
+import static org.jackie.context.ContextManager.contextManager;
 import org.jackie.utils.Log;
 import org.testng.annotations.Test;
 
@@ -29,6 +30,18 @@ public class ContextManagerTest {
 		   closeContext();
 		}
 		assert !contextManager().hasContext();
+	}
+
+	public void withContext() {
+		final SampleContextObject co = new SampleContextObject();
+		executeWithContext(new ContextRunner() {
+			public void init() {
+				context().set(SampleContextObject.class, co);
+			}
+			public void execute() {
+				assert context().get(SampleContextObject.class) != null : "No context object";
+			}
+		});
 	}
 
 	public void unauthorizedClose() {

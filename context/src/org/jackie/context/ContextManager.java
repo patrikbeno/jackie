@@ -29,6 +29,20 @@ public class ContextManager {
 		return contextManager().getCurrentContext().get(type);
 	}
 
+	static public void executeWithContext(ContextRunner ctxrunner) {
+		newContext();
+		try {
+			ctxrunner.init();
+			ctxrunner.execute();
+		} finally {
+			try {
+				ctxrunner.close();
+			} finally {
+				closeContext();
+			}
+		}
+	}
+	
 	public boolean hasContext() {
 		return tlContext.get() != null;
 	}
