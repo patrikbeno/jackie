@@ -19,6 +19,7 @@ import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
@@ -150,7 +151,7 @@ public class JMethodImpl implements JMethod, Compilable {
 	}
 
 	public void compile() {
-		new ByteCodeBuilder() {
+        ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
 			JMethod mthis;
 			MethodVisitor mv;
@@ -187,8 +188,11 @@ public class JMethodImpl implements JMethod, Compilable {
 			}
 
 			void bcCode() {
-				Assert.logNotYetImplemented(); // todo implement this
+				if (code == null) { return; }
+
+				mv().visitCode();
+				typecast(code, Compilable.class).compile();
 			}
-		};
+		});
 	}
 }

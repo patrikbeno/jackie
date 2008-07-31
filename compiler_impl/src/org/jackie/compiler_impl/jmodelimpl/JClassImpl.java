@@ -239,7 +239,7 @@ public class JClassImpl implements JClass, Compilable {
 
 
 	public void compile() {
-		new ByteCodeBuilder() {
+        ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
 			JClass cthis;
 
@@ -291,7 +291,7 @@ public class JClassImpl implements JClass, Compilable {
 				}
 			}
 
-		};
+		});
 	}
 
 }

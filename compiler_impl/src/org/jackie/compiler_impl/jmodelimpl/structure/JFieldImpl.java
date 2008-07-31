@@ -66,7 +66,7 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 	}
 
 	public void compile() {
-		new ByteCodeBuilder() {
+        ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
 			JField fthis = JFieldImpl.this;
 
@@ -78,6 +78,6 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 						null);
 				fv.visitEnd();
 			}
-		};
+		});
 	}
 }

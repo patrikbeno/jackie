@@ -25,7 +25,12 @@ import java.util.Map;
  */
 public abstract class ByteCodeBuilder extends AsmSupport {
 
-	static final private Map<String,String> MAPPING = new HashMap<String, String>() {{
+    static public void execute(ByteCodeBuilder builder) {
+        builder.init();
+        builder.run();
+    }
+
+    static final private Map<String,String> MAPPING = new HashMap<String, String>() {{
 			put("void", 	"V");
 			put("char", 	"C");
 			put("byte", 	"B");
@@ -36,12 +41,10 @@ public abstract class ByteCodeBuilder extends AsmSupport {
 			put("double", 	"D");
 	}};
 
-	{
-		init();
-		run();
-	}
+    protected ByteCodeBuilder() {
+    }
 
-	protected void init() {}
+    protected void init() {}
 
 	protected abstract void run();
 
