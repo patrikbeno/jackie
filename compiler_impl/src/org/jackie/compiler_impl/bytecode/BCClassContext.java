@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.context.ContextObject;
+import static org.jackie.context.ContextManager.context;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
@@ -9,7 +10,11 @@ import org.objectweb.asm.MethodVisitor;
  */
 public class BCClassContext implements ContextObject {
 
-	public ClassVisitor classVisitor;
+    static public BCClassContext instance() {
+        return context(BCClassContext.class);
+    }
+
+    public ClassVisitor classVisitor;
 
 	public MethodVisitor methodVisitor;
 	
