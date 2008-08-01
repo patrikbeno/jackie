@@ -5,6 +5,7 @@ import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
+import org.jackie.compiler_impl.jmodelimpl.code.JCodeImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import static org.jackie.context.ContextManager.context;
@@ -93,8 +94,13 @@ public class JMethodImpl implements JMethod, Compilable {
 	}
 
 	public JCode getJCode() {
-		throw Assert.notYetImplemented(); // todo implement this
-	}
+		if (flags().isSet(Flag.ABSTRACT)) { return null; }
+        
+        if (code == null) {
+            code = new JCodeImpl(this);
+        }
+        return code;
+    }
 
 	public Flags flags() {
 		if (flags == null) {
@@ -154,16 +160,14 @@ public class JMethodImpl implements JMethod, Compilable {
         ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
 			JMethod mthis;
-			MethodVisitor mv;
 
 			protected void run() {
 				mthis = JMethodImpl.this;
-				mv = cv().visitMethod(
+				context(BCClassContext.class).methodVisitor = cv().visitMethod(
 						toAccessFlag(mthis.flags()),
 						mthis.getName(), bcDesc(mthis),
 						null, // signature
 						bcExceptions());
-				context(BCClassContext.class).methodVisitor = mv;
 
 // annotations are handled via extensions which this the core is unaware of... fire some event				
 //				bcAnnotations();
@@ -171,7 +175,7 @@ public class JMethodImpl implements JMethod, Compilable {
 
 				bcCode();
 
-				mv.visitEnd();
+				mv().visitEnd();
 				context(BCClassContext.class).methodVisitor = null;
 			}
 

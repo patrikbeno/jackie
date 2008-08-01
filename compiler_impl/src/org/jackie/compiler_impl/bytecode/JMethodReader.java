@@ -2,6 +2,8 @@ package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler.event.MethodListener;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.code.JCodeImpl;
+import org.jackie.compiler_impl.jmodelimpl.code.ASMCodeBlockImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
@@ -10,6 +12,7 @@ import static org.jackie.event.Events.events;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
+import org.jackie.jvm.structure.JCode;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.MethodVisitor;
@@ -108,11 +111,18 @@ public class JMethodReader extends ByteCodeLoader {
 
 			public void visitEnd() {
 				super.visitEnd();
-				if (annotationDefault != null) {
+
+                if (annotationDefault != null) {
 					jmethod.attributes().edit().addAttribute(
 							new JAttributeImpl<Object>("AnnotationDefault", annotationDefault));
 				}
-				events(MethodListener.class).loaded(jmethod);
+
+                if (jmethod.getJCode() != null) {
+                    ASMCodeBlockImpl codeblock = new ASMCodeBlockImpl(instructions);
+                    jmethod.getJCode().edit().setCodeBlock(codeblock); // todo QDH ASM integration, need to go deep into the instruction details 
+                }
+
+                events(MethodListener.class).loaded(jmethod);
 			}
 		};
 	}
