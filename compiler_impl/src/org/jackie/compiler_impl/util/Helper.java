@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl.util;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.jvm.JClass;
 import static org.jackie.utils.Assert.*;
@@ -30,4 +31,7 @@ public class Helper {
 		return typecast(jclass, JClassImpl.class);
 	}
 
+    static public Compilable compilable(Object object) {
+        return typecast(object, Compilable.class);
+    }
 }
