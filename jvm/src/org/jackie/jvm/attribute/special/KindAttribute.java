@@ -1,6 +1,7 @@
 package org.jackie.jvm.attribute.special;
 
 import org.jackie.jvm.spi.AbstractJAttribute;
+import org.jackie.jvm.JNode;
 
 
 /**
@@ -8,8 +9,8 @@ import org.jackie.jvm.spi.AbstractJAttribute;
  */
 public class KindAttribute extends AbstractJAttribute<Kind> {
 
-	public KindAttribute(Kind value) {
-		super("Kind", value);
+	public KindAttribute(JNode jnode, Kind value) {
+		super(jnode, "Kind", value);
 	}
 
 }

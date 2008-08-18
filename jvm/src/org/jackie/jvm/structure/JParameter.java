@@ -11,8 +11,6 @@ public interface JParameter extends JVariable<JMethod> {
 
 	public interface Editor extends JVariable.Editor<JParameter,JMethod> {
 
-		Editor setScope(JMethod node);
-
 		Editor setName(String name);
 
 		Editor setType(JClass type);

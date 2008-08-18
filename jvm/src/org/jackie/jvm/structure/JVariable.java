@@ -18,8 +18,6 @@ public interface JVariable<N extends JNode> extends JNode, Named, Typed, Flagged
 
 	public interface Editor<T extends JVariable<N>, N extends JNode> extends org.jackie.jvm.Editor<JVariable> {
 
-		Editor setScope(N node);
-
 		Editor setName(String name);
 
 		Editor setType(JClass type);

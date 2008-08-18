@@ -5,37 +5,40 @@ import org.jackie.java5.annotation.Annotations;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
  */
-public class AnnotationAttributeImpl implements JAnnotationAttribute {
-
-	JMethod jmethod;
+public class AnnotationAttributeImpl extends AbstractJNode implements JAnnotationAttribute {
 
 	JAnnotationAttributeValue defaultValue;
 
 	public AnnotationAttributeImpl(JMethod jmethod) {
-		this.jmethod = jmethod;
+		super(jmethod);
+	}
+
+	public JMethod jmethod() {
+		return (JMethod) owner();
 	}
 
 	/// Named, Typed ///
 
 
 	public String getName() {
-		return jmethod.getName();
+		return jmethod().getName();
 	}
 
 	public JClass getType() {
-		return jmethod.getType();
+		return jmethod().getType();
 	}
 
 	/// AnnotationAttribute ///
 
 	public AnnotationType getJAnnotationType() {
-		return jmethod.getJClass().extensions().get(AnnotationType.class);
+		return jmethod().getJClass().extensions().get(AnnotationType.class);
 	}
 
 	public JAnnotationAttributeValue getDefaultValue() {
@@ -45,11 +48,11 @@ public class AnnotationAttributeImpl implements JAnnotationAttribute {
 	///
 
 	public Annotations annotations() {
-		return jmethod.extensions().get(Annotations.class);
+		return jmethod().extensions().get(Annotations.class);
 	}
 
 	public boolean isEditable() {
-		return jmethod.getJClass().isEditable(); 
+		return jmethod().getJClass().isEditable(); 
 	}
 
 	public Editor edit() {

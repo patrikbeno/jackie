@@ -8,6 +8,7 @@ import org.jackie.compiler_impl.typeregistry.JClassLoader;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
@@ -27,7 +28,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JClassImpl implements JClass, Compilable {
+public class JClassImpl extends AbstractJNode implements JClass, Compilable {
 
 	// infrastructure stuff
 
@@ -59,6 +60,7 @@ public class JClassImpl implements JClass, Compilable {
 
 
 	public JClassImpl(String name, JPackage jpackage, TypeRegistry typeRegistry) {
+		super(jpackage);
 		this.name = name;
 		this.jpackage = jpackage;
 		this.typeRegistry = typeRegistry;
@@ -115,7 +117,7 @@ public class JClassImpl implements JClass, Compilable {
 	public Attributes attributes() {
 		checkLoaded(LoadLevel.ATTRIBUTES);
 		if (attributes == null) {
-			attributes = new AttributesImpl();
+			attributes = new AttributesImpl(this);
 		}
 		return attributes;
 	}

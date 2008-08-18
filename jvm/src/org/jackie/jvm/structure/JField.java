@@ -16,8 +16,6 @@ public interface JField extends JVariable<JClass>, Accessible {
 
 	public interface Editor extends JVariable.Editor<JField, JClass> {
 
-		Editor setScope(JClass node);
-
 		Editor setName(String name);
 
 		Editor setType(JClass type);

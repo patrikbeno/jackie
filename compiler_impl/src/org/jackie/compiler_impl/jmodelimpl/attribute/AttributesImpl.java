@@ -4,6 +4,7 @@ import org.jackie.compiler.event.AttributeListener;
 import static org.jackie.event.Events.events;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
+import org.jackie.jvm.JNode;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 
@@ -19,7 +20,16 @@ import java.util.Set;
  */
 public class AttributesImpl implements Attributes {
 
+	JNode jnode;
 	List<JAttribute> attributes;
+
+	public AttributesImpl(JNode jnode) {
+		this.jnode = jnode;
+	}
+
+	public JNode jnode() {
+		return jnode; 
+	}
 
 	public Set<String> getAttributeNames() {
 		Set<String> names = new HashSet<String>();
@@ -43,7 +53,7 @@ public class AttributesImpl implements Attributes {
 	}
 
 	public boolean isEditable() {
-		throw Assert.notYetImplemented(); // todo implement this 
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 	public Editor edit() {

@@ -1,6 +1,7 @@
 package org.jackie.jvm.spi;
 
 import org.jackie.jvm.attribute.JAttribute;
+import org.jackie.jvm.JNode;
 import org.jackie.utils.Assert;
 
 import java.util.Iterator;
@@ -9,7 +10,7 @@ import java.util.NoSuchElementException;
 /**
  * @author Patrik Beno
  */
-public abstract class AbstractJAttribute<T> implements JAttribute<T> {
+public abstract class AbstractJAttribute<T> extends AbstractJNode implements JAttribute<T> {
 
 	protected String name;
 
@@ -17,7 +18,8 @@ public abstract class AbstractJAttribute<T> implements JAttribute<T> {
 
 	protected JAttribute<T> next;
 
-	protected AbstractJAttribute(String name, T value) {
+	protected AbstractJAttribute(JNode owner, String name, T value) {
+		super(owner);
 		this.name = name;
 		this.value = value;
 	}

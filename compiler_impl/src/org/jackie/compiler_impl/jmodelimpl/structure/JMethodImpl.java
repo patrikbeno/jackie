@@ -10,6 +10,8 @@ import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
@@ -30,7 +32,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JMethodImpl implements JMethod, Compilable {
+public class JMethodImpl extends AbstractJNode implements JMethod, Compilable {
 
 	protected String name;
 	protected JClass type;
@@ -41,17 +43,15 @@ public class JMethodImpl implements JMethod, Compilable {
 	protected Attributes attributes;
 	protected Extensions extensions;
 
-	protected JClass jclass;
 	protected List<JParameter> parameters;
 	protected List<JClass> exceptions;
 	protected List<JVariable> locals;
     
 	protected JCode code;
 
-	public JMethodImpl(JClass jclass) {
-		this.jclass = jclass;
+	public JMethodImpl(JClass owner) {
+		super(owner);
 	}
-
 
 	public String getName() {
 		return name;
@@ -63,7 +63,7 @@ public class JMethodImpl implements JMethod, Compilable {
 
 	public Attributes attributes() {
 		if (attributes == null) {
-			attributes = new AttributesImpl();
+			attributes = new AttributesImpl(this);
 		}
 		return attributes;
 	}
@@ -78,7 +78,7 @@ public class JMethodImpl implements JMethod, Compilable {
 	///
 
 	public JClass getJClass() {
-		return jclass;
+		return (JClass) owner();
 	}
 
 	public List<JParameter> getParameters() {

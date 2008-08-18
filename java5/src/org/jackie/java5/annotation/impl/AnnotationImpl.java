@@ -10,6 +10,7 @@ import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
 import org.jackie.java5.enumtype.EnumType;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.builtin.ArrayType;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.jvm.extension.builtin.PrimitiveType;
@@ -85,6 +86,10 @@ public class AnnotationImpl implements JAnnotation {
 			JAnnotationAttributeValue value = createAttributeValue(this, name, object);
 			edit().addAttributeValue(value);
 		}
+	}
+
+	public JNode owner() {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 	void init(AnnotationType type, Object owner) {

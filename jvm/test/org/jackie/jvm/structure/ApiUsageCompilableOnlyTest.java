@@ -25,8 +25,7 @@ public class ApiUsageCompilableOnlyTest {
 
 		JParameter.Editor e3 = jparam.edit()
 				.setName("")
-				.setType(null)
-				.setScope(null);
+				.setType(null);
 
 		jfield.edit()
 				.setName("foo")
@@ -34,7 +33,6 @@ public class ApiUsageCompilableOnlyTest {
 				.editable()
 				.edit()
 				.setName("bar")
-				.setScope(jclass)
 				.setAccessMode(AccessMode.PACKAGE)
 				.editable()
 				.edit()

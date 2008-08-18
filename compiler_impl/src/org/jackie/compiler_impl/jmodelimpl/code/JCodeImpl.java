@@ -5,6 +5,7 @@ import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.Editor;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.code.CodeBlock;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
@@ -17,19 +18,18 @@ import org.jackie.compiler.spi.Compilable;
 /**
  * @author Patrik Beno
  */
-public class JCodeImpl implements JCode, Compilable {
+public class JCodeImpl extends AbstractJNode implements JCode, Compilable {
 
-    JMethod jmethod;
     AttributesImpl attributes;
     ExtensionsImpl extensions;
     CodeBlock codeblock;
 
     public JCodeImpl(JMethod jmethod) {
-        this.jmethod = jmethod;
+        super(jmethod);
     }
 
     public JMethod getJMethod() {
-        return jmethod;
+        return (JMethod) owner;
     }
 
     public CodeBlock getCodeBlock() {
@@ -38,7 +38,7 @@ public class JCodeImpl implements JCode, Compilable {
 
     public Attributes attributes() {
         if (attributes == null) {
-            attributes = new AttributesImpl();
+            attributes = new AttributesImpl(this);
         }
         return attributes;
     }

@@ -47,7 +47,7 @@ public class PrimitiveTypeRegistry extends AbstractTypeRegistry {
 				JClassImpl jclass = new JClassImpl(p.getPrimitiveClass().getName(), null, this);
 				jclass.loadLevel = LoadLevel.CODE; // mark as loaded (primitives are unloadable)
 				jclass.attributes().edit()
-						.addAttribute(new KindAttribute(Kind.PRIMITIVE));
+						.addAttribute(new KindAttribute(jclass, Kind.PRIMITIVE));
 
 				classes.put(jclass.getFQName(), jclass);
 			}

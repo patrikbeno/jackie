@@ -1,6 +1,7 @@
 package org.jackie.jvm.attribute;
 
 import org.jackie.jvm.Editable;
+import org.jackie.jvm.JNode;
 
 import java.util.List;
 import java.util.Set;
@@ -9,6 +10,8 @@ import java.util.Set;
  * @author Patrik Beno
  */
 public interface Attributes extends Editable<Attributes.Editor> {
+
+	JNode jnode();
 
 	Set<String> getAttributeNames();
 

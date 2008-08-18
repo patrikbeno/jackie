@@ -93,7 +93,7 @@ public class ArrayRegistry {
 				jclass.edit()
 					.setSuperClass(context(TypeRegistry.class).getJClass(Object.class));
 				jclass.attributes().edit()
-					.addAttribute(new KindAttribute(Kind.ARRAY));
+					.addAttribute(new KindAttribute(jclass, Kind.ARRAY));
 
 				arrays.put(desc, jclass);
 

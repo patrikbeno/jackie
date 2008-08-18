@@ -3,6 +3,7 @@ package org.jackie.java5.annotation.impl;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.jvm.spi.AbstractJNode;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationAttributeValueImpl implements JAnnotationAttributeValue {
+public class AnnotationAttributeValueImpl extends AbstractJNode implements JAnnotationAttributeValue {
 
 	JAnnotation annotation;
 
@@ -24,6 +25,7 @@ public class AnnotationAttributeValueImpl implements JAnnotationAttributeValue {
 
 
 	public AnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef) {
+		super(annotation);
 		this.annotation = annotation;
 		this.attrdef = attrdef;
 		if (annotation != null) {

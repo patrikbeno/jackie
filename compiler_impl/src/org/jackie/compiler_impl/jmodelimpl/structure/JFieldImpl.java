@@ -6,6 +6,7 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
+import org.jackie.jvm.structure.JMethod;
 import org.objectweb.asm.FieldVisitor;
 
 /**
@@ -14,6 +15,10 @@ import org.objectweb.asm.FieldVisitor;
 public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compilable {
 
 	protected AccessMode accessMode;
+
+	public JFieldImpl(JClass owner) {
+		super(owner);
+	}
 
 	public AccessMode getAccessMode() {
 		return accessMode;
@@ -34,11 +39,6 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 	class Editor implements JField.Editor  {
 
 		final JFieldImpl fthis = JFieldImpl.this;
-
-		public Editor setScope(JClass node) {
-			fthis.scope = node;
-			return this;
-		}
 
 		public Editor setName(String name) {
 			fthis.name = name;

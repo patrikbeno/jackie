@@ -5,25 +5,30 @@ import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.structure.JVariable;
+import org.jackie.jvm.structure.JMethod;
 
 /**
  * @author Patrik Beno
  */
-public abstract class JVariableImpl<N extends JNode> implements JVariable<N> {
+public abstract class JVariableImpl<N extends JNode> extends AbstractJNode implements JVariable<N> {
 
-	protected N scope;
 	protected String name;
 	protected JClass type;
 	protected Flags flags;
 	protected Attributes attributes;
 	protected Extensions extensions;
 
+	protected JVariableImpl(JNode owner) {
+		super(owner);
+	}
+
 	public N scope() {
-		return scope;
+		return (N) owner();
 	}
 
 	public String getName() {
@@ -43,7 +48,7 @@ public abstract class JVariableImpl<N extends JNode> implements JVariable<N> {
 
 	public Attributes attributes() {
 		if (attributes == null) {
-			attributes = new AttributesImpl();
+			attributes = new AttributesImpl(this);
 		}
 		return attributes;
 	}

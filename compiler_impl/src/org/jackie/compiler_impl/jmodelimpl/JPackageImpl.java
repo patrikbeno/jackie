@@ -3,6 +3,8 @@ package org.jackie.compiler_impl.jmodelimpl;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.utils.Stack;
 
 import java.util.Collections;
@@ -12,7 +14,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class JPackageImpl implements JPackage {
+public class JPackageImpl extends AbstractJNode implements JPackage {
 
 	protected TypeRegistry typeRegistry;
 
@@ -27,6 +29,10 @@ public class JPackageImpl implements JPackage {
 	{
 		subpackages = new HashSet<JPackage>();
 		classes = new HashSet<JClass>();
+	}
+
+	public JPackageImpl(JPackage owner) {
+		super(owner);
 	}
 
 	public String getName() {

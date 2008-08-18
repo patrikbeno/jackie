@@ -39,7 +39,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		jclass = getJClass(clsname);
 
 		jclass.attributes().edit()
-				.addAttribute(new KindAttribute(toKind(access)));
+				.addAttribute(new KindAttribute(jclass, toKind(access)));
 
 		// all classes except java.lang.Object have superclass defined
 		assert superName != null || jclass.getFQName().equals(Object.class.getName());
@@ -72,7 +72,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<String[]>(BuiltinAttribute.EnclosingMethod.name(), new String[] {owner,name,desc}));
+				new JAttributeImpl<String[]>(jclass, BuiltinAttribute.EnclosingMethod.name(), new String[] {owner,name,desc}));
 	}
 
 	public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -81,12 +81,12 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		}
 		AnnotationNode anno = new AnnotationNode(desc);
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<AnnotationNode>(BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
+				new JAttributeImpl<AnnotationNode>(jclass, BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
 		return anno;
 	}
 
 	public void visitAttribute(Attribute attr) {
-		jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
+		jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(jclass, attr.type, attr));
 	}
 
 	public void visitInnerClass(String name, String outerName, String innerName, int access) {
@@ -94,7 +94,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			return;
 		}
 		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<Object[]>(BuiltinAttribute.InnerClasses.name(), new Object[]{name,outerName,innerName,access}));
+				new JAttributeImpl<Object[]>(jclass, BuiltinAttribute.InnerClasses.name(), new Object[]{name,outerName,innerName,access}));
 	}
 
 	public FieldVisitor visitField(final int access, final String name, final String desc, final String signature, final Object value) {
@@ -107,7 +107,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 			JField jfield;
 
 			{
-				jfield = new JFieldImpl();
+				jfield = new JFieldImpl(jclass);
 				jfield.edit()
 						.setName(name)
 						.setType(getJClassByDesc(desc))
@@ -115,18 +115,18 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 						.setFlags(toFlags(access));
 
 				jfield.attributes().edit().addAttribute(
-						new JAttributeImpl<Object>(BuiltinAttribute.ConstantValue.name(), value));
+						new JAttributeImpl<Object>(jfield, BuiltinAttribute.ConstantValue.name(), value));
 			}
 
 			public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 				AnnotationNode anno = new AnnotationNode(desc);
 				jfield.attributes().edit().addAttribute(
-						new JAttributeImpl<AnnotationNode>(BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
+						new JAttributeImpl<AnnotationNode>(jfield, BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
 				return anno;
 			}
 
 			public void visitAttribute(Attribute attr) {
-				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
+				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(jclass, attr.type, attr));
 			}
 
 			public void visitEnd() {

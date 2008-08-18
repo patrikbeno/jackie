@@ -70,7 +70,7 @@ public class JMethodReader extends ByteCodeLoader {
 		for (int i=0; i<argtypes.length; i++) {
 			Type t = argtypes[i];
 			JClass c = getJClassByType(t);
-			JParameter p = new JParameterImpl();
+			JParameter p = new JParameterImpl(jmethod);
 			p.edit()
 					.setName("p" + i)
 					.setType(c);
@@ -100,13 +100,13 @@ public class JMethodReader extends ByteCodeLoader {
 			public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 				AnnotationNode anno = new AnnotationNode(desc);
 				jmethod.attributes().edit().addAttribute(
-						new JAttributeImpl<AnnotationNode>("RuntimeVisibleAnnotations", anno));
+						new JAttributeImpl<AnnotationNode>(jmethod, "RuntimeVisibleAnnotations", anno));
 				return anno;
 
 			}
 
 			public void visitAttribute(Attribute attr) {
-				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(attr.type, attr));
+				jclass.attributes().edit().addAttribute(new JAttributeImpl<Attribute>(jmethod, attr.type, attr));
 			}
 
 			public void visitEnd() {
@@ -114,11 +114,11 @@ public class JMethodReader extends ByteCodeLoader {
 
                 if (annotationDefault != null) {
 					jmethod.attributes().edit().addAttribute(
-							new JAttributeImpl<Object>("AnnotationDefault", annotationDefault));
+							new JAttributeImpl<Object>(jmethod, "AnnotationDefault", annotationDefault));
 				}
 
                 if (jmethod.getJCode() != null) {
-                    ASMCodeBlockImpl codeblock = new ASMCodeBlockImpl(instructions);
+                    ASMCodeBlockImpl codeblock = new ASMCodeBlockImpl(jmethod.getJCode(), instructions);
                     jmethod.getJCode().edit().setCodeBlock(codeblock); // todo QDH ASM integration, need to go deep into the instruction details 
                 }
 
