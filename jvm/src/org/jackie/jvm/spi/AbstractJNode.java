@@ -5,7 +5,7 @@ import org.jackie.jvm.JNode;
 /**
  * @author Patrik Beno
  */
-public class AbstractJNode implements JNode {
+public abstract class AbstractJNode implements JNode {
 
 	protected JNode owner;
 
