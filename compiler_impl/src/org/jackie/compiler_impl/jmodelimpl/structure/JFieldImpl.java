@@ -28,10 +28,6 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 		return scope(); 
 	}
 
-	public boolean isEditable() {
-		return getJClass().isEditable();
-	}
-
 	public JField.Editor edit() {
 		return new Editor();
 	}

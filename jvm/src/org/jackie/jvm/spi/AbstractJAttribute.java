@@ -37,7 +37,7 @@ public abstract class AbstractJAttribute<T> extends AbstractJNode implements JAt
 	}
 
 	public boolean isEditable() {
-		throw Assert.notYetImplemented(); // todo implement this
+		return JModelHelper.isEditable(this);
 	}
 
 	public Editor<T> edit() {

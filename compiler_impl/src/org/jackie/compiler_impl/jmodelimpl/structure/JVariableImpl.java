@@ -6,6 +6,7 @@ import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.spi.AbstractJNode;
+import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.Flags;
@@ -60,4 +61,7 @@ public abstract class JVariableImpl<N extends JNode> extends AbstractJNode imple
 		return extensions;
 	}
 
+	public boolean isEditable() {
+		return JModelHelper.isEditable(this);
+	}
 }

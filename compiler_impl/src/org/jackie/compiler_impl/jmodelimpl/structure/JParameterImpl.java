@@ -14,10 +14,6 @@ public class JParameterImpl extends JVariableImpl<JMethod> implements JParameter
 		super(owner);
 	}
 
-	public boolean isEditable() {
-		return scope().isEditable();
-	}
-
 	public Editor edit() {
 		return new Editor();
 	}
