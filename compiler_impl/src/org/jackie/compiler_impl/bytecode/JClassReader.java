@@ -79,9 +79,13 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		if (atLeast(LoadLevel.ATTRIBUTES)) {
 			return null;
 		}
-		AnnotationNode anno = new AnnotationNode(desc);
-		jclass.attributes().edit().addAttribute(
-				new JAttributeImpl<AnnotationNode>(jclass, BuiltinAttribute.RuntimeVisibleAnnotations.name(), anno));
+		AnnotationNode anno = new AnnotationNode(desc) {
+			public void visitEnd() {
+				super.visitEnd();
+				jclass.attributes().edit().addAttribute(
+						new JAttributeImpl<AnnotationNode>(jclass, BuiltinAttribute.RuntimeVisibleAnnotations.name(), this));
+			}
+		};
 		return anno;
 	}
 
