@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
@@ -241,15 +242,14 @@ public class JClassImpl extends AbstractJNode implements JClass, Compilable {
 
 
 	public void compile() {
-        ByteCodeBuilder.execute(new ByteCodeBuilder() {
+		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
-			JClass cthis;
+			JClass cthis = JClassImpl.this;
 
 			protected void run() {
-				cthis = JClassImpl.this;
-				//
 				bcinit();
 				bcextensions();
+				bcattributes();
 				bcfields();
 				bcmethods();
 				bcdone();
@@ -261,36 +261,35 @@ public class JClassImpl extends AbstractJNode implements JClass, Compilable {
 				String bcSuperName = (superclass != null) ? bcName(superclass) : null;
 				cv().visit(version, access,
 							  bcName(cthis),
-							  null, // signature
+							  null, // todo class signature
 							  bcSuperName,
 							  bcNames(cthis.getInterfaces())
 				);
-				// todo cw.visitSource();
 			}
 
-			void bcdone() {
-				cv().visitEnd();
+			void bcattributes() {
+				CompilableHelper.compile(attributes());
 			}
 
 			void bcextensions() {
-				for (Extension ext : extensions()) {
-					if (ext instanceof Compilable) {
-						((Compilable) ext).compile();
-					}
-				}
+				CompilableHelper.compile(extensions());
 			}
 
 
 			void bcfields() {
 				for (JField f : getFields()) {
-					typecast(f, Compilable.class).compile();
+					CompilableHelper.compile(f);
 				}
 			}
 
 			void bcmethods() {
 				for (JMethod m : cthis.getMethods()) {
-					typecast(m, Compilable.class).compile();
+					CompilableHelper.compile(m);
 				}
+			}
+
+			void bcdone() {
+				cv().visitEnd();
 			}
 
 		});

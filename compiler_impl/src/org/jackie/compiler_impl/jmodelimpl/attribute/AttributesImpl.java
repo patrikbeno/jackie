@@ -1,6 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl.attribute;
 
 import org.jackie.compiler.event.AttributeListener;
+import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.spi.CompilableHelper;
 import static org.jackie.event.Events.events;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
@@ -18,7 +20,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class AttributesImpl implements Attributes {
+public class AttributesImpl implements Attributes, Compilable {
 
 	JNode jnode;
 	List<JAttribute> attributes;
@@ -59,7 +61,7 @@ public class AttributesImpl implements Attributes {
 	public Editor edit() {
 		return new Editor() {
 			public Editor addAttribute(JAttribute attribute) {
-				JAttribute a = getAttribute(attribute.getName());
+				JAttribute<?> a = getAttribute(attribute.getName());
 				if (a != null) {
 					a.edit().setNext(attribute);
 				} else {
@@ -76,5 +78,11 @@ public class AttributesImpl implements Attributes {
 				return AttributesImpl.this;
 			}
 		};
+	}
+
+	public void compile() {
+		for (JAttribute a : attributes) {
+			CompilableHelper.compile(a);
+		}
 	}
 }

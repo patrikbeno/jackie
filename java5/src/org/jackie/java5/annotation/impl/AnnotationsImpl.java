@@ -1,6 +1,7 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.java5.annotation.Annotations;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.jvm.Editable;
@@ -127,7 +128,7 @@ public class AnnotationsImpl implements Annotations, Compilable {
 
 	public void compile() {
 		for (JAnnotation ann : getJAnnotations()) {
-			// todo implement
+			CompilableHelper.compile(ann);
 		}
 	}
 }

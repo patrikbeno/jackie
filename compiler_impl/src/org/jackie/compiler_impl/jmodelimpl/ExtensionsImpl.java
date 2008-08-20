@@ -1,6 +1,7 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
 import org.jackie.compiler.extension.ExtensionManager;
+import org.jackie.compiler.spi.Compilable;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
@@ -15,7 +16,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public class ExtensionsImpl implements Extensions {
+public class ExtensionsImpl implements Extensions, Compilable {
 
 	JNode jnode;
 
@@ -74,5 +75,11 @@ public class ExtensionsImpl implements Extensions {
 				it.remove();
 			}
 		};
+	}
+
+	public void compile() {
+		for (Extension ext : this) {
+			((Compilable) ext).compile();
+		}
 	}
 }

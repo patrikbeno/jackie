@@ -1,12 +1,15 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
+import org.jackie.context.ContextManager;
+import org.jackie.context.ContextRunner;
 import org.objectweb.asm.FieldVisitor;
 
 /**
@@ -67,11 +70,13 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 			JField fthis = JFieldImpl.this;
 
 			protected void run() {
-				FieldVisitor fv = cv().visitField(
+				final FieldVisitor fv = cv().visitField(
 						toAccessFlag(getAccessMode()),
 						getName(), bcDesc(fthis),
-						null, // signature
+						null, // todo field signature
 						null);
+				CompilableHelper.compile(fthis.attributes());
+				CompilableHelper.compile(fthis.extensions());
 				fv.visitEnd();
 			}
 		});

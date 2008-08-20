@@ -6,6 +6,7 @@ import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
@@ -92,7 +93,7 @@ public class CompilerImpl implements Compiler {
 			context(BCClassContext.class).classVisitor = cw;
 
 			// compilation:
-			typecast(jcls, Compilable.class).compile();
+			CompilableHelper.compile(jcls);
 
 			ClassName clsname = new ClassName(jcls.getFQName());
 			workspace.remove(clsname.getPathName());

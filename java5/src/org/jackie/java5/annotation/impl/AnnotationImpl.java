@@ -1,7 +1,9 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.spi.Compilable;
 import static org.jackie.context.ContextManager.context;
+import org.jackie.context.ContextObject;
 import org.jackie.java5.annotation.Annotated;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.Annotations;
@@ -33,7 +35,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationImpl implements JAnnotation {
+public class AnnotationImpl implements JAnnotation, Compilable {
 
 	/**
 	 * Owner of this annotation: can be {@link Annotated an annotated element}
@@ -233,4 +235,6 @@ public class AnnotationImpl implements JAnnotation {
 
 	}
 
+	public void compile() {
+	}
 }
