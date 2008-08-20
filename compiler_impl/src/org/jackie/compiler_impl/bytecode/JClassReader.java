@@ -79,7 +79,7 @@ public class JClassReader extends ByteCodeLoader implements ClassVisitor {
 		if (atLeast(LoadLevel.ATTRIBUTES)) {
 			return null;
 		}
-		AnnotationNode anno = new AnnotationNode(desc) {
+		AnnotationNode anno = new AnnotationNode(desc) { // todo this will hold reference to JClassReader (unwanted, redesign) 
 			public void visitEnd() {
 				super.visitEnd();
 				jclass.attributes().edit().addAttribute(
