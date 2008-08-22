@@ -1,32 +1,16 @@
 package org.jackie.jclassfile.constantpool;
 
-import org.jackie.utils.Assert;
-import org.jackie.utils.Log;
+import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.model.ClassFile;
-import org.jackie.jclassfile.constantpool.impl.ClassRef;
-import org.jackie.jclassfile.constantpool.impl.FieldRef;
-import org.jackie.jclassfile.constantpool.impl.MethodRef;
-import org.jackie.jclassfile.constantpool.impl.InterfaceMethodRef;
-import org.jackie.jclassfile.constantpool.impl.StringRef;
-import org.jackie.jclassfile.constantpool.impl.IntegerRef;
-import org.jackie.jclassfile.constantpool.impl.FloatRef;
-import org.jackie.jclassfile.constantpool.impl.LongRef;
-import org.jackie.jclassfile.constantpool.impl.DoubleRef;
-import org.jackie.jclassfile.constantpool.impl.NameAndType;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.constantpool.impl.Factory;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.DataInput;
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
 import java.util.HashMap;
-import java.lang.ref.WeakReference;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Patrik Beno
@@ -54,7 +38,6 @@ public class ConstantPool extends Base {
 		if (constant.isLongData()) {
 			constants.add(null);
 		}
-		Log.debug("%s", constant);
 	}
 
 	public <T extends Constant> T getConstant(int index, Class<T> type) {
@@ -67,7 +50,6 @@ public class ConstantPool extends Base {
 
 	public void load(DataInput in) throws IOException {
 		int count = in.readUnsignedShort()-1;
-		Log.debug("Reading ConstantPool (%s entries)", count);
 		constants = new ArrayList<Constant>(count);
 		while (count-- > 0) {
 			Constant c = createConstant(in);
@@ -92,7 +74,6 @@ public class ConstantPool extends Base {
 		for (Constant constant : constants) {
 			if (constant==null) { continue; }
 
-			Log.debug("Saving constant %s", constant);
 			if (!constant.isResolved()) {
 				constant.resolve();
 			}

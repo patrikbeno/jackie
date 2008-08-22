@@ -1,14 +1,12 @@
 package org.jackie.jclassfile.constantpool.impl;
 
 import org.jackie.jclassfile.constantpool.Constant;
-import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
-import org.jackie.utils.Assert;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.DataInput;
 
 /**
  * @author Patrik Beno

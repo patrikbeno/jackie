@@ -1,13 +1,12 @@
 package org.jackie.jclassfile.flags;
 
-import org.jackie.utils.Assert;
 import org.jackie.jclassfile.model.Base;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.DataInput;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

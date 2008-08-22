@@ -4,13 +4,12 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.AccessFlags;
 import org.jackie.jclassfile.util.Helper;
-import org.jackie.utils.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +89,6 @@ ClassFile {
 			while (count-- > 0) {
 				FieldInfo f = new FieldInfo(this, in);
 				fields.add(f);
-				Log.debug("Loaded %s", f);
 			}
 		}
 
@@ -101,7 +99,6 @@ ClassFile {
 			while (count-- > 0) {
 				MethodInfo m = new MethodInfo(this, in);
 				methods.add(m);
-				Log.debug("Loaded %s", m);
 			}
 		}
 
@@ -139,7 +136,6 @@ ClassFile {
 	private void save(DataOutput out, List<? extends Base> items) throws IOException {
 		out.writeShort(items.size());
 		for (Base item : items) {
-			Log.debug("Saving item %s", item);
 			item.save(out);
 		}
 	}

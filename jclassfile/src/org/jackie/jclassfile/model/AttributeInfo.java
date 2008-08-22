@@ -1,12 +1,10 @@
 package org.jackie.jclassfile.model;
 
-import org.jackie.utils.Assert;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.constantpool.ConstantPool;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.DataInput;
 
 /**
  * @author Patrik Beno

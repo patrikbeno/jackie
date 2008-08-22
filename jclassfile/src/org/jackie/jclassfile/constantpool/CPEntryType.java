@@ -1,7 +1,5 @@
 package org.jackie.jclassfile.constantpool;
 
-import org.jackie.utils.Assert;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
