@@ -3,6 +3,7 @@ package org.jackie.jclassfile.model;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -42,6 +43,18 @@ public abstract class AttributeInfo extends Base {
 	public void save(DataOutput out) throws IOException {
 		name.writeReference(out);
 		writeData(out);
+	}
+
+	protected int readLength(DataInput in, Integer expected) throws IOException {
+		int len = in.readInt();
+		if (expected != null) {
+			doAssert(len == expected, "Invalid length: %s. Expected: %s", len, expected);
+		}
+		return len;
+	}
+
+	protected void writeLength(DataOutput out, int length) throws IOException {
+		out.writeInt(length);
 	}
 
 	protected abstract Task readConstantDataOrGetResolver(DataInput in) throws IOException;
