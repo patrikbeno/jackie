@@ -45,7 +45,7 @@ CONSTANT_String_info {
 	}
 
 	protected void writeConstantData(DataOutput out) throws IOException {
-		out.writeInt(value.getIndex());
+		value.writeReference(out);
 	}
 
 	public boolean equals(Object o) {
@@ -61,5 +61,9 @@ CONSTANT_String_info {
 
 	public int hashCode() {
 		return (value != null ? value.hashCode() : 0);
+	}
+
+	protected String valueToString() {
+		return String.format("value={%s}", value);
 	}
 }
