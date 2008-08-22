@@ -57,4 +57,8 @@ public class LongRef extends Constant {
 	public int hashCode() {
 		return (int) (value ^ (value >>> 32));
 	}
+
+	protected String valueToString() {
+		return String.format("value={%s}", value);
+	}
 }

@@ -53,4 +53,8 @@ public class FloatRef extends Constant {
 	public int hashCode() {
 		return (value != +0.0f ? Float.floatToIntBits(value) : 0);
 	}
+
+	protected String valueToString() {
+		return String.format("value={%s}", value);
+	}
 }

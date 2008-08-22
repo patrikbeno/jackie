@@ -53,4 +53,8 @@ public class IntegerRef extends Constant {
 	public int hashCode() {
 		return value;
 	}
+
+	protected String valueToString() {
+		return String.format("value={%s}", value);
+	}
 }

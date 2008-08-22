@@ -58,7 +58,7 @@ public class Utf8 extends Constant {
 	}
 
 	protected String valueToString() {
-		return value;
+		return String.format("value={%s}", value);
 	}
 
 }

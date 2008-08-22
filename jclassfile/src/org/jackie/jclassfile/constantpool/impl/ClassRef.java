@@ -67,6 +67,6 @@ CONSTANT_Class_info {
 	}
 
 	protected String valueToString() {
-		return classname != null ? classname.value() : null;
+		return String.format("classname={%s}", classname);
 	}
 }

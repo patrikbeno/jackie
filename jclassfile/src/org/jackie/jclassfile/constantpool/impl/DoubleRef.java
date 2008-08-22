@@ -58,4 +58,8 @@ public class DoubleRef extends Constant {
 		long temp = value != +0.0d ? Double.doubleToLongBits(value) : 0L;
 		return (int) (temp ^ (temp >>> 32));
 	}
+
+	protected String valueToString() {
+		return String.format("value={%s}", value);
+	}
 }

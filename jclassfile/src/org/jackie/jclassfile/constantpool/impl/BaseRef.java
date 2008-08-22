@@ -75,4 +75,7 @@ CONSTANT_Fieldref_info {
 		return result;
 	}
 
+	protected String valueToString() {
+		return String.format("classref={%s}, nametype={%s}", classref, nametype);
+	}
 }
