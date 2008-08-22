@@ -8,15 +8,16 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * @author Patrik Beno
  */
 public class Parser {
 
-	static class Sample {
-		String string;
-		void method() {}
+	static class Sample<T> {
+		List<T> items;
+		<T> void method(T t) {}
 	}
 
 	static public void main(String[] args) throws IOException {
