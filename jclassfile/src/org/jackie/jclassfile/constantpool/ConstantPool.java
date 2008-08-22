@@ -31,16 +31,18 @@ public class ConstantPool extends Base {
 	}
 
 	void register(Constant constant) {
-		if (constant.getIndex() != null) { return; }
+		if (constant.getIndex() != null) { return; } // already registered
 
 		constants.add(constant);
 		constant.setIndex(constants.size());
-		if (constant.isLongData()) {
+		if (constant.isLongData()) { // long data (long, double) occupy two entries in the pool
 			constants.add(null);
 		}
 	}
 
 	public <T extends Constant> T getConstant(int index, Class<T> type) {
+		if (index == 0) { return null; }
+
 		Constant c = constants.get(index-1);
 		if (!c.isResolved()) {
 			c.resolve();
