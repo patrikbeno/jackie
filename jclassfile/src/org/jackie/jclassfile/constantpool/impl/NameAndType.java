@@ -51,8 +51,8 @@ CONSTANT_NameAndType_info {
 	}
 
 	protected void writeConstantData(DataOutput out) throws IOException {
-		out.writeInt(name.getIndex());
-		out.writeInt(type.getIndex());
+		name.writeReference(out);
+		type.writeReference(out);
 	}
 
 	public boolean equals(Object o) {
@@ -72,5 +72,9 @@ CONSTANT_NameAndType_info {
 		result = (name != null ? name.hashCode() : 0);
 		result = 31 * result + (type != null ? type.hashCode() : 0);
 		return result;
+	}
+
+	protected String valueToString() {
+		return String.format("%s : %s", name, type);
 	}
 }

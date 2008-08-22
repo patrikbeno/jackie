@@ -39,7 +39,7 @@ ClassFile {
     }
     */
 
-   long magic = 0xCAFEBABE;
+   int magic = 0xCAFEBABE;
 	int minor;
 	int major = 50;
 
@@ -90,7 +90,7 @@ ClassFile {
 			while (count-- > 0) {
 				FieldInfo f = new FieldInfo(this, in);
 				fields.add(f);
-				Log.debug("%s", f);
+				Log.debug("Loaded %s", f);
 			}
 		}
 
@@ -101,7 +101,7 @@ ClassFile {
 			while (count-- > 0) {
 				MethodInfo m = new MethodInfo(this, in);
 				methods.add(m);
-				Log.debug("%s", m);
+				Log.debug("Loaded %s", m);
 			}
 		}
 
@@ -109,29 +109,37 @@ ClassFile {
 	}
 
 	public void save(DataOutput out) throws IOException {
-		out.writeLong(magic);
-		out.writeInt(major);
-		out.writeInt(minor);
+		out.writeInt(magic);
+		out.writeShort(minor);
+		out.writeShort(major);
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutput tmpout = new DataOutputStream(baos);
+		DataOutputStream tmpout = new DataOutputStream(baos);
 
 		accessFlags.save(tmpout);
-		classname.save(tmpout);
-		superclass.save(tmpout);
+		classname.writeReference(tmpout);
+		superclass.writeReference(tmpout);
 
-		save(tmpout, interfaces);
+		// interfaces
+		tmpout.writeShort(interfaces.size());
+		for (ClassRef i : interfaces) {
+			i.writeReference(tmpout);
+		}
+
 		save(tmpout, fields);
 		save(tmpout, methods);
 		save(tmpout, attributes);
 
 		pool.save(out);
+
+		tmpout.close();
 		out.write(baos.toByteArray());
 	}
 
 	private void save(DataOutput out, List<? extends Base> items) throws IOException {
-		out.writeInt(items.size());
+		out.writeShort(items.size());
 		for (Base item : items) {
+			Log.debug("Saving item %s", item);
 			item.save(out);
 		}
 	}

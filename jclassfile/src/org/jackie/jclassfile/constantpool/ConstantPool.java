@@ -47,6 +47,8 @@ public class ConstantPool extends Base {
 	}
 
 	void register(Constant constant) {
+		if (constant.getIndex() != null) { return; }
+
 		constants.add(constant);
 		constant.setIndex(constants.size());
 		if (constant.isLongData()) {
@@ -72,12 +74,28 @@ public class ConstantPool extends Base {
 			register(c);
 			if (c.isLongData()) { count--; }
 		}
+
+		// should not be needed, just make loaded stuff consistent in memory
+		// when the code is debugged, lazy loading should be restored
+		boolean lazyLoading = false;
+		if (!lazyLoading) {
+			for (Constant c : constants) {
+				if (c != null && !c.isResolved()) {
+					c.resolve();
+				}
+			}
+		}
 	}
 
 	public void save(DataOutput out) throws IOException {
-		out.writeInt(constants.size());
+		out.writeShort(constants.size()+1);
 		for (Constant constant : constants) {
 			if (constant==null) { continue; }
+
+			Log.debug("Saving constant %s", constant);
+			if (!constant.isResolved()) {
+				constant.resolve();
+			}
 			constant.save(out);
 		}
 	}

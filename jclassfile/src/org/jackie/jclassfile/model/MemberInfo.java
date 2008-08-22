@@ -59,7 +59,7 @@ field|member info {
 		name.writeReference(out);
 		descriptor.writeReference(out);
 
-		out.writeInt(attributes.size());
+		out.writeShort(attributes.size());
 		for (AttributeInfo a : attributes) {
 			a.save(out);
 		}

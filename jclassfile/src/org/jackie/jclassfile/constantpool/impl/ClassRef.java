@@ -66,4 +66,7 @@ CONSTANT_Class_info {
 		return (classname != null ? classname.hashCode() : 0);
 	}
 
+	protected String valueToString() {
+		return classname != null ? classname.value() : null;
+	}
 }

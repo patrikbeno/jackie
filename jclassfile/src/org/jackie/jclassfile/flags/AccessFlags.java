@@ -50,6 +50,6 @@ public class AccessFlags extends Base {
 	}
 
 	public void save(DataOutput out) throws IOException {
-		out.writeInt(flags);
+		out.writeShort(flags);
 	}
 }

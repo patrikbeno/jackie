@@ -81,7 +81,7 @@ cp_info {
 
 	public void writeReference(DataOutput out) throws IOException {
 		pool.register(this);
-		out.writeInt(getIndex());
+		out.writeShort(getIndex());
 	}
 
 	public String toString() {

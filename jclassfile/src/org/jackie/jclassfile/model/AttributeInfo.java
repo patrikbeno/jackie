@@ -21,6 +21,7 @@ public class AttributeInfo extends Base {
 		 */
 
 	ClassFileProvider owner;
+
 	Utf8 name;
 	byte[] data;
 
@@ -36,7 +37,9 @@ public class AttributeInfo extends Base {
 	}
 
 	public void save(DataOutput out) throws IOException {
-		throw Assert.notYetImplemented(); // todo implement this
+		name.writeReference(out);
+		out.writeInt(data.length);
+		out.write(data);
 	}
 
 	public String toString() {
