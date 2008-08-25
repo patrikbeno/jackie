@@ -20,6 +20,13 @@
 			<artifactId>${pom.groupId}.utils</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<classifier>jdk15</classifier>
+		</dependency>		
 	</dependencies>
 
 </project>
