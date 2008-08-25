@@ -69,6 +69,20 @@ public abstract class Factory {
 		return resolve(new StringRef(pool, value));
 	}
 
+	public IntegerRef getIntegerRef(int value) {
+		return resolve(new IntegerRef(pool, value));
+	}
 
+	public FloatRef getIntegerRef(float value) {
+		return resolve(new FloatRef(pool, value));
+	}
+
+	public LongRef getLongRef(long value) {
+		return resolve(new LongRef(pool, value));
+	}
+
+	public DoubleRef getDoubleRef(double value) {
+		return resolve(new DoubleRef(pool, value));
+	}
 
 }
