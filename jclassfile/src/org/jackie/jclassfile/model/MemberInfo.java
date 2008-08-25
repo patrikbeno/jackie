@@ -2,7 +2,7 @@ package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.flags.AccessFlags;
+import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.util.Helper;
 
 import java.io.DataInput;
@@ -26,7 +26,7 @@ field|member info {
 
 	ClassFile classfile;
 
-	AccessFlags access;
+	Flags access;
 	Utf8 name;
 	Utf8 descriptor;
 
@@ -48,7 +48,7 @@ field|member info {
 	public void load(DataInput in) throws IOException {
 		ConstantPool pool = classfile.pool();
 
-		access = new AccessFlags(in);
+		access = new Flags(in);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = classfile.pool().getConstant(in.readUnsignedShort(), Utf8.class);
 		attributes = Helper.loadAttributes(this, in);

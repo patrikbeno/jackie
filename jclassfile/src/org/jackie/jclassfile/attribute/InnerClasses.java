@@ -5,7 +5,7 @@ import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.Task;
-import org.jackie.jclassfile.flags.AccessFlags;
+import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.util.Helper;
 
 import java.io.DataInput;
@@ -36,7 +36,7 @@ InnerClasses_attribute {
 		ClassRef inner;
 		ClassRef outer;
 		Utf8 innerName;
-		AccessFlags access;
+		Flags access;
 	}
 
 	void test() {
@@ -59,7 +59,7 @@ InnerClasses_attribute {
 			item.inner = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
 			item.outer = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
 			item.innerName = pool().getConstant(in.readUnsignedShort(), Utf8.class);
-			item.access = new AccessFlags(in);
+			item.access = new Flags(in);
 			classes.add(item);
 		}
 		return null;

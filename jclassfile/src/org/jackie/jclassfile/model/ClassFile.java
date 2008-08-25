@@ -2,7 +2,7 @@ package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
-import org.jackie.jclassfile.flags.AccessFlags;
+import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.Log;
 import static org.jackie.utils.CollectionsHelper.iterable;
@@ -47,7 +47,7 @@ ClassFile {
 
 	ConstantPool pool;
 
-	AccessFlags accessFlags;
+	Flags flags;
 	ClassRef classname;
 	ClassRef superclass;
 	List<ClassRef> interfaces;
@@ -58,7 +58,7 @@ ClassFile {
 
 	{
 		pool = new ConstantPool(this);
-		accessFlags = new AccessFlags();
+		flags = new Flags();
 	}
 
 	public ClassFile classname(String clsname) {
@@ -74,6 +74,12 @@ ClassFile {
 		superclass = pool().factory().getClassRef(clsname);
 		return this;
 	}
+
+	public Flags flags() {
+		return flags;
+	}
+
+	///
 
 	public ClassFile classFile() {
 		return this;
@@ -92,7 +98,7 @@ ClassFile {
 
 		pool = new ConstantPool(this, in);
 
-		accessFlags = new AccessFlags(in);
+		flags = new Flags(in);
 		classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 		superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 
@@ -141,7 +147,7 @@ ClassFile {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream tmpout = new DataOutputStream(baos);
 
-		accessFlags.save(tmpout);
+		flags.save(tmpout);
 		classname.writeReference(tmpout);
 		superclass.writeReference(tmpout);
 

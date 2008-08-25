@@ -11,14 +11,14 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AccessFlags extends Base {
+public class Flags extends Base {
 
    int flags;
 
-	public AccessFlags() {
+	public Flags() {
 	}
 
-	public AccessFlags(DataInput in) throws IOException {
+	public Flags(DataInput in) throws IOException {
 		load(in);
 	}
 
