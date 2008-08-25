@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.util.Helper;
+import static org.jackie.jclassfile.util.Helper.writeConstantReference;
 import org.jackie.utils.Log;
 import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.utils.CollectionsHelper.sizeof;
@@ -148,8 +149,8 @@ ClassFile {
 		DataOutputStream tmpout = new DataOutputStream(baos);
 
 		flags.save(tmpout);
-		classname.writeReference(tmpout);
-		superclass.writeReference(tmpout);
+		writeConstantReference(classname, tmpout);
+		writeConstantReference(superclass, tmpout);
 
 		// interfaces
 		tmpout.writeShort(sizeof(interfaces));
