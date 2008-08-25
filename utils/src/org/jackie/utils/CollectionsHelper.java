@@ -45,4 +45,12 @@ public class CollectionsHelper {
 	static public <K,V> Map<K,V> map(Map<K,V> map) {
 		return (map != null) ? map : Collections.<K,V>emptyMap();
 	}
+
+	static public boolean isEmpty(Collection<?> col) {
+		return col == null || col.isEmpty();
+	}
+
+	static public int sizeof(Collection<?> col) {
+		return col != null ? col.size() : 0;
+	}
 }
