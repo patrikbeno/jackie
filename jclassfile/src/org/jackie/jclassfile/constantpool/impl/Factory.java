@@ -45,44 +45,44 @@ public abstract class Factory {
 		}
 	}
 
-	private <T extends Constant> T resolve(T constant) {
-		return pool.resolve(constant);
+	private <T extends Constant> T intern(T constant) {
+		return pool.intern(constant);
 	}
 
 	public Utf8 getUtf8(String value) {
-		return resolve(new Utf8(pool, value));
+		return intern(new Utf8(pool, value));
 	}
 
 	public ClassRef getClassRef(String classname) {
-		return resolve(new ClassRef(pool, classname));
+		return intern(new ClassRef(pool, classname));
 	}
 
 	public FieldRef getFieldRef(String clsname, String name, String type) {
-		return resolve(new FieldRef(pool, clsname, name, type));
+		return intern(new FieldRef(pool, clsname, name, type));
 	}
 
 	public NameAndType getNameAndType(String name, String type) {
-		return resolve(new NameAndType(pool, name, type));
+		return intern(new NameAndType(pool, name, type));
 	}
 
 	public StringRef getStringRef(String value) {
-		return resolve(new StringRef(pool, value));
+		return intern(new StringRef(pool, value));
 	}
 
 	public IntegerRef getIntegerRef(int value) {
-		return resolve(new IntegerRef(pool, value));
+		return intern(new IntegerRef(pool, value));
 	}
 
 	public FloatRef getIntegerRef(float value) {
-		return resolve(new FloatRef(pool, value));
+		return intern(new FloatRef(pool, value));
 	}
 
 	public LongRef getLongRef(long value) {
-		return resolve(new LongRef(pool, value));
+		return intern(new LongRef(pool, value));
 	}
 
 	public DoubleRef getDoubleRef(double value) {
-		return resolve(new DoubleRef(pool, value));
+		return intern(new DoubleRef(pool, value));
 	}
 
 }

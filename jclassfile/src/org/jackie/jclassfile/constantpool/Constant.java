@@ -3,6 +3,7 @@ package org.jackie.jclassfile.constantpool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.utils.Assert;
+import org.jackie.utils.Log;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -23,6 +24,7 @@ cp_info {
 	protected ConstantPool pool;
 
 	Integer index;
+	int references;
 	Task resolver; // load()
 
 	protected Constant(ConstantPool pool) {
@@ -80,12 +82,13 @@ cp_info {
 	}
 
 	public void writeReference(DataOutput out) throws IOException {
-		pool.register(this);
+		assert getIndex() != null;
 		out.writeShort(getIndex());
+		references++;
 	}
 
 	public String toString() {
-		return String.format("[%s] %s: %s", getIndex(), type(), valueToString());
+		return String.format("[%s] %s (%s references) %s", getIndex(), type(), references, valueToString());
 	}
 
 	protected String valueToString() {

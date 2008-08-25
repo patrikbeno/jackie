@@ -15,20 +15,4 @@ import java.util.List;
  */
 public class Parser {
 
-	static class Sample<T> {
-		List<T> items;
-		<T> void method(T t) {}
-	}
-
-	static public void main(String[] args) throws IOException {
-//		DataInput in = new DataInputStream(Sample.class.getResourceAsStream("Parser$Sample.class"));
-		DataInput in = new DataInputStream(MessageFormat.class.getResourceAsStream("MessageFormat.class"));
-		ClassFile classfile = new ClassFile();
-		classfile.load(in);
-
-		DataOutputStream out = new DataOutputStream(new FileOutputStream("h:\\var\\out.class"));
-		classfile.save(out);
-
-		out.close();
-	}
 }

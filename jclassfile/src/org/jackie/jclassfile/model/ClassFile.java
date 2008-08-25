@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.AccessFlags;
 import org.jackie.jclassfile.util.Helper;
+import org.jackie.utils.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -62,6 +63,8 @@ ClassFile {
 	}
 
 	public void load(final DataInput in) throws IOException {
+		Log.enter();
+
 		magic = in.readInt();
 		minor = in.readUnsignedShort();
 		major = in.readUnsignedShort();
@@ -103,9 +106,13 @@ ClassFile {
 		}
 
 		attributes = Helper.loadAttributes(this, in);
+
+		Log.leave();
 	}
 
 	public void save(DataOutput out) throws IOException {
+		Log.enter();
+
 		out.writeInt(magic);
 		out.writeShort(minor);
 		out.writeShort(major);
@@ -131,6 +138,8 @@ ClassFile {
 
 		tmpout.close();
 		out.write(baos.toByteArray());
+
+		Log.leave();
 	}
 
 	private void save(DataOutput out, List<? extends Base> items) throws IOException {

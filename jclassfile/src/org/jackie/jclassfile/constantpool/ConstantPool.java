@@ -3,10 +3,13 @@ package org.jackie.jclassfile.constantpool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.utils.Log;
+import org.omg.CORBA.DataOutputStream;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,57 +33,51 @@ public class ConstantPool extends Base {
 		load(in);
 	}
 
-	void register(Constant constant) {
-		if (constant.getIndex() != null) { return; } // already registered
+	public void load(DataInput in) throws IOException {
+		int count = in.readUnsignedShort()-1;
+		constants = new ArrayList<Constant>(count);
 
+		Log.debug("Loading constant pool (%s entries)", count);
+
+		// round #1: register
+		while (count > 0) {
+			count -= register(createConstant(in));
+		}
+
+		// round #2: resolve/initialize
+		for (Constant c : constants) {
+			if (c != null && !c.isResolved()) {
+				c.resolve();
+			}
+		}
+	}
+
+	public void save(DataOutput out) throws IOException {
+		Log.debug("Saving constant pool (%s entries)", constants.size());
+
+		out.writeShort(constants.size()+1);
+		for (Constant c : constants) {
+			if (c == null) { continue; } // skip long value placeholders (Constant.isLongValue())
+			c.save(out);
+		}
+	}
+
+	protected int register(Constant constant) {
 		constants.add(constant);
 		constant.setIndex(constants.size());
 		if (constant.isLongData()) { // long data (long, double) occupy two entries in the pool
 			constants.add(null);
 		}
+		registry.put(constant, constant);
+
+		return constant.isLongData() ? 2 : 1;
 	}
 
 	public <T extends Constant> T getConstant(int index, Class<T> type) {
 		if (index == 0) { return null; }
 
 		Constant c = constants.get(index-1);
-		if (!c.isResolved()) {
-			c.resolve();
-		}
 		return type.cast(c);
-	}
-
-	public void load(DataInput in) throws IOException {
-		int count = in.readUnsignedShort()-1;
-		constants = new ArrayList<Constant>(count);
-		while (count-- > 0) {
-			Constant c = createConstant(in);
-			register(c);
-			if (c.isLongData()) { count--; }
-		}
-
-		// should not be needed, just make loaded stuff consistent in memory
-		// when the code is debugged, lazy loading should be restored
-		boolean lazyLoading = false;
-		if (!lazyLoading) {
-			for (Constant c : constants) {
-				if (c != null && !c.isResolved()) {
-					c.resolve();
-				}
-			}
-		}
-	}
-
-	public void save(DataOutput out) throws IOException {
-		out.writeShort(constants.size()+1);
-		for (Constant constant : constants) {
-			if (constant==null) { continue; }
-
-			if (!constant.isResolved()) {
-				constant.resolve();
-			}
-			constant.save(out);
-		}
 	}
 
 	protected Constant createConstant(DataInput in) throws IOException {
@@ -90,14 +87,12 @@ public class ConstantPool extends Base {
 		return c;
 	}
 
-	public <T extends Constant> T resolve(T constant) {
+	public <T extends Constant> T intern(T constant) {
 		T c = (T) registry.get(constant);
 		if (c != null) { return c; }
 
-		registry.put(constant, constant);
+		register(constant);
 		return constant;
 	}
-
-
 
 }
