@@ -3,8 +3,8 @@ package org.jackie.jclassfile.model;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
-import org.jackie.jclassfile.util.Helper;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
+import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.utils.Log;
 import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.utils.CollectionsHelper.sizeof;
@@ -133,7 +133,7 @@ ClassFile {
 			}
 		}
 
-		attributes = Helper.loadAttributes(this, in);
+		attributes = AttributeHelper.loadAttributes(this, in);
 
 		Log.leave();
 	}

@@ -1,6 +1,8 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.std;
 
+import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.util.Helper;
@@ -12,24 +14,29 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class Synthetic extends AttributeInfo {
+public class ConstantValue extends AttributeInfo {
    /*
-Synthetic_attribute {
+ConstantValue_attribute {
     	u2 attribute_name_index;
     	u4 attribute_length;
+    	u2 constantvalue_index;
     }   
     */
 
-	public Synthetic(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	Constant constant; // IntegerRef, LongRef, FloatRef, DoubleRef, StringRef
+
+	public ConstantValue(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
-		readLength(in, 0);
+		readLength(in, 2);
+		constant = owner.classFile().pool().getConstant(in.readUnsignedShort(), Constant.class);
 		return null;
 	}
 
 	protected void writeData(DataOutput out) throws IOException {
-		writeLength(out, 0);
+		writeLength(out, 2);
+		constant.writeReference(out);
 	}
 }

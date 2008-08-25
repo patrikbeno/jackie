@@ -3,7 +3,7 @@ package org.jackie.jclassfile.model;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
-import org.jackie.jclassfile.util.Helper;
+import org.jackie.jclassfile.attribute.AttributeHelper;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -51,7 +51,7 @@ field|member info {
 		access = new Flags(in);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = classfile.pool().getConstant(in.readUnsignedShort(), Utf8.class);
-		attributes = Helper.loadAttributes(this, in);
+		attributes = AttributeHelper.loadAttributes(this, in);
 	}
 
 	public void save(DataOutput out) throws IOException {

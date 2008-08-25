@@ -1,9 +1,18 @@
 package org.jackie.jclassfile.attribute.anno;
 
+import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.utils.Assert;
+
+import java.io.DataInput;
+import java.io.IOException;
+import java.io.DataOutput;
+
 /**
  * @author Patrik Beno
  */
-public class RuntimeVisibleParameterAnnotations {
+public class RuntimeVisibleParameterAnnotations extends AttributeInfo {
 	/*
 RuntimeVisibleParameterAnnotations_attribute {
      u2 attribute_name_index;
@@ -14,6 +23,17 @@ RuntimeVisibleParameterAnnotations_attribute {
        annotation annotations[num_annotations];
      } parameter_annotations[num_parameters];
    }
-
 	 */
+
+	public RuntimeVisibleParameterAnnotations(ClassFileProvider owner) {
+		super(owner);
+	}
+
+	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	protected void writeData(DataOutput out) throws IOException {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
 }

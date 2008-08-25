@@ -1,4 +1,4 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.dbg;
 
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
@@ -12,20 +12,19 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class Signature extends AttributeInfo {
-
-	/*
-Signature_attribute {
-	u2 attribute_name_index
-	u4 attribute_length
-	u2 signature_index
-}
-	 */
+public class SourceFile extends AttributeInfo {
+   /*
+SourceFile_attribute {
+    	u2 attribute_name_index;
+    	u4 attribute_length;
+    	u2 sourcefile_index;
+    }   
+    */
 
 	Utf8 value;
 
-	public Signature(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	public SourceFile(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

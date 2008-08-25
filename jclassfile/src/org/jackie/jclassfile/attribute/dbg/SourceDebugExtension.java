@@ -1,4 +1,4 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.dbg;
 
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.model.AttributeInfo;
@@ -25,8 +25,8 @@ SourceDebugExtension_attribute {
 
 	String value;
 
-	public SourceDebugExtension(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	public SourceDebugExtension(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

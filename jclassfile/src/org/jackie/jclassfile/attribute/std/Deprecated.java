@@ -1,8 +1,9 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -19,8 +20,8 @@ Deprecated_attribute {
     }   
     */
 
-	public Deprecated(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	public Deprecated(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

@@ -1,11 +1,11 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.code.Insn;
-import org.jackie.jclassfile.util.Helper;
+import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.utils.Assert;
 
 import java.io.DataInput;
@@ -51,8 +51,9 @@ Code_attribute {
 	List<ExceptionTableItem> exceptions;
 	List<AttributeInfo> attributes;
 
-	public Code(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+
+	public Code(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
@@ -77,7 +78,7 @@ Code_attribute {
 			exceptions.add(item);
 		}
 
-		attributes = Helper.loadAttributes(owner, in);
+		attributes = AttributeHelper.loadAttributes(owner, in);
 
 		return null;
 	}

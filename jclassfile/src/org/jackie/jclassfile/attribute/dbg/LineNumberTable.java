@@ -1,6 +1,7 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.dbg;
 
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 
@@ -32,8 +33,9 @@ LineNumberTable_attribute {
 
 	List<Item> items;
 
-	public LineNumberTable(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+
+	public LineNumberTable(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

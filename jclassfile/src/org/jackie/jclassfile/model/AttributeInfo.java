@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.utils.Assert.doAssert;
+import org.jackie.utils.Log;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -26,17 +27,19 @@ public abstract class AttributeInfo extends Base {
 	protected Utf8 name;
 	Task resolver;
 
-	protected AttributeInfo(ClassFileProvider owner) {
+	protected AttributeInfo(ClassFileProvider owner, Utf8 name) {
 		this.owner = owner;
+		this.name = name;
 	}
 
-	public AttributeInfo(ClassFileProvider owner, DataInput in) throws IOException {
-		this(owner);
-		load(in);
+	protected AttributeInfo(ClassFileProvider owner) {
+		this.owner = owner;
+		this.name = pool().factory().getUtf8(getClass().getSimpleName());
 	}
 
 	public void load(DataInput in) throws IOException {
-		name = owner.classFile().pool().getConstant(in.readUnsignedShort(), Utf8.class);
+		// name is expected to be loaded by attribute resolver (and passed in constructor)
+		Log.debug("Loading attribute %s using provider %s", name, this);
 		resolver = readConstantDataOrGetResolver(in);
 	}
 

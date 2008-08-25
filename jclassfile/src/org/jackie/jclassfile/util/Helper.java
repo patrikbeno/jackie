@@ -3,8 +3,9 @@ package org.jackie.jclassfile.util;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.attribute.GenericAttribute;
+import org.jackie.jclassfile.attribute.std.Code;
 import org.jackie.jclassfile.constantpool.Constant;
-import static org.jackie.utils.Assert.doAssert;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -16,16 +17,6 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class Helper {
-
-	static public List<AttributeInfo> loadAttributes(ClassFileProvider owner, DataInput in) throws IOException {
-		int count = in.readUnsignedShort();
-		List<AttributeInfo> attributes = new ArrayList<AttributeInfo>(count);
-		while (count-- > 0) {
-			AttributeInfo a = new GenericAttribute(owner, in);
-			attributes.add(a);
-		}
-		return attributes;
-	}
 
 	static public void writeConstantReference(Constant constant, DataOutput out) throws IOException {
 		if (constant == null) {

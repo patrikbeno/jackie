@@ -25,13 +25,14 @@ public class GenericAttribute extends AttributeInfo {
 
 	byte[] data;
 
-	public GenericAttribute(ClassFileProvider owner, byte[] data) {
-		super(owner);
-		this.data = data;
+	public static AttributeInfo create(ClassFileProvider owner, Utf8 name, DataInput in) throws IOException {
+		AttributeInfo a = new GenericAttribute(owner, name);
+		a.load(in);
+		return a;
 	}
 
-	public GenericAttribute(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	public GenericAttribute(ClassFileProvider owner, Utf8 name) {
+		super(owner, name);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

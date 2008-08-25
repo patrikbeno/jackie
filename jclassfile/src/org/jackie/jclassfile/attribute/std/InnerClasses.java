@@ -1,4 +1,4 @@
-package org.jackie.jclassfile.attribute;
+package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
@@ -46,8 +46,9 @@ InnerClasses_attribute {
 
 	List<Item> classes;
 
-	public InnerClasses(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+
+	public InnerClasses(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

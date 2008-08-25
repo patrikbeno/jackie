@@ -1,4 +1,4 @@
-package org.jackie.jclassfile.util;
+package org.jackie.jclassfile.attribute;
 
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class AttributeProviderRegistry {
 
-	static public final String RESOURCE = "META-INF/org.jackie.jclassfile.util.AttributeProvider.properties";
+	static public final String RESOURCE = "META-INF/org.jackie.jclassfile.properties";
 
 	static private final AttributeProviderRegistry INSTANCE = new AttributeProviderRegistry();
 
@@ -29,8 +29,8 @@ public class AttributeProviderRegistry {
 		init();
 	}
 
-	public void addProvider(String name, AttributeProvider provider) {
-		providers.put(name, provider);
+	public void addProvider(AttributeProvider provider) {
+		providers.put(provider.name(), provider);
 	}
 
 	public AttributeProvider getProvider(String name) {

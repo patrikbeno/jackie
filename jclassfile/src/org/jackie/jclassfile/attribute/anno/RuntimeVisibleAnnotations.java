@@ -79,8 +79,8 @@ annotation {
 
 	List<Anno> annos;
 
-	public RuntimeVisibleAnnotations(ClassFileProvider owner, DataInput in) throws IOException {
-		super(owner, in);
+	public RuntimeVisibleAnnotations(ClassFileProvider owner) {
+		super(owner);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
