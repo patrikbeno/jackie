@@ -6,10 +6,20 @@ package org.jackie.utils;
 public class Log {
 
 	enum Level {
-		ALL, DBG, INF, WRN, ERR, NOTHING
+		ALL, DBG, TRC, INF, WRN, ERR, NOTHING
 	}
 
 	static final Level MINLEVEL = Level.DBG;
+
+	static public void enter() {
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		log(Level.TRC, ">>> %s() (%s:%s)", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
+	}
+
+	static public void leave() {
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		log(Level.TRC, "<<< %s() (%s:%s)", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
+	}
 
 	static public void debug(String msg, Object... args) {
 		log(Level.DBG, msg, args);
