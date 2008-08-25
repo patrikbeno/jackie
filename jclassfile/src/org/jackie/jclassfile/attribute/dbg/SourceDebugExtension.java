@@ -3,6 +3,7 @@ package org.jackie.jclassfile.attribute.dbg;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.attribute.AttributeProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -14,6 +15,16 @@ import java.io.IOException;
  * @author Patrik Beno
  */
 public class SourceDebugExtension extends AttributeInfo {
+
+	static public class Provider implements AttributeProvider {
+		public String name() {
+			return "SourceDebugExtension";
+		}
+		public AttributeInfo createAttribute(ClassFileProvider owner) {
+			return new SourceDebugExtension(owner);
+		}
+	}
+
 
 	/*
 SourceDebugExtension_attribute {

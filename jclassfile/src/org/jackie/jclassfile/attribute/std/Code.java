@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
+import org.jackie.jclassfile.attribute.AttributeProvider;
 import org.jackie.jclassfile.code.Insn;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
@@ -18,7 +19,17 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class Code extends AttributeInfo {
-   /*
+
+	static public class Provider implements AttributeProvider {
+		public String name() {
+			return "Code";
+		}
+		public AttributeInfo createAttribute(ClassFileProvider owner) {
+			return new Code(owner);
+		}
+	}
+
+	/*
 Code_attribute {
     	u2 attribute_name_index;
     	u4 attribute_length;

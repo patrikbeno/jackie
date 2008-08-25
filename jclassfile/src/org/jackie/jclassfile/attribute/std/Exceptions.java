@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.attribute.AttributeProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -15,7 +16,17 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class Exceptions extends AttributeInfo {
-   /*
+
+	static public class Provider implements AttributeProvider {
+		public String name() {
+			return "Exceptions";
+		}
+		public AttributeInfo createAttribute(ClassFileProvider owner) {
+			return new Exceptions(owner);
+		}
+	}
+
+	/*
 Exceptions_attribute {
     	u2 attribute_name_index;
     	u4 attribute_length;

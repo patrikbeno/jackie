@@ -6,18 +6,9 @@ import org.jackie.jclassfile.model.ClassFileProvider;
 /**
  * @author Patrik Beno
  */
-public abstract class AttributeProvider {
+public interface AttributeProvider {
 
-	String name;
-
-	protected AttributeProvider(String name) {
-		this.name = name;
-	}
-
-	public String name() {
-		return name;
-	}
-
-	public abstract AttributeInfo createAttribute(ClassFileProvider owner);
+	String name();
+	AttributeInfo createAttribute(ClassFileProvider owner);
 
 }

@@ -7,6 +7,7 @@ import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.util.Helper;
+import org.jackie.jclassfile.attribute.AttributeProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -19,7 +20,17 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class InnerClasses extends AttributeInfo {
-   /*
+
+	static public class Provider implements AttributeProvider {
+		public String name() {
+			return "InnerClasses";
+		}
+		public AttributeInfo createAttribute(ClassFileProvider owner) {
+			return new InnerClasses(owner);
+		}
+	}
+
+	/*
 InnerClasses_attribute {
     	u2 attribute_name_index;
     	u4 attribute_length;

@@ -38,7 +38,8 @@ public class ClassFileTest {
 	}
 
 
-	static public void main(String[] args) throws IOException {
+	@Test
+	public void load() throws IOException {
 //		final Class cls = MessageFormat.class;
 		final Class cls = Sample.class;
 

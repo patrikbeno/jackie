@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class AttributeProviderRegistry {
 
-	static public final String RESOURCE = "META-INF/org.jackie.jclassfile.properties";
+	static public final String RESOURCE = "META-INF/org.jackie.jclassfile.attribute.AttributeProvider.properties";
 
 	static private final AttributeProviderRegistry INSTANCE = new AttributeProviderRegistry();
 
@@ -38,6 +38,7 @@ public class AttributeProviderRegistry {
 	}
 
 	void init() {
+		Log.enter();
 		try {
 			providers = new HashMap<String, AttributeProvider>();
 			Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(RESOURCE);
@@ -46,9 +47,10 @@ public class AttributeProviderRegistry {
 				props.load(e.nextElement().openStream());
 				populate(props);
 			}
-		} catch (IOException e1) {
-			throw Assert.notYetHandled(e1);
+		} catch (Throwable t) {
+			Assert.unexpected(t);
 		}
+		Log.leave();
 	}
 
 	private void populate(Properties props) {

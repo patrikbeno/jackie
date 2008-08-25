@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
+import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
@@ -20,7 +21,12 @@ import java.util.List;
  * @author Patrik Beno
  */
 public class ClassFile extends Base implements ClassFileProvider {
-   /*
+
+	static {
+		AttributeProviderRegistry.instance();
+	}
+
+	/*
 ClassFile {
     	u4 magic;
     	u2 minor_version;
