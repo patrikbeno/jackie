@@ -1,6 +1,7 @@
 package org.jackie.jclassfile;
 
 import org.jackie.jclassfile.model.ClassFile;
+import org.testng.annotations.Test;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -15,7 +16,27 @@ import java.text.MessageFormat;
 /**
  * @author Patrik Beno
  */
-public class Test {
+public class ClassFileTest {
+
+	@Test
+	public void generateSimpleClass() throws IOException {
+		final ClassFile cf = new ClassFile();
+		cf.classname("test.Simple").superclass("java.lang.Object");
+
+		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		cf.save(new DataOutputStream(baos));
+		final byte[] bytes = baos.toByteArray();
+
+		FileOutputStream out = new FileOutputStream("h:/var/out.class");
+		out.write(bytes);
+		out.close();
+
+		new ClassLoader(null) {{
+			Class<?> cls = defineClass(cf.classname(), bytes, 0, bytes.length);
+			System.out.println(cls);
+		}};
+
+	}
 
 
 	static public void main(String[] args) throws IOException {

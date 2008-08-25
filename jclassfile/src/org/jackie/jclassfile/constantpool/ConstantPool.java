@@ -27,10 +27,18 @@ public class ConstantPool extends Base {
 	Factory factory = new Factory(this){};
 	Map<Constant,Constant> registry = new HashMap<Constant, Constant>();
 
+	public ConstantPool(ClassFile classfile) {
+		this.classfile = classfile;
+		constants = new ArrayList<Constant>();
+	}
 
 	public ConstantPool(ClassFile classfile, DataInput in) throws IOException {
 		this.classfile = classfile;
 		load(in);
+	}
+
+	public Factory factory() {
+		return factory;
 	}
 
 	public void load(DataInput in) throws IOException {

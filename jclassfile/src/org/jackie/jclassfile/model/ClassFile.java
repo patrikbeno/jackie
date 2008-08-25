@@ -5,6 +5,8 @@ import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.AccessFlags;
 import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.Log;
+import static org.jackie.utils.CollectionsHelper.iterable;
+import static org.jackie.utils.CollectionsHelper.sizeof;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -53,6 +55,25 @@ ClassFile {
 	List<FieldInfo> fields;
 	List<MethodInfo> methods;
 	List<AttributeInfo> attributes;
+
+	{
+		pool = new ConstantPool(this);
+		accessFlags = new AccessFlags();
+	}
+
+	public ClassFile classname(String clsname) {
+		classname = pool().factory().getClassRef(clsname);
+		return this;
+	}
+
+	public String classname() {
+		return classname.value();
+	}
+
+	public ClassFile superclass(String clsname) {
+		superclass = pool().factory().getClassRef(clsname);
+		return this;
+	}
 
 	public ClassFile classFile() {
 		return this;
@@ -125,8 +146,8 @@ ClassFile {
 		superclass.writeReference(tmpout);
 
 		// interfaces
-		tmpout.writeShort(interfaces.size());
-		for (ClassRef i : interfaces) {
+		tmpout.writeShort(sizeof(interfaces));
+		for (ClassRef i : iterable(interfaces)) {
 			i.writeReference(tmpout);
 		}
 
@@ -143,8 +164,8 @@ ClassFile {
 	}
 
 	private void save(DataOutput out, List<? extends Base> items) throws IOException {
-		out.writeShort(items.size());
-		for (Base item : items) {
+		out.writeShort(sizeof(items));
+		for (Base item : iterable(items)) {
 			item.save(out);
 		}
 	}

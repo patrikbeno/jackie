@@ -21,32 +21,36 @@ CONSTANT_Class_info {
     }
 	 */
 
-	Utf8 classname;
+	Utf8 value;
 
 	ClassRef(ConstantPool pool) {
 		super(pool);
 	}
 
-	ClassRef(ConstantPool pool, String classname) {
+	ClassRef(ConstantPool pool, String value) {
 		super(pool);
-		this.classname = factory().getUtf8(classname);
+		this.value = factory().getUtf8(value.replace('.', '/'));
 	}
 
 	public CPEntryType type() {
 		return CPEntryType.CLASS;
 	}
 
+	public String value() {
+		return value.value().replace('/', '.');
+	}
+
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		final int nameidx = in.readUnsignedShort();
 		return new Task() {
 			public void execute() throws IOException {
-				classname = pool.getConstant(nameidx, Utf8.class); 
+				value = pool.getConstant(nameidx, Utf8.class);
 			}
 		};
 	}
 
 	protected void writeConstantData(DataOutput out) throws IOException {
-		classname.writeReference(out);
+		value.writeReference(out);
 	}
 
 	public boolean equals(Object o) {
@@ -55,7 +59,7 @@ CONSTANT_Class_info {
 
 		ClassRef classRef = (ClassRef) o;
 
-		if (classname != null ? !classname.equals(classRef.classname) : classRef.classname != null) {
+		if (value != null ? !value.equals(classRef.value) : classRef.value != null) {
 			return false;
 		}
 
@@ -63,10 +67,10 @@ CONSTANT_Class_info {
 	}
 
 	public int hashCode() {
-		return (classname != null ? classname.hashCode() : 0);
+		return (value != null ? value.hashCode() : 0);
 	}
 
 	protected String valueToString() {
-		return String.format("classname={%s}", classname);
+		return String.format("value={%s}", value);
 	}
 }
