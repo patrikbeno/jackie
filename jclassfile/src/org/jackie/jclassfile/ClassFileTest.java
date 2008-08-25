@@ -21,7 +21,7 @@ public class ClassFileTest {
 	@Test
 	public void generateSimpleClass() throws IOException {
 		final ClassFile cf = new ClassFile();
-		cf.classname("test.Simple").superclass("java.lang.Object");
+		cf.classname("test/Simple").superclass("java/lang/Object");
 
 		final ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		cf.save(new DataOutputStream(baos));
@@ -32,7 +32,7 @@ public class ClassFileTest {
 		out.close();
 
 		new ClassLoader(null) {{
-			Class<?> cls = defineClass(cf.classname(), bytes, 0, bytes.length);
+			Class<?> cls = defineClass(cf.classname().replace('/','.'), bytes, 0, bytes.length);
 			System.out.println(cls);
 		}};
 

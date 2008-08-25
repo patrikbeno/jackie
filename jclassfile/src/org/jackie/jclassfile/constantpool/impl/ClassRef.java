@@ -29,7 +29,7 @@ CONSTANT_Class_info {
 
 	ClassRef(ConstantPool pool, String value) {
 		super(pool);
-		this.value = factory().getUtf8(value.replace('.', '/'));
+		this.value = factory().getUtf8(value);
 	}
 
 	public CPEntryType type() {
@@ -37,7 +37,7 @@ CONSTANT_Class_info {
 	}
 
 	public String value() {
-		return value.value().replace('/', '.');
+		return value.value();
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
