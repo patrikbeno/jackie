@@ -14,6 +14,14 @@ import java.io.IOException;
  */
 public class Utf8 extends Constant {
 
+	/*
+CONSTANT_Utf8_info {
+    	u1 tag;
+    	u2 length;
+    	u1 bytes[length];
+    }
+	 */
+	
 	String value;
 
 	Utf8(ConstantPool pool) {
