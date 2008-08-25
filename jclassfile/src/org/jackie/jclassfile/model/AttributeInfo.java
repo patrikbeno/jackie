@@ -1,8 +1,8 @@
 package org.jackie.jclassfile.model;
 
-import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Log;
 

@@ -1,9 +1,9 @@
 package org.jackie.jclassfile.model;
 
+import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
-import org.jackie.jclassfile.attribute.AttributeHelper;
 
 import java.io.DataInput;
 import java.io.DataOutput;

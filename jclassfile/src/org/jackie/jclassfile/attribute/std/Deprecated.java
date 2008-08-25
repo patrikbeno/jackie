@@ -1,13 +1,12 @@
 package org.jackie.jclassfile.attribute.std;
 
+import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.jclassfile.constantpool.Task;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
 
 import java.io.DataInput;
-import java.io.IOException;
 import java.io.DataOutput;
+import java.io.IOException;
 
 /**
  * @author Patrik Beno

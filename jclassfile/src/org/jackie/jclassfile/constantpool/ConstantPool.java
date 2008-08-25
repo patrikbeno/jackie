@@ -4,12 +4,10 @@ import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.utils.Log;
-import org.omg.CORBA.DataOutputStream;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

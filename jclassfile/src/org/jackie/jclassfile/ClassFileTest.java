@@ -3,15 +3,14 @@ package org.jackie.jclassfile;
 import org.jackie.jclassfile.model.ClassFile;
 import org.testng.annotations.Test;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
-import java.util.List;
 import java.net.URL;
-import java.text.MessageFormat;
+import java.util.List;
 
 /**
  * @author Patrik Beno

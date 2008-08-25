@@ -1,15 +1,19 @@
 package org.jackie.jclassfile.attribute;
 
-import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.jclassfile.attribute.AttributeProvider;
-import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
-import org.jackie.jclassfile.attribute.std.*;
 import org.jackie.jclassfile.attribute.dbg.LineNumberTable;
 import org.jackie.jclassfile.attribute.dbg.LocalVariableTable;
 import org.jackie.jclassfile.attribute.dbg.LocalVariableTypeTable;
 import org.jackie.jclassfile.attribute.dbg.SourceDebugExtension;
 import org.jackie.jclassfile.attribute.dbg.SourceFile;
+import org.jackie.jclassfile.attribute.std.Code;
+import org.jackie.jclassfile.attribute.std.ConstantValue;
+import org.jackie.jclassfile.attribute.std.EnclosingMethod;
+import org.jackie.jclassfile.attribute.std.Exceptions;
+import org.jackie.jclassfile.attribute.std.InnerClasses;
+import org.jackie.jclassfile.attribute.std.Signature;
+import org.jackie.jclassfile.attribute.std.Synthetic;
+import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.model.ClassFileProvider;
 
 /**
  * @author Patrik Beno

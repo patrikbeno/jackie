@@ -1,11 +1,9 @@
 package org.jackie.jclassfile.attribute;
 
-import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.Task;
-import org.jackie.jclassfile.model.Base;
-import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.utils.Assert;
+import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;

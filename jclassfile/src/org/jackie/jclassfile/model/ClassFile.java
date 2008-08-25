@@ -1,13 +1,12 @@
 package org.jackie.jclassfile.model;
 
+import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
-import org.jackie.jclassfile.attribute.AttributeHelper;
+import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
-import static org.jackie.utils.CollectionsHelper.iterable;
-import static org.jackie.utils.CollectionsHelper.sizeof;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;

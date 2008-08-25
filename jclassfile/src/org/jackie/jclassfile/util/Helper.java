@@ -1,17 +1,9 @@
 package org.jackie.jclassfile.util;
 
-import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.jclassfile.attribute.GenericAttribute;
-import org.jackie.jclassfile.attribute.std.Code;
 import org.jackie.jclassfile.constantpool.Constant;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.io.DataOutput;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 /**
  * @author Patrik Beno

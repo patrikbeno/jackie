@@ -3,8 +3,6 @@ package org.jackie.jclassfile.attribute;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.jclassfile.attribute.AttributeProvider;
-import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 
 import java.io.DataInput;
 import java.io.IOException;

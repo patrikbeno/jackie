@@ -3,7 +3,6 @@ package org.jackie.jclassfile.constantpool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.utils.Assert;
-import org.jackie.utils.Log;
 
 import java.io.DataInput;
 import java.io.DataOutput;
