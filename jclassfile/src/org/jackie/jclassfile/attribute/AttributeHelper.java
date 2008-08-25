@@ -22,7 +22,7 @@ public class AttributeHelper {
 			AttributeProvider provider = AttributeProviderRegistry.instance().getProvider(name.value());
 			AttributeInfo a = (provider != null)
 					? provider.createAttribute(owner)
-					: GenericAttribute.create(owner, name, in);
+					: new GenericAttribute(owner, name);
 			a.load(in);
 			attributes.add(a);
 		}

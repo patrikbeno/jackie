@@ -23,12 +23,6 @@ public class GenericAttribute extends AttributeInfo {
 
 	byte[] data;
 
-	public static AttributeInfo create(ClassFileProvider owner, Utf8 name, DataInput in) throws IOException {
-		AttributeInfo a = new GenericAttribute(owner, name);
-		a.load(in);
-		return a;
-	}
-
 	public GenericAttribute(ClassFileProvider owner, Utf8 name) {
 		super(owner, name);
 	}
@@ -45,6 +39,6 @@ public class GenericAttribute extends AttributeInfo {
 	}
 
 	protected String valueToString() {
-		return String.format("%s bytes", data.length);
+		return String.format("%s bytes", data != null ? data.length : "?");
 	}
 }
