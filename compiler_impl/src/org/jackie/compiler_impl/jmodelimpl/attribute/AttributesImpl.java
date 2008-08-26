@@ -81,7 +81,7 @@ public class AttributesImpl implements Attributes, Compilable {
 	}
 
 	public void compile() {
-		for (JAttribute a : attributes) {
+		for (JAttribute a : iterable(attributes)) {
 			CompilableHelper.compile(a);
 		}
 	}
