@@ -76,6 +76,10 @@ ClassFile {
 		return classname.value();
 	}
 
+	public String superclass() {
+		return superclass != null ? superclass.value() : null;
+	}
+
 	public ClassFile superclass(String clsname) {
 		superclass = pool().factory().getClassRef(clsname);
 		return this;
