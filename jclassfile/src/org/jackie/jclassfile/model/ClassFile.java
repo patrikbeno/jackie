@@ -115,7 +115,14 @@ ClassFile {
 	}
 
 	public List<MethodInfo> methods() {
-		return methods;
+		return methods != null ? methods : Collections.<MethodInfo>emptyList();
+	}
+
+	public void addMethod(MethodInfo method) {
+		if (methods == null) {
+			methods = new ArrayList<MethodInfo>();
+		}
+		methods.add(method);
 	}
 
 	public List<AttributeInfo> attributes() {
