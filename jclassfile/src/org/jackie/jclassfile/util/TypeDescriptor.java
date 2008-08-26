@@ -24,7 +24,7 @@ public class TypeDescriptor {
 		if (type.type() != null) {
 			typename = type.type().getName();
 		} else {
-			typename = descriptor.substring(dimensions, descriptor.length() - 1);
+			typename = descriptor.substring(dimensions+1, descriptor.length() - 1);
 		}
 	}
 
