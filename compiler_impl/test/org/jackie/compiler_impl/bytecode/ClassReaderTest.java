@@ -20,6 +20,8 @@ public class ClassReaderTest extends TestCase {
 				Assert.expected(Sample.class.getSimpleName(), jclass.getName(), "invalid simple class name");
 				Assert.expected(Sample.class.getName(), jclass.getFQName(), "invalid class fqname");
 				Assert.expected(Sample.class.getSuperclass().getName(), jclass.getSuperClass().getFQName(), "invalid superclass fqname");
+				Assert.expected(Sample.class.getDeclaredFields().length, jclass.getFields().size(), "invalid field count");
+				Assert.expected(Sample.class.getDeclaredMethods().length+1, jclass.getMethods().size(), "invalid field count");
 			}
 		});
 	}
