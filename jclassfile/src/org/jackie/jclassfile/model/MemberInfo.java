@@ -40,12 +40,12 @@ field|member info {
 		return flags;
 	}
 
-	public Utf8 name() {
-		return name;
+	public String name() {
+		return name.value();
 	}
 
-	public Utf8 descriptor() {
-		return descriptor;
+	public String descriptor() {
+		return descriptor.value();
 	}
 
 	public List<AttributeInfo> attributes() {

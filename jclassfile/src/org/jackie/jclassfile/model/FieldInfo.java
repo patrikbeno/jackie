@@ -1,5 +1,7 @@
 package org.jackie.jclassfile.model;
 
+import org.jackie.jclassfile.util.TypeDescriptor;
+
 import java.io.DataInput;
 import java.io.IOException;
 
@@ -19,5 +21,9 @@ field_info {
 
 	public FieldInfo(ClassFile classfile) {
 		super(classfile);
+	}
+
+	public TypeDescriptor typeDescriptor() {
+		return new TypeDescriptor(descriptor());
 	}
 }
