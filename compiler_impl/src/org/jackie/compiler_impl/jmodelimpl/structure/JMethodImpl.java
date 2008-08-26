@@ -3,6 +3,7 @@ package org.jackie.compiler_impl.jmodelimpl.structure;
 import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
+import org.jackie.compiler_impl.bytecode.ByteCodeBuilder2;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.code.JCodeImpl;
@@ -157,6 +158,14 @@ public class JMethodImpl extends AbstractJNode implements JMethod, Compilable {
 	}
 
 	public void compile() {
+		ByteCodeBuilder2.execute(new ByteCodeBuilder2() {
+			protected void run() {
+				Assert.logNotYetImplemented();
+			}
+		});
+	}
+
+	public void XXXcompile() {
         ByteCodeBuilder.execute(new ByteCodeBuilder() {
 
 			JMethod mthis;
