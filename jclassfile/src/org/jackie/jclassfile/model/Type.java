@@ -13,7 +13,10 @@ public enum Type {
 	LONG('J', long.class),
 	SHORT('S', short.class),
 	BOOLEAN('Z', boolean.class),
-	CLASS('L', Object.class),
+
+	VOID('V', void.class),
+
+	CLASS('L', null),
 
 	;
 
