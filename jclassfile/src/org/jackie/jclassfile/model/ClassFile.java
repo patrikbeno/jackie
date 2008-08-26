@@ -2,6 +2,7 @@ package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
@@ -17,11 +18,12 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Collections;
 
 /**
  * @author Patrik Beno
  */
-public class ClassFile extends Base implements ClassFileProvider {
+public class ClassFile extends Base implements ClassFileProvider, AttributeSupport {
 
 	static {
 		AttributeProviderRegistry.instance();
@@ -105,12 +107,26 @@ ClassFile {
 		return fields;
 	}
 
+	public void addField(FieldInfo field) {
+		if (fields == null) {
+			fields = new ArrayList<FieldInfo>();
+		}
+		fields.add(field);
+	}
+
 	public List<MethodInfo> methods() {
 		return methods;
 	}
 
 	public List<AttributeInfo> attributes() {
-		return attributes;
+		return attributes != null ? attributes : Collections.<AttributeInfo>emptyList();
+	}
+
+	public void addAttribute(AttributeInfo attribute) {
+		if (attributes == null) {
+			attributes = new ArrayList<AttributeInfo>();
+		}
+		attributes.add(attribute);
 	}
 
 	///

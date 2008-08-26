@@ -48,4 +48,13 @@ public enum Type {
 		}
 		throw new IllegalArgumentException(Character.toString(c));
 	}
+
+	static public Type forClass(Class cls) {
+		for (Type t : Type.values()) {
+			if (cls.equals(t.type)) {
+				return t;
+			}
+		}
+		throw new IllegalArgumentException(cls.getName());
+	}
 }

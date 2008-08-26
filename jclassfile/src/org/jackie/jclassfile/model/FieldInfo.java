@@ -26,4 +26,8 @@ field_info {
 	public TypeDescriptor typeDescriptor() {
 		return new TypeDescriptor(descriptor());
 	}
+
+	public void typeDescriptor(TypeDescriptor descriptor) {
+		this.descriptor(descriptor.getDescriptor());
+	}
 }

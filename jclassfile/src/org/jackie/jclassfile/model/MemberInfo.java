@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
@@ -9,11 +10,13 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author Patrik Beno
  */
-public abstract class MemberInfo extends Base implements ClassFileProvider {
+public abstract class MemberInfo extends Base implements ClassFileProvider, AttributeSupport {
    /*
 field|member info {
     	u2 access_flags;
@@ -44,12 +47,27 @@ field|member info {
 		return name.value();
 	}
 
+	public void name(String name) {
+		this.name = classFile().pool().factory().getUtf8(name);
+	}
+
 	public String descriptor() {
 		return descriptor.value();
 	}
 
+	public void descriptor(String descriptor) {
+		this.descriptor = classFile().pool().factory().getUtf8(descriptor);
+	}
+
 	public List<AttributeInfo> attributes() {
-		return attributes;
+		return attributes != null ? attributes : Collections.<AttributeInfo>emptyList();
+	}
+
+	public void addAttribute(AttributeInfo attribute) {
+		if (attributes == null) {
+			attributes = new ArrayList<AttributeInfo>();
+		}
+		attributes.add(attribute);
 	}
 
 	public ClassFile classFile() {

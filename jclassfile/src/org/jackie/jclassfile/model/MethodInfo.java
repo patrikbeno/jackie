@@ -29,4 +29,8 @@ method_info {
 		return new MethodDescriptor(descriptor());
 	}
 
+	public void methodDescriptor(MethodDescriptor descriptor) {
+		this.descriptor(descriptor.getDescriptor());
+	}
+
 }

@@ -14,8 +14,8 @@ public class MethodDescriptor {
 
 	String descriptor;
 
-	List<TypeDescriptor> parameterTypes;
 	TypeDescriptor returnType;
+	List<TypeDescriptor> parameterTypes;
 
 
 	public MethodDescriptor(String descriptor) {
@@ -23,22 +23,42 @@ public class MethodDescriptor {
 		parse();
 	}
 
-	public String getDescriptor() {
-		return descriptor;
+	public MethodDescriptor(TypeDescriptor returnType, List<TypeDescriptor> parameterTypes) {
+		this.returnType = returnType;
+		this.parameterTypes = parameterTypes;
 	}
 
-	public List<TypeDescriptor> getParameterTypes() {
-		return parameterTypes != null ? parameterTypes : Collections.<TypeDescriptor>emptyList();
+	public String getDescriptor() {
+		if (descriptor == null) {
+			descriptor = buildDescriptor();
+		}
+		return descriptor;
 	}
 
 	public TypeDescriptor getReturnType() {
 		return returnType;
 	}
 
+	public List<TypeDescriptor> getParameterTypes() {
+		return parameterTypes != null ? parameterTypes : Collections.<TypeDescriptor>emptyList();
+	}
+
 	private void parse() {
 		int i = descriptor.lastIndexOf(')');
 		parameterTypes = parseParameters(descriptor.substring(1, i));
 		returnType = new TypeDescriptor(descriptor.substring(i+1));
+	}
+
+	protected String buildDescriptor() {
+		StringBuilder sb = new StringBuilder();
+		sb.append('(');
+		for (TypeDescriptor d : getParameterTypes()) {
+			sb.append(d.getDescriptor());
+		}
+		sb.append(')');
+		sb.append(returnType.getDescriptor());
+
+		return sb.toString();
 	}
 
 	private List<TypeDescriptor> parseParameters(String all) {
@@ -64,4 +84,5 @@ public class MethodDescriptor {
 		}
 		throw Assert.invariantFailed(s);
 	}
+
 }
