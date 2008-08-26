@@ -1,28 +1,27 @@
 package org.jackie.compiler_impl.modelloader;
 
+import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
+import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
+import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
+import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
+import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
+import org.jackie.jclassfile.constantpool.impl.ClassRef;
+import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.model.FieldInfo;
+import org.jackie.jclassfile.model.MethodInfo;
+import org.jackie.jclassfile.util.MethodDescriptor;
+import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
-import org.jackie.jclassfile.model.ClassFile;
-import org.jackie.jclassfile.model.FieldInfo;
-import org.jackie.jclassfile.model.MethodInfo;
-import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.constantpool.impl.ClassRef;
-import org.jackie.jclassfile.util.ClassNameHelper;
-import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.utils.ClassName;
-import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
-import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
-import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
-import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
-import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

@@ -2,9 +2,9 @@ package org.jackie.compiler_impl.modelloader;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
+import org.jackie.jclassfile.util.ClassNameHelper;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.ClassName;
-import org.jackie.jclassfile.util.ClassNameHelper;
 
 /**
  * @author Patrik Beno

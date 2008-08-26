@@ -1,22 +1,17 @@
 package org.jackie.compiler_impl.bytecode;
 
-import static org.jackie.context.ContextManager.context;
+import org.jackie.jclassfile.model.Type;
+import org.jackie.jclassfile.util.ClassNameHelper;
+import org.jackie.jclassfile.util.MethodDescriptor;
+import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.JNode;
+import org.jackie.jvm.extension.builtin.ArrayType;
+import org.jackie.jvm.extension.builtin.PrimitiveType;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
-import org.jackie.jvm.extension.builtin.PrimitiveType;
-import org.jackie.jvm.extension.builtin.ArrayType;
-import org.jackie.jvm.spi.JModelHelper;
-import static org.jackie.utils.Assert.typecast;
-import org.jackie.jclassfile.util.ClassNameHelper;
-import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.MethodDescriptor;
-import org.jackie.jclassfile.model.Type;
-import org.jackie.compiler.spi.Compilable;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

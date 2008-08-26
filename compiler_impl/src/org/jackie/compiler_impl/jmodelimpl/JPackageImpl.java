@@ -3,7 +3,6 @@ package org.jackie.compiler_impl.jmodelimpl;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
-import org.jackie.jvm.JNode;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.utils.Stack;
 

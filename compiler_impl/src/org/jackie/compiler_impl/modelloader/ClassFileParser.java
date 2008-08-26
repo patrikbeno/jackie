@@ -1,14 +1,12 @@
 package org.jackie.compiler_impl.modelloader;
 
 import org.jackie.compiler_impl.JClassParser;
-import org.jackie.compiler_impl.modelloader.JClassBuilder;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
-import org.jackie.utils.Assert;
 import org.jackie.jclassfile.model.ClassFile;
 
-import java.io.InputStream;
-import java.io.IOException;
 import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Patrik Beno

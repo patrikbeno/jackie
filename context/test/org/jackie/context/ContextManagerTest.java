@@ -1,7 +1,6 @@
 package org.jackie.context;
 
 import static org.jackie.context.ContextManager.*;
-import static org.jackie.context.ContextManager.contextManager;
 import org.jackie.utils.Log;
 import org.testng.annotations.Test;
 

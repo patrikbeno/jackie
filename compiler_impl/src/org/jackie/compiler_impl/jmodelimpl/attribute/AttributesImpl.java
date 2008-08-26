@@ -4,9 +4,9 @@ import org.jackie.compiler.event.AttributeListener;
 import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
 import static org.jackie.event.Events.events;
+import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.jvm.JNode;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 

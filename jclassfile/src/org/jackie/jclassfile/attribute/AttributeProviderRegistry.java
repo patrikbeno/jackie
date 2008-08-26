@@ -3,7 +3,6 @@ package org.jackie.jclassfile.attribute;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashMap;

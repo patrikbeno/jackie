@@ -5,13 +5,12 @@ import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
-import org.jackie.jvm.spi.AbstractJNode;
-import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.spi.AbstractJNode;
+import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.structure.JVariable;
-import org.jackie.jvm.structure.JMethod;
 
 /**
  * @author Patrik Beno

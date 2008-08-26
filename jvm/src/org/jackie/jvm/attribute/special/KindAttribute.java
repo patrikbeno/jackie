@@ -1,7 +1,7 @@
 package org.jackie.jvm.attribute.special;
 
-import org.jackie.jvm.spi.AbstractJAttribute;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJAttribute;
 
 
 /**

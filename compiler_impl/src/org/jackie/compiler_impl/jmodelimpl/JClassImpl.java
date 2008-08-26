@@ -1,6 +1,5 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
-import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
@@ -9,19 +8,19 @@ import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.typeregistry.JClassLoader;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
+import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
-import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import static org.jackie.utils.Assert.typecast;
-import org.jackie.jclassfile.model.ClassFile;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -4,8 +4,8 @@ import org.jackie.jclassfile.model.Type;
 import org.jackie.utils.Assert;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Patrik Beno

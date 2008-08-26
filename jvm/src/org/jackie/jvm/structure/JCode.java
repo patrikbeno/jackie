@@ -1,10 +1,9 @@
 package org.jackie.jvm.structure;
 
 import org.jackie.jvm.Editable;
-import org.jackie.jvm.Editor;
 import org.jackie.jvm.JNode;
-import org.jackie.jvm.code.CodeBlock;
 import org.jackie.jvm.attribute.Attributed;
+import org.jackie.jvm.code.CodeBlock;
 import org.jackie.jvm.extension.Extensible;
 
 /**

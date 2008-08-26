@@ -1,8 +1,8 @@
 package org.jackie.jclassfile;
 
-import org.testng.annotations.Test;
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.utils.Assert;
+import org.testng.annotations.Test;
 
 /**
  * @author Patrik Beno

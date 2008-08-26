@@ -1,7 +1,7 @@
 package org.jackie.jvm.spi;
 
-import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
 
 import java.util.Iterator;

@@ -1,7 +1,7 @@
 package org.jackie.java5.generics;
 
-import org.jackie.jvm.spi.AbstractJAttribute;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJAttribute;
 
 /**
  * @author Patrik Beno

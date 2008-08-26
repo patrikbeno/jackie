@@ -1,7 +1,5 @@
 package org.jackie.jclassfile.util;
 
-import org.jackie.utils.Assert;
-
 /**
  * @author Patrik Beno
  */

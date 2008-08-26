@@ -1,15 +1,12 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
-import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
+import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
-import org.jackie.utils.Assert;
-import org.jackie.jclassfile.model.ClassFile;
-import org.jackie.jclassfile.model.FieldInfo;
-import org.jackie.jclassfile.util.TypeDescriptor;
 
 /**
  * @author Patrik Beno

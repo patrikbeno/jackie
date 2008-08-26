@@ -1,9 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl.attribute;
 
-import org.jackie.jvm.spi.AbstractJAttribute;
-import org.jackie.jvm.JNode;
 import org.jackie.jclassfile.attribute.AttributeSupport;
-import org.jackie.utils.Assert;
+import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJAttribute;
 
 /**
  * @author Patrik Beno

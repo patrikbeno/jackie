@@ -1,9 +1,8 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.spi.Compilable;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
-import org.jackie.context.ContextObject;
 import org.jackie.java5.annotation.Annotated;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.Annotations;

@@ -1,11 +1,6 @@
 package org.jackie.jclassfile.model;
 
-import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.util.MethodDescriptor;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 
 /**
  * @author Patrik Beno
