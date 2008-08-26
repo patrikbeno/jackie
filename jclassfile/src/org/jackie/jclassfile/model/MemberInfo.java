@@ -5,6 +5,7 @@ import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
+import static org.jackie.utils.CollectionsHelper.sizeof;import static org.jackie.utils.CollectionsHelper.iterable;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -40,6 +41,9 @@ field|member info {
 	}
 
 	public Flags flags() {
+		if (flags == null) {
+			flags = new Flags();
+		}
 		return flags;
 	}
 
@@ -84,12 +88,12 @@ field|member info {
 	}
 
 	public void save(DataOutput out) throws IOException {
-		flags.save(out);
+		flags().save(out);
 		name.writeReference(out);
 		descriptor.writeReference(out);
 
-		out.writeShort(attributes.size());
-		for (AttributeInfo a : attributes) {
+		out.writeShort(sizeof(attributes));
+		for (AttributeInfo a : iterable(attributes)) {
 			a.save(out);
 		}
 	}
