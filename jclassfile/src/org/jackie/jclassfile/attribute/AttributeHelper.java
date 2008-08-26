@@ -24,7 +24,7 @@ public class AttributeHelper {
 			AttributeInfo a = (provider != null)
 					? provider.createAttribute(owner)
 					: new GenericAttribute(owner, name);
-			Log.debug("Loading attribute %s using provider %s", name.value(), provider);			
+			Log.debug("Loading attribute %s using provider %s", name.value(), provider != null ? provider : "<generic>");			
 			a.load(in);
 			attributes.add(a);
 		}
