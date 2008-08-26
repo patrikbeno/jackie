@@ -80,7 +80,13 @@ public class Assert {
 		if (t == null) {
 			throw new AssertionError(String.format("Unexpected NULL: %s", String.format(message, args)));
 		}
+		return t;
+	}
 
+	static public <T> T NOTNULL(T t) {
+		if (t == null) {
+			throw new AssertionError("Unexpected NULL");
+		}
 		return t;
 	}
 

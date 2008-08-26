@@ -5,6 +5,8 @@ package org.jackie.utils;
  */
 public class Log {
 
+	static final long START = System.currentTimeMillis();
+
 	enum Level {
 		ALL, DBG, TRC, INF, WRN, ERR, NOTHING
 	}
@@ -13,12 +15,12 @@ public class Log {
 
 	static public void enter() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		log(Level.TRC, ">>> %s() (%s:%s)", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
+		log(Level.TRC, ">>> at %s.%s(%s:%s)", ste.getClassName(), ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
 	}
 
 	static public void leave() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		log(Level.TRC, "<<< %s() (%s:%s)", ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
+		log(Level.TRC, "<<< at %s.%s(%s:%s)", ste.getClassName(), ste.getMethodName(), ste.getFileName(), ste.getLineNumber());
 	}
 
 	static public void debug(String msg, Object... args) {
@@ -42,7 +44,7 @@ public class Log {
 			return;
 		}
 
-		System.out.printf("[%s] ", level);
+		System.out.printf("%5d [%s] ", (System.currentTimeMillis()-START), level);
 		System.out.printf(msg, args);
 		System.out.println();
 	}
