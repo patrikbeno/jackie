@@ -1,10 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
 import org.jackie.compiler.spi.Compilable;
-import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
-import org.jackie.compiler_impl.bytecode.ByteCodeBuilder2;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compiler_impl.typeregistry.JClassLoader;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
@@ -13,7 +11,6 @@ import org.jackie.jvm.JPackage;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
@@ -22,8 +19,6 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import static org.jackie.utils.Assert.typecast;
 import org.jackie.jclassfile.model.ClassFile;
-import org.jackie.jclassfile.util.ClassNameHelper;
-import org.objectweb.asm.Opcodes;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +28,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JClassImpl extends AbstractJNode implements JClass, Compilable {
+public class JClassImpl extends AbstractJNode implements JClass {
 
 	// infrastructure stuff
 
@@ -244,10 +239,10 @@ public class JClassImpl extends AbstractJNode implements JClass, Compilable {
 
 	/// binary/bytecode stuff ///
 
-	public void compile() {
-		ByteCodeBuilder2.execute(new ByteCodeBuilder2() {
+	public byte[] compile() {
+		final ClassFile classfile = new ClassFile();
+		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 			protected void run() {
-				ClassFile classfile = new ClassFile();
 
 				classfile.classname(toBinaryClassName(JClassImpl.this));
 				if (getSuperClass() != null) {
@@ -266,65 +261,9 @@ public class JClassImpl extends AbstractJNode implements JClass, Compilable {
 				for (JAttribute a : attributes().getAttributes()) {
 					compile(a);
 				}
-
-				byte[] bytes = classfile.toByteArray();
-				
 			}
 		});
-	}
-
-	public void XXXcompile() {
-		ByteCodeBuilder.execute(new ByteCodeBuilder() {
-
-			JClass cthis = JClassImpl.this;
-
-			protected void run() {
-				bcinit();
-				bcextensions();
-				bcattributes();
-				bcfields();
-				bcmethods();
-				bcdone();
-			}
-
-			void bcinit() {
-				int version = Opcodes.V1_5; // todo hardcoded class version number
-				int access = toAccessFlag(flags()) | toAccessFlag(getAccessMode());
-				String bcSuperName = (superclass != null) ? bcName(superclass) : null;
-				cv().visit(version, access,
-							  bcName(cthis),
-							  null, // todo class signature
-							  bcSuperName,
-							  bcNames(cthis.getInterfaces())
-				);
-			}
-
-			void bcattributes() {
-				CompilableHelper.compile(attributes());
-			}
-
-			void bcextensions() {
-				CompilableHelper.compile(extensions());
-			}
-
-
-			void bcfields() {
-				for (JField f : getFields()) {
-					CompilableHelper.compile(f);
-				}
-			}
-
-			void bcmethods() {
-				for (JMethod m : cthis.getMethods()) {
-					CompilableHelper.compile(m);
-				}
-			}
-
-			void bcdone() {
-				cv().visitEnd();
-			}
-
-		});
+		return classfile.toByteArray();
 	}
 
 }

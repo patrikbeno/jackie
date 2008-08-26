@@ -5,18 +5,16 @@ import org.jackie.compiler.context.CompilerContext;
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
-import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.filemanager.MultiFileManager;
 import org.jackie.compiler_impl.javacintegration.JavacCompiler;
 import org.jackie.compiler_impl.typeregistry.CompilerWorkspaceRegistry;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
+import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
-import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.IOHelper;
 import org.objectweb.asm.ClassWriter;
@@ -87,13 +85,7 @@ public class CompilerImpl implements Compiler {
 	void compile(JClass jcls) {
 		newContext();
 		try {
-			context().set(BCClassContext.class, new BCClassContext());
-
-			ClassWriter cw = new ClassWriter(0);
-			context(BCClassContext.class).classVisitor = cw;
-
-			// compilation:
-			CompilableHelper.compile(jcls);
+			byte[] bytes = ((JClassImpl) jcls).compile();
 
 			ClassName clsname = new ClassName(jcls.getFQName());
 			workspace.remove(clsname.getPathName());
@@ -101,7 +93,7 @@ public class CompilerImpl implements Compiler {
 
 			WritableByteChannel out = fo.getOutputChannel();
 			IOHelper.write(
-					ByteBuffer.wrap(cw.toByteArray()),
+					ByteBuffer.wrap(bytes),
 					out);
 			IOHelper.close(out);
 
@@ -109,8 +101,5 @@ public class CompilerImpl implements Compiler {
 		} finally {
 			closeContext();
 		}
-
 	}
-
-
 }

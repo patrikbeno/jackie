@@ -1,9 +1,7 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
 import org.jackie.compiler.spi.Compilable;
-import org.jackie.compiler_impl.bytecode.BCClassContext;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
-import org.jackie.compiler_impl.bytecode.ByteCodeBuilder2;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.code.JCodeImpl;
@@ -11,7 +9,6 @@ import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.JNode;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
@@ -23,8 +20,6 @@ import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
 import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.typecast;
-import org.objectweb.asm.MethodVisitor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -158,54 +153,11 @@ public class JMethodImpl extends AbstractJNode implements JMethod, Compilable {
 	}
 
 	public void compile() {
-		ByteCodeBuilder2.execute(new ByteCodeBuilder2() {
+		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 			protected void run() {
 				Assert.logNotYetImplemented();
 			}
 		});
 	}
 
-	public void XXXcompile() {
-        ByteCodeBuilder.execute(new ByteCodeBuilder() {
-
-			JMethod mthis;
-
-			protected void run() {
-				mthis = JMethodImpl.this;
-				context(BCClassContext.class).methodVisitor = cv().visitMethod(
-						toAccessFlag(mthis.flags()),
-						mthis.getName(), bcDesc(mthis),
-						null, // signature
-						bcExceptions());
-
-// annotations are handled via extensions which this the core is unaware of... fire some event				
-//				bcAnnotations();
-//				bcParameterAnnotations();
-
-				bcCode();
-
-				mv().visitEnd();
-				context(BCClassContext.class).methodVisitor = null;
-			}
-
-			String[] bcExceptions() {
-				if (mthis.getExceptions().isEmpty()) {
-					return null;
-				}
-
-				List<String> clsnames = new ArrayList<String>();
-				for (JClass jcls : mthis.getExceptions()) {
-					clsnames.add(bcName(jcls));
-				}
-				return clsnames.toArray(new String[clsnames.size()]);
-			}
-
-			void bcCode() {
-				if (code == null) { return; }
-
-				mv().visitCode();
-				typecast(code, Compilable.class).compile();
-			}
-		});
-	}
 }

@@ -43,11 +43,13 @@
 			<artifactId>${pom.groupId}.utils</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+<!--
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm-all</artifactId>
 			<version>3.1</version>
 		</dependency>
+-->
 		<dependency>
 			<groupId>javac</groupId>
 			<artifactId>javac</artifactId>
