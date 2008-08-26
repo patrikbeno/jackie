@@ -3,6 +3,7 @@ package org.jackie.jclassfile.attribute;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.utils.Log;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -23,6 +24,7 @@ public class AttributeHelper {
 			AttributeInfo a = (provider != null)
 					? provider.createAttribute(owner)
 					: new GenericAttribute(owner, name);
+			Log.debug("Loading attribute %s using provider %s", name.value(), provider);			
 			a.load(in);
 			attributes.add(a);
 		}
