@@ -19,6 +19,7 @@ public class ClassReaderTest extends TestCase {
 				JClass jclass = context(TypeRegistry.class).getJClass(Sample.class);
 				Assert.expected(Sample.class.getSimpleName(), jclass.getName(), "invalid simple class name");
 				Assert.expected(Sample.class.getName(), jclass.getFQName(), "invalid class fqname");
+				Assert.expected(Sample.class.getSuperclass().getName(), jclass.getSuperClass().getFQName(), "invalid superclass fqname");
 			}
 		});
 	}
