@@ -26,7 +26,7 @@ field|member info {
 
 	ClassFile classfile;
 
-	Flags access;
+	Flags flags;
 	Utf8 name;
 	Utf8 descriptor;
 
@@ -36,9 +36,20 @@ field|member info {
 		this.classfile = classfile;
 	}
 
-	protected MemberInfo(ClassFile classfile, DataInput in) throws IOException {
-		this(classfile);
-		load(in);
+	public Flags flags() {
+		return flags;
+	}
+
+	public Utf8 name() {
+		return name;
+	}
+
+	public Utf8 descriptor() {
+		return descriptor;
+	}
+
+	public List<AttributeInfo> attributes() {
+		return attributes;
 	}
 
 	public ClassFile classFile() {
@@ -48,14 +59,14 @@ field|member info {
 	public void load(DataInput in) throws IOException {
 		ConstantPool pool = classfile.pool();
 
-		access = new Flags(in);
+		flags = new Flags(in);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = classfile.pool().getConstant(in.readUnsignedShort(), Utf8.class);
 		attributes = AttributeHelper.loadAttributes(this, in);
 	}
 
 	public void save(DataOutput out) throws IOException {
-		access.save(out);
+		flags.save(out);
 		name.writeReference(out);
 		descriptor.writeReference(out);
 

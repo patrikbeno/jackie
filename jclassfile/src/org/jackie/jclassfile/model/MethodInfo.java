@@ -18,24 +18,7 @@ method_info {
     }
     */
 
-
 	public MethodInfo(ClassFile classfile) {
 		super(classfile);
 	}
-
-	public MethodInfo(ClassFile classfile, DataInput in) throws IOException {
-		super(classfile, in);
-	}
-
-	public void save(DataOutput out) throws IOException {
-		access.save(out);
-		name.writeReference(out);
-		descriptor.writeReference(out);
-
-		out.writeShort(attributes.size());
-		for (AttributeInfo a : attributes) {
-			a.save(out);
-		}
-	}
-	
 }

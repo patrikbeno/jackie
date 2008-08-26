@@ -85,6 +85,22 @@ ClassFile {
 		return flags;
 	}
 
+	public List<ClassRef> interfaces() {
+		return interfaces;
+	}
+
+	public List<FieldInfo> fields() {
+		return fields;
+	}
+
+	public List<MethodInfo> methods() {
+		return methods;
+	}
+
+	public List<AttributeInfo> attributes() {
+		return attributes;
+	}
+
 	///
 
 	public ClassFile classFile() {
@@ -123,7 +139,8 @@ ClassFile {
 			int count = in.readUnsignedShort();
 			fields = new ArrayList<FieldInfo>(count);
 			while (count-- > 0) {
-				FieldInfo f = new FieldInfo(this, in);
+				FieldInfo f = new FieldInfo(this);
+				f.load(in);
 				fields.add(f);
 			}
 		}
@@ -133,7 +150,8 @@ ClassFile {
 			int count = in.readUnsignedShort();
 			methods = new ArrayList<MethodInfo>(count);
 			while (count-- > 0) {
-				MethodInfo m = new MethodInfo(this, in);
+				MethodInfo m = new MethodInfo(this);
+				m.load(in);
 				methods.add(m);
 			}
 		}

@@ -20,8 +20,4 @@ field_info {
 	public FieldInfo(ClassFile classfile) {
 		super(classfile);
 	}
-
-	public FieldInfo(ClassFile classfile, DataInput in) throws IOException {
-		super(classfile, in);
-	}
 }
