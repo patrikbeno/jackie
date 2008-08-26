@@ -241,11 +241,9 @@ public class JClassImpl extends AbstractJNode implements JClass {
 
 	/// binary/bytecode stuff ///
 
-	public byte[] compile() {
-		final ClassFile classfile = new ClassFile();
+	public void compile(final ClassFile classfile) {
 		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 			protected void run() {
-
 				classfile.classname(toBinaryClassName(JClassImpl.this));
 				if (getSuperClass() != null) {
 					classfile.superclass(toBinaryClassName(getSuperClass()));
@@ -265,7 +263,6 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				}
 			}
 		});
-		return classfile.toByteArray();
 	}
 
 }

@@ -19,6 +19,7 @@ import org.jackie.jvm.JClass;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Log;
+import org.jackie.jclassfile.model.ClassFile;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -84,22 +85,27 @@ public class CompilerImpl implements Compiler {
 
 	void compileByteCode() {
 		for (JClass jcls : context(TypeRegistry.class).jclasses()) {
-			compile(jcls);
+			compile((JClassImpl) jcls);
 		}
 	}
 
-	void compile(JClass jcls) {
+	void compile(JClassImpl jclass) {
 		newContext();
 		try {
-			byte[] bytes = ((JClassImpl) jcls).compile();
+			ClassFile classfile = new ClassFile();
 
-			ClassName clsname = new ClassName(jcls.getFQName());
+			// compilation / bytecode rendering:
+			jclass.compile(classfile);
+
+			// create new object in the workspace (overwrite if neccessary)
+			ClassName clsname = new ClassName(jclass.getFQName());
 			workspace.remove(clsname.getPathName());
 			FileObject fo = workspace.create(clsname.getPathName());
 
+			// save data into newly allocated file object
 			WritableByteChannel out = fo.getOutputChannel();
 			IOHelper.write(
-					ByteBuffer.wrap(bytes),
+					ByteBuffer.wrap(classfile.toByteArray()),
 					out);
 			IOHelper.close(out);
 
