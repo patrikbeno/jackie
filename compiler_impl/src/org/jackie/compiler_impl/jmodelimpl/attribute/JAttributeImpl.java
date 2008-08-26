@@ -8,13 +8,10 @@ import org.jackie.compiler_impl.bytecode.BuiltinAttribute;
 /**
  * @author Patrik Beno
  */
-public class JAttributeImpl<T> extends AbstractJAttribute<T> implements Compilable {
+public abstract class JAttributeImpl<T> extends AbstractJAttribute<T> implements Compilable {
 
 	public JAttributeImpl(JNode owner, String name, T value) {
 		super(owner, name, value);
 	}
 
-	public void compile() {
-		
-	}
 }
