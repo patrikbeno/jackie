@@ -37,6 +37,10 @@ public abstract class AttributeInfo extends Base {
 		this.name = pool().factory().getUtf8(getClass().getSimpleName());
 	}
 
+	public String name() {
+		return name.value();
+	}
+
 	public void load(DataInput in) throws IOException {
 		// name is expected to be loaded by attribute resolver (and passed in constructor)
 		resolver = readConstantDataOrGetResolver(in);
