@@ -30,6 +30,11 @@
 		</dependency>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
+			<artifactId>${pom.groupId}.jclassfile</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
 			<artifactId>${pom.groupId}.context</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
