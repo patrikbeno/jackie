@@ -3,7 +3,7 @@ package org.jackie.compiler_impl.typeregistry;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.typeregistry.TypeRegistry;
-import org.jackie.compiler_impl.JClassParser;
+import org.jackie.compiler_impl.bytecode.JClassParser;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.JPackageImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;

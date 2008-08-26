@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl;
+package org.jackie.compiler_impl.ext;
 
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.extension.ExtensionProvider;

@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.modelloader;
+package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;

@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl.modelloader;
+package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
@@ -14,7 +14,6 @@ import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.ClassNameHelper;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.structure.JField;

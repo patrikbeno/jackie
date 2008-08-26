@@ -1,4 +1,4 @@
-package org.jackie.compiler_impl;
+package org.jackie.compiler_impl.bytecode;
 
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.context.Service;

@@ -1,6 +1,6 @@
-package org.jackie.compiler_impl.modelloader;
+package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.compiler_impl.JClassParser;
+import org.jackie.compiler_impl.bytecode.JClassParser;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.jclassfile.model.ClassFile;
 

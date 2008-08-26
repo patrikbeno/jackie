@@ -13,6 +13,7 @@ import org.jackie.compiler_impl.typeregistry.CompilerWorkspaceRegistry;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
 import org.jackie.compiler_impl.typeregistry.PrimitiveTypeRegistry;
+import org.jackie.compiler_impl.ext.ExtensionManagerImpl;
 import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.ClassName;
