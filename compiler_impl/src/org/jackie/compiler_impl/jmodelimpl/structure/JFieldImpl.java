@@ -7,11 +7,14 @@ import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
 import org.jackie.utils.Assert;
+import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.model.FieldInfo;
+import org.jackie.jclassfile.util.TypeDescriptor;
 
 /**
  * @author Patrik Beno
  */
-public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compilable {
+public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 
 	protected AccessMode accessMode;
 
@@ -60,10 +63,14 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField, Compila
 		}
 	}
 
-	public void compile() {
+	public void compile(final ClassFile classfile) {
 		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 			protected void run() {
-				Assert.logNotYetImplemented();
+				FieldInfo f = new FieldInfo(classfile);
+				f.name(getName());
+				f.typeDescriptor(getTypeDescriptor(getType()));
+
+				classfile.addField(f);
 			}
 		});
 	}

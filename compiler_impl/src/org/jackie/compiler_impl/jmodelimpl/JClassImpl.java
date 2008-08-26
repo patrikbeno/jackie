@@ -4,6 +4,9 @@ import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler_impl.jmodelimpl.attribute.JAttributeImpl;
+import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
+import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.typeregistry.JClassLoader;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import org.jackie.jvm.JClass;
@@ -253,13 +256,13 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				}
 
 				for (JField f : getFields()) {
-					compile(f);
+					((JFieldImpl)f).compile(classfile);
 				}
 				for (JMethod m : getMethods()) {
-					compile(m);
+					((JMethodImpl)m).compile(classfile);
 				}
 				for (JAttribute a : attributes().getAttributes()) {
-					compile(a);
+					((JAttributeImpl)a).compile(classfile);
 				}
 			}
 		});

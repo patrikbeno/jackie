@@ -20,6 +20,8 @@ import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
 import org.jackie.utils.Assert;
+import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.model.MethodInfo;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,7 +30,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JMethodImpl extends AbstractJNode implements JMethod, Compilable {
+public class JMethodImpl extends AbstractJNode implements JMethod {
 
 	protected String name;
 	protected JClass type;
@@ -152,10 +154,15 @@ public class JMethodImpl extends AbstractJNode implements JMethod, Compilable {
 		};
 	}
 
-	public void compile() {
+	public void compile(final ClassFile classfile) {
 		ByteCodeBuilder.execute(new ByteCodeBuilder() {
 			protected void run() {
-				Assert.logNotYetImplemented();
+				MethodInfo m = new MethodInfo(classfile);
+
+				m.name(getName());
+				m.methodDescriptor(getMethodDescriptor(JMethodImpl.this));
+
+				classfile.addMethod(m);
 			}
 		});
 	}
