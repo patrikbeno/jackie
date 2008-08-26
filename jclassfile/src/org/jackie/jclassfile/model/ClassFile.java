@@ -8,6 +8,7 @@ import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
+import org.jackie.utils.Assert;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -91,6 +92,13 @@ ClassFile {
 
 	public List<ClassRef> interfaces() {
 		return interfaces;
+	}
+
+	public void addInterface(String className) {
+		if (interfaces == null) {
+			interfaces = new ArrayList<ClassRef>();
+		}
+		interfaces.add(pool().factory().getClassRef(className));
 	}
 
 	public List<FieldInfo> fields() {
@@ -206,5 +214,14 @@ ClassFile {
 		}
 	}
 
-
+	public byte[] toByteArray() {
+		try {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream(1024*4);
+			DataOutput out = new DataOutputStream(baos);
+			save(out);
+			return baos.toByteArray();
+		} catch (IOException e) {
+			throw Assert.unexpected(e);
+		}
+	}
 }
