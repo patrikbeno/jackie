@@ -6,6 +6,7 @@ import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
+import org.jackie.compiler_impl.bytecode.ByteCodeLoader;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFile;
@@ -13,6 +14,7 @@ import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.util.ClassNameHelper;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.structure.JField;
@@ -65,34 +67,42 @@ public class JClassBuilder extends AbstractBuilder {
 		((JClassImpl)jclass).loadLevel = LoadLevel.CODE;
 	}
 
-	void buildField(FieldInfo f) {
-		TypeDescriptor desc = f.typeDescriptor();
+	void buildField(final FieldInfo f) {
+		ByteCodeLoader.execute(new ByteCodeLoader() {
+			protected void run() {
+				TypeDescriptor desc = f.typeDescriptor();
 
-		JField jfield = new JFieldImpl(jclass);
-		jfield.edit()
-				.setName(f.name())
-				.setType(getJClass(new ClassName(desc.getTypeName(), desc.getDimensions())));
+				JField jfield = new JFieldImpl(jclass);
+				jfield.edit()
+						.setName(f.name())
+						.setType(getJClass(f.typeDescriptor()));
 
-		jclass.edit().addField(jfield);
+				jclass.edit().addField(jfield);
+			}
+		});
 	}
 
-	void buildMethod(MethodInfo m) {
-		MethodDescriptor desc = m.methodDescriptor();
+	void buildMethod(final MethodInfo m) {
+		ByteCodeLoader.execute(new ByteCodeLoader() {
+			protected void run() {
+				MethodDescriptor desc = m.methodDescriptor();
 
-		JMethod jmethod = new JMethodImpl(jclass);
-		jmethod.edit()
-				.setName(m.name())
-				.setType(getJClass(new ClassName(desc.getReturnType().getTypeName(), desc.getReturnType().getDimensions())));
+				JMethod jmethod = new JMethodImpl(jclass);
+				jmethod.edit()
+						.setName(m.name())
+						.setType(getJClass(m.methodDescriptor().getReturnType()));
 
-		List<JParameter> jparams = new ArrayList<JParameter>();
-		for (TypeDescriptor d : desc.getParameterTypes()) {
-			JParameter p = new JParameterImpl(jmethod);
-			p.edit().setType(getJClass(new ClassName(d.getTypeName(), d.getDimensions())));
-		}
-		jmethod.edit().setParameters(jparams);
+				List<JParameter> jparams = new ArrayList<JParameter>();
+				for (TypeDescriptor d : desc.getParameterTypes()) {
+					JParameter p = new JParameterImpl(jmethod);
+					p.edit().setType(getJClass(d));
+				}
+				jmethod.edit().setParameters(jparams);
 
-		jclass.edit().addMethod(jmethod);
-		buildAttributes(m.attributes(), jmethod.attributes());
+				jclass.edit().addMethod(jmethod);
+				buildAttributes(m.attributes(), jmethod.attributes());
+			}
+		});
 	}
 
 	void buildAttributes(List<AttributeInfo> src, Attributes dst) {

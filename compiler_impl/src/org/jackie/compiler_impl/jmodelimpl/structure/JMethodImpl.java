@@ -19,6 +19,7 @@ import org.jackie.jvm.structure.JCode;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
+import static org.jackie.utils.Assert.NOTNULL;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -115,12 +116,12 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 			final JMethodImpl mthis = JMethodImpl.this;
 
 			public Editor setName(String name) {
-				mthis.name = name;
+				mthis.name = NOTNULL(name);
 				return this;
 			}
 
 			public Editor setType(JClass type) {
-				mthis.type = type;
+				mthis.type = NOTNULL(type);
 				return this;
 			}
 
@@ -135,12 +136,12 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 			}
 
 			public Editor setAccessMode(AccessMode accessMode) {
-				mthis.accessMode = accessMode;
+				mthis.accessMode = NOTNULL(accessMode);
 				return this;
 			}
 			             
 			public Editor setFlags(Flag ... flags) {
-				mthis.flags().edit().reset().set(flags);
+				mthis.flags().edit().reset().set(NOTNULL(flags));
 				return this;
 			}
 

@@ -7,6 +7,7 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
+import static org.jackie.utils.Assert.NOTNULL;
 
 /**
  * @author Patrik Beno
@@ -36,17 +37,17 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 		final JFieldImpl fthis = JFieldImpl.this;
 
 		public Editor setName(String name) {
-			fthis.name = name;
+			fthis.name = NOTNULL(name);
 			return this;
 		}
 
 		public Editor setType(JClass type) {
-			fthis.type = type;
+			fthis.type = NOTNULL(type);
 			return this;
 		}
 
 		public Editor setAccessMode(AccessMode accessMode) {
-			fthis.accessMode = accessMode;
+			fthis.accessMode = NOTNULL(accessMode);
 			return this;
 		}
 
