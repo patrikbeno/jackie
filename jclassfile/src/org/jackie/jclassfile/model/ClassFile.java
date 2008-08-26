@@ -126,6 +126,8 @@ ClassFile {
 
 		flags = new Flags(in);
 		classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+		Log.debug("Loading class %s", classname.value());
+
 		superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 
 		// interfaces
