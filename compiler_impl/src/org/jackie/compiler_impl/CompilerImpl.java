@@ -12,10 +12,12 @@ import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.typeregistry.CompilerWorkspaceRegistry;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
 import org.jackie.compiler_impl.typeregistry.MultiRegistry;
+import org.jackie.compiler_impl.typeregistry.PrimitiveTypeRegistry;
 import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.IOHelper;
+import org.jackie.utils.Log;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -64,14 +66,19 @@ public class CompilerImpl implements Compiler {
 		for (FileManager d : dependencies) {
 			regs.add(new JClassRegistry(d));
 		}
+		regs.add(new PrimitiveTypeRegistry());
 		return regs;
 	}
 
 	void compileJavaSources() {
+		Log.enter();
+
 		List<String> options = Arrays.asList("-g"/*, "-source", "1.5", "-target", "1.5"*/);
 		JavacCompiler javac = new JavacCompiler(options,
 				sources, new MultiFileManager(dependencies), workspace);
 		javac.compile();
+
+		Log.leave();
 	}
 
 	void compileByteCode() {
