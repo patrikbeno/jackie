@@ -43,8 +43,10 @@ public class AttributeProviderRegistry {
 			providers = new HashMap<String, AttributeProvider>();
 			Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(RESOURCE);
 			while (e.hasMoreElements()) {
+				URL url = e.nextElement();
+				Log.debug("Loading attribute providers from %s", url);
 				Properties props = new Properties();
-				props.load(e.nextElement().openStream());
+				props.load(url.openStream());
 				populate(props);
 			}
 		} catch (Throwable t) {
