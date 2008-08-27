@@ -2,6 +2,8 @@ package org.jackie.jclassfile.attribute;
 
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
+import static org.jackie.jclassfile.ClassFileContext.classFileContext;
+import org.jackie.jclassfile.ClassFileContext;
 
 import java.net.URL;
 import java.util.Enumeration;
@@ -14,12 +16,10 @@ import java.util.Properties;
  */
 public class AttributeProviderRegistry {
 
-	static public final String RESOURCE = "META-INF/org.jackie.jclassfile.attribute.AttributeProvider.properties";
-
-	static private final AttributeProviderRegistry INSTANCE = new AttributeProviderRegistry();
+	static public final String RESOURCE = "/META-INF/org.jackie.jclassfile/attributeproviders.properties";
 
 	static public AttributeProviderRegistry instance() {
-		return INSTANCE;
+		return classFileContext().attributeProviderRegistry();
 	}
 
 	Map<String, AttributeProvider> providers;

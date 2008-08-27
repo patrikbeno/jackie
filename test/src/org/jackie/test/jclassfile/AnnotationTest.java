@@ -5,6 +5,7 @@ import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 import org.jackie.jclassfile.attribute.anno.RuntimeVisibleAnnotations;
 import org.jackie.jclassfile.ClassFileContext;
+import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import static org.jackie.context.ContextManager.newContext;
 import static org.jackie.context.ContextManager.closeContext;
 import static org.jackie.context.ContextManager.context;
@@ -23,18 +24,21 @@ import java.io.IOException;
 public class AnnotationTest {
 
 	public void loadAnnotations() throws IOException {
-		AttributeProviderRegistry.instance().addProvider(new RuntimeVisibleAnnotations.Provider());
 		String path = Explicit.class.getName().replace('.', '/') + ".class";
 
 		newContext();
 		try {
+			context().set(
+					ClassFileContext.class,
+					new ClassFileContext(new ClassFile(), new AttributeProviderRegistry()));
+
+			ClassFileContext ctx = classFileContext();
+			ctx.attributeProviderRegistry().addProvider(new RuntimeVisibleAnnotations.Provider());
+
 			DataInput in = new DataInputStream(Thread.currentThread().getContextClassLoader().getResourceAsStream(path));
-			ClassFile classfile = new ClassFile();
-			context().set(ClassFileContext.class, new ClassFileContext(classfile));
+			ctx.classFile().load(in);
 
-			classfile.load(in);
-
-			System.out.println(classfile);
+			System.out.println(ctx.classFile());
 		} finally {
 			closeContext();
 		}

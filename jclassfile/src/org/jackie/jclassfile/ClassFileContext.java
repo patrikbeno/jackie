@@ -5,6 +5,7 @@ import static org.jackie.context.ContextManager.context;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
+import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 
 /**
  * @author Patrik Beno
@@ -16,9 +17,11 @@ public class ClassFileContext implements ContextObject {
 	}
 
 	ClassFile classFile;
+	AttributeProviderRegistry attributeProviderRegistry;
 
-	public ClassFileContext(ClassFile classFile) {
+	public ClassFileContext(ClassFile classFile, AttributeProviderRegistry attributeProviderRegistry) {
 		this.classFile = classFile;
+		this.attributeProviderRegistry = attributeProviderRegistry;
 	}
 
 	public ClassFile classFile() {
@@ -31,5 +34,9 @@ public class ClassFileContext implements ContextObject {
 
 	public Factory constantFactory() {
 		return constantPool().factory();
+	}
+
+	public AttributeProviderRegistry attributeProviderRegistry() {
+		return attributeProviderRegistry;
 	}
 }

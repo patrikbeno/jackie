@@ -25,10 +25,6 @@ import java.util.List;
  */
 public class ClassFile extends Base implements ClassFileProvider, AttributeSupport {
 
-	static {
-		AttributeProviderRegistry.instance();
-	}
-
 	/*
 ClassFile {
     	u4 magic;
