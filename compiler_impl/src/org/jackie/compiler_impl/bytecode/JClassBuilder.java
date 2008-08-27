@@ -6,7 +6,6 @@ import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
-import org.jackie.compiler_impl.bytecode.ByteCodeLoader;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFile;
@@ -69,8 +68,6 @@ public class JClassBuilder extends AbstractBuilder {
 	void buildField(final FieldInfo f) {
 		ByteCodeLoader.execute(new ByteCodeLoader() {
 			protected void run() {
-				TypeDescriptor desc = f.typeDescriptor();
-
 				JField jfield = new JFieldImpl(jclass);
 				jfield.edit()
 						.setName(f.name())
