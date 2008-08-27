@@ -1,9 +1,14 @@
 package org.jackie.jclassfile.attribute.anno;
 
+import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.doAssert;
+
 /**
  * @author Patrik Beno
  */
 public enum Tag {
+
+	// primitives
 
 	BYTE('B'),
 	CHAR('C'),
@@ -14,10 +19,13 @@ public enum Tag {
 	SHORT('S'),
 	BOOLEAN('Z'),
 
-	// special
+	// other
 
-	CLASS('L'), // Ljava/lang/Object;
-	ARRAY('['), // [[[C
+	STRING('s'),
+	ENUM('e'),
+	CLASS('c'),
+	ANNOTATION('@'),
+	ARRAY('['),
 
 	;
 
@@ -29,5 +37,32 @@ public enum Tag {
 
 	public char id() {
 		return id;
+	}
+
+	static public Tag forId(char id) {
+		Tag tag = forId0(id);
+		if (tag.id()==id) { return tag; }
+
+		throw Assert.invariantFailed("ID mismatch: wanted: '%s', returned: '%s'", id, tag.id());
+	}
+
+	static private Tag forId0(char id) {
+		switch (id) {
+			case 'B': return BYTE;
+			case 'C': return CHAR;
+			case 'D': return DOUBLE;
+			case 'F': return FLOAT;
+			case 'I': return INT;
+			case 'J': return LONG;
+			case 'S': return SHORT;
+			case 'Z': return BOOLEAN;
+			case 's': return STRING;
+			case 'e': return ENUM;
+			case 'c': return CLASS;
+			case '@': return ANNOTATION;
+			case '[': return ARRAY;
+			default:
+				throw Assert.invariantFailed(Character.toString(id));
+		}
 	}
 }

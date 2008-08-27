@@ -8,6 +8,8 @@ import org.jackie.jclassfile.model.ClassFileProvider;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Patrik Beno
@@ -25,6 +27,14 @@ public class GenericAttribute extends AttributeInfo {
 
 	public GenericAttribute(ClassFileProvider owner, Utf8 name) {
 		super(owner, name);
+	}
+
+	public int length() {
+		return data.length;
+	}
+
+	public InputStream data() {
+		return new ByteArrayInputStream(data);
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

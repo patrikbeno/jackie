@@ -31,7 +31,7 @@ RuntimeVisibleParameterAnnotations_attribute {
 		super(owner);
 	}
 
-	protected Task loadAttribute(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 

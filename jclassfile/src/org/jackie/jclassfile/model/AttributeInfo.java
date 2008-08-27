@@ -43,6 +43,9 @@ public abstract class AttributeInfo extends Base {
 	public void load(DataInput in) throws IOException {
 		// name is expected to be loaded by attribute resolver (and passed in constructor)
 		resolver = readConstantDataOrGetResolver(in);
+		if (resolver != null) { // todo debug
+			resolver.execute();
+		}
 	}
 
 	public void save(DataOutput out) throws IOException {

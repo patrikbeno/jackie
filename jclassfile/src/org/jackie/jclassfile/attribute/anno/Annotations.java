@@ -35,7 +35,7 @@ annotation annotations[num_annotations];
 		super(owner);
 	}
 
-	protected Task loadAttribute(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		// just read data, don't parse now
 		final int len = readLength(in);
 		final byte[] bytes = new byte[len];
