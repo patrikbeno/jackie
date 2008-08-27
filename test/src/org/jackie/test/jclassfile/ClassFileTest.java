@@ -1,4 +1,4 @@
-package org.jackie.jclassfile;
+package org.jackie.test.jclassfile;
 
 import org.jackie.jclassfile.model.ClassFile;
 import org.testng.annotations.Test;
@@ -10,6 +10,7 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
 
 /**
  * @author Patrik Beno
@@ -79,3 +80,4 @@ public class ClassFileTest {
 		}};
 	}
 }
+

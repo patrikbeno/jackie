@@ -1,4 +1,4 @@
-package org.jackie.jclassfile;
+package org.jackie.test.jclassfile;
 
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.utils.Assert;
