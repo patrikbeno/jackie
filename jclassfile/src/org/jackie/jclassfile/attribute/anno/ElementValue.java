@@ -76,6 +76,13 @@ element_value {
 
 	abstract void load(DataInput in) throws IOException;
 
+	public String toString() {
+		return String.format("%s=%s", name != null ? name.value() : null, valueToString());
+	}
+
+	protected String valueToString() {
+		return null;
+	}
 
 	static public class ConstElementValue extends ElementValue {
 		Constant value;
@@ -104,6 +111,11 @@ element_value {
 				default:
 					throw Assert.invariantFailed(tag);
 			}
+
+		}
+
+		protected String valueToString() {
+			return value.toString();
 		}
 
 		void value(DataInput in, Class<? extends Constant> type) throws IOException {
@@ -117,6 +129,10 @@ element_value {
 		void load(DataInput in) throws IOException {
 			classinfo = constantPool().getConstant(in.readUnsignedShort(), Utf8.class);
 		}
+
+		protected String valueToString() {
+			return classinfo.value();
+		}
 	}
 
 	static public class EnumElementValue extends ElementValue {
@@ -128,6 +144,10 @@ element_value {
 			type = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 			value = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
+
+		protected String valueToString() {
+			return String.format("%s(%s)", value.value(), type.value());
+		}
 	}
 
 	static public class AnnoElementValue extends ElementValue {
@@ -136,6 +156,10 @@ element_value {
 		void load(DataInput in) throws IOException {
 			annotation = new Annotation(owner);
 			annotation.load(in);
+		}
+
+		protected String valueToString() {
+			return annotation.toString();
 		}
 	}
 
@@ -154,6 +178,10 @@ element_value {
 
 				values.add(evalue);
 			}
+		}
+
+		protected String valueToString() {
+			return String.format("[%s elements]", values.size());
 		}
 	}
 

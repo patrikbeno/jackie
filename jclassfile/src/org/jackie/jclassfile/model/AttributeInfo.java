@@ -74,7 +74,7 @@ public abstract class AttributeInfo extends Base {
 	}
 
 	public String toString() {
-		return String.format("Attribute(%s: {%s})", name, valueToString());
+		return String.format("%s {%s}", name.value(), valueToString());
 	}
 
 	protected String valueToString() {

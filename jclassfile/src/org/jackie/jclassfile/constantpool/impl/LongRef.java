@@ -58,6 +58,6 @@ public class LongRef extends Constant {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return Long.toString(value);
 	}
 }

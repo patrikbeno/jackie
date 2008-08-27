@@ -87,7 +87,7 @@ cp_info {
 	}
 
 	public String toString() {
-		return String.format("[%s] %s (%s references) %s", getIndex(), type(), references, valueToString());
+		return String.format("%s #%s: \"%s\"", type().name(), getIndex(), valueToString());
 	}
 
 	protected String valueToString() {

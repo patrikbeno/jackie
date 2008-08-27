@@ -71,6 +71,6 @@ CONSTANT_Class_info {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return value != null ? value.value() : null;
 	}
 }

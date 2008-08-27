@@ -64,6 +64,6 @@ CONSTANT_String_info {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return value != null ? value.value() : null;
 	}
 }

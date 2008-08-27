@@ -54,6 +54,6 @@ public class IntegerRef extends Constant {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return Integer.toString(value);
 	}
 }

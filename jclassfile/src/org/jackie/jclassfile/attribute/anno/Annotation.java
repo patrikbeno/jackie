@@ -3,6 +3,7 @@ package org.jackie.jclassfile.attribute.anno;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
+import static org.jackie.utils.CollectionsHelper.sizeof;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -50,5 +51,9 @@ annotation {
 
 			elements.add(evalue);
 		}
+	}
+
+	public String toString() {
+		return String.format("%s(%s elements)", type.value(), sizeof(elements));
 	}
 }

@@ -66,7 +66,7 @@ CONSTANT_Utf8_info {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return value;
 	}
 
 }

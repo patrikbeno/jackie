@@ -54,6 +54,6 @@ public class FloatRef extends Constant {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return Float.toString(value);
 	}
 }

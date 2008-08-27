@@ -75,6 +75,10 @@ CONSTANT_NameAndType_info {
 	}
 
 	protected String valueToString() {
-		return String.format("name={%s}, type={%s}", name, type);
+		return String.format(
+				"name={%s}, type={%s}",
+				name != null ? name.value() : null,
+				type != null ? type.value() : null
+		);
 	}
 }

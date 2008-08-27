@@ -59,6 +59,6 @@ public class DoubleRef extends Constant {
 	}
 
 	protected String valueToString() {
-		return String.format("value={%s}", value);
+		return Double.toString(value);
 	}
 }
