@@ -13,16 +13,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class RuntimeVisibleParameterAnnotations extends AttributeInfo {
-
-	static public class Provider implements AttributeProvider {
-		public String name() {
-			return "RuntimeVisibleParameterAnnotations";
-		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
-			return new RuntimeVisibleParameterAnnotations(owner);
-		}
-	}
+public abstract class ParameterAnnotations extends AttributeInfo {
 
 	/*
 RuntimeVisibleParameterAnnotations_attribute {
@@ -36,11 +27,11 @@ RuntimeVisibleParameterAnnotations_attribute {
    }
 	 */
 
-	public RuntimeVisibleParameterAnnotations(ClassFileProvider owner) {
+	public ParameterAnnotations(ClassFileProvider owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task loadAttribute(DataInput in) throws IOException {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 

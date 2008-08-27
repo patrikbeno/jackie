@@ -3,6 +3,7 @@ package org.jackie.jclassfile.constantpool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.model.ClassFile;
+import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import org.jackie.utils.Log;
 
 import java.io.DataInput;
@@ -17,6 +18,10 @@ import java.util.Map;
  * @author Patrik Beno
  */
 public class ConstantPool extends Base {
+
+	static public ConstantPool constantPool() {
+		return classFileContext().constantPool();
+	}
 
 	ClassFile classfile;
 
