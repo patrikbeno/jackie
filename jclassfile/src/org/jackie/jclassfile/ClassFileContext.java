@@ -16,13 +16,9 @@ public class ClassFileContext implements ContextObject {
 	}
 
 	ClassFile classFile;
-	ConstantPool constantPool;
-	Factory constantFactory;
 
 	public ClassFileContext(ClassFile classFile) {
 		this.classFile = classFile;
-		this.constantPool = classFile.pool();
-		this.constantFactory = constantPool.factory();
 	}
 
 	public ClassFile classFile() {
@@ -30,10 +26,10 @@ public class ClassFileContext implements ContextObject {
 	}
 
 	public ConstantPool constantPool() {
-		return constantPool;
+		return classFile().pool();
 	}
 
 	public Factory constantFactory() {
-		return constantFactory;
+		return constantPool().factory();
 	}
 }

@@ -153,7 +153,7 @@ ClassFile {
 		minor = in.readUnsignedShort();
 		major = in.readUnsignedShort();
 
-		pool = new ConstantPool(this, in);
+		pool.load(in);
 
 		flags = new Flags(in);
 		classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
