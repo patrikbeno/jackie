@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class IntegerRef extends Constant {
+public class IntegerRef extends Constant implements ValueProvider {
 
 	int value;
 
@@ -27,6 +27,10 @@ public class IntegerRef extends Constant {
 
 	public CPEntryType type() {
 		return CPEntryType.INTEGER;
+	}
+
+	public Object value() {
+		return value;
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

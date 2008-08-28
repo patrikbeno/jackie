@@ -9,26 +9,25 @@ import org.jackie.java5.annotation.Annotations;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
-import org.jackie.java5.enumtype.EnumType;
+import org.jackie.jclassfile.attribute.anno.ElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.*;
+import org.jackie.jclassfile.util.ClassNameHelper;
+import org.jackie.jclassfile.util.TypeDescriptor;
+import static org.jackie.jclassfile.util.ClassNameHelper.toJavaClassName;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.builtin.ArrayType;
-import org.jackie.jvm.extension.builtin.JPrimitive;
-import org.jackie.jvm.extension.builtin.PrimitiveType;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import static java.util.Collections.emptyList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -62,29 +61,18 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 		init(type, owner);
 	}
 
-	public AnnotationImpl(AnnotationNode anode, Annotations owner) {
-		this(anode, (Object) owner);
-	}
+	public AnnotationImpl(org.jackie.jclassfile.attribute.anno.Annotation anno, Object owner) {
+		TypeDescriptor desc = anno.type();
+		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
+		ClassName clsname = new ClassName(bname, desc.getDimensions());
 
-	public AnnotationImpl(AnnotationNode anode, JAnnotation owner) {
-		this(anode, (Object) owner);
-	}
-
-	private AnnotationImpl(AnnotationNode anode, Object owner) {
-		ClassName clsname = new ClassName(Type.getType(anode.desc).getClassName());
 		JClass jclass = context(TypeRegistry.class).getJClass(clsname);
 		AnnotationType type = jclass.extensions().get(AnnotationType.class);
 
 		init(type, owner);
 
-		List asmvalues = (anode.values != null) ? anode.values : Collections.emptyList();
-		Iterator it = asmvalues.iterator();
-		while (it.hasNext()) {
-			String name = (String) it.next();
-			assert it.hasNext();
-			Object object = it.next();
-
-			JAnnotationAttributeValue value = createAttributeValue(this, name, object);
+		for (ElementValue evalue : anno.elements()) {
+			JAnnotationAttributeValue value = createAttributeValue(this, evalue);
 			edit().addAttributeValue(value);
 		}
 	}
@@ -103,55 +91,63 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 	}
 
 
-	JAnnotationAttributeValue createAttributeValue(JAnnotation anno, String name, Object object) {
-		JAnnotationAttribute attrdef = anno.getJAnnotationType().getAttribute(name);
+	JAnnotationAttributeValue createAttributeValue(JAnnotation anno, ElementValue evalue) {
+		JAnnotationAttribute attrdef = anno.getJAnnotationType().getAttribute(evalue.name());
 		assert attrdef != null;
 
-		Object converted = convert(attrdef.getType(), object);
+		Object converted = convert(attrdef.getType(), evalue);
 		JAnnotationAttributeValue value = new AnnotationAttributeValueImpl(anno, attrdef, converted);
 
 		return value;
 	}
 
-	Object convert(JClass jclass, Object object) {
-
-		if (jclass.extensions().supports(PrimitiveType.class)) {
-			assert JPrimitive.isObjectWrapper(object.getClass());
-			return object;
-
-		} else if (jclass.equals(context(TypeRegistry.class).getJClass(String.class))) {
-			assert object instanceof String;
-			return object;
-
-		} else if (jclass.equals(context(TypeRegistry.class).getJClass(Class.class))) {
-			assert object instanceof Type;
-			return context(TypeRegistry.class).getJClass(new ClassName(((Type) object).getClassName()));
-
-		} else if (jclass.extensions().supports(AnnotationType.class)) {
-			assert object instanceof AnnotationNode;
-			return new AnnotationImpl((AnnotationNode) object, this);
-
-		} else if (jclass.extensions().supports(EnumType.class)) {
-			assert object instanceof String[] && Array.getLength(object)==2;
-			String[] names = (String[]) object;
-			ClassName clsname = new ClassName(Type.getObjectType(names[0]).getClassName());
-			return new EnumProxy(clsname.getFQName(), names[1]);
-
-		} else if (jclass.extensions().supports(ArrayType.class)) {
-			assert object instanceof List;
-			ArrayType array = jclass.extensions().get(ArrayType.class);
-			return convertArray(array.getComponentType(), (List) object);
-
-		} else {
-			throw Assert.invariantFailed("Annotation attribute type not handled: %s", jclass);
-		}
+	JClass getJClass(TypeDescriptor desc) {
+		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
+		ClassName clsname = new ClassName(bname, desc.getDimensions());
+		JClass jclass = context(TypeRegistry.class).getJClass(clsname);
+		return jclass;
 	}
 
-	List convertArray(JClass jclass, List list) {
-		List converted = new ArrayList(list.size());
-		for (Object object : list) {
-			//noinspection unchecked
-			converted.add(convert(jclass, object));
+	String getClassName(TypeDescriptor desc) {
+		return toJavaClassName(desc.getTypeName());
+	}
+
+	Object convert(JClass jclass, ElementValue evalue) {
+
+		switch (evalue.tag()) {
+			case BYTE:
+			case CHAR:
+			case DOUBLE:
+			case FLOAT:
+			case INT:
+			case LONG:
+			case SHORT:
+			case BOOLEAN:
+			case STRING:
+				return typecast(evalue, ElementValue.ConstElementValue.class).value();
+			case ENUM:
+				EnumElementValue enumvalue = typecast(evalue, EnumElementValue.class);
+				return new EnumProxy(getClassName(enumvalue.type()), enumvalue.value());
+			case CLASS:
+				ClassElementValue classvalue = typecast(evalue, ClassElementValue.class);
+				return new ClassProxy(getClassName(classvalue.type()));
+			case ANNOTATION:
+				AnnoElementValue annovalue = typecast(evalue, AnnoElementValue.class);
+				return new AnnotationImpl(annovalue.annotation(), this);
+			case ARRAY:
+				ArrayElementValue arrayvalue = typecast(evalue, ArrayElementValue.class);
+				ArrayType array = jclass.extensions().get(ArrayType.class);
+				return convertArray(array.getComponentType(), arrayvalue);
+		   default:
+				throw Assert.invariantFailed(evalue.tag());
+		}
+
+	}
+
+	List convertArray(JClass jclass, ArrayElementValue arrayvalue) {
+		List<Object> converted = new ArrayList<Object>(arrayvalue.values().size());
+		for (ElementValue evalue : arrayvalue.values()) {
+			converted.add(convert(jclass, evalue));
 		}
 		return converted;
 	}

@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.utils.Assert;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -12,7 +13,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class DoubleRef extends Constant {
+public class DoubleRef extends Constant implements ValueProvider {
 
 	double value;
 
@@ -27,6 +28,10 @@ public class DoubleRef extends Constant {
 
 	public CPEntryType type() {
 		return CPEntryType.DOUBLE;
+	}
+
+	public Object value() {
+		return value;
 	}
 
 	public boolean isLongData() {

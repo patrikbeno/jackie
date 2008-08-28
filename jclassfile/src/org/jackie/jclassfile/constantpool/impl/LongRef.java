@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class LongRef extends Constant {
+public class LongRef extends Constant implements ValueProvider {
 
 	long value;
 
@@ -27,6 +27,10 @@ public class LongRef extends Constant {
 
 	public CPEntryType type() {
 		return CPEntryType.LONG;
+	}
+
+	public Object value() {
+		return value;
 	}
 
 	public boolean isLongData() {

@@ -117,8 +117,9 @@ public class AnnotationsImpl implements Annotations, Compilable {
 		List<JAnnotation> annotations = new ArrayList<JAnnotation>();
 
 		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
-			assert attr.getValue() instanceof AnnotationNode;
-			JAnnotation anno = new AnnotationImpl((AnnotationNode) attr.getValue(), this);
+			org.jackie.jclassfile.attribute.anno.Annotation a =
+					typecast(attr.getValue(), org.jackie.jclassfile.attribute.anno.Annotation.class);
+			JAnnotation anno = new AnnotationImpl(a, this);
 			annotations.add(anno);
 		}
 

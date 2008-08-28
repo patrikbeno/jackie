@@ -8,7 +8,10 @@ import org.jackie.jclassfile.constantpool.impl.IntegerRef;
 import org.jackie.jclassfile.constantpool.impl.DoubleRef;
 import org.jackie.jclassfile.constantpool.impl.FloatRef;
 import org.jackie.jclassfile.constantpool.impl.LongRef;
+import org.jackie.jclassfile.constantpool.impl.ValueProvider;
+import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -74,6 +77,14 @@ element_value {
 		this.tag = tag;
 	}
 
+	public String name() {
+		return name.value();
+	}
+
+	public Tag tag() {
+		return tag;
+	}
+
 	abstract void load(DataInput in) throws IOException;
 
 	public String toString() {
@@ -114,6 +125,10 @@ element_value {
 
 		}
 
+		public Object value() {
+			return typecast(value, ValueProvider.class).value();
+		}
+
 		protected String valueToString() {
 			return value.toString();
 		}
@@ -124,7 +139,12 @@ element_value {
 	}
 
 	static public class ClassElementValue extends ElementValue {
+
 		Utf8 classinfo;
+
+		public TypeDescriptor type() {
+			return new TypeDescriptor(classinfo.value());
+		}
 
 		void load(DataInput in) throws IOException {
 			classinfo = constantPool().getConstant(in.readUnsignedShort(), Utf8.class);
@@ -138,6 +158,14 @@ element_value {
 	static public class EnumElementValue extends ElementValue {
 		Utf8 type;
 		Utf8 value;
+
+		public TypeDescriptor type() {
+			return new TypeDescriptor(type.value());
+		}
+
+		public String value() {
+			return value.value();
+		}
 
 		void load(DataInput in) throws IOException {
 			ConstantPool pool = constantPool();
@@ -153,6 +181,10 @@ element_value {
 	static public class AnnoElementValue extends ElementValue {
 		Annotation annotation;
 
+		public Annotation annotation() {
+			return annotation;
+		}
+
 		void load(DataInput in) throws IOException {
 			annotation = new Annotation(owner);
 			annotation.load(in);
@@ -165,6 +197,10 @@ element_value {
 
 	static public class ArrayElementValue extends ElementValue {
 		List<ElementValue> values;
+
+		public List<ElementValue> values() {
+			return values;
+		}
 
 		void load(DataInput in) throws IOException {
 			int count = in.readUnsignedShort();

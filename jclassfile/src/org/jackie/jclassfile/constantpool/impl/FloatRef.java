@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class FloatRef extends Constant {
+public class FloatRef extends Constant implements ValueProvider {
 
 	float value;
 
@@ -27,6 +27,10 @@ public class FloatRef extends Constant {
 
 	public CPEntryType type() {
 		return CPEntryType.FLOAT;
+	}
+
+	public Object value() {
+		return value;
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

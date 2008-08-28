@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class StringRef extends Constant {
+public class StringRef extends Constant implements ValueProvider {
 	/*
 CONSTANT_String_info {
     	u1 tag;
@@ -33,6 +33,10 @@ CONSTANT_String_info {
 
 	public CPEntryType type() {
 		return CPEntryType.STRING;
+	}
+
+	public Object value() {
+		return value.value();
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {

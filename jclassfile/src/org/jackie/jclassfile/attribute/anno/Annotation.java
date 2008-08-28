@@ -3,6 +3,7 @@ package org.jackie.jclassfile.attribute.anno;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
+import org.jackie.jclassfile.util.TypeDescriptor;
 import static org.jackie.utils.CollectionsHelper.sizeof;
 
 import java.util.List;
@@ -33,6 +34,14 @@ annotation {
 
 	public Annotation(Object owner) {
 		this.owner = owner;
+	}
+
+	public TypeDescriptor type() {
+		return new TypeDescriptor(type.value());
+	}
+
+	public List<ElementValue> elements() {
+		return elements;
 	}
 
 	void load(DataInput in) throws IOException {

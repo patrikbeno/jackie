@@ -93,11 +93,12 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 			attrs.add(attr);
 
 			// setup default
-			JAttribute adflt =
-					m.attributes().getAttribute("AnnotationDefault");
-			Object dflt = adflt != null ? convertAsmValue(m, adflt.getValue()) : null;
-
-			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
+// fixme populate annotation default
+//			JAttribute adflt =
+//					m.attributes().getAttribute("AnnotationDefault");
+//			Object dflt = adflt != null ? convertAsmValue(m, adflt.getValue()) : null;
+//
+//			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
 		}
 
 		if (!attrs.isEmpty()) {
@@ -142,44 +143,44 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 //		}
 //	}
 //
-	protected Object convertAsmValue(JMethod jmethod, Object asmvalue) {
-
-		if (asmvalue == null) {
-			return null;
-		}
-
-		Object converted;
-
-		// fixme JModelUtils obsoleted
-		/*if (JModelUtils.isEnum(jmethod.getType())) {
-			// enums are passed as String[2] { classname, constantname }
-			// save only constant name, enum type is remembered in annotation attribute
-			converted = ((String[]) asmvalue)[1];
-
-		} else*/ if (asmvalue instanceof Type) {
-			Type asmtype = (Type) asmvalue;
-			converted = context(TypeRegistry.class).getJClass(new ClassName(asmtype.getClassName()));
-
-		} else
-		if (asmvalue.getClass().isArray() && asmvalue.getClass().getComponentType().isPrimitive()) {
-			List list = new ArrayList(Array.getLength(asmvalue));
-			for (int i = 0; i < Array.getLength(asmvalue); i++) {
-				list.add(Array.get(asmvalue, i));
-			}
-			converted = list;
-
-		} else if (asmvalue instanceof AnnotationNode) {
-			JAnnotation anno = new AnnotationImpl(
-					(AnnotationNode) asmvalue,
-					jmethod.extensions().get(Annotations.class));
-			converted = anno;
-
-		} else {
-			converted = asmvalue;
-		}
-
-		return converted;
-	}
+//	protected Object convertAsmValue(JMethod jmethod, Object asmvalue) {
+//
+//		if (asmvalue == null) {
+//			return null;
+//		}
+//
+//		Object converted;
+//
+//		// fixme JModelUtils obsoleted
+//		/*if (JModelUtils.isEnum(jmethod.getType())) {
+//			// enums are passed as String[2] { classname, constantname }
+//			// save only constant name, enum type is remembered in annotation attribute
+//			converted = ((String[]) asmvalue)[1];
+//
+//		} else*/ if (asmvalue instanceof Type) {
+//			Type asmtype = (Type) asmvalue;
+//			converted = context(TypeRegistry.class).getJClass(new ClassName(asmtype.getClassName()));
+//
+//		} else
+//		if (asmvalue.getClass().isArray() && asmvalue.getClass().getComponentType().isPrimitive()) {
+//			List list = new ArrayList(Array.getLength(asmvalue));
+//			for (int i = 0; i < Array.getLength(asmvalue); i++) {
+//				list.add(Array.get(asmvalue, i));
+//			}
+//			converted = list;
+//
+//		} else if (asmvalue instanceof AnnotationNode) {
+//			JAnnotation anno = new AnnotationImpl(
+//					(AnnotationNode) asmvalue,
+//					jmethod.extensions().get(Annotations.class));
+//			converted = anno;
+//
+//		} else {
+//			converted = asmvalue;
+//		}
+//
+//		return converted;
+//	}
 
 //	void populate(AnnotationAttributeValueImpl attrvalue, Object asmvalue) {
 //		if (asmvalue.getClass().isArray()) {
