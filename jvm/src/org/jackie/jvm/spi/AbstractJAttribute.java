@@ -16,8 +16,6 @@ public abstract class AbstractJAttribute<T> extends AbstractJNode implements JAt
 
 	protected T value;
 
-	protected JAttribute<T> next;
-
 	protected AbstractJAttribute(JNode owner, String name, T value) {
 		super(owner);
 		this.name = name;
@@ -30,10 +28,6 @@ public abstract class AbstractJAttribute<T> extends AbstractJNode implements JAt
 
 	public T getValue() {
 		return value;
-	}
-
-	public JAttribute<T> next() {
-		return next;
 	}
 
 	public boolean isEditable() {
@@ -55,35 +49,8 @@ public abstract class AbstractJAttribute<T> extends AbstractJNode implements JAt
 				return this;
 			}
 
-			public Editor setNext(JAttribute<T> attribute) {
-				next = attribute;
-				return this;
-			}
-
 			public JAttribute<T> editable() {
 				return athis;
-			}
-		};
-	}
-
-	public Iterator<JAttribute<T>> iterator() {
-		return new Iterator<JAttribute<T>>() {
-
-			JAttribute<T> next = AbstractJAttribute.this;
-
-			public boolean hasNext() {
-				return next != null;
-			}
-
-			public JAttribute<T> next() {
-				if (next == null) { throw new NoSuchElementException(); }
-				JAttribute<T> current = next;
-				next = next.next();
-				return current;
-			}
-
-			public void remove() {
-				throw Assert.notYetImplemented(); // todo implement this
 			}
 		};
 	}

@@ -93,6 +93,10 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 			attrs.add(attr);
 
 			// setup default
+			JAttribute adflt =
+					m.attributes().getAttribute("AnnotationDefault");
+//			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
+
 // fixme populate annotation default
 //			JAttribute adflt =
 //					m.attributes().getAttribute("AnnotationDefault");

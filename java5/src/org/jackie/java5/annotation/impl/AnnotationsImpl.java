@@ -14,6 +14,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.utils.Assert.typecast;
 import org.objectweb.asm.tree.AnnotationNode;
 
@@ -115,6 +116,9 @@ public class AnnotationsImpl implements Annotations, Compilable {
 		Attributes attrs = typecast(node, Attributed.class).attributes();
 
 		List<JAnnotation> annotations = new ArrayList<JAnnotation>();
+
+		JAttribute rtannos = attrs.getAttribute("RuntimeVisibleAnnotations");
+
 
 		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
 			org.jackie.jclassfile.attribute.anno.Annotation a =

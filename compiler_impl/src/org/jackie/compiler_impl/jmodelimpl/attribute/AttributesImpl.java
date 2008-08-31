@@ -58,12 +58,13 @@ public class AttributesImpl implements Attributes, Compilable {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
+	// fixme
 	public Editor edit() {
 		return new Editor() {
 			public Editor addAttribute(JAttribute attribute) {
 				JAttribute<?> a = getAttribute(attribute.getName());
 				if (a != null) {
-					a.edit().setNext(attribute);
+//					a.edit().setNext(attribute);
 				} else {
 					if (attributes == null) {
 						attributes = new ArrayList<JAttribute>();
