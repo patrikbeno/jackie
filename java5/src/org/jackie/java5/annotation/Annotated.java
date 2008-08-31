@@ -5,6 +5,6 @@ package org.jackie.java5.annotation;
  */
 public interface Annotated {
 
-	Annotations annotations();
+	JAnnotations annotations();
 
 }

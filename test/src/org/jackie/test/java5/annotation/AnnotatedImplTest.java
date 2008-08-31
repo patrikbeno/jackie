@@ -2,15 +2,13 @@ package org.jackie.test.java5.annotation;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
 import static org.jackie.utils.Assert.NOTNULL;
 import org.testng.annotations.Test;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.Arrays;
 import static java.util.Arrays.asList;
 
@@ -98,10 +96,10 @@ public class AnnotatedImplTest extends TestCase {
 			public void run() {
 				JClass jcls = NOTNULL(get(cls), "No JClass for %s", cls);
 
-				Annotations annotations = jcls.extensions().get(Annotations.class);
-				assert annotations != null;
+				JAnnotations JAnnotations = jcls.extensions().get(JAnnotations.class);
+				assert JAnnotations != null;
 
-				SampleAnnotation proxy = annotations.getAnnotation(SampleAnnotation.class);
+				SampleAnnotation proxy = JAnnotations.getAnnotation(SampleAnnotation.class);
 				assert proxy != null;
 
 				SampleAnnotation real = cls.getAnnotation(SampleAnnotation.class);
@@ -120,7 +118,7 @@ public class AnnotatedImplTest extends TestCase {
 	}
 
 	SampleAnnotation proxy(JClass jcls) {
-		return jcls.extensions().get(Annotations.class).getAnnotation(SampleAnnotation.class);
+		return jcls.extensions().get(JAnnotations.class).getAnnotation(SampleAnnotation.class);
 	}
 
 	SampleAnnotation real(Class<?> cls) {

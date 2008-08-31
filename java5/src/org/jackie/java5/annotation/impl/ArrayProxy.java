@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class ArrayProxy {
+class ArrayProxy {
 
 	String clsname;
 	List<Object> values;

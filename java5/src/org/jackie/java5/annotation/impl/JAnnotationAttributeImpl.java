@@ -1,7 +1,7 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
 import org.jackie.jvm.JClass;
@@ -12,11 +12,11 @@ import org.jackie.utils.Assert;
 /**
  * @author Patrik Beno
  */
-public class AnnotationAttributeImpl extends AbstractJNode implements JAnnotationAttribute {
+public class JAnnotationAttributeImpl extends AbstractJNode implements JAnnotationAttribute {
 
 	JAnnotationAttributeValue defaultValue;
 
-	public AnnotationAttributeImpl(JMethod jmethod) {
+	public JAnnotationAttributeImpl(JMethod jmethod) {
 		super(jmethod);
 	}
 
@@ -47,8 +47,8 @@ public class AnnotationAttributeImpl extends AbstractJNode implements JAnnotatio
 
 	///
 
-	public Annotations annotations() {
-		return jmethod().extensions().get(Annotations.class);
+	public JAnnotations annotations() {
+		return jmethod().extensions().get(JAnnotations.class);
 	}
 
 	public boolean isEditable() {
@@ -58,7 +58,7 @@ public class AnnotationAttributeImpl extends AbstractJNode implements JAnnotatio
 	public Editor edit() {
 		return new Editor() {
 
-			final AnnotationAttributeImpl athis = AnnotationAttributeImpl.this;
+			final JAnnotationAttributeImpl athis = JAnnotationAttributeImpl.this;
 
 			public Editor setName(String name) {
 				throw Assert.notYetImplemented(); // todo implement this
@@ -74,7 +74,7 @@ public class AnnotationAttributeImpl extends AbstractJNode implements JAnnotatio
 			}
 
 			public JAnnotationAttribute editable() {
-				return AnnotationAttributeImpl.this;
+				return JAnnotationAttributeImpl.this;
 			}
 		};
 	}

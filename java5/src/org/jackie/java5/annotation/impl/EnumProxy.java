@@ -3,7 +3,7 @@ package org.jackie.java5.annotation.impl;
 /**
  * @author Patrik Beno
  */
-public class EnumProxy extends ClassProxy {
+class EnumProxy extends ClassProxy {
 
 	public final String constant;
 

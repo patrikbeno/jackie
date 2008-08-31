@@ -1,4 +1,4 @@
-package org.jackie.java5.annotation.impl;
+package org.jackie.java5.extra.impl;
 
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.java5.extra.PackageType;

@@ -5,7 +5,7 @@ import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.java5.annotation.Annotated;
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.java5.annotation.JAnnotationAttributeValue;
@@ -33,7 +33,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationImpl implements JAnnotation, Compilable {
+public class JAnnotationImpl implements JAnnotation, Compilable {
 
 	/**
 	 * Owner of this annotation: can be {@link Annotated an annotated element}
@@ -53,15 +53,15 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 
 	WeakReference<Annotation> proxy;
 
-	public AnnotationImpl(AnnotationType type, Annotations owner) {
+	public JAnnotationImpl(AnnotationType type, JAnnotations owner) {
 		init(type, owner);
 	}
 
-	public AnnotationImpl(AnnotationType type, JAnnotation owner) {
+	public JAnnotationImpl(AnnotationType type, JAnnotation owner) {
 		init(type, owner);
 	}
 
-	public AnnotationImpl(org.jackie.jclassfile.attribute.anno.Annotation anno, Object owner) {
+	public JAnnotationImpl(org.jackie.jclassfile.attribute.anno.Annotation anno, Object owner) {
 		TypeDescriptor desc = anno.type();
 		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
 		ClassName clsname = new ClassName(bname, desc.getDimensions());
@@ -84,8 +84,8 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 	void init(AnnotationType type, Object owner) {
 		assert type != null;
 		assert owner != null;
-//		assert owner instanceof Extensible && ((Extensible)owner).extensions().supports(Annotations.class) || owner instanceof JAnnotation;
-		assert owner instanceof Annotations || owner instanceof JAnnotation;
+//		assert owner instanceof Extensible && ((Extensible)owner).extensions().supports(JAnnotations.class) || owner instanceof JAnnotation;
+		assert owner instanceof JAnnotations || owner instanceof JAnnotation;
 		this.owner = owner;
 		this.type = type;
 	}
@@ -96,7 +96,7 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 		assert attrdef != null;
 
 		Object converted = convert(attrdef.getType(), evalue);
-		JAnnotationAttributeValue value = new AnnotationAttributeValueImpl(anno, attrdef, converted);
+		JAnnotationAttributeValue value = new JAnnotationAttributeValueImpl(anno, attrdef, converted);
 
 		return value;
 	}
@@ -133,7 +133,7 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 				return new ClassProxy(getClassName(classvalue.type()));
 			case ANNOTATION:
 				AnnoElementValue annovalue = typecast(evalue, AnnoElementValue.class);
-				return new AnnotationImpl(annovalue.annotation(), this);
+				return new JAnnotationImpl(annovalue.annotation(), this);
 			case ARRAY:
 				ArrayElementValue arrayvalue = typecast(evalue, ArrayElementValue.class);
 				ArrayType array = jclass.extensions().get(ArrayType.class);
@@ -200,7 +200,7 @@ public class AnnotationImpl implements JAnnotation, Compilable {
 			}
 
 			public JAnnotation editable() {
-				return AnnotationImpl.this;
+				return JAnnotationImpl.this;
 			}
 		};
 	}

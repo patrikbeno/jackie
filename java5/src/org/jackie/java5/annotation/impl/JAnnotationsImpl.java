@@ -2,7 +2,7 @@ package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
@@ -16,7 +16,6 @@ import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.utils.Assert.typecast;
-import org.objectweb.asm.tree.AnnotationNode;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -26,13 +25,13 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationsImpl implements Annotations, Compilable {
+public class JAnnotationsImpl implements JAnnotations, Compilable {
 
 	JNode node;
 
 	List<JAnnotation> annotations;
 
-	public AnnotationsImpl(JNode node) {
+	public JAnnotationsImpl(JNode node) {
 		this.node = node;
 	}
 
@@ -49,7 +48,7 @@ public class AnnotationsImpl implements Annotations, Compilable {
 		buildJAnnotations();
 		List<Annotation> proxies = new ArrayList<Annotation>();
 		for (JAnnotation anno : annotations) {
-			AnnotationImpl impl = typecast(anno, AnnotationImpl.class);
+			JAnnotationImpl impl = typecast(anno, JAnnotationImpl.class);
 			proxies.add(impl.proxy());
 		}
 		return proxies;
@@ -61,7 +60,7 @@ public class AnnotationsImpl implements Annotations, Compilable {
 
 		for (JAnnotation anno : annotations) {
 			if (type.getName().equals(anno.getJAnnotationType().node().getFQName())) {
-				AnnotationImpl impl = typecast(anno, AnnotationImpl.class);
+				JAnnotationImpl impl = typecast(anno, JAnnotationImpl.class);
 				return typecast(impl.proxy(), type);
 			}
 		}
@@ -84,8 +83,8 @@ public class AnnotationsImpl implements Annotations, Compilable {
 				return this;
 			}
 
-			public Annotations editable() {
-				return AnnotationsImpl.this;
+			public JAnnotations editable() {
+				return JAnnotationsImpl.this;
 			}
 		};
 	}
@@ -123,7 +122,7 @@ public class AnnotationsImpl implements Annotations, Compilable {
 		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
 			org.jackie.jclassfile.attribute.anno.Annotation a =
 					typecast(attr.getValue(), org.jackie.jclassfile.attribute.anno.Annotation.class);
-			JAnnotation anno = new AnnotationImpl(a, this);
+			JAnnotation anno = new JAnnotationImpl(a, this);
 			annotations.add(anno);
 		}
 

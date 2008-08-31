@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class AnnotationAttributeValueImpl extends AbstractJNode implements JAnnotationAttributeValue {
+public class JAnnotationAttributeValueImpl extends AbstractJNode implements JAnnotationAttributeValue {
 
 	JAnnotation annotation;
 
@@ -24,7 +24,7 @@ public class AnnotationAttributeValueImpl extends AbstractJNode implements JAnno
 	Object value;
 
 
-	public AnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef) {
+	public JAnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef) {
 		super(annotation);
 		this.annotation = annotation;
 		this.attrdef = attrdef;
@@ -33,7 +33,7 @@ public class AnnotationAttributeValueImpl extends AbstractJNode implements JAnno
 		}
 	}
 
-	public AnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef, Object value) {
+	public JAnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef, Object value) {
 		this(annotation, attrdef);
 		this.value = value;
 	}

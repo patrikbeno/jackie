@@ -1,7 +1,7 @@
 package org.jackie.java5.base.impl;
 
 import org.jackie.java5.AbstractExtension;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.base.ClassNestingLevel;
 import org.jackie.java5.base.ClassType;
 import org.jackie.jvm.JClass;
@@ -44,8 +44,8 @@ public class ClassTypeImpl extends AbstractExtension<JClass> implements ClassTyp
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
-	public Annotations annotations() {
-		return node().extensions().get(Annotations.class);
+	public JAnnotations annotations() {
+		return node().extensions().get(JAnnotations.class);
 	}
 
 	public boolean isEditable() {

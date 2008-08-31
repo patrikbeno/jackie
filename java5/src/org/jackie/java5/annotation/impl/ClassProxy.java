@@ -5,7 +5,7 @@ import org.jackie.utils.Assert;
 /**
  * @author Patrik Beno
  */
-public class ClassProxy {
+class ClassProxy {
 
 	public final String clsname;
 

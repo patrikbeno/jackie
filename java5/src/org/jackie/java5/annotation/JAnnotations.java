@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public interface Annotations extends Extension, Editable<Annotations.Editor> {
+public interface JAnnotations extends Extension, Editable<JAnnotations.Editor> {
 
 	List<JAnnotation> getJAnnotations();
 
@@ -18,7 +18,7 @@ public interface Annotations extends Extension, Editable<Annotations.Editor> {
 	<T extends Annotation> T getAnnotation(Class<T> type);
 
 	
-	public interface Editor extends org.jackie.jvm.Editor<Annotations> {
+	public interface Editor extends org.jackie.jvm.Editor<JAnnotations> {
 
 		Editor addAnnotation(JAnnotation annotation);
 

@@ -19,7 +19,7 @@ import java.util.Map;
 /**
  * @author Patrik Beno
  */
-public class AnnotationProxy implements InvocationHandler {
+class AnnotationProxy implements InvocationHandler {
 
 	protected JAnnotation annotation;
 
@@ -134,7 +134,7 @@ public class AnnotationProxy implements InvocationHandler {
 			return Enum.valueOf(type, ((String[])value)[1]);
 
 		} else if (type.isAnnotation()) {
-			return ((AnnotationImpl) value).proxy();
+			return ((JAnnotationImpl) value).proxy();
 
 		} else if (type.isArray()) {
 			return convertArray(value, type);

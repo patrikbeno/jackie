@@ -4,7 +4,7 @@ import org.jackie.compiler.event.AttributeListener;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.extension.Lifecycle;
 import org.jackie.event.Events;
-import org.jackie.java5.annotation.Annotations;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.JAttribute;
@@ -24,7 +24,7 @@ public class AnnotationsProvider implements ExtensionProvider, Lifecycle {
 	};
 
 	public Class getType() {
-		return Annotations.class;
+		return JAnnotations.class;
 	}
 
 	public Extension getExtension(JNode node) {
@@ -39,8 +39,8 @@ public class AnnotationsProvider implements ExtensionProvider, Lifecycle {
 			return null;
 		}
 
-		Annotations annotations = new AnnotationsImpl(node);
-		return annotations;
+		JAnnotations JAnnotations = new JAnnotationsImpl(node);
+		return JAnnotations;
 	}
 
 	public void init() {

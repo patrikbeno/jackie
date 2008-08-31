@@ -1,22 +1,15 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.java5.AbstractExtension;
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.Annotations;
-import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationAttribute;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
-import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
-import org.objectweb.asm.Type;
-import org.objectweb.asm.tree.AnnotationNode;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -89,20 +82,20 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 			if (!m.getParameters().isEmpty()) { continue; }
 
 			// register
-			JAnnotationAttribute attr = new AnnotationAttributeImpl(m);
+			JAnnotationAttribute attr = new JAnnotationAttributeImpl(m);
 			attrs.add(attr);
 
 			// setup default
 			JAttribute adflt =
 					m.attributes().getAttribute("AnnotationDefault");
-//			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
+//			attr.edit().setDefaultValue(new JAnnotationAttributeValueImpl(null, attr, dflt));
 
 // fixme populate annotation default
 //			JAttribute adflt =
 //					m.attributes().getAttribute("AnnotationDefault");
 //			Object dflt = adflt != null ? convertAsmValue(m, adflt.getValue()) : null;
 //
-//			attr.edit().setDefaultValue(new AnnotationAttributeValueImpl(null, attr, dflt));
+//			attr.edit().setDefaultValue(new JAnnotationAttributeValueImpl(null, attr, dflt));
 		}
 
 		if (!attrs.isEmpty()) {
@@ -138,7 +131,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 //			if (m.getName().equals("<clinit>")) { continue; }
 //			if (!m.getParameters().isEmpty()) { continue; }
 //
-//			JAnnotationAttribute attr = new AnnotationAttributeImpl(m, null);
+//			JAnnotationAttribute attr = new JAnnotationAttributeImpl(m, null);
 //			attrs.add(attr);
 //		}
 //
@@ -174,9 +167,9 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 //			converted = list;
 //
 //		} else if (asmvalue instanceof AnnotationNode) {
-//			JAnnotation anno = new AnnotationImpl(
+//			JAnnotation anno = new JAnnotationImpl(
 //					(AnnotationNode) asmvalue,
-//					jmethod.extensions().get(Annotations.class));
+//					jmethod.extensions().get(JAnnotations.class));
 //			converted = anno;
 //
 //		} else {
@@ -186,7 +179,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 //		return converted;
 //	}
 
-//	void populate(AnnotationAttributeValueImpl attrvalue, Object asmvalue) {
+//	void populate(JAnnotationAttributeValueImpl attrvalue, Object asmvalue) {
 //		if (asmvalue.getClass().isArray()) {
 //			for (int i = 0; i < Array.getLength(asmvalue); i++) {
 //				attrvalue.addValue(Array.get(asmvalue, i));
