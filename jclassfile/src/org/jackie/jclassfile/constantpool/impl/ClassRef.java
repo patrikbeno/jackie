@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class ClassRef extends Constant {
+public class ClassRef extends Constant implements ValueProvider {
 
 	/*
 CONSTANT_Class_info {
