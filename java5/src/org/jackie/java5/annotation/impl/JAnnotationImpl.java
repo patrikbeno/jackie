@@ -7,8 +7,8 @@ import org.jackie.java5.annotation.Annotated;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotationElement;
+import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.*;
 import org.jackie.jclassfile.util.ClassNameHelper;
@@ -16,6 +16,7 @@ import org.jackie.jclassfile.util.TypeDescriptor;
 import static org.jackie.jclassfile.util.ClassNameHelper.toJavaClassName;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.extension.builtin.ArrayType;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
@@ -33,13 +34,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JAnnotationImpl implements JAnnotation, Compilable {
-
-	/**
-	 * Owner of this annotation: can be {@link Annotated an annotated element}
-	 * or {@link JAnnotation enclosing annotation}
-	 */
-	Object owner;
+public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compilable {
 
 	/**
 	 * type of this annotation
@@ -49,19 +44,13 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 	/**
 	 * Values of the annotation attributes
 	 */
-	List<JAnnotationAttributeValue> attributes;
+	List<JAnnotationElementValue> elements;
 
-	WeakReference<Annotation> proxy;
+	WeakReference<java.lang.annotation.Annotation> proxy;
 
-	public JAnnotationImpl(AnnotationType type, JAnnotations owner) {
-		init(type, owner);
-	}
 
-	public JAnnotationImpl(AnnotationType type, JAnnotation owner) {
-		init(type, owner);
-	}
-
-	public JAnnotationImpl(org.jackie.jclassfile.attribute.anno.Annotation anno, Object owner) {
+	public JAnnotationImpl(JNode owner, org.jackie.jclassfile.attribute.anno.Annotation anno) {
+		super(owner);
 		TypeDescriptor desc = anno.type();
 		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
 		ClassName clsname = new ClassName(bname, desc.getDimensions());
@@ -72,7 +61,7 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 		init(type, owner);
 
 		for (ElementValue evalue : anno.elements()) {
-			JAnnotationAttributeValue value = createAttributeValue(this, evalue);
+			JAnnotationElementValue value = createAttributeValue(this, evalue);
 			edit().addAttributeValue(value);
 		}
 	}
@@ -86,17 +75,17 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 		assert owner != null;
 //		assert owner instanceof Extensible && ((Extensible)owner).extensions().supports(JAnnotations.class) || owner instanceof JAnnotation;
 		assert owner instanceof JAnnotations || owner instanceof JAnnotation;
-		this.owner = owner;
+//		this.owner = owner;
 		this.type = type;
 	}
 
 
-	JAnnotationAttributeValue createAttributeValue(JAnnotation anno, ElementValue evalue) {
-		JAnnotationAttribute attrdef = anno.getJAnnotationType().getAttribute(evalue.name());
+	JAnnotationElementValue createAttributeValue(JAnnotation anno, ElementValue evalue) {
+		JAnnotationElement attrdef = anno.getJAnnotationType().getElement(evalue.name());
 		assert attrdef != null;
 
 		Object converted = convert(attrdef.getType(), evalue);
-		JAnnotationAttributeValue value = new JAnnotationAttributeValueImpl(anno, attrdef, converted);
+		JAnnotationElementValue value = new JAnnotationElementValueImpl(anno, attrdef, converted);
 
 		return value;
 	}
@@ -133,7 +122,7 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 				return new ClassProxy(getClassName(classvalue.type()));
 			case ANNOTATION:
 				AnnoElementValue annovalue = typecast(evalue, AnnoElementValue.class);
-				return new JAnnotationImpl(annovalue.annotation(), this);
+				return new JAnnotationImpl(this, annovalue.annotation());
 			case ARRAY:
 				ArrayElementValue arrayvalue = typecast(evalue, ArrayElementValue.class);
 				ArrayType array = jclass.extensions().get(ArrayType.class);
@@ -161,28 +150,24 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 		return owner instanceof Annotated ? (Annotated) owner : null;
 	}
 
-	public JAnnotation getEnclosingAnnotation() {
-		return owner instanceof JAnnotation ? (JAnnotation) owner : null;
-	}
-
 	public AnnotationType getJAnnotationType() {
 		return type;
 	}
 
-	public JAnnotationAttributeValue getAttribute(String name) {
-		for (JAnnotationAttributeValue a : CollectionsHelper.iterable(attributes)) {
-			if (a.getAnnotationAttribute().getName().equals(name)) {
+	public List<JAnnotationElementValue> getElementValues() {
+		if (elements == null) {
+			return emptyList();
+		}
+		return Collections.unmodifiableList(elements);
+	}
+
+	public JAnnotationElementValue getElementValue(String name) {
+		for (JAnnotationElementValue a : CollectionsHelper.iterable(elements)) {
+			if (a.getJAnnotationElement().getName().equals(name)) {
 				return a;
 			}
 		}
 		return null;
-	}
-
-	public List<JAnnotationAttributeValue> getAttributes() {
-		if (attributes == null) {
-			return emptyList();
-		}
-		return Collections.unmodifiableList(attributes);
 	}
 
 	public boolean isEditable() {
@@ -191,11 +176,11 @@ public class JAnnotationImpl implements JAnnotation, Compilable {
 
 	public Editor edit() {
 		return new Editor() {
-			public Editor addAttributeValue(JAnnotationAttributeValue value) {
-				if (attributes == null) {
-					attributes = new ArrayList<JAnnotationAttributeValue>();
+			public Editor addAttributeValue(JAnnotationElementValue value) {
+				if (elements == null) {
+					elements = new ArrayList<JAnnotationElementValue>();
 				}
-				attributes.add(value);
+				elements.add(value);
 				return this;
 			}
 

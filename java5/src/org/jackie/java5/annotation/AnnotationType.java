@@ -15,28 +15,28 @@ import java.util.Set;
 public interface AnnotationType extends Extension<JClass>, Editable<AnnotationType.Editor> {
 
 	/**
-	 * Names of the annotation attributes.
+	 * Names of the annotation elements.
 	 * @return
 	 */
-	Set<String> getAttributeNames();
+	Set<String> getElementNames();
 
 	/**
-	 * Returns annotation attribute declaration for a given name
-	 * @param name name of the annotation attribute
-	 * @return annotation attribute declaration
+	 * Returns annotation element declaration for a given name
+	 * @param name name of the annotation element
+	 * @return annotation element declaration
 	 */
-	JAnnotationAttribute getAttribute(String name);
+	JAnnotationElement getElement(String name);
 
 	/**
-	 * List of the annotation attributes in declaration order
-	 * @return list of the attributes
+	 * List of the annotation elements in declaration order
+	 * @return list of the elements
 	 */
-	List<JAnnotationAttribute> getAttributes();
+	List<JAnnotationElement> getElements();
 
 
 	public interface Editor extends org.jackie.jvm.Editor<AnnotationType> {
 
-		Editor addAtribute(JAnnotationAttribute attribute);
+		Editor addElement(JAnnotationElement element);
 
 	}
 

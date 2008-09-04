@@ -2,8 +2,8 @@ package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.JAnnotations;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotationElement;
+import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JMethod;
@@ -12,11 +12,11 @@ import org.jackie.utils.Assert;
 /**
  * @author Patrik Beno
  */
-public class JAnnotationAttributeImpl extends AbstractJNode implements JAnnotationAttribute {
+public class JAnnotationElementImpl extends AbstractJNode implements JAnnotationElement {
 
-	JAnnotationAttributeValue defaultValue;
+	JAnnotationElementValue defaultValue;
 
-	public JAnnotationAttributeImpl(JMethod jmethod) {
+	public JAnnotationElementImpl(JMethod jmethod) {
 		super(jmethod);
 	}
 
@@ -41,7 +41,7 @@ public class JAnnotationAttributeImpl extends AbstractJNode implements JAnnotati
 		return jmethod().getJClass().extensions().get(AnnotationType.class);
 	}
 
-	public JAnnotationAttributeValue getDefaultValue() {
+	public JAnnotationElementValue getDefaultValue() {
 		return defaultValue;
 	}
 
@@ -58,7 +58,7 @@ public class JAnnotationAttributeImpl extends AbstractJNode implements JAnnotati
 	public Editor edit() {
 		return new Editor() {
 
-			final JAnnotationAttributeImpl athis = JAnnotationAttributeImpl.this;
+			final JAnnotationElementImpl athis = JAnnotationElementImpl.this;
 
 			public Editor setName(String name) {
 				throw Assert.notYetImplemented(); // todo implement this
@@ -68,13 +68,13 @@ public class JAnnotationAttributeImpl extends AbstractJNode implements JAnnotati
 				throw Assert.notYetImplemented(); // todo implement this
 			}
 
-			public Editor setDefaultValue(JAnnotationAttributeValue dflt) {
+			public Editor setDefaultValue(JAnnotationElementValue dflt) {
 				athis.defaultValue = dflt;
 				return this;
 			}
 
-			public JAnnotationAttribute editable() {
-				return JAnnotationAttributeImpl.this;
+			public JAnnotationElement editable() {
+				return JAnnotationElementImpl.this;
 			}
 		};
 	}

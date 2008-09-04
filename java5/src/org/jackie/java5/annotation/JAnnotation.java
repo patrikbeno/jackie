@@ -21,8 +21,10 @@ import java.util.List;
 public interface JAnnotation extends JNode, Editable<JAnnotation.Editor> {
 
 	/**
-	 * Element this annotation annotates (is attached to): class, field, method, ...
-	 * @see JClass
+	 * Element this annotation annotates (is attached to): class, field, method, or null if there
+	 * is no such element (true for nested annotations).
+	 * @see #owner()
+	 * @see org.jackie.jvm.JClass
 	 * @see org.jackie.jvm.structure.JField
 	 * @see org.jackie.jvm.structure.JMethod
 	 * @see org.jackie.jvm.structure.JParameter
@@ -30,37 +32,30 @@ public interface JAnnotation extends JNode, Editable<JAnnotation.Editor> {
 	 */
 	Annotated getAnnotatedElement();
 
-
-	/**
-	 * Annotation enclosing this annotation.
-	 * @return annotation or null if this is top-level annotation
-	 */
-	JAnnotation getEnclosingAnnotation();
-
 	/**
 	 * Type of this annotation
 	 */
 	AnnotationType getJAnnotationType();
 
 	/**
-	 * Returns value of the annotation attribute for a given name
-	 * @param name name of the attribute
-	 * @return annotation attribute value or null (if there is no value for such an attribute)
-	 */
-	JAnnotationAttributeValue getAttribute(String name);
-
-	/**
-	 * All available attributes for this annotation
+	 * All available element values for this annotation
 	 * @return
 	 */
-	List<JAnnotationAttributeValue> getAttributes();
+	List<JAnnotationElementValue> getElementValues();
+
+	/**
+	 * Returns value of the annotation element for a given name
+	 * @param name annotation element name
+	 * @return annotation attribute value or null (if there is no value for such an attribute)
+	 */
+	JAnnotationElementValue getElementValue(String name);
 
 	Editor edit();
 
 
 	public interface Editor extends org.jackie.jvm.Editor<JAnnotation> {
 
-		Editor addAttributeValue(JAnnotationAttributeValue value);
+		Editor addAttributeValue(JAnnotationElementValue value);
 
 	}
 }

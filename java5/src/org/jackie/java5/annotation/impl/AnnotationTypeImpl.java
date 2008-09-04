@@ -3,7 +3,7 @@ package org.jackie.java5.annotation.impl;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.java5.AbstractExtension;
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.JAnnotationAttribute;
+import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
@@ -22,25 +22,25 @@ import java.util.Set;
  */
 public class AnnotationTypeImpl extends AbstractExtension<JClass> implements AnnotationType {
 
-	protected List<JAnnotationAttribute> attributes;
+	protected List<JAnnotationElement> elements;
 
 	public AnnotationTypeImpl(JClass node) {
 		super(node);
 	}
 
-	public Set<String> getAttributeNames() {
+	public Set<String> getElementNames() {
 		populateAttributes();
 		Set<String> names = new HashSet<String>();
-		for (JAnnotationAttribute a : attributes) {
+		for (JAnnotationElement a : elements) {
 			names.add(a.getName());
 		}
 		return names;
 	}
 
-	public JAnnotationAttribute getAttribute(String name) {
+	public JAnnotationElement getElement(String name) {
 		populateAttributes();
 
-		for (JAnnotationAttribute a : CollectionsHelper.iterable(attributes)) {
+		for (JAnnotationElement a : CollectionsHelper.iterable(elements)) {
 			if (a.getName().equals(name)) {
 				return a;
 			}
@@ -48,8 +48,8 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 		throw new NoSuchElementException(String.format("%s.%s", node.getFQName(), name));
 	}
 
-	public List<JAnnotationAttribute> getAttributes() {
-		return Collections.unmodifiableList(attributes);
+	public List<JAnnotationElement> getElements() {
+		return Collections.unmodifiableList(elements);
 	}
 
 	public boolean isEditable() {
@@ -58,7 +58,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 
 	public Editor edit() {
 		return new Editor() {
-			public Editor addAtribute(JAnnotationAttribute attribute) {
+			public Editor addElement(JAnnotationElement element) {
 				throw Assert.notYetImplemented(); // todo implement this
 			}
 
@@ -69,11 +69,11 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 	}
 
 	void populateAttributes() {
-		if (attributes != null) {
+		if (elements != null) {
 			return;
 		}
 
-		List<JAnnotationAttribute> attrs = new ArrayList<JAnnotationAttribute>();
+		List<JAnnotationElement> attrs = new ArrayList<JAnnotationElement>();
 		for (JMethod m : node().getMethods()) {
 
 			// todo can this filtering be somewhat improved / cleaned up?
@@ -82,7 +82,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 			if (!m.getParameters().isEmpty()) { continue; }
 
 			// register
-			JAnnotationAttribute attr = new JAnnotationAttributeImpl(m);
+			JAnnotationElement attr = new JAnnotationElementImpl(m);
 			attrs.add(attr);
 
 			// setup default
@@ -99,7 +99,7 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 		}
 
 		if (!attrs.isEmpty()) {
-			attributes = attrs;
+			elements = attrs;
 		}
 	}
 

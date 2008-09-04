@@ -1,9 +1,10 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotationElement;
+import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.jvm.spi.AbstractJNode;
+import org.jackie.jclassfile.attribute.anno.ElementValue;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
@@ -12,11 +13,11 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class JAnnotationAttributeValueImpl extends AbstractJNode implements JAnnotationAttributeValue {
+public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnotationElementValue {
 
 	JAnnotation annotation;
 
-	JAnnotationAttribute attrdef;
+	JAnnotationElement element;
 
 	/**
 	 * generic value of then attribute (does not depend on annotation or attribute type)
@@ -24,30 +25,40 @@ public class JAnnotationAttributeValueImpl extends AbstractJNode implements JAnn
 	Object value;
 
 
-	public JAnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef) {
+	public JAnnotationElementValueImpl(JAnnotation annotation, JAnnotationElement element) {
 		super(annotation);
 		this.annotation = annotation;
-		this.attrdef = attrdef;
+		this.element = element;
 		if (annotation != null) {
 			annotation.edit().addAttributeValue(this);
 		}
 	}
 
-	public JAnnotationAttributeValueImpl(JAnnotation annotation, JAnnotationAttribute attrdef, Object value) {
-		this(annotation, attrdef);
+	public JAnnotationElementValueImpl(JAnnotation annotation, JAnnotationElement element, Object value) {
+		this(annotation, element);
 		this.value = value;
+	}
+
+	public JAnnotationElementValueImpl(JAnnotation annotation, ElementValue elementValue) {
+		super(annotation);
+		JAnnotationElement attr = annotation.getJAnnotationType().getElement(elementValue.name());
+		
 	}
 
 	public JAnnotation getJAnnotation() {
 		return annotation;
 	}
 
-	public JAnnotationAttribute getAnnotationAttribute() {
-		return attrdef;
+	public JAnnotationElement getJAnnotationElement() {
+		return element;
 	}
 
 	public Object getValue() {
 		return value;
+	}
+
+	public boolean isDefault() {
+		return false;
 	}
 
 	public void setValue(Object value) {

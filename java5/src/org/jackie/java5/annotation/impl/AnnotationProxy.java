@@ -1,8 +1,8 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.JAnnotation;
-import org.jackie.java5.annotation.JAnnotationAttribute;
-import org.jackie.java5.annotation.JAnnotationAttributeValue;
+import org.jackie.java5.annotation.JAnnotationElement;
+import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.utils.Assert;
@@ -106,8 +106,8 @@ class AnnotationProxy implements InvocationHandler {
 	}
 
 	protected Object buildValue(String name, Class<?> type) {
-		JAnnotationAttribute attrdef = annotation.getJAnnotationType().getAttribute(name);
-		JAnnotationAttributeValue attr = annotation.getAttribute(name);
+		JAnnotationElement attrdef = annotation.getJAnnotationType().getElement(name);
+		JAnnotationElementValue attr = annotation.getElementValue(name);
 		if (attr == null) {
 			attr = attrdef.getDefaultValue();
 			assert attr != null;

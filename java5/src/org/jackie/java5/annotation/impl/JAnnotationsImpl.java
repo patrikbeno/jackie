@@ -5,22 +5,20 @@ import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.jvm.Editable;
-import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.jvm.structure.JField;
-import org.jackie.jvm.structure.JMethod;
-import org.jackie.jvm.structure.JParameter;
-import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.iterable;
 import static org.jackie.utils.Assert.typecast;
+import org.jackie.utils.Assert;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * @author Patrik Beno
@@ -40,12 +38,16 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 	}
 
 	public List<JAnnotation> getJAnnotations() {
-		buildJAnnotations();
+		buildAnnotations();
 		return Collections.unmodifiableList(annotations);
 	}
 
-	public List<? extends Annotation> getAnnotations() {
-		buildJAnnotations();
+	public JAnnotation getJAnnotation(JClass jclass) {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	List<? extends Annotation> getAnnotations() {
+		buildAnnotations();
 		List<Annotation> proxies = new ArrayList<Annotation>();
 		for (JAnnotation anno : annotations) {
 			JAnnotationImpl impl = typecast(anno, JAnnotationImpl.class);
@@ -56,9 +58,9 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 
 	public <T extends Annotation> T getAnnotation(Class<T> type) {
 		assert type != null;
-		buildJAnnotations();
+		buildAnnotations();
 
-		for (JAnnotation anno : annotations) {
+		for (JAnnotation anno : iterable(annotations)) {
 			if (type.getName().equals(anno.getJAnnotationType().node().getFQName())) {
 				JAnnotationImpl impl = typecast(anno, JAnnotationImpl.class);
 				return typecast(impl.proxy(), type);
@@ -72,13 +74,15 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 
 
 	public boolean isEditable() {
-		return node() instanceof Editable && ((Editable) node()).isEditable();
+		return (node() instanceof Editable) && ((Editable) node()).isEditable();
 	}
 
 	public Editor edit() {
-//		Helper.assertEditable(findJClass());
 		return new Editor() {
 			public Editor addAnnotation(JAnnotation annotation) {
+				if (annotations == null) {
+					annotations = new LinkedList<JAnnotation>();
+				}
 				annotations.add(annotation);
 				return this;
 			}
@@ -92,22 +96,8 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 
 	//////////////////
 
-	protected JClass findJClass() {
-		// todo find something better (less if/else, more robustness)
-		if (node() instanceof JClass) {
-			return (JClass) node();
-		} else if (node() instanceof JMethod) {
-			return ((JMethod) node()).getJClass();
-		} else if (node() instanceof JField) {
-			return ((JField) node()).getType();
-		} else if (node() instanceof JParameter) {
-			return ((JParameter) node()).scope().getJClass();
-		} else {
-			throw Assert.invariantFailed("cannot find owning JClass for %s", this);
-		}
-	}
 
-	protected void buildJAnnotations() {
+	protected void buildAnnotations() {
 		if (annotations != null) {
 			return;
 		}
@@ -122,7 +112,7 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
 			org.jackie.jclassfile.attribute.anno.Annotation a =
 					typecast(attr.getValue(), org.jackie.jclassfile.attribute.anno.Annotation.class);
-			JAnnotation anno = new JAnnotationImpl(a, this);
+			JAnnotation anno = new JAnnotationImpl(node(), a);
 			annotations.add(anno);
 		}
 
