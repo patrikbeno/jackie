@@ -1,5 +1,6 @@
 package org.jackie.jvm.extension.builtin;
 
+import static org.jackie.utils.Assert.NOTNULL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ public enum JPrimitive {
 	}
 
 	static public JPrimitive forClassName(String name) {
-		return byname.get(name);
+		return NOTNULL(byname.get(name));
 	}
 
 	static public boolean isObjectWrapper(Class cls) {
@@ -64,11 +65,11 @@ public enum JPrimitive {
 		this.objectWrapperClass = objectWrapperClass;
 	}
 
-	public Class getPrimitiveClass() {
+	public Class<?> getPrimitiveClass() {
 		return primitiveClass;
 	}
 
-	public Class getObjectWrapperClass() {
+	public Class<?> getObjectWrapperClass() {
 		return objectWrapperClass;
 	}
 
