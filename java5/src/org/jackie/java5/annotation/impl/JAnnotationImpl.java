@@ -23,7 +23,6 @@ import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
 
-import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Proxy;
 import java.util.ArrayList;
@@ -36,14 +35,8 @@ import java.util.List;
  */
 public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compilable {
 
-	/**
-	 * type of this annotation
-	 */
 	AnnotationType type;
 
-	/**
-	 * Values of the annotation attributes
-	 */
 	List<JAnnotationElementValue> elements;
 
 	WeakReference<java.lang.annotation.Annotation> proxy;
@@ -51,6 +44,7 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 
 	public JAnnotationImpl(JNode owner, org.jackie.jclassfile.attribute.anno.Annotation anno) {
 		super(owner);
+
 		TypeDescriptor desc = anno.type();
 		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
 		ClassName clsname = new ClassName(bname, desc.getDimensions());
@@ -61,7 +55,7 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 		init(type, owner);
 
 		for (ElementValue evalue : anno.elements()) {
-			JAnnotationElementValue value = createAttributeValue(this, evalue);
+			JAnnotationElementValue value = new JAnnotationElementValueImpl(this, type.getElement(evalue.name()));
 			edit().addAttributeValue(value);
 		}
 	}
@@ -79,16 +73,6 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 		this.type = type;
 	}
 
-
-	JAnnotationElementValue createAttributeValue(JAnnotation anno, ElementValue evalue) {
-		JAnnotationElement attrdef = anno.getJAnnotationType().getElement(evalue.name());
-		assert attrdef != null;
-
-		Object converted = convert(attrdef.getType(), evalue);
-		JAnnotationElementValue value = new JAnnotationElementValueImpl(anno, attrdef, converted);
-
-		return value;
-	}
 
 	JClass getJClass(TypeDescriptor desc) {
 		String bname = ClassNameHelper.toJavaClassName(desc.getTypeName());
@@ -190,8 +174,8 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 		};
 	}
 
-	public Annotation proxy() {
-		Annotation a = proxy != null ? proxy.get() : null;
+	public java.lang.annotation.Annotation proxy() {
+		java.lang.annotation.Annotation a = proxy != null ? proxy.get() : null;
 		if (a != null) {
 			return a;
 		}
@@ -200,13 +184,12 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 			ClassLoader cl = Thread.currentThread().getContextClassLoader();//fixme context().annotationClassLoader();
 			Class cls = Class.forName(type.node().getFQName(), false, cl);
 
-			//noinspection UnusedAssignment
-			a = (Annotation) Proxy.newProxyInstance(
+			a = (java.lang.annotation.Annotation) Proxy.newProxyInstance(
 					cl,
 					new Class<?>[] { cls },
 					new AnnotationProxy(this));
 
-			proxy = new WeakReference<Annotation>(a);
+			proxy = new WeakReference<java.lang.annotation.Annotation>(a);
 			return a;
 
 		} catch (ClassNotFoundException e) {

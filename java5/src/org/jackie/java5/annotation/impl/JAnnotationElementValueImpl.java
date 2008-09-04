@@ -3,10 +3,21 @@ package org.jackie.java5.annotation.impl;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.java5.annotation.JAnnotationElementValue;
-import org.jackie.jvm.spi.AbstractJNode;
+import org.jackie.java5.annotation.JAnnotationHelper;
+import org.jackie.java5.enumtype.JEnumHelper;
 import org.jackie.jclassfile.attribute.anno.ElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.AnnoElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.ArrayElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.EnumElementValue;
+import org.jackie.jclassfile.constantpool.impl.ValueProvider;
+import org.jackie.jclassfile.util.ClassNameHelper;
+import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.builtin.BuiltinExtensionsHelper;
+import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.jvm.spi.AbstractJNode;
+import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,38 +26,36 @@ import java.util.List;
  */
 public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnotationElementValue {
 
-	JAnnotation annotation;
-
 	JAnnotationElement element;
 
 	/**
-	 * generic value of then attribute (does not depend on annotation or attribute type)
+	 * Generic annotation element value (does not depend on annotation or attribute type).
+	 * Can be either
+	 * (a) raw bytecode ElementValue or
+	 * (b) any resolved primitive value, or
+	 * (c) String representation for plain String values, class names or enum values or 
+	 * (d) List of thereof for arrays
 	 */
 	Object value;
 
 
 	public JAnnotationElementValueImpl(JAnnotation annotation, JAnnotationElement element) {
 		super(annotation);
-		this.annotation = annotation;
 		this.element = element;
-		if (annotation != null) {
-			annotation.edit().addAttributeValue(this);
-		}
 	}
 
 	public JAnnotationElementValueImpl(JAnnotation annotation, JAnnotationElement element, Object value) {
-		this(annotation, element);
+		super(annotation);
+		this.element = element;
 		this.value = value;
 	}
 
-	public JAnnotationElementValueImpl(JAnnotation annotation, ElementValue elementValue) {
-		super(annotation);
-		JAnnotationElement attr = annotation.getJAnnotationType().getElement(elementValue.name());
-		
+	public JAnnotation getJAnnotation() {
+		return (JAnnotation) owner();
 	}
 
-	public JAnnotation getJAnnotation() {
-		return annotation;
+	public JClass getType() {
+		return element.getType();
 	}
 
 	public JAnnotationElement getJAnnotationElement() {
@@ -54,6 +63,9 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 	}
 
 	public Object getValue() {
+		if (value instanceof ElementValue) {
+			value = convertElementValue((ElementValue) value);
+		}
 		return value;
 	}
 
@@ -61,30 +73,58 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 		return false;
 	}
 
-	public void setValue(Object value) {
-		check(value);
-		this.value = value;
-	}
+	private Object convertElementValue(ElementValue evalue) {
+		JClass jclass = getJAnnotationElement().getType();
 
-	public void addValue(Object value) {
-		check(value);
-		assert this.value instanceof List;
-		((List) this.value).add(value);
-	}
+		if (BuiltinExtensionsHelper.isPrimitive(jclass) || jclass.isInstance(String.class) || jclass.isInstance(Class.class)) {
+			assert evalue instanceof ValueProvider;
+			return validate(jclass, ((ValueProvider) evalue).value());
 
-	public void initArray() {
-		this.value = new ArrayList();
-	}
+		} else if (JEnumHelper.isEnum(jclass)) {
+			assert evalue instanceof EnumElementValue;
+			EnumElementValue enumvalue = (EnumElementValue) evalue;
+			assert ClassNameHelper.toJavaClassName(enumvalue.type()).equals(jclass.getFQName());
+			return enumvalue.value();
 
+		} else if (JAnnotationHelper.isAnnotation(jclass)) {
+			assert evalue instanceof AnnoElementValue;
+			return new JAnnotationImpl(this, ((AnnoElementValue) evalue).annotation());
 
-	static private void check(Object value) {
-		assert allowed(value, String.class, Boolean.class, Character.class, Byte.class, Short.class, Integer.class, Long.class, Float.class, Double.class, Enum.class, Annotation.class, List.class);
-	}
+		} else if (BuiltinExtensionsHelper.isArray(jclass)) {
+			assert evalue instanceof ArrayElementValue;
+			return convertArray((ArrayElementValue) evalue);
 
-	static private boolean allowed(Object value, Class... types) {
-		for (Class c : types) {
-			if (!c.isInstance(value)) { return false; }
+		} else {
+			throw Assert.invariantFailed("Unhandled type %s", jclass);
 		}
-		return true;
 	}
+
+	Object validate(JClass jclass, Object value) {
+		if (BuiltinExtensionsHelper.isPrimitive(jclass)) {
+			JPrimitive jprimitive = JPrimitive.forClassName(jclass.getFQName());
+			return typecast(value, jprimitive.getObjectWrapperClass());
+
+		} else if (jclass.isInstance(String.class)) {
+			return typecast(value, String.class);
+
+		} else if (jclass.isInstance(Class.class)) {
+			return typecast(value, Class.class);
+
+		} else if (JEnumHelper.isEnum(jclass)) {
+			return typecast(value, String.class);
+
+		} else {
+			throw Assert.invariantFailed("Unhandled type %s", jclass);
+		}
+	}
+
+	private List<?> convertArray(ArrayElementValue array) {
+		List<Object> list = new ArrayList<Object>();
+		for (ElementValue evalue : array.values()) {
+			list.add(convertElementValue(evalue));
+		}
+		return list;
+	}
+
+
 }

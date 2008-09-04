@@ -1,13 +1,14 @@
 package org.jackie.java5.annotation;
 
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.props.Typed;
 
 /**
  * Represents value of the annotation attribute in an annotation instance
  *
  * @author Patrik Beno
  */
-public interface JAnnotationElementValue extends JNode {
+public interface JAnnotationElementValue extends JNode, Typed {
 
 	/**
 	 * Owner of this element value (annotation instance)

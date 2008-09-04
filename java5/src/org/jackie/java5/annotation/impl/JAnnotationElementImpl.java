@@ -4,6 +4,7 @@ import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.java5.annotation.JAnnotationElementValue;
+import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JMethod;
@@ -13,6 +14,15 @@ import org.jackie.utils.Assert;
  * @author Patrik Beno
  */
 public class JAnnotationElementImpl extends AbstractJNode implements JAnnotationElement {
+
+	static class DefaultElement extends JAnnotationElementValueImpl {
+		DefaultElement(JAnnotation annotation, JAnnotationElement element, Object value) {
+			super(annotation, element, value);
+		}
+		public boolean isDefault() {
+			return true;
+		}
+	}
 
 	JAnnotationElementValue defaultValue;
 
@@ -52,7 +62,7 @@ public class JAnnotationElementImpl extends AbstractJNode implements JAnnotation
 	}
 
 	public boolean isEditable() {
-		return jmethod().getJClass().isEditable(); 
+		return jmethod().getJClass().isEditable();
 	}
 
 	public Editor edit() {
