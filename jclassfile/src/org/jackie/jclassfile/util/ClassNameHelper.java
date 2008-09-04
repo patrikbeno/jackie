@@ -9,6 +9,10 @@ public class ClassNameHelper {
 		return binaryName.replace('/', '.');
 	}
 
+	static public String toJavaClassName(TypeDescriptor descriptor) {
+		return toBinaryClassName(descriptor.getTypeName());
+	}
+
 	static public String toBinaryClassName(String javaClassName) {
 		return javaClassName.replace('.', '/');
 	}
