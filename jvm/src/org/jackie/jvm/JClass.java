@@ -41,6 +41,14 @@ public interface JClass extends JNode, Named, FQNamed, Accessible, Flagged, Attr
 	List<? extends JMethod> getMethods();
 
 
+	// helpers
+
+	boolean isAssignableFrom(JClass jclass);
+	boolean isAssignableFrom(Class cls);
+
+	boolean isInstance(JClass jclass);
+	boolean isInstance(Class cls);
+
 	public interface Editor extends org.jackie.jvm.Editor<JClass> {
 
 		Editor setName(String name);

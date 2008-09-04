@@ -21,6 +21,7 @@ import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import static org.jackie.utils.Assert.typecast;
+import org.jackie.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,6 +141,21 @@ public class JClassImpl extends AbstractJNode implements JClass {
 		return Collections.unmodifiableList(methods);
 	}
 
+	public boolean isAssignableFrom(JClass jclass) {
+		throw Assert.notYetImplemented(); // todo implement this 
+	}
+
+	public boolean isAssignableFrom(Class cls) {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	public boolean isInstance(JClass jclass) {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	public boolean isInstance(Class cls) {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
 
 	/// Accessible ///
 
