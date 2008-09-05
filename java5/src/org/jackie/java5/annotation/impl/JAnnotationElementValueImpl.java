@@ -12,8 +12,8 @@ import org.jackie.jclassfile.attribute.anno.ElementValue.EnumElementValue;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.ClassNameHelper;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.extension.builtin.BuiltinExtensionsHelper;
 import org.jackie.jvm.extension.builtin.JPrimitive;
+import org.jackie.jvm.extension.builtin.ArrayTypeHelper;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
@@ -76,7 +76,7 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 	private Object convertElementValue(ElementValue evalue) {
 		JClass jclass = getJAnnotationElement().getType();
 
-		if (BuiltinExtensionsHelper.isPrimitive(jclass) || jclass.isInstance(String.class) || jclass.isInstance(Class.class)) {
+		if (JPrimitive.isPrimitive(jclass) || jclass.isInstance(String.class) || jclass.isInstance(Class.class)) {
 			assert evalue instanceof ValueProvider;
 			return validate(jclass, ((ValueProvider) evalue).value());
 
@@ -90,7 +90,7 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 			assert evalue instanceof AnnoElementValue;
 			return new JAnnotationImpl(this, ((AnnoElementValue) evalue).annotation());
 
-		} else if (BuiltinExtensionsHelper.isArray(jclass)) {
+		} else if (ArrayTypeHelper.isArray(jclass)) {
 			assert evalue instanceof ArrayElementValue;
 			return convertArray((ArrayElementValue) evalue);
 
@@ -99,8 +99,16 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 		}
 	}
 
-	Object validate(JClass jclass, Object value) {
-		if (BuiltinExtensionsHelper.isPrimitive(jclass)) {
+	private List<?> convertArray(ArrayElementValue array) {
+		List<Object> list = new ArrayList<Object>();
+		for (ElementValue evalue : array.values()) {
+			list.add(convertElementValue(evalue));
+		}
+		return list;
+	}
+
+	private Object validate(JClass jclass, Object value) {
+		if (JPrimitive.isPrimitive(jclass)) {
 			JPrimitive jprimitive = JPrimitive.forClassName(jclass.getFQName());
 			return typecast(value, jprimitive.getObjectWrapperClass());
 
@@ -116,14 +124,6 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 		} else {
 			throw Assert.invariantFailed("Unhandled type %s", jclass);
 		}
-	}
-
-	private List<?> convertArray(ArrayElementValue array) {
-		List<Object> list = new ArrayList<Object>();
-		for (ElementValue evalue : array.values()) {
-			list.add(convertElementValue(evalue));
-		}
-		return list;
 	}
 
 

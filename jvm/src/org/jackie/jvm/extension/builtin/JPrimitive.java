@@ -1,9 +1,11 @@
 package org.jackie.jvm.extension.builtin;
 
 import static org.jackie.utils.Assert.NOTNULL;
+import org.jackie.jvm.JClass;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collections;
 
 /**
  * @author Patrik Beno
@@ -32,14 +34,21 @@ public enum JPrimitive {
 	static private final Map<Class,Class> wrappersByPrimitive;
 
 	static {
-		byname = new HashMap<String, JPrimitive>();
-		primitivesByWrapper = new HashMap<Class, Class>();
-		wrappersByPrimitive = new HashMap<Class, Class>();
+		int count = values().length;
+
+		Map<String,JPrimitive> _byname = new HashMap<String, JPrimitive>(count);
+		Map<Class,Class> _primitivesByWrapper = new HashMap<Class, Class>(count);
+		Map<Class,Class> _wrappersByPrimitive = new HashMap<Class, Class>(count);
+
 		for (JPrimitive p : values()) {
-			byname.put(p.getPrimitiveClass().getName(), p);
-			primitivesByWrapper.put(p.getObjectWrapperClass(), p.getPrimitiveClass());
-			wrappersByPrimitive.put(p.getPrimitiveClass(), p.getObjectWrapperClass());
+			_byname.put(p.getPrimitiveClass().getName(), p);
+			_primitivesByWrapper.put(p.getObjectWrapperClass(), p.getPrimitiveClass());
+			_wrappersByPrimitive.put(p.getPrimitiveClass(), p.getObjectWrapperClass());
 		}
+		
+		byname = Collections.unmodifiableMap(_byname);
+		primitivesByWrapper = Collections.unmodifiableMap(_primitivesByWrapper);
+		wrappersByPrimitive = Collections.unmodifiableMap(_wrappersByPrimitive);
 	}
 
 	static public JPrimitive forClassName(String name) {
@@ -58,9 +67,15 @@ public enum JPrimitive {
 		return wrappersByPrimitive.get(cls);
 	}
 
+	static public boolean isPrimitive(JClass jclass) {
+		return jclass.extensions().supports(PrimitiveType.class);
+	}
+
+
 	private final Class primitiveClass;
 	private final Class objectWrapperClass;
 
+	
 	JPrimitive(Class primitiveClass, Class objectWrapperClass) {
 		this.primitiveClass = primitiveClass;
 		this.objectWrapperClass = objectWrapperClass;
@@ -73,5 +88,4 @@ public enum JPrimitive {
 	public Class<?> getObjectWrapperClass() {
 		return objectWrapperClass;
 	}
-
 }
