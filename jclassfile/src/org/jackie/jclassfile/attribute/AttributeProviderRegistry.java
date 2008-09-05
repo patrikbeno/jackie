@@ -1,9 +1,8 @@
 package org.jackie.jclassfile.attribute;
 
+import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
-import static org.jackie.jclassfile.ClassFileContext.classFileContext;
-import org.jackie.jclassfile.ClassFileContext;
 
 import java.net.URL;
 import java.util.Enumeration;

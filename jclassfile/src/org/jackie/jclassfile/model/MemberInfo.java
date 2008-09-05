@@ -5,7 +5,7 @@ import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
-import static org.jackie.utils.CollectionsHelper.sizeof;import static org.jackie.utils.CollectionsHelper.iterable;
+import static org.jackie.utils.CollectionsHelper.*;
 
 import java.io.DataInput;
 import java.io.DataOutput;

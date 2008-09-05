@@ -1,11 +1,11 @@
 package org.jackie.compiler_impl.bytecode;
 
-import org.jackie.jvm.JClass;
-import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.ClassNameHelper;
-import org.jackie.utils.ClassName;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
+import org.jackie.jclassfile.util.ClassNameHelper;
+import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jvm.JClass;
+import org.jackie.utils.ClassName;
 
 /**
  * @author Patrik Beno

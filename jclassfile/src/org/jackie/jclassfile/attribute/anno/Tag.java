@@ -1,7 +1,6 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.doAssert;
 
 /**
  * @author Patrik Beno

@@ -2,7 +2,6 @@ package org.jackie.jclassfile.constantpool.impl;
 
 import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno

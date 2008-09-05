@@ -20,8 +20,8 @@ import org.jackie.jvm.props.Flags;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
-import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
 import java.util.ArrayList;
 import java.util.Collections;

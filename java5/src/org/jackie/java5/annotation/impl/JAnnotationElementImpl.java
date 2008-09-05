@@ -1,10 +1,10 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.java5.annotation.AnnotationType;
-import org.jackie.java5.annotation.JAnnotations;
+import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.java5.annotation.JAnnotationElementValue;
-import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JMethod;

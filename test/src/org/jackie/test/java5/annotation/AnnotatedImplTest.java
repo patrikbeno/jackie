@@ -5,8 +5,7 @@ import static org.jackie.context.ContextManager.context;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.doAssert;
-import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.*;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;

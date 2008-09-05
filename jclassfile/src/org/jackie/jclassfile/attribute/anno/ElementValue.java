@@ -3,20 +3,20 @@ package org.jackie.jclassfile.attribute.anno;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.constantpool.impl.IntegerRef;
 import org.jackie.jclassfile.constantpool.impl.DoubleRef;
 import org.jackie.jclassfile.constantpool.impl.FloatRef;
+import org.jackie.jclassfile.constantpool.impl.IntegerRef;
 import org.jackie.jclassfile.constantpool.impl.LongRef;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.DataInput;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

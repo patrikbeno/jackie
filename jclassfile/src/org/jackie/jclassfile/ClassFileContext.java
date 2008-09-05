@@ -1,11 +1,11 @@
 package org.jackie.jclassfile;
 
-import org.jackie.context.ContextObject;
 import static org.jackie.context.ContextManager.context;
-import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.context.ContextObject;
+import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
-import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
+import org.jackie.jclassfile.model.ClassFile;
 
 /**
  * @author Patrik Beno

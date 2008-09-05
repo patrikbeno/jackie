@@ -2,10 +2,6 @@ package org.jackie.jvm.spi;
 
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.utils.Assert;
-
-import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * @author Patrik Beno

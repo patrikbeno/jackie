@@ -1,17 +1,17 @@
 package org.jackie.jclassfile.attribute.anno;
 
-import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.attribute.AttributeProvider;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
-import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.utils.Assert;
 
 import java.io.DataInput;
-import java.io.IOException;
 import java.io.DataOutput;
+import java.io.IOException;
 
 /**
  * @author Patrik Beno

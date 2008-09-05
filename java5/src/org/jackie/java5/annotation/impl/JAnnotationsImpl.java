@@ -2,23 +2,23 @@ package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
-import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.annotation.JAnnotation;
+import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.Editable;
-import org.jackie.jvm.JNode;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
-import static org.jackie.utils.CollectionsHelper.iterable;
-import static org.jackie.utils.Assert.typecast;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.CollectionsHelper.iterable;
 
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

@@ -1,15 +1,15 @@
 package org.jackie.jclassfile.attribute.anno;
 
-import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import static org.jackie.utils.CollectionsHelper.sizeof;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.io.DataInput;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Patrik Beno

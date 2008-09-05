@@ -1,6 +1,5 @@
 package org.jackie.java5.annotation.impl;
 
-import static org.jackie.context.ContextManager.context;
 import org.jackie.java5.AbstractExtension;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.JAnnotationElement;
