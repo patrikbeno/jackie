@@ -77,6 +77,10 @@ element_value {
 		this.tag = tag;
 	}
 
+	public Object owner() {
+		return owner;
+	}
+
 	public String name() {
 		return name.value();
 	}
