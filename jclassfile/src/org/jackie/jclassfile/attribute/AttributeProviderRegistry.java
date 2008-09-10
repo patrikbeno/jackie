@@ -3,6 +3,8 @@ package org.jackie.jclassfile.attribute;
 import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
+import org.jackie.context.ContextObject;
+import static org.jackie.context.ContextManager.context;
 
 import java.net.URL;
 import java.util.Enumeration;
@@ -13,18 +15,33 @@ import java.util.Properties;
 /**
  * @author Patrik Beno
  */
-public class AttributeProviderRegistry {
+public class AttributeProviderRegistry implements ContextObject {
 
-	static public final String RESOURCE = "/META-INF/org.jackie.jclassfile/attributeproviders.properties";
+	static public final String RESOURCE = "META-INF/org.jackie.jclassfile/attributeproviders.properties";
+
 
 	static public AttributeProviderRegistry instance() {
-		return classFileContext().attributeProviderRegistry();
+		return attributeProviderRegistry();
+	}
+
+	static public AttributeProviderRegistry attributeProviderRegistry() {
+		AttributeProviderRegistry registry = context().get(AttributeProviderRegistry.class);
+		if (registry == null) {
+			registry = new AttributeProviderRegistry();
+			context().set(AttributeProviderRegistry.class, registry);
+			registry.initDefaults();
+		}
+		return registry;
 	}
 
 	Map<String, AttributeProvider> providers;
 
 	{
-		init();
+		providers = new HashMap<String, AttributeProvider>();
+	}
+
+	public void clear() {
+		providers.clear();
 	}
 
 	public void addProvider(AttributeProvider provider) {
@@ -35,10 +52,13 @@ public class AttributeProviderRegistry {
 		return providers.get(name);
 	}
 
-	void init() {
+	public void removeProvider(String name) {
+		providers.remove(name);
+	}
+
+	public void initDefaults() {
 		Log.enter();
 		try {
-			providers = new HashMap<String, AttributeProvider>();
 			Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(RESOURCE);
 			while (e.hasMoreElements()) {
 				URL url = e.nextElement();
