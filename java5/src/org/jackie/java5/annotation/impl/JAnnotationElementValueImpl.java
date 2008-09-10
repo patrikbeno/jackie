@@ -20,6 +20,7 @@ import static org.jackie.utils.Assert.typecast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author Patrik Beno
@@ -47,7 +48,7 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 	public JAnnotationElementValueImpl(JAnnotation annotation, JAnnotationElement element, Object value) {
 		super(annotation);
 		this.element = element;
-		this.value = value;
+		this.value = check(value, Boolean.class, Character.class, String.class, Number.class, Enum.class, Class.class, JAnnotation.class, ElementValue.class);
 	}
 
 	public JAnnotation getJAnnotation() {
@@ -88,7 +89,8 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 
 		} else if (JAnnotationHelper.isAnnotation(jclass)) {
 			assert evalue instanceof AnnoElementValue;
-			return new JAnnotationImpl(this, ((AnnoElementValue) evalue).annotation());
+			AnnoElementValue annovalue = (AnnoElementValue) evalue;
+			return new JAnnotationImpl(this, annovalue.annotation());
 
 		} else if (ArrayTypeHelper.isArray(jclass)) {
 			assert evalue instanceof ArrayElementValue;
@@ -126,5 +128,16 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 		}
 	}
 
+	<T> T check(T object, Class ... acceptedTypes) {
+		for (Class type : acceptedTypes) {
+			if (type.isAssignableFrom(object.getClass())) {
+				return object;
+			}
+		}
+		throw new IllegalArgumentException(String.format(
+				"Illegal argument type: %s. Expected one of %s",
+				object.getClass(), Arrays.asList(acceptedTypes)
+		));
+	}
 
 }
