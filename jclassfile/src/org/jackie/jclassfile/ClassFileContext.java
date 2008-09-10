@@ -17,11 +17,9 @@ public class ClassFileContext implements ContextObject {
 	}
 
 	ClassFile classFile;
-	AttributeProviderRegistry attributeProviderRegistry;
 
-	public ClassFileContext(ClassFile classFile, AttributeProviderRegistry attributeProviderRegistry) {
+	public ClassFileContext(ClassFile classFile) {
 		this.classFile = classFile;
-		this.attributeProviderRegistry = attributeProviderRegistry;
 	}
 
 	public ClassFile classFile() {
@@ -36,7 +34,4 @@ public class ClassFileContext implements ContextObject {
 		return constantPool().factory();
 	}
 
-	public AttributeProviderRegistry attributeProviderRegistry() {
-		return attributeProviderRegistry;
-	}
 }

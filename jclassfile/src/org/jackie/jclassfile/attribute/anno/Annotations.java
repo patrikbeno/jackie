@@ -33,6 +33,10 @@ annotation annotations[num_annotations];
 		super(owner);
 	}
 
+	public List<Annotation> getAnnotations() {
+		return annotations;
+	}
+
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		// just read data, don't parse now
 		final int len = readLength(in);
