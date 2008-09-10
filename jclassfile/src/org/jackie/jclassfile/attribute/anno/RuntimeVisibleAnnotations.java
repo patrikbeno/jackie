@@ -9,9 +9,11 @@ import org.jackie.jclassfile.model.ClassFileProvider;
  */
 public class RuntimeVisibleAnnotations extends Annotations {
 
+	static public final String NAME = RuntimeVisibleAnnotations.class.getSimpleName();
+
 	static public class Provider implements AttributeProvider {
 		public String name() {
-			return "RuntimeVisibleAnnotations";
+			return NAME;
 		}
 		public AttributeInfo createAttribute(ClassFileProvider owner) {
 			return new RuntimeVisibleAnnotations(owner);
