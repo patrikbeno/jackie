@@ -8,7 +8,7 @@ public class Assert {
 
 	static public void doAssert(boolean condition, String msg, Object... args) {
 		if (!condition) {
-			throw new AssertionError(String.format(msg, args));
+			throw new AssertionError(msg, args);
 		}
 	}
 
@@ -17,9 +17,7 @@ public class Assert {
 	}
 
 	static public AssertionError assertFailed(final Throwable thrown, String msg, Object... args) {
-		return new AssertionError(String.format(msg, args)) {{
-				initCause(thrown);
-		}};
+		return new AssertionError(thrown, msg, args);
 	}
 
 	// todo optimize; make this effectivelly inlinable
@@ -38,27 +36,28 @@ public class Assert {
 
 	static public AssertionError notYetImplemented() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		return new AssertionError(String.format("Not Yet Implemented! %s", ste));
+		return new AssertionError("Not Yet Implemented! %s", ste);
 	}
 
 	static public UnsupportedOperationException unsupported() {
-		return new UnsupportedOperationException();
+		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
+		return new UnsupportedOperationException(ste.toString());
 	}
 
-	static public AssertionError unexpected(final Throwable thrown) {
-		return new AssertionError(String.format("Unexpected: %s", thrown.getClass())) {{ initCause(thrown); }};
+	static public AssertionError unexpected(Throwable thrown) {
+		return new AssertionError(thrown, "Unexpected: %s", thrown.getClass());
 	}
 
-	static public AssertionError notYetHandled(final Throwable t) {
-		return new AssertionError(String.format("Not Yet Handled: %s", t.getClass().getName())) {{
-			initCause(t);
-		}};
+	static public AssertionError notYetHandled(Throwable t) {
+		return new AssertionError(t, "Not Yet Handled: %s", t.getClass().getName());
+	}
+
+	static public void logNotYetHandled(Throwable thrown) {
+		Log.warn("Not Yet Handled: at %s", thrown);		
 	}
 
 	static public AssertionError invariantFailed(Throwable thrown, String msg, Object ... args) {
-		AssertionError ex = new AssertionError(String.format(msg, args));
-		ex.initCause(thrown);
-		return ex;
+		return new AssertionError(thrown, msg, args);
 	}
 
 	static public AssertionError invariantFailed(String msg, Object ... args) {
@@ -66,8 +65,7 @@ public class Assert {
 	}
 
 	static public AssertionError invariantFailed(Enum e) {
-		return new AssertionError(
-				String.format("Unexpected enum value: %s.%s", e.getClass().getName(), e.name()));
+		return new AssertionError("Unexpected enum value: %s.%s", e.getClass().getName(), e.name());
 	}
 
 	static public void notNull(Object obj) {
@@ -78,7 +76,7 @@ public class Assert {
 
 	static public <T> T NOTNULL(T t, String message, Object ... args) {
 		if (t == null) {
-			throw new AssertionError(String.format("Unexpected NULL: %s", String.format(message, args)));
+			throw new AssertionError("Unexpected NULL: %s", String.format(message, args));
 		}
 		return t;
 	}
@@ -104,4 +102,18 @@ public class Assert {
 	static public boolean NOT(boolean expression) {
 		return !expression;
 	}
+
+	static class AssertionError extends java.lang.AssertionError {
+		AssertionError(String message, Object ... args) {
+			this(null, message, args);
+		}
+		AssertionError(Throwable thrown) {
+			this(thrown, thrown.getClass().getSimpleName());
+		}
+		AssertionError(Throwable cause, String message, Object ... args) {
+			super(String.format(message, args));
+			initCause(cause);
+		}
+	}
+
 }
