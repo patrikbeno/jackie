@@ -9,16 +9,19 @@ import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jclassfile.attribute.anno.ElementValue;
+import org.jackie.jclassfile.attribute.anno.Annotation;
 import org.jackie.jclassfile.attribute.anno.ElementValue.AnnoElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.ArrayElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.ClassElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.EnumElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.ConstElementValue;
 import org.jackie.jclassfile.util.ClassNameHelper;
 import static org.jackie.jclassfile.util.ClassNameHelper.toJavaClassName;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.builtin.ArrayType;
+import org.jackie.jvm.extension.builtin.ArrayTypeHelper;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.utils.Assert;
@@ -45,14 +48,18 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 	WeakReference<java.lang.annotation.Annotation> proxy;
 
 
-	public JAnnotationImpl(JNode owner, org.jackie.jclassfile.attribute.anno.Annotation anno) {
+	public JAnnotationImpl(JNode owner, Annotation anno) {
 		super(owner);
 
 		JClass jclass = getJClass(anno.type());
 		AnnotationType type = jclass.extensions().get(AnnotationType.class);
 
 		for (ElementValue evalue : anno.elements()) {
-			JAnnotationElementValue value = new JAnnotationElementValueImpl(this, type.getElement(evalue.name()));
+			JAnnotationElementValue value = new JAnnotationElementValueImpl(
+					this,
+					type.getElement(evalue.name()),
+					evalue
+			);
 			edit().addAttributeValue(value);
 		}
 	}
@@ -60,7 +67,9 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 
 	////
 
-
+	public JClass getType() {
+		return type.node();
+	}
 
 	public Annotated getAnnotatedElement() {
 		return owner instanceof Annotated ? (Annotated) owner : null;
@@ -129,21 +138,25 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 			case SHORT:
 			case BOOLEAN:
 			case STRING:
-				return typecast(evalue, ElementValue.ConstElementValue.class).value();
+				return typecast(evalue, ConstElementValue.class).value();
+			
 			case ENUM:
 				EnumElementValue enumvalue = typecast(evalue, EnumElementValue.class);
 				return new EnumProxy(toJavaClassName(enumvalue.type()), enumvalue.value());
+
 			case CLASS:
 				ClassElementValue classvalue = typecast(evalue, ClassElementValue.class);
 				return new ClassProxy(toJavaClassName(classvalue.type()));
+
 			case ANNOTATION:
 				AnnoElementValue annovalue = typecast(evalue, AnnoElementValue.class);
 				return new JAnnotationImpl(this, annovalue.annotation());
+
 			case ARRAY:
 				ArrayElementValue arrayvalue = typecast(evalue, ArrayElementValue.class);
-				ArrayType array = jclass.extensions().get(ArrayType.class);
-				return convertArray(array.getComponentType(), arrayvalue);
-		   default:
+				return convertArray(ArrayTypeHelper.getComponentType(jclass), arrayvalue);
+
+			default:
 				throw Assert.invariantFailed(evalue.tag());
 		}
 

@@ -2,6 +2,7 @@ package org.jackie.java5.annotation;
 
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.props.Typed;
 
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  *
  * @author Patrik Beno
  */
-public interface JAnnotation extends JNode, Editable<JAnnotation.Editor> {
+public interface JAnnotation extends JNode, Typed, Editable<JAnnotation.Editor> {
 
 	/**
 	 * Element this annotation annotates (is attached to): class, field, method, or null if there
