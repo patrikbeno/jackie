@@ -1,6 +1,7 @@
 package org.jackie.context;
 
 import static org.jackie.utils.Assert.doAssert;
+import org.jackie.utils.Assert;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public class Context {
 	}
 
 	public <T extends ContextObject> void set(Class<T> type, T object) {
-		items.put(type, org.jackie.utils.Assert.typecast(object, type));
+		items.put(type, Assert.typecast(object, type));
 	}
 
 	public <T extends ContextObject> void remove(Class<T> type) {

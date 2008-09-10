@@ -15,8 +15,8 @@ public abstract class EditAction<T> {
 			return action.run();
 
 		} finally {
-			action.done();
 			registry.setEditable(editable);
+			action.done();
 		}
 
 	}

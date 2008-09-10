@@ -15,7 +15,6 @@ public class ClassFileParser implements JClassParser {
 	public void execute(InputStream from, LoadLevel loadLevel) throws IOException {
 		ClassFile classfile = new ClassFile();
 		classfile.load(new DataInputStream(from));
-
 		JClassBuilder builder = new JClassBuilder(classfile);
 		builder.build();
 	}

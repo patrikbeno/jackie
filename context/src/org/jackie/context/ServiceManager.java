@@ -3,6 +3,7 @@ package org.jackie.context;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
+import static org.jackie.utils.Assert.typecast;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +43,7 @@ public class ServiceManager extends Loader implements ContextObject {
 	public <T extends Service> T getService(Class<T> type) {
 		Service instance = instanceByInterface.get(type);
 		if (instance != null) {
-			return type.cast(instance);
+			return typecast(instance, type);
 		}
 
 		Class cls = classByInterface.get(type);
