@@ -6,9 +6,13 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
+import org.jackie.jclassfile.ClassFileContext;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
+import static org.jackie.context.ContextManager.newContext;
+import static org.jackie.context.ContextManager.closeContext;
+import static org.jackie.context.ContextManager.context;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -144,51 +148,59 @@ ClassFile {
 	public void load(final DataInput in) throws IOException {
 		Log.enter();
 
-		magic = in.readInt();
-		minor = in.readUnsignedShort();
-		major = in.readUnsignedShort();
+		newContext();
+		try {
+			context().set(ClassFileContext.class, new ClassFileContext(this));
 
-		pool.load(in);
+			magic = in.readInt();
+			minor = in.readUnsignedShort();
+			major = in.readUnsignedShort();
 
-		flags = new Flags(in);
-		classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
-		Log.debug("Loading class %s", classname.value());
+			pool.load(in);
 
-		superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			flags = new Flags(in);
+			classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			Log.debug("Loading class %s", classname.value());
 
-		// interfaces
-		{
-			int count = in.readUnsignedShort();
-			interfaces = new ArrayList<ClassRef>(count);
-			while (count-- > 0) {
-				ClassRef iface = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
-				interfaces.add(iface);
+			superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+
+			// interfaces
+			{
+				int count = in.readUnsignedShort();
+				interfaces = new ArrayList<ClassRef>(count);
+				while (count-- > 0) {
+					ClassRef iface = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+					interfaces.add(iface);
+				}
 			}
-		}
 
-		// fields
-		{
-			int count = in.readUnsignedShort();
-			fields = new ArrayList<FieldInfo>(count);
-			while (count-- > 0) {
-				FieldInfo f = new FieldInfo(this);
-				f.load(in);
-				fields.add(f);
+			// fields
+			{
+				int count = in.readUnsignedShort();
+				fields = new ArrayList<FieldInfo>(count);
+				while (count-- > 0) {
+					FieldInfo f = new FieldInfo(this);
+					f.load(in);
+					fields.add(f);
+				}
 			}
-		}
 
-		// methods
-		{
-			int count = in.readUnsignedShort();
-			methods = new ArrayList<MethodInfo>(count);
-			while (count-- > 0) {
-				MethodInfo m = new MethodInfo(this);
-				m.load(in);
-				methods.add(m);
+			// methods
+			{
+				int count = in.readUnsignedShort();
+				methods = new ArrayList<MethodInfo>(count);
+				while (count-- > 0) {
+					MethodInfo m = new MethodInfo(this);
+					m.load(in);
+					methods.add(m);
+				}
 			}
-		}
 
-		attributes = AttributeHelper.loadAttributes(this, in);
+			attributes = AttributeHelper.loadAttributes(this, in);
+
+		} finally {
+			closeContext();
+		}
 
 		Log.leave();
 	}
@@ -241,5 +253,9 @@ ClassFile {
 		} catch (IOException e) {
 			throw Assert.unexpected(e);
 		}
+	}
+
+	public String toString() {
+		return String.format("ClassFile(%s)", classname.value());
 	}
 }
