@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * @author Patrik Beno
  */
-public class Utf8 extends Constant {
+public class Utf8 extends Constant implements ValueProvider {
 
 	/*
 CONSTANT_Utf8_info {
