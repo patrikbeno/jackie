@@ -12,15 +12,19 @@ import org.jackie.utils.Assert;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.ByteArrayInputStream;
 
 /**
  * @author Patrik Beno
  */
 public class AnnotationDefault extends AttributeInfo {
 
+	static public final String NAME = AnnotationDefault.class.getSimpleName();
+
 	static public class Provider implements AttributeProvider {
 		public String name() {
-			return "AnnotationDefault";
+			return NAME;
 		}
 		public AttributeInfo createAttribute(ClassFileProvider owner) {
 			return new AnnotationDefault(owner);
@@ -46,19 +50,23 @@ AnnotationDefault_attribute {
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
-		readLength(in);
+		// just read data, don't parse now
+		final int len = readLength(in);
+		final byte[] bytes = new byte[len];
+		in.readFully(bytes);
 
-		ConstantPool pool = constantPool();
-		Utf8 ename = pool.getConstant(in.readUnsignedShort(), Utf8.class);
-		Tag tag = Tag.forId((char) in.readByte());
+		return new Task() {
+			public void execute() throws IOException {
+				DataInput in = new DataInputStream(new ByteArrayInputStream(bytes));
 
-		ElementValue evalue = ElementValue.forTag(tag);
-		evalue.init(this,  ename, tag);
-		evalue.load(in);
+				Tag tag = Tag.forId((char) in.readByte());
+				ElementValue evalue = ElementValue.forTag(tag);
+				evalue.init(this,  null, tag);
+				evalue.load(in);
 
-		this.value = evalue;
-
-		return null;
+				value = evalue;
+			}
+		};
 	}
 
 	protected void writeData(DataOutput out) throws IOException {
