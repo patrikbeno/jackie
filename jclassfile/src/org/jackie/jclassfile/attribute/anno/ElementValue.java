@@ -130,7 +130,26 @@ element_value {
 		}
 
 		public Object value() {
-			return typecast(value, ValueProvider.class).value();
+			Object extracted = ((ValueProvider) value).value();
+			Object converted;
+			switch (tag) {
+				case BYTE:
+					converted = ((Number) extracted).byteValue();
+					break;
+				case CHAR:
+					converted = (char) ((Number) extracted).intValue();
+					break;
+				case SHORT:
+					converted = ((Number) extracted).shortValue();
+					break;
+				case BOOLEAN:
+					assert extracted instanceof Number;
+					converted = ((Number) extracted).intValue() == 1 ? Boolean.TRUE : Boolean.FALSE;
+					break;
+				default:
+					converted = extracted;
+			}
+			return converted;
 		}
 
 		protected String valueToString() {
