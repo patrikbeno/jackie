@@ -95,10 +95,10 @@ public class AnnotatedImplTest extends TestCase {
 			public void run() {
 				JClass jcls = NOTNULL(get(cls), "No JClass for %s", cls);
 
-				JAnnotations JAnnotations = jcls.extensions().get(JAnnotations.class);
-				assert JAnnotations != null;
+				JAnnotations jannotations = jcls.extensions().get(JAnnotations.class);
+				assert jannotations != null;
 
-				SampleAnnotation proxy = JAnnotations.getAnnotation(SampleAnnotation.class);
+				SampleAnnotation proxy = jannotations.getAnnotation(SampleAnnotation.class);
 				assert proxy != null;
 
 				SampleAnnotation real = cls.getAnnotation(SampleAnnotation.class);
