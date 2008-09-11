@@ -154,7 +154,7 @@ public class JClassImpl extends AbstractJNode implements JClass {
 	}
 
 	public boolean isInstance(Class cls) {
-		throw Assert.notYetImplemented(); // todo implement this
+		return getFQName().equals(cls.getName()); // fixme isInstance(): partial naive implementation
 	}
 
 	/// Accessible ///
