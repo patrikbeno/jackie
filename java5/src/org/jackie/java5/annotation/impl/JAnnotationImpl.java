@@ -52,7 +52,7 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 		super(owner);
 
 		JClass jclass = getJClass(anno.type());
-		AnnotationType type = jclass.extensions().get(AnnotationType.class);
+		type = jclass.extensions().get(AnnotationType.class);
 
 		for (ElementValue evalue : anno.elements()) {
 			JAnnotationElementValue value = new JAnnotationElementValueImpl(

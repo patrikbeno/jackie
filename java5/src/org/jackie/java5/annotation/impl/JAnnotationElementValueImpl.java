@@ -9,14 +9,20 @@ import org.jackie.jclassfile.attribute.anno.ElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.AnnoElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.ArrayElementValue;
 import org.jackie.jclassfile.attribute.anno.ElementValue.EnumElementValue;
-import org.jackie.jclassfile.constantpool.impl.ValueProvider;
+import org.jackie.jclassfile.attribute.anno.ElementValue.ConstElementValue;
+import org.jackie.jclassfile.attribute.anno.ElementValue.ClassElementValue;
 import org.jackie.jclassfile.util.ClassNameHelper;
+import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.jvm.extension.builtin.ArrayTypeHelper;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.utils.Assert;
+import org.jackie.utils.ClassName;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.context.ContextManager.context;
+import org.jackie.compiler.typeregistry.TypeRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +71,7 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 
 	public Object getValue() {
 		if (value instanceof ElementValue) {
-			value = convertElementValue((ElementValue) value);
+			value = convertElementValue(getJAnnotationElement().getType(), (ElementValue) value);
 		}
 		return value;
 	}
@@ -74,12 +80,16 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 		return false;
 	}
 
-	private Object convertElementValue(ElementValue evalue) {
-		JClass jclass = getJAnnotationElement().getType();
+	private Object convertElementValue(JClass jclass, ElementValue evalue) {
+		if (JPrimitive.isPrimitive(jclass) || jclass.isInstance(String.class)) {
+			assert evalue instanceof ConstElementValue;
+			return validate(jclass, ((ConstElementValue) evalue).value());
 
-		if (JPrimitive.isPrimitive(jclass) || jclass.isInstance(String.class) || jclass.isInstance(Class.class)) {
-			assert evalue instanceof ValueProvider;
-			return validate(jclass, ((ValueProvider) evalue).value());
+		} else if (jclass.isInstance(Class.class)) {
+			TypeDescriptor desc = ((ClassElementValue) evalue).type();
+			String clsname = ClassNameHelper.toJavaClassName(desc);
+			JClass converted = context(TypeRegistry.class).getJClass(new ClassName(clsname));
+			return NOTNULL(converted);
 
 		} else if (JEnumHelper.isEnum(jclass)) {
 			assert evalue instanceof EnumElementValue;
@@ -102,9 +112,12 @@ public class JAnnotationElementValueImpl extends AbstractJNode implements JAnnot
 	}
 
 	private List<?> convertArray(ArrayElementValue array) {
+		JClass jclass = getJAnnotationElement().getType();
+		JClass componentType = ArrayTypeHelper.getComponentType(jclass);
 		List<Object> list = new ArrayList<Object>();
 		for (ElementValue evalue : array.values()) {
-			list.add(convertElementValue(evalue));
+
+			list.add(convertElementValue(componentType, evalue));
 		}
 		return list;
 	}

@@ -13,12 +13,13 @@ import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.utils.CollectionsHelper.iterable;
+import org.jackie.jclassfile.attribute.anno.RuntimeVisibleAnnotations;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.lang.annotation.Annotation;
 
 /**
  * @author Patrik Beno
@@ -102,16 +103,13 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 			return;
 		}
 
-		Attributes attrs = typecast(node, Attributed.class).attributes();
+		Attributes attrs = ((Attributed) node).attributes();
+		JAttribute jattr = attrs.getAttribute(RuntimeVisibleAnnotations.NAME);
+		RuntimeVisibleAnnotations annos = (RuntimeVisibleAnnotations) jattr.getValue();
 
 		List<JAnnotation> annotations = new ArrayList<JAnnotation>();
 
-		JAttribute rtannos = attrs.getAttribute("RuntimeVisibleAnnotations");
-
-
-		for (JAttribute attr : (Iterable<JAttribute>) attrs.getAttribute("RuntimeVisibleAnnotations")) {
-			org.jackie.jclassfile.attribute.anno.Annotation a =
-					typecast(attr.getValue(), org.jackie.jclassfile.attribute.anno.Annotation.class);
+		for (org.jackie.jclassfile.attribute.anno.Annotation a : annos.getAnnotations()) {
 			JAnnotation anno = new JAnnotationImpl(node(), a);
 			annotations.add(anno);
 		}

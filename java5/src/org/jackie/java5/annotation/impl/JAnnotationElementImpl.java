@@ -6,9 +6,11 @@ import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
+import org.jackie.jclassfile.attribute.anno.AnnotationDefault;
 
 /**
  * @author Patrik Beno
@@ -52,6 +54,12 @@ public class JAnnotationElementImpl extends AbstractJNode implements JAnnotation
 	}
 
 	public JAnnotationElementValue getDefaultValue() {
+		if (defaultValue != null) { return defaultValue; }
+
+		JAttribute a = jmethod().attributes().getAttribute(AnnotationDefault.NAME);
+		AnnotationDefault adflt = (AnnotationDefault) a.getValue();
+		defaultValue = new JAnnotationElementValueImpl(null, this, adflt.value());
+
 		return defaultValue;
 	}
 

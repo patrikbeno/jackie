@@ -6,6 +6,7 @@ import org.jackie.java5.annotation.JAnnotationElementValue;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.NOTNULL;
 
 import java.lang.annotation.Annotation;
 import java.lang.ref.WeakReference;
@@ -116,6 +117,9 @@ class AnnotationProxy implements InvocationHandler {
 	}
 
 	protected Object convert(Object value, Class type) {
+		NOTNULL(value);
+		NOTNULL(type);
+
 		if (type.isPrimitive()) {
 			assert JPrimitive.isObjectWrapper(value.getClass());
 			return value;
@@ -129,9 +133,9 @@ class AnnotationProxy implements InvocationHandler {
 			return load((JClass) value);
 
 		} else if (type.isEnum()) {
-			assert value instanceof String[];
+			assert value instanceof String;
 			//noinspection unchecked
-			return Enum.valueOf(type, ((String[])value)[1]);
+			return Enum.valueOf(type, ((String)value));
 
 		} else if (type.isAnnotation()) {
 			return ((JAnnotationImpl) value).proxy();
