@@ -13,12 +13,17 @@ import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.flags.Flags;
+import org.jackie.jclassfile.flags.Access;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
+import org.jackie.jvm.attribute.special.KindAttribute;
+import org.jackie.jvm.attribute.special.Kind;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.ClassName;
+import org.jackie.utils.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +44,8 @@ public class JClassBuilder extends AbstractBuilder {
 	public void build() {
 		ClassName clsname = getClassNameFromBinaryName(classfile.classname());
 		jclass = getJClass(clsname);
+
+		jclass.attributes().edit().addAttribute(new KindAttribute(jclass, getKind()));
 
 		if (classfile.superclass() != null) {
 			ClassName cname = getClassNameFromBinaryName(classfile.superclass());
@@ -63,6 +70,19 @@ public class JClassBuilder extends AbstractBuilder {
 		}
 
 		((JClassImpl)jclass).loadLevel = LoadLevel.CODE;
+	}
+
+	Kind getKind() {
+		Flags flags = classfile.flags();
+		if (flags.isSet(Access.ANNOTATION)) {
+			return Kind.ANNOTATION;
+		} else if (flags.isSet(Access.ENUM)) {
+			return Kind.ENUM;
+		} else if (flags.isSet(Access.INTERFACE)) {
+			return Kind.INTERFACE;
+		} else {
+			return Kind.CLASS;
+		}
 	}
 
 	void buildField(final FieldInfo f) {
