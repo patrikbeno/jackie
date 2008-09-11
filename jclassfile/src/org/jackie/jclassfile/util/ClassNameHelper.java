@@ -10,7 +10,7 @@ public class ClassNameHelper {
 	}
 
 	static public String toJavaClassName(TypeDescriptor descriptor) {
-		return toBinaryClassName(descriptor.getTypeName());
+		return toJavaClassName(descriptor.getTypeName());
 	}
 
 	static public String toBinaryClassName(String javaClassName) {
