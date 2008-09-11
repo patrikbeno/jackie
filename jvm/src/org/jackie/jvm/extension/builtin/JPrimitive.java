@@ -52,7 +52,7 @@ public enum JPrimitive {
 	}
 
 	static public JPrimitive forClassName(String name) {
-		return NOTNULL(byname.get(name));
+		return byname.get(name);
 	}
 
 	static public boolean isObjectWrapper(Class cls) {
