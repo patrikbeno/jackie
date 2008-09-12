@@ -17,6 +17,7 @@ public enum Access {
 	INTERFACE(0x0200),
    ABSTRACT(0x0400),
    STRICT(0x0800),
+   SYNTHETIC(0x1000),
    ANNOTATION(0x2000),
    ENUM(0x4000),
 
