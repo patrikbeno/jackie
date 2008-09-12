@@ -10,6 +10,7 @@ import org.jackie.jclassfile.ClassFileContext;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
+import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.context.ContextManager.newContext;
 import static org.jackie.context.ContextManager.closeContext;
 import static org.jackie.context.ContextManager.context;
@@ -133,6 +134,20 @@ ClassFile {
 			attributes = new ArrayList<AttributeInfo>();
 		}
 		attributes.add(attribute);
+	}
+
+	public AttributeInfo getAtrribute(String name) {
+		NOTNULL(name);
+		for (AttributeInfo a : attributes()) {
+			if (a.name().equals(name)) {
+				return a;
+			}
+		}
+		return null;
+	}
+
+	public boolean hasAttribute(String name) {
+		return getAtrribute(name) != null;
 	}
 
 	///
