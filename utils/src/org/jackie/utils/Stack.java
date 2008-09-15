@@ -6,7 +6,7 @@ import java.util.Iterator;
 /**
  * @author Patrik Beno
  */
-public class Stack<T> {
+public class Stack<T> implements Iterable<T> {
 
 	protected int size;
 	protected int limit;
@@ -45,6 +45,15 @@ public class Stack<T> {
 	public void clear() {
 		current = null;
 		size = 0;
+	}
+
+	public boolean contains(T item) {
+		for (T t : this) {
+			if (t.equals(item)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Iterator<T> iterator() {
