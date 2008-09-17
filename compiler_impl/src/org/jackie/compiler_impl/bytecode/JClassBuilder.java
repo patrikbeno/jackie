@@ -1,33 +1,32 @@
 package org.jackie.compiler_impl.bytecode;
 
+import org.jackie.compiler.event.JClassEvents;
+import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
 import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JParameterImpl;
+import static org.jackie.event.Events.events;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
+import org.jackie.jclassfile.flags.Access;
+import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jclassfile.util.MethodDescriptor;
 import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.flags.Flags;
-import org.jackie.jclassfile.flags.Access;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flags.Editor;
-import org.jackie.jvm.attribute.Attributes;
-import org.jackie.jvm.attribute.special.ExtensionAttribute;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.ClassName;
-import static org.jackie.event.Events.events;
-import org.jackie.compiler.event.JClassEvents;
-import org.jackie.compiler.event.ExtensionEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +49,8 @@ public class JClassBuilder extends AbstractBuilder {
 		jclass = getJClass(clsname);
 
 		events(JClassEvents.class).loading(jclass);
+		events(ExtensionEvents.class).resolveClassFlags(classfile.flags(), jclass);
 
-		resolveExtensionAttribute();
 		resolveAccessMode();
 		resolveFlags();
 
@@ -80,18 +79,6 @@ public class JClassBuilder extends AbstractBuilder {
 		((JClassImpl)jclass).loadLevel = LoadLevel.CODE;
 
 		events(JClassEvents.class).loaded(jclass);
-	}
-
-	/**
-	 * classes compiled by jackie will have ExtensionAttribute;
-	 * for legacy classes, it need to be reconstructed from ClassFile.flags
-	 */
-	private void resolveExtensionAttribute() {
-		if (!classfile.hasAttribute(ExtensionAttribute.NAME)) {
-			ExtensionAttribute xattr = new ExtensionAttribute(jclass);
-			jclass.attributes().edit().addAttribute(xattr);
-			events(ExtensionEvents.class).unresolvedExtensionAttribute(classfile.flags(), xattr);
-		}
 	}
 
 	private void resolveAccessMode() {

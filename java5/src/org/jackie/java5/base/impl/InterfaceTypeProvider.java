@@ -1,15 +1,15 @@
 package org.jackie.java5.base.impl;
 
+import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.extension.Lifecycle;
-import org.jackie.compiler.event.ExtensionEvents;
+import org.jackie.event.Events;
 import org.jackie.java5.base.InterfaceType;
+import org.jackie.jclassfile.flags.Access;
+import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.special.ExtensionAttribute;
 import org.jackie.jvm.extension.Extension;
-import org.jackie.jclassfile.flags.Flags;
-import org.jackie.jclassfile.flags.Access;
-import org.jackie.event.Events;
 
 /**
  * @author Patrik Beno
@@ -17,9 +17,9 @@ import org.jackie.event.Events;
 public class InterfaceTypeProvider implements ExtensionProvider<JClass>, Lifecycle {
 
 	ExtensionEvents listener = new ExtensionEvents() {
-		public void unresolvedExtensionAttribute(Flags flags, ExtensionAttribute xattr) {
-			if (flags.isSet(Access.INTERFACE) || flags.isSet(Access.ANNOTATION)) {
-				xattr.edit().addExtension(InterfaceType.class);
+		public void resolveClassFlags(Flags flags, JClass jclass) {
+			if (flags.isSet(Access.INTERFACE)) {
+				jclass.extensions().edit().add(new InterfaceTypeImpl(jclass));
 			}
 		}
 	};
@@ -38,11 +38,6 @@ public class InterfaceTypeProvider implements ExtensionProvider<JClass>, Lifecyc
 	}
 
 	public Extension getExtension(JClass jclass) {
-		ExtensionAttribute xattr = (ExtensionAttribute) jclass.attributes().getAttribute(ExtensionAttribute.NAME);
-		if (xattr.contains(InterfaceType.class)) {
-			return new InterfaceTypeImpl(jclass);
-		} else {
-			return null;
-		}
+		return null; // should already be applied in ExtensionEvents.resolveClassFlags()
 	}
 }

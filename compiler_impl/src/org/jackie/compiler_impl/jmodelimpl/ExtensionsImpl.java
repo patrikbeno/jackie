@@ -1,30 +1,23 @@
 package org.jackie.compiler_impl.jmodelimpl;
 
+import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.spi.Compilable;
-import org.jackie.compiler.event.ExtensionEvents;
 import static org.jackie.context.ContextManager.context;
+import static org.jackie.event.Events.events;
 import org.jackie.jvm.JNode;
-import org.jackie.jvm.attribute.Attributed;
-import org.jackie.jvm.attribute.Attributes;
-import org.jackie.jvm.attribute.special.ExtensionAttribute;
-import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
-import static org.jackie.utils.Assert.typecast;
-import static org.jackie.utils.Assert.NOTNULL;
-import static org.jackie.utils.Assert.doAssert;
+import org.jackie.jvm.spi.JModelHelper;
+import static org.jackie.utils.Assert.*;
 import org.jackie.utils.Stack;
-import static org.jackie.event.Events.events;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.Collections;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
@@ -100,14 +93,10 @@ public class ExtensionsImpl implements Extensions, Compilable {
 		return new Editor() {
 			public void add(Extension extension) {
 				NOTNULL(extension);
-				Attributed attributed = JModelHelper.findOwner(jnode, Attributed.class);
-				Attributes attrs = attributed.attributes();
-				ExtensionAttribute xattr = (ExtensionAttribute) attrs.getAttribute(ExtensionAttribute.NAME);
-				doAssert(!xattr.contains(extension.type()),
+				doAssert(!extensions.containsKey(extension.type()),
 							"Duplicate extension (%s) in %s",
-							extension.type().getName(), attributed);
+							extension.type().getName(), jnode);
 
-				xattr.edit().addExtension(extension.type());
 				extensions.put(extension.type(), extension);
 				events(ExtensionEvents.class).added(extension);
 			}
