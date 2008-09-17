@@ -38,10 +38,8 @@ public class AnnotationsProvider implements ExtensionProvider {
 	}
 
 	public void init() {
-		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
 	public void done() {
-		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

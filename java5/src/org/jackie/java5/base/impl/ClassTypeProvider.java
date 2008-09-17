@@ -42,10 +42,8 @@ public class ClassTypeProvider implements ExtensionProvider<JClass> {
 	}
 
 	public void init() {
-		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
 	public void done() {
-		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

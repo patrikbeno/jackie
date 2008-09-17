@@ -1,29 +1,43 @@
 package org.jackie.java5.annotation.impl;
 
 import org.jackie.compiler.extension.ExtensionProvider;
+import org.jackie.compiler.extension.Lifecycle;
+import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.java5.annotation.AnnotationType;
+import org.jackie.java5.base.impl.InterfaceTypeImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.Assert;
+import org.jackie.jclassfile.flags.Flags;
+import org.jackie.jclassfile.flags.Access;
+import org.jackie.event.Events;
 
 /**
  * @author Patrik Beno
  */
-public class AnnotationTypeProvider implements ExtensionProvider<JClass> {
+public class AnnotationTypeProvider implements ExtensionProvider<JClass>, Lifecycle {
+
+	ExtensionEvents listener = new ExtensionEvents() {
+		public void resolveClassFlags(Flags flags, JClass jclass) {
+			if (flags.isSet(Access.ANNOTATION)) {
+				jclass.extensions().edit().add(new AnnotationTypeImpl(jclass));
+			}
+		}
+	};
 
 	public Class<? extends Extension> getType() {
 		return AnnotationType.class;
 	}
 
 	public Extension getExtension(JClass jclass) {
-		return null;
+		return null; // should already be applied in ExtensionEvents.resolveClassFlags()
 	}
 
 	public void init() {
-		throw Assert.notYetImplemented(); // todo implement this
+		Events.registerEventListener(ExtensionEvents.class, listener);
 	}
 
 	public void done() {
-		throw Assert.notYetImplemented(); // todo implement this
+		Events.unregisterEventListener(listener);
 	}
 }
