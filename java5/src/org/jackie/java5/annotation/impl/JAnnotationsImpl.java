@@ -4,9 +4,11 @@ import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
 import org.jackie.java5.annotation.JAnnotation;
 import org.jackie.java5.annotation.JAnnotations;
+import org.jackie.java5.base.InterfaceType;
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.attribute.JAttribute;
@@ -32,6 +34,10 @@ public class JAnnotationsImpl implements JAnnotations, Compilable {
 
 	public JAnnotationsImpl(JNode node) {
 		this.node = node;
+	}
+
+	public Class<? extends Extension> type() {
+		return JAnnotations.class;
 	}
 
 	public JNode node() {

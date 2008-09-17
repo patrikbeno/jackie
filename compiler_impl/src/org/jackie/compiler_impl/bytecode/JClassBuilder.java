@@ -16,14 +16,18 @@ import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.flags.Access;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.props.AccessMode;
+import org.jackie.jvm.props.Flag;
+import org.jackie.jvm.props.Flags.Editor;
 import org.jackie.jvm.attribute.Attributes;
-import org.jackie.jvm.attribute.special.KindAttribute;
-import org.jackie.jvm.attribute.special.Kind;
+import org.jackie.jvm.attribute.special.ExtensionAttribute;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.ClassName;
-import org.jackie.utils.Assert;
+import static org.jackie.event.Events.events;
+import org.jackie.compiler.event.JClassEvents;
+import org.jackie.compiler.event.ExtensionEvents;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +49,11 @@ public class JClassBuilder extends AbstractBuilder {
 		ClassName clsname = getClassNameFromBinaryName(classfile.classname());
 		jclass = getJClass(clsname);
 
-		jclass.attributes().edit().addAttribute(new KindAttribute(jclass, getKind()));
+		events(JClassEvents.class).loading(jclass);
+
+		resolveExtensionAttribute();
+		resolveAccessMode();
+		resolveFlags();
 
 		if (classfile.superclass() != null) {
 			ClassName cname = getClassNameFromBinaryName(classfile.superclass());
@@ -70,18 +78,50 @@ public class JClassBuilder extends AbstractBuilder {
 		}
 
 		((JClassImpl)jclass).loadLevel = LoadLevel.CODE;
+
+		events(JClassEvents.class).loaded(jclass);
 	}
 
-	Kind getKind() {
+	/**
+	 * classes compiled by jackie will have ExtensionAttribute;
+	 * for legacy classes, it need to be reconstructed from ClassFile.flags
+	 */
+	private void resolveExtensionAttribute() {
+		if (!classfile.hasAttribute(ExtensionAttribute.NAME)) {
+			ExtensionAttribute xattr = new ExtensionAttribute(jclass);
+			jclass.attributes().edit().addAttribute(xattr);
+			events(ExtensionEvents.class).unresolvedExtensionAttribute(classfile.flags(), xattr);
+		}
+	}
+
+	private void resolveAccessMode() {
 		Flags flags = classfile.flags();
-		if (flags.isSet(Access.ANNOTATION)) {
-			return Kind.ANNOTATION;
-		} else if (flags.isSet(Access.ENUM)) {
-			return Kind.ENUM;
-		} else if (flags.isSet(Access.INTERFACE)) {
-			return Kind.INTERFACE;
+		if (flags.isSet(Access.PUBLIC)) {
+			jclass.edit().setAccessMode(AccessMode.PUBLIC);
+		} else if (flags.isSet(Access.PROTECTED)) {
+			jclass.edit().setAccessMode(AccessMode.PROTECTED);
+		} else if (flags.isSet(Access.PRIVATE)) {
+			jclass.edit().setAccessMode(AccessMode.PRIVATE);
 		} else {
-			return Kind.CLASS;
+			jclass.edit().setAccessMode(AccessMode.PACKAGE);
+		}
+	}
+
+	private void resolveFlags() {
+		Flags flags = classfile.flags();
+		Editor jflags = jclass.flags().edit();
+
+		if (flags.isSet(Access.ABSTRACT)) {
+			jflags.add(Flag.ABSTRACT);
+		}
+		if (flags.isSet(Access.STATIC)) {
+			jflags.add(Flag.STATIC);
+		}
+		if (flags.isSet(Access.FINAL)) {
+			jflags.add(Flag.FINAL);
+		}
+		if (flags.isSet(Access.SYNTHETIC)) {
+			jflags.add(Flag.SYNTHETIC);
 		}
 	}
 

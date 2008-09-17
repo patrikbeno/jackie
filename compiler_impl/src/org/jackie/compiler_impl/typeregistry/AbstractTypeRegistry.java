@@ -3,6 +3,7 @@ package org.jackie.compiler_impl.typeregistry;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.event.TypeRegistryEvents;
 import org.jackie.compiler_impl.bytecode.JClassParser;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.JPackageImpl;
@@ -13,6 +14,8 @@ import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.PackageName;
+import org.jackie.event.Events;
+import static org.jackie.event.Events.events;
 
 import java.io.IOException;
 import java.nio.channels.Channels;
@@ -73,7 +76,7 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 		cls = EditAction.run(this, new EditAction<JClass>() {
 			protected JClass run() {
 				JClass cls = createJClass(clsname);
-				classes.put(clsname.getFQName(), cls);
+				register(cls);
 				return cls;
 			}
 		});
@@ -156,6 +159,11 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 	protected JClass createJClass(ClassName clsname) {
 		JClass jclass = new JClassImpl(clsname.getName(), getJPackage(clsname.getPackageName()), this);
 		return jclass;
+	}
+
+	protected void register(JClass jclass) {
+		events(TypeRegistryEvents.class).created(jclass);
+		classes.put(jclass.getFQName(), jclass);
 	}
 
 }

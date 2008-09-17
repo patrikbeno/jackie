@@ -16,8 +16,6 @@ public enum Flag {
 	SYNCHRONIZED,
 	STRICTFP,
 
-	DEPRECATED,
-
 	BRIDGE,
 	SYNTHETIC,
 

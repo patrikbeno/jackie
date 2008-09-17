@@ -7,10 +7,10 @@ import org.jackie.jvm.extension.Extension;
 /**
  * @author Patrik Beno
  */
-public interface ExtensionProvider<T extends JNode & Extensible> {
+public interface ExtensionProvider<T extends JNode> extends Lifecycle {
 
 	Class<? extends Extension> getType();
 
-	Extension<T> getExtension(T node);
+	Extension getExtension(T jnode);
 
 }

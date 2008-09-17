@@ -6,7 +6,7 @@ import org.jackie.jvm.extension.Extension;
 /**
  * @author Patrik Beno
  */
-public abstract class AbstractExtension<T extends JNode> implements Extension<T> {
+public abstract class AbstractExtension<T extends JNode> implements Extension {
 
 	protected T node;
 

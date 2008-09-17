@@ -3,9 +3,8 @@ package org.jackie.java5.enumtype.impl;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.java5.enumtype.EnumType;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.attribute.JAttribute;
-import org.jackie.jvm.attribute.special.Kind;
 import org.jackie.jvm.extension.Extension;
+import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
@@ -16,14 +15,15 @@ public class EnumTypeProvider implements ExtensionProvider<JClass> {
 		return EnumType.class;
 	}
 
-	public Extension<JClass> getExtension(JClass jclass) {
-		JAttribute kind = jclass.attributes().getAttribute("Kind");
-		assert kind != null;
-
-		switch ((Kind) kind.getValue()) {
-			case ENUM:
-				return new EnumTypeImpl(jclass);
-		}
+	public Extension getExtension(JClass jclass) {
 		return null;
+	}
+
+	public void init() {
+		throw Assert.notYetImplemented(); // todo implement this 
+	}
+
+	public void done() {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

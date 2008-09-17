@@ -8,7 +8,36 @@ import org.jackie.jvm.spi.AbstractJAttribute;
  */
 public class SignatureAttribute extends AbstractJAttribute {
 
-	public SignatureAttribute(JNode owner, Object value) {
-		super(owner, "Signature", value);
+	static public final String NAME = "Signature";
+
+	String value;
+
+	public SignatureAttribute(JNode owner, String signature) {
+		super(owner);
+		this.value = signature;
+	}
+
+	public String getName() {
+		return NAME;
+	}
+
+	public String getValue() {
+		return value;
+	}
+
+	public interface Editor extends org.jackie.jvm.Editor<SignatureAttribute> {
+		Editor setValue(String signature);
+	}
+
+	public Editor edit() {
+		return new Editor() {
+			public Editor setValue(String signature) {
+				value = signature;
+				return this;
+			}
+			public SignatureAttribute editable() {
+				return SignatureAttribute.this;
+			}
+		};
 	}
 }

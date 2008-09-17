@@ -1,13 +1,15 @@
 package org.jackie.compiler_impl.typeregistry;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.event.JClassEvents;
+import org.jackie.compiler.event.TypeRegistryEvents;
 import org.jackie.compiler_impl.jmodelimpl.JClassImpl;
 import org.jackie.compiler_impl.jmodelimpl.LoadLevel;
+import org.jackie.compiler_impl.jmodelimpl.type.ArrayTypeImpl;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
-import org.jackie.jvm.attribute.special.Kind;
-import org.jackie.jvm.attribute.special.KindAttribute;
 import org.jackie.utils.ClassName;
+import static org.jackie.event.Events.events;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -92,9 +94,10 @@ public class ArrayRegistry {
 
 				jclass.edit()
 					.setSuperClass(context(TypeRegistry.class).getJClass(Object.class));
-				jclass.attributes().edit()
-					.addAttribute(new KindAttribute(jclass, Kind.ARRAY));
 
+				jclass.extensions().edit().add(new ArrayTypeImpl(jclass));
+
+				events(TypeRegistryEvents.class).created(jclass);
 				arrays.put(desc, jclass);
 
 				return jclass;

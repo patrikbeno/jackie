@@ -4,6 +4,7 @@ import org.jackie.java5.AbstractExtension;
 import org.jackie.java5.enumtype.EnumType;
 import org.jackie.java5.enumtype.JEnumContant;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.Assert;
 
 import java.util.List;
@@ -16,6 +17,10 @@ public class EnumTypeImpl extends AbstractExtension<JClass> implements EnumType 
 
 	public EnumTypeImpl(JClass node) {
 		super(node);
+	}
+
+	public Class<? extends Extension> type() {
+		return EnumType.class;
 	}
 
 	public Set<String> getEnumConstantNames() {

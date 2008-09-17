@@ -5,6 +5,7 @@ import org.jackie.java5.annotation.JAnnotations;
 import org.jackie.java5.base.ClassNestingLevel;
 import org.jackie.java5.base.ClassType;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
 
@@ -18,6 +19,10 @@ public class ClassTypeImpl extends AbstractExtension<JClass> implements ClassTyp
 
 	public ClassTypeImpl(JClass node) {
 		super(node);
+	}
+
+	public Class<? extends Extension> type() {
+		return ClassType.class;
 	}
 
 	public ClassNestingLevel getNestingKind() {

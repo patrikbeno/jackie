@@ -8,9 +8,11 @@ import org.jackie.jvm.JNode;
  *
  * @author Patrik Beno
  */
-public interface Extension<T extends JNode> {
+public interface Extension {
 
-	T node();
+	Class<? extends Extension> type();
+
+	JNode node();
 
 
 }

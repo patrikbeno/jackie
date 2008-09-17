@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface ClassType extends Extension<JClass>, Editable<ClassType.Editor> {
+public interface ClassType extends Extension, Editable<ClassType.Editor> {
 
 	/// nesting
 

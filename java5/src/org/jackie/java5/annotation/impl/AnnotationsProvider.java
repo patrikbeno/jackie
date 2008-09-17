@@ -1,6 +1,5 @@
 package org.jackie.java5.annotation.impl;
 
-import org.jackie.compiler.event.AttributeListener;
 import org.jackie.compiler.extension.ExtensionProvider;
 import org.jackie.compiler.extension.Lifecycle;
 import org.jackie.event.Events;
@@ -11,17 +10,12 @@ import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
+import org.jackie.utils.Assert;
 
 /**
  * @author Patrik Beno
  */
-public class AnnotationsProvider implements ExtensionProvider, Lifecycle {
-
-	AttributeListener listener = new AttributeListener() {
-		public void attributeAdded(JAttribute attribute) {
-
-		}
-	};
+public class AnnotationsProvider implements ExtensionProvider {
 
 	public Class getType() {
 		return JAnnotations.class;
@@ -44,10 +38,10 @@ public class AnnotationsProvider implements ExtensionProvider, Lifecycle {
 	}
 
 	public void init() {
-		Events.registerEventListener(AttributeListener.class, listener);
+		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
 	public void done() {
-		Events.unregisterEventListener(listener);
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

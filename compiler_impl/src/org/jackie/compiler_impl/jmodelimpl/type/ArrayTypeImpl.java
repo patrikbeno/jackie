@@ -4,6 +4,7 @@ import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.ArrayType;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.ClassName;
 
 /**
@@ -16,6 +17,10 @@ public class ArrayTypeImpl extends AbstractExtension<JClass> implements ArrayTyp
 
 	public ArrayTypeImpl(JClass node) {
 		super(node);
+	}
+
+	public Class<? extends Extension> type() {
+		return ArrayType.class;
 	}
 
 	public JClass getComponentType() {

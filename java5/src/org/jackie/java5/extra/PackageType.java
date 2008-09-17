@@ -1,6 +1,5 @@
 package org.jackie.java5.extra;
 
-import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.Extension;
 
 /**
@@ -8,6 +7,6 @@ import org.jackie.jvm.extension.Extension;
  *
  * @author Patrik Beno
  */
-public interface PackageType extends Extension<JClass> {
+public interface PackageType extends Extension {
 }
 

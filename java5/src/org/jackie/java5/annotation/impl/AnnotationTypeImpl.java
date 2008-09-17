@@ -4,6 +4,7 @@ import org.jackie.java5.AbstractExtension;
 import org.jackie.java5.annotation.AnnotationType;
 import org.jackie.java5.annotation.JAnnotationElement;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
@@ -25,6 +26,10 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 
 	public AnnotationTypeImpl(JClass node) {
 		super(node);
+	}
+
+	public Class<? extends Extension> type() {
+		return AnnotationType.class;
 	}
 
 	public Set<String> getElementNames() {

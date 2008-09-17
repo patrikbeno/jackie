@@ -11,7 +11,7 @@ public interface AttributeProvider {
 
 	Set<String> getSupportedAttributeNames();
 
-	<T extends JAttribute<?>> T getAttribute(String name);
+	<T extends JAttribute> T getAttribute(String name);
 
 
 }

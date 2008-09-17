@@ -2,6 +2,7 @@ package org.jackie.java5.annotation;
 
 import org.jackie.jvm.Editable;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
 
 import java.util.List;
@@ -12,7 +13,9 @@ import java.util.Set;
  *
  * @author Patrik Beno
  */
-public interface AnnotationType extends Extension<JClass>, Editable<AnnotationType.Editor> {
+public interface AnnotationType extends Extension, Editable<AnnotationType.Editor> {
+
+	JClass node();
 
 	/**
 	 * Names of the annotation elements.

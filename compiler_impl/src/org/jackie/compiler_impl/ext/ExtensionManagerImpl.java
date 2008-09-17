@@ -2,65 +2,68 @@ package org.jackie.compiler_impl.ext;
 
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.extension.ExtensionProvider;
-import org.jackie.context.Loader;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
+import org.jackie.jvm.extension.Extensible;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.expected;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.Set;
+import java.util.Collections;
+import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
  */
-public class ExtensionManagerImpl extends Loader implements ExtensionManager {
+public class ExtensionManagerImpl implements ExtensionManager {
 
-	public ExtensionManagerImpl() {
-		super("META-INF/org.jackie/extensions.properties");
+	static ThreadLocal<List<Class<? extends Extension>>> tlInProgress;
+
+	static {
+		tlInProgress = new ThreadLocal<List<Class<? extends Extension>>>();
 	}
+
+	//META-INF/org.jackie/extensions.properties
 
 	Map<Class<? extends Extension>, ExtensionProvider> providers;
 
 	{
 		providers = new HashMap<Class<? extends Extension>, ExtensionProvider>();
-		loadResources();
-
-//		// fixme hardcoded ExtensionProvider list
-//		providers.put(PrimitiveType.class, new PrimitiveTypeProvider());
-//		providers.put(ArrayType.class, new ArrayTypeProvider());
-//
-//		providers.put(ClassType.class, new ClassTypeProvider());
-//		providers.put(InterfaceType.class, new InterfaceTypeProvider());
-//		providers.put(EnumType.class, new EnumTypeProvider());
-//		providers.put(AnnotationType.class, new AnnotationTypeProvider());
-//		providers.put(Annotations.class, new AnnotationsProvider());
-//
-//		providers.put(PackageType.class, new PackageTypeProvider());
 	}
 
-	public <T extends Extension> T apply(JNode jnode, Class<T> extensionType ) {
-		ExtensionProvider provider = providers.get(extensionType);
-		if (provider == null) {
-			Class cls = classByInterface.get(extensionType);
-			assert cls != null : extensionType;
-			provider = newInstance(cls, ExtensionProvider.class);
-			providers.put(extensionType, provider);
-		}
+	public <T extends Extension> void registerExtension(Class<T> type, ExtensionProvider provider) {
+		NOTNULL(type);
+		NOTNULL(provider);
+		expected(type, provider.getType(), "Invalid provider type");
 
-		T ext = typecast(provider.getExtension(jnode), extensionType);
-		return ext;
-
+		providers.put(type, provider);
 	}
 
-	protected <T> T newInstance(Class cls, Class<T> type) {
-		try {
-			return typecast(cls.newInstance(), type);
-		} catch (InstantiationException e) {
-			throw Assert.notYetHandled(e);
-		} catch (IllegalAccessException e) {
-			throw Assert.notYetHandled(e);
-		}
+	public <T extends Extension> void unregisterExtension(Class<T> type) {
+		NOTNULL(type);
+		providers.remove(type);
+	}
+
+	public <T extends Extension> Set<Class<T>> getExtensionTypes() {
+		//noinspection unchecked
+		return Collections.unmodifiableSet((Set)providers.keySet());
+	}
+
+	public List<ExtensionProvider> getProviders() {
+		return Collections.unmodifiableList(new ArrayList<ExtensionProvider>(providers.values()));
+	}
+
+	public ExtensionProvider getProvider(Class<? extends Extension> extensionType) {
+		throw Assert.notYetImplemented(); // todo implement this
+	}
+
+	public <T extends Extension> T getExtension(Class<T> extensionType, Extensible extensible) {
+		throw Assert.notYetImplemented(); // todo implement this
 	}
 
 }

@@ -6,7 +6,8 @@ import org.jackie.jvm.JClass;
 /**
  * @author Patrik Beno
  */
-public interface ClassListener extends Event {
+public abstract class TypeRegistryEvents implements Event {
 
-	void loaded(JClass jclass);
+	public void created(JClass jclass) {}
+
 }

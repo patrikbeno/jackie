@@ -1,8 +1,8 @@
 package org.jackie.compiler_impl.jmodelimpl.attribute;
 
-import org.jackie.compiler.event.AttributeListener;
 import org.jackie.compiler.spi.Compilable;
 import org.jackie.compiler.spi.CompilableHelper;
+import org.jackie.compiler.event.JAttributeEvents;
 import static org.jackie.event.Events.events;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.Attributes;
@@ -58,20 +58,14 @@ public class AttributesImpl implements Attributes, Compilable {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
-	// fixme
 	public Editor edit() {
 		return new Editor() {
 			public Editor addAttribute(JAttribute attribute) {
-				JAttribute<?> a = getAttribute(attribute.getName());
-				if (a != null) {
-//					a.edit().setNext(attribute);
-				} else {
-					if (attributes == null) {
-						attributes = new ArrayList<JAttribute>();
-					}
-					attributes.add(attribute);
+				if (attributes == null) {
+					attributes = new ArrayList<JAttribute>();
 				}
-				events(AttributeListener.class).attributeAdded(attribute);
+				attributes.add(attribute);
+				events(JAttributeEvents.class).added(attribute);
 				return this;
 			}
 

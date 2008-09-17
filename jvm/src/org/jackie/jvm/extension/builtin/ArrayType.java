@@ -6,7 +6,7 @@ import org.jackie.jvm.extension.Extension;
 /**
  * @author Patrik Beno
  */
-public interface ArrayType extends Extension<JClass> {
+public interface ArrayType extends Extension {
 
 	JClass getComponentType();
 

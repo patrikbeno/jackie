@@ -8,19 +8,12 @@ import org.jackie.jvm.props.Named;
 /**
  * @author Patrik Beno
  */
-public interface JAttribute<T> extends JNode, Named, Editable<Editor> {
+public interface JAttribute extends JNode, Named, Editable<Editor<? extends JAttribute>> {
 
 	String getName();
 
-	T getValue();
+	Object getValue();
 
-	Editor<T> edit();
+	Editor<? extends JAttribute> edit();
 
-	public interface Editor<T> extends org.jackie.jvm.Editor<JAttribute<T>> {
-
-		Editor setName(String name);
-
-		Editor setValue(T value);
-
-	}
 }

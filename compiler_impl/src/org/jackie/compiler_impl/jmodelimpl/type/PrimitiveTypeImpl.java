@@ -3,6 +3,7 @@ package org.jackie.compiler_impl.jmodelimpl.type;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.extension.builtin.JPrimitive;
 import org.jackie.jvm.extension.builtin.PrimitiveType;
+import org.jackie.jvm.extension.Extension;
 
 /**
  * @author Patrik Beno
@@ -11,6 +12,10 @@ public class PrimitiveTypeImpl extends AbstractExtension<JClass> implements Prim
 
 	public PrimitiveTypeImpl(JClass jclass) {
 		super(jclass);
+	}
+
+	public Class<? extends Extension> type() {
+		return PrimitiveType.class;
 	}
 
 	public Class getPrimitiveClass() {
