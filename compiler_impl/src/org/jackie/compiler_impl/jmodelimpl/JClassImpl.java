@@ -167,6 +167,7 @@ public class JClassImpl extends AbstractJNode implements JClass {
 	/// Extensions ///
 
 	public Extensions extensions() {
+		checkLoaded(LoadLevel.CLASS);
 		if (extensions == null) {
 			extensions = new ExtensionsImpl(this); 
 		}
