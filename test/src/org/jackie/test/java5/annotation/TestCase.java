@@ -3,6 +3,7 @@ package org.jackie.test.java5.annotation;
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.typeregistry.TypeRegistry;
+import org.jackie.compiler.spi.DefaultExtensionManagerConfigurator;
 import org.jackie.compiler_impl.ext.ExtensionManagerImpl;
 import org.jackie.compiler_impl.filemanager.ClassPathFileManager;
 import org.jackie.compiler_impl.typeregistry.JClassRegistry;
@@ -38,7 +39,10 @@ public abstract class TestCase {
 		try {
 			context().set(TypeRegistry.class, typeregistry);
 			context().set(ExtensionManager.class, extmanager);
+			DefaultExtensionManagerConfigurator.configure();
+
 			r.run();
+
 		} finally {
 			closeContext();
 		}
