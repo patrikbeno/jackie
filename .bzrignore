@@ -8,4 +8,4 @@
 bzrdiff.sh
 build.sh
 .build
-.wiki/data/cache
+.wiki/**/cache
