@@ -9,6 +9,8 @@ import static org.jackie.event.Events.events;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensions;
+import org.jackie.jvm.extension.builtin.PrimitiveType;
+import org.jackie.jvm.extension.builtin.ArrayType;
 import org.jackie.jvm.spi.JModelHelper;
 import static org.jackie.utils.Assert.*;
 import org.jackie.utils.Stack;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Arrays;
 
 /**
  * @author Patrik Beno
@@ -51,6 +54,11 @@ public class ExtensionsImpl implements Extensions, Compilable {
 		Extension ext = extensions.get(type);
 		if (ext != null) {
 			return typecast(ext, type);
+		}
+
+		// todo handle primitives and arrays
+		if (Arrays.asList(PrimitiveType.class, ArrayType.class).contains(type)) {
+			return null; 
 		}
 
 		Info info = new Info(type, jnode);
