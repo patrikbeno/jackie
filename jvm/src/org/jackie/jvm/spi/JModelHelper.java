@@ -17,7 +17,7 @@ public class JModelHelper {
 		NOTNULL(type);
 		
 		JNode candidate = jnode;
-		while (candidate != null && type.isInstance(candidate)) {
+		while (candidate != null && !type.isInstance(candidate)) {
 			candidate = candidate.owner();
 		}
 		return type.cast(candidate);
