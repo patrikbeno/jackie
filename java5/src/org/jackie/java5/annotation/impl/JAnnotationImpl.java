@@ -26,6 +26,7 @@ import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.Assert.NOTNULL;
 import org.jackie.utils.ClassName;
 import org.jackie.utils.CollectionsHelper;
 
@@ -51,8 +52,8 @@ public class JAnnotationImpl extends AbstractJNode implements JAnnotation, Compi
 	public JAnnotationImpl(JNode owner, Annotation anno) {
 		super(owner);
 
-		JClass jclass = getJClass(anno.type());
-		type = jclass.extensions().get(AnnotationType.class);
+		JClass jclass = NOTNULL(getJClass(anno.type()));
+		type = NOTNULL(jclass.extensions().get(AnnotationType.class));
 
 		for (ElementValue evalue : anno.elements()) {
 			JAnnotationElementValue value = new JAnnotationElementValueImpl(
