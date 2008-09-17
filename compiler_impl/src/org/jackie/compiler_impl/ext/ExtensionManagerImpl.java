@@ -59,11 +59,13 @@ public class ExtensionManagerImpl implements ExtensionManager {
 	}
 
 	public ExtensionProvider getProvider(Class<? extends Extension> extensionType) {
-		throw Assert.notYetImplemented(); // todo implement this
+		return providers.get(extensionType);
 	}
 
 	public <T extends Extension> T getExtension(Class<T> extensionType, Extensible extensible) {
-		throw Assert.notYetImplemented(); // todo implement this
+		ExtensionProvider provider = getProvider(extensionType);
+		Extension extension = provider.getExtension((JNode) extensible);
+		return (T) extension;
 	}
 
 }
