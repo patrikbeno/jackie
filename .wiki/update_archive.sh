@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 
-. .functions
+. .functions.sh
 
 echo "Cleaning up runtime data..."
 deleteCaches 2> /dev/null

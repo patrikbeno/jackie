@@ -18,14 +18,12 @@ function unpackData() {
 }
 
 function packData() {	
-	find data -type f | sort | xargs tar uvf data.tar
+	find data -type f | sort | xargs tar cf data.tar
 }
 
 function runWIKI() {
 	export PYTHONPATH="$PWD:$PYTHONPATH"
 	# http://moinmo.in/
 	# http://moinmo.in/MoinMoinDownload
-	moin server standalone
+	moin server standalone $1
 }
-
-
