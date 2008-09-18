@@ -16,7 +16,7 @@ class LocalConfig(DefaultConfig):
 #    data_underlay_dir = os.path.join(moinmoin_dir, 'wiki', 'underlay')
 
     DesktopEdition = True # give all local users full powers
-    acl_rights_default = u"All:read,write,delete,revert,admin"
+    acl_rights_default = u"Known:read,write,delete,revert,admin All:read"
     surge_action_limits = None # no surge protection
 #    sitename = u'MoinMoin DesktopEdition'
     logo_string = u'<img src="/moin_static172/common/moinmoin.png" alt="MoinMoin Logo">'
