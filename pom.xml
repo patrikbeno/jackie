@@ -45,6 +45,9 @@
 		<module>asmtools</module>
 		<module>jclassfile</module>
 
+		<!-- end user stuff -->
+		<module>tools</module>
+
 		<!-- test -->
 		<module>test</module>
 	</modules>
