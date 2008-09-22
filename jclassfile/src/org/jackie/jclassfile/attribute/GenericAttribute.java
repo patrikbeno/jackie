@@ -33,8 +33,12 @@ public class GenericAttribute extends AttributeInfo {
 		return data.length;
 	}
 
-	public InputStream data() {
-		return new ByteArrayInputStream(data);
+	public byte[] data() {
+		return data;
+	}
+
+	public void data(byte[] bytes) {
+		this.data = bytes;
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
