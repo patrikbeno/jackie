@@ -22,12 +22,18 @@ public class Shell {
 		Option<File> sources = Option.create("sources", File.class);
 		Option<File> jarfile = Option.create("jarfile", File.class);
 
-		CmdLineSupport cmdline = new CmdLineSupport(sources, jarfile);
-		cmdline.parse(args);
+		try {
+			CmdLineSupport cmdline = new CmdLineSupport(sources, jarfile);
+			cmdline.parse(args);
+
+
+		} catch (Throwable t) {
+			System.out.println(t);
+			System.exit(-1);
+		}
 
 		Shell shell = new Shell(sources.get(), jarfile.get());
 		shell.run();
-
 	}
 
 	File sources;
