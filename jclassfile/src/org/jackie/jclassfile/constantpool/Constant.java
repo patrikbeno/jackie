@@ -3,6 +3,7 @@ package org.jackie.jclassfile.constantpool;
 import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.NOTNULL;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -81,8 +82,7 @@ cp_info {
 	}
 
 	public void writeReference(DataOutput out) throws IOException {
-		assert getIndex() != null;
-		out.writeShort(getIndex());
+		out.writeShort(NOTNULL(getIndex()));
 		references++;
 	}
 
