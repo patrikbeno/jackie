@@ -4,12 +4,14 @@ import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compiler_impl.jmodelimpl.FlagsImpl;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compiler_impl.jmodelimpl.code.JCodeImpl;
 import static org.jackie.compiler_impl.util.Helper.assertEditable;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
@@ -161,6 +163,11 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 				m.methodDescriptor(getMethodDescriptor(JMethodImpl.this));
 
 				classfile.addMethod(m);
+
+				for (JAttribute a : attributes().getAttributes()) {
+					if (a.getName().equals("Code")) { continue; }
+					((GenericAttribute)a).compile(m); //fixme revisit attribute compilation
+				}
 			}
 		});
 	}

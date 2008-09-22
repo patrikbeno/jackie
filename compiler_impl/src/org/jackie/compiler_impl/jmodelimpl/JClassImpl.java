@@ -3,6 +3,7 @@ package org.jackie.compiler_impl.jmodelimpl;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
 import org.jackie.compiler_impl.jmodelimpl.attribute.AttributesImpl;
+import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compiler_impl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compiler_impl.jmodelimpl.structure.JMethodImpl;
 import org.jackie.compiler_impl.typeregistry.JClassLoader;
@@ -275,7 +276,7 @@ public class JClassImpl extends AbstractJNode implements JClass {
 					((JMethodImpl)m).compile(classfile);
 				}
 				for (JAttribute a : attributes().getAttributes()) {
-//					((JAttributeImpl)a).compile(classfile); // todo implement attribute compilation
+					((GenericAttribute)a).compile(classfile); //fixme revisit attribute compilation
 				}
 			}
 		});

@@ -2,6 +2,8 @@ package org.jackie.compiler_impl.jmodelimpl.attribute;
 
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.Editor;
 import org.jackie.jvm.spi.JModelHelper;
@@ -54,6 +56,15 @@ public class GenericAttribute implements JAttribute {
 				return GenericAttribute.this;
 			}
 		};
+	}
+
+	public <T extends ClassFileProvider & AttributeSupport> void compile(T t) {
+		// fixme attribute handling (this sucks)
+		org.jackie.jclassfile.attribute.GenericAttribute newattr = new org.jackie.jclassfile.attribute.GenericAttribute(
+				t,
+				t.classFile().pool().factory().getUtf8(value.name()));
+		newattr.data(((org.jackie.jclassfile.attribute.GenericAttribute) value).data());
+		t.addAttribute(newattr);
 	}
 
 }

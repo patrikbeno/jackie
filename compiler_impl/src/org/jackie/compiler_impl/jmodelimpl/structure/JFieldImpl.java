@@ -1,9 +1,11 @@
 package org.jackie.compiler_impl.jmodelimpl.structure;
 
 import org.jackie.compiler_impl.bytecode.ByteCodeBuilder;
+import org.jackie.compiler_impl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jvm.JClass;
+import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
@@ -69,6 +71,10 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 				f.typeDescriptor(getTypeDescriptor(getType()));
 
 				classfile.addField(f);
+
+				for (JAttribute a : attributes().getAttributes()) {
+					((GenericAttribute)a).compile(f); //fixme revisit attribute compilation
+				}
 			}
 		});
 	}
