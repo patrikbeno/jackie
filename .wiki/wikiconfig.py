@@ -31,6 +31,8 @@ class LocalConfig(DefaultConfig):
     sitename = 'JackieWiki'
     page_front_page = u'Home'
 
+    # removed page references: RecentChanges, FindPage, HelpContents
+    navi_bar = [u'Home', u'News', u'Status', u'RoadMap', u'Development', u'Documentation', u'Download', u'Contact', u'SiteMap', u'Help'] 
 
 # DEVELOPERS! Do not add your configuration items there,
 # you could accidentally commit them! Instead, create a
