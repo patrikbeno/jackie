@@ -3,14 +3,10 @@ package org.jackie.test.jclassfile;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.Type;
-import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.Helper;
 import org.jackie.jclassfile.flags.Access;
 import org.jackie.jclassfile.attribute.GenericAttribute;
-import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.expected;
-import org.jackie.jvm.spi.JModelHelper;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
@@ -19,7 +15,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 
 /**
@@ -29,7 +24,7 @@ public class ClassFileTest {
 
 	@Test
 	public void loadAndSave() throws Exception {
-		byte[] original = Sample.bytecode();
+		byte[] original = Util.getByteCode(Sample.class);
 
 		ClassFile cf = new ClassFile();
 		cf.load(new DataInputStream(new ByteArrayInputStream(original)));
@@ -65,34 +60,20 @@ public class ClassFileTest {
 //		final Class cls = MessageFormat.class;
 		final Class cls = Sample.class;
 
-		URL url = cls.getResource(cls.getSimpleName() + ".class");
-		byte[] original = new byte[url.openConnection().getContentLength()];
+		byte[] original = Util.getByteCode(cls);
 
 		{
-			DataInputStream in = new DataInputStream(url.openStream());
-			in.readFully(original);
-		}
-
-		{
-			FileOutputStream out = new FileOutputStream("h:/var/original.class");
+			DataOutputStream out = new DataOutputStream(new FileOutputStream("h:/var/original.class"));
 			out.write(original);
 			out.close();
 		}
 
-		ClassFile classfile = new ClassFile();
-		classfile.load(new DataInputStream(new ByteArrayInputStream(original)));
-
-		final byte[] bytes;
-		{
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream out = new DataOutputStream(baos);
-			classfile.save(out);
-			out.close();
-			bytes = baos.toByteArray();
-		}
+		ClassFile cf = new ClassFile();
+		cf.load(new DataInputStream(new ByteArrayInputStream(original)));
+		final byte[] bytes = cf.toByteArray();
 
 		{
-			FileOutputStream out = new FileOutputStream("h:/var/out.class");
+			DataOutputStream out = new DataOutputStream(new FileOutputStream("h:/var/out.class"));
 			out.write(bytes);
 			out.close();
 		}
@@ -123,6 +104,14 @@ public class ClassFileTest {
 		new ClassLoader(null) {{
 				defineClass("test.Simple", bytes, 0, bytes.length);
 		}};
+	}
+
+	@Test
+	public void loadCode() throws IOException {
+		byte[] bytecode = Util.getByteCode(CodeSample.class);
+
+		ClassFile cf = new ClassFile();
+		cf.load(new DataInputStream(new ByteArrayInputStream(bytecode)));
 	}
 }
 

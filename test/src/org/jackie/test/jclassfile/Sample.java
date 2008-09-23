@@ -11,14 +11,4 @@ import java.net.URLConnection;
  * @author Patrik Beno
  */
 public class Sample {
-
-	static public byte[] bytecode() throws IOException {
-		URL url = NOTNULL(Sample.class.getResource(Sample.class.getSimpleName() + ".class"));
-		URLConnection con = url.openConnection();
-		byte[] bytes = new byte[con.getContentLength()];
-		DataInputStream in = new DataInputStream(con.getInputStream());
-		in.readFully(bytes);
-		return bytes;
-	}
-
 }
