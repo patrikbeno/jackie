@@ -2,16 +2,21 @@ package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeProvider;
-import org.jackie.jclassfile.code.Insn;
+import org.jackie.jclassfile.code.v1.Insn;
+import org.jackie.jclassfile.code.CodeParser;
+import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.utils.Assert;
+import org.jackie.utils.IOHelper;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +63,7 @@ Code_attribute {
 	int maxStack;
 	int maxLocals;
 
-	List<Insn> instructions;
+	List<Instruction> instructions;
 	List<ExceptionTableItem> exceptions;
 	List<AttributeInfo> attributes;
 
@@ -68,28 +73,35 @@ Code_attribute {
 	}
 
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
-		int len = readLength(in);
+		int attrlen = readLength(in);
 
-		maxStack = in.readUnsignedShort();
-		maxLocals = in.readUnsignedShort();
-
-		int codelen = in.readInt();
-		for (int i=0; i<codelen;) {
-			i += readInstruction(in);
+		metastuff: {
+			maxStack = in.readUnsignedShort();
+			maxLocals = in.readUnsignedShort();
 		}
 
-		int exlen = in.readUnsignedShort();
-		exceptions = new ArrayList<ExceptionTableItem>(exlen);
-		while (exlen-- > 0) {
-			ExceptionTableItem item = new ExceptionTableItem();
-			item.startpc = in.readUnsignedShort();
-			item.endpc = in.readUnsignedShort();
-			item.handlerpc = in.readUnsignedShort();
-			item.exception = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
-			exceptions.add(item);
+		code: {
+			CodeParser parser = new CodeParser();
+			int len = in.readInt();
+			instructions = parser.parse(in, len);
 		}
 
-		attributes = AttributeHelper.loadAttributes(owner, in);
+		exceptions: {
+			int exlen = in.readUnsignedShort();
+			exceptions = new ArrayList<ExceptionTableItem>(exlen);
+			while (exlen-- > 0) {
+				ExceptionTableItem item = new ExceptionTableItem();
+				item.startpc = in.readUnsignedShort();
+				item.endpc = in.readUnsignedShort();
+				item.handlerpc = in.readUnsignedShort();
+				item.exception = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
+				exceptions.add(item);
+			}
+		}
+
+		attributes: {
+			attributes = AttributeHelper.loadAttributes(owner, in);
+		}
 
 		return null;
 	}
@@ -97,14 +109,27 @@ Code_attribute {
 	protected void writeData(DataOutput out) throws IOException {
 		int codesize = calculateCodeSize();
 
-		writeLength(out, 2+2+4+codesize+2+exceptions.size()*8);
+		// render attributes first: need their length for header
+		byte[] attrs;
+		attributes: {
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream tmpout = new DataOutputStream(baos);
+			tmpout.writeShort(attributes.size());
+			for (AttributeInfo a : attributes) {
+				a.save(tmpout);
+			}
+			IOHelper.close(tmpout);
+			attrs = baos.toByteArray();
+		}
+
+		writeLength(out, 2+2+4+codesize+2+exceptions.size()*8+attrs.length);
 
 		out.writeShort(maxStack);
 		out.writeShort(maxLocals);
 
 		out.writeInt(codesize);
-		for (Insn insn : instructions) {
-			insn.write(out);
+		for (Instruction insn : instructions) {
+			insn.save(out);
 		}
 
 		out.writeShort(exceptions.size());
@@ -115,19 +140,13 @@ Code_attribute {
 			item.exception.writeReference(out);
 		}
 
-		out.writeShort(attributes.size());
-		for (AttributeInfo a : attributes) {
-			a.save(out);
-		}
-	}
-
-	int readInstruction(DataInput in) {
-		throw Assert.notYetImplemented(); // todo implement this
+		// attributes
+		out.write(attrs);
 	}
 
 	int calculateCodeSize() {
 		int size = 0;
-		for (Insn insn : instructions) {
+		for (Instruction insn : instructions) {
 			size += insn.size();
 		}
 		return size;

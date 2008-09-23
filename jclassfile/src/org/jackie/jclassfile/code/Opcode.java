@@ -1,43 +1,15 @@
 package org.jackie.jclassfile.code;
 
+import org.jackie.utils.ArrayHelper;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author Patrik Beno
  */
 public enum Opcode {
-
-	/*
-     * Visits a zero operand instruction.
-     *
-     * @param opcode the opcode of the instruction to be visited. This opcode is
-     *        either NOP, ACONST_NULL, ICONST_M1, ICONST_0, ICONST_1, ICONST_2,
-     *        ICONST_3, ICONST_4, ICONST_5, LCONST_0, LCONST_1, FCONST_0,
-     *        FCONST_1, FCONST_2, DCONST_0, DCONST_1, IALOAD, LALOAD, FALOAD,
-     *        DALOAD, AALOAD, BALOAD, CALOAD, SALOAD, IASTORE, LASTORE, FASTORE,
-     *        DASTORE, AASTORE, BASTORE, CASTORE, SASTORE, POP, POP2, DUP,
-     *        DUP_X1, DUP_X2, DUP2, DUP2_X1, DUP2_X2, SWAP, IADD, LADD, FADD,
-     *        DADD, ISUB, LSUB, FSUB, DSUB, IMUL, LMUL, FMUL, DMUL, IDIV, LDIV,
-     *        FDIV, DDIV, IREM, LREM, FREM, DREM, INEG, LNEG, FNEG, DNEG, ISHL,
-     *        LSHL, ISHR, LSHR, IUSHR, LUSHR, IAND, LAND, IOR, LOR, IXOR, LXOR,
-     *        I2L, I2F, I2D, L2I, L2F, L2D, F2I, F2L, F2D, D2I, D2L, D2F, I2B,
-     *        I2C, I2S, LCMP, FCMPL, FCMPG, DCMPL, DCMPG, IRETURN, LRETURN,
-     *        FRETURN, DRETURN, ARETURN, RETURN, ARRAYLENGTH, ATHROW,
-     *        MONITORENTER, or MONITOREXIT.
-
-     * Visits an instruction with a single int operand.
-     *
-     * @param opcode the opcode of the instruction to be visited. This opcode is
-     *        either BIPUSH, SIPUSH or NEWARRAY.
-     * @param operand the operand of the instruction to be visited.<br> When
-     *        opcode is BIPUSH, operand value should be between Byte.MIN_VALUE
-     *        and Byte.MAX_VALUE.<br> When opcode is SIPUSH, operand value
-     *        should be between Short.MIN_VALUE and Short.MAX_VALUE.<br> When
-     *        opcode is NEWARRAY, operand value should be one of
-     *        {@link Opcodes#T_BOOLEAN}, {@link Opcodes#T_CHAR},
-     *        {@link Opcodes#T_FLOAT}, {@link Opcodes#T_DOUBLE},
-     *        {@link Opcodes#T_BYTE}, {@link Opcodes#T_SHORT},
-     *        {@link Opcodes#T_INT} or {@link Opcodes#T_LONG}.
-	
-	 */
 
 	NOP(0x00),
 
@@ -68,11 +40,11 @@ public enum Opcode {
 	LDC_W(0x13),
 	LDC2_W(0x14),
 
-	ILOAD(0x15),
-	LLOAD(0x16),
-	FLOAD(0x17),
-	DLOAD(0x18),
-	ALOAD(0x19),
+	ILOAD(0x15, OperandType.FRAMEREF),
+	LLOAD(0x16, OperandType.FRAMEREF),
+	FLOAD(0x17, OperandType.FRAMEREF),
+	DLOAD(0x18, OperandType.FRAMEREF),
+	ALOAD(0x19, OperandType.FRAMEREF),
 
 	ILOAD_0(0x1A),
 	ILOAD_1(0x1B),
@@ -108,11 +80,11 @@ public enum Opcode {
 	CALOAD(0x34),
 	SALOAD(0x35),
 
-	ISTORE(0x36),
-	LSTORE(0x37),
-	FSTORE(0x38),
-	DSTORE(0x39),
-	ASTORE(0x3A),
+	ISTORE(0x36, OperandType.FRAMEREF),
+	LSTORE(0x37, OperandType.FRAMEREF),
+	FSTORE(0x38, OperandType.FRAMEREF),
+	DSTORE(0x39, OperandType.FRAMEREF),
+	ASTORE(0x3A, OperandType.FRAMEREF),
 
 	ISTORE_0(0x3B),
 	ISTORE_1(0x3C),
@@ -238,24 +210,24 @@ public enum Opcode {
 	DCMPL(0x97),
 	DCMPG(0x98),
 
-	IFEQ(0x99),
-	IFNE(0x9A),
+	IFEQ(0x99, OperandType.BRANCHOFFSET),
+	IFNE(0x9A, OperandType.BRANCHOFFSET),
 
-	IFLT(0x9B),
-	IFGE(0x9C),
-	IFGT(0x9D),
-	IFLE(0x9E),
+	IFLT(0x9B, OperandType.BRANCHOFFSET),
+	IFGE(0x9C, OperandType.BRANCHOFFSET),
+	IFGT(0x9D, OperandType.BRANCHOFFSET),
+	IFLE(0x9E, OperandType.BRANCHOFFSET),
 
-	IF_ICMPEQ(0x9F),
-	IF_ICMPNE(0xA0),
-	IF_ICMPLT(0xA1),
-	IF_ICMPGE(0xA2),
-	IF_ICMPGT(0xA3),
-	IF_ICMPLE(0xA4),
-	IF_ACMPEQ(0xA5),
-	IF_ACMPNE(0xA6),
+	IF_ICMPEQ(0x9F, OperandType.BRANCHOFFSET),
+	IF_ICMPNE(0xA0, OperandType.BRANCHOFFSET),
+	IF_ICMPLT(0xA1, OperandType.BRANCHOFFSET),
+	IF_ICMPGE(0xA2, OperandType.BRANCHOFFSET),
+	IF_ICMPGT(0xA3, OperandType.BRANCHOFFSET),
+	IF_ICMPLE(0xA4, OperandType.BRANCHOFFSET),
+	IF_ACMPEQ(0xA5, OperandType.BRANCHOFFSET),
+	IF_ACMPNE(0xA6, OperandType.BRANCHOFFSET),
 
-	GOTO(0xA7),
+	GOTO(0xA7, OperandType.BRANCHOFFSET),
 
 	JSR(0xA8),
 
@@ -271,36 +243,36 @@ public enum Opcode {
 	ARETURN(0xB0),
 	RETURN(0xB1),
 
-	GETSTATIC(0xB2),
-	PUTSTATIC(0xB3),
+	GETSTATIC(0xB2, OperandType.FIELDREF),
+	PUTSTATIC(0xB3, OperandType.FIELDREF),
 
-	GETFIELD(0xB4),
-	PUTFIELD(0xB5),
+	GETFIELD(0xB4, OperandType.FIELDREF),
+	PUTFIELD(0xB5, OperandType.FIELDREF),
 
-	INVOKEVIRTUAL(0xB6),
-	INVOKESPECIAL(0xB7),
-	INVOKESTATIC(0xB8),
-	INVOKEINTERFACE(0xB9),
+	INVOKEVIRTUAL(0xB6, OperandType.METHODREF),
+	INVOKESPECIAL(0xB7, OperandType.METHODREF),
+	INVOKESTATIC(0xB8, OperandType.METHODREF),
+	INVOKEINTERFACE(0xB9, OperandType.METHODREF),
 
 	XXXUNUSEDXXX1(0xBA),
 
-	NEW(0xBB),
+	NEW(0xBB, OperandType.CLASSREF),
 
-	NEWARRAY(0xBC),
-	ANEWARRAY(0xBD),
+	NEWARRAY(0xBC, OperandType.BYTE),
+	ANEWARRAY(0xBD, OperandType.CLASSREF),
 	ARRAYLENGTH(0xBE),
 
 	ATHROW(0xBF),
 
-	CHECKCAST(0xC0),
-	INSTANCEOF(0xC1),
+	CHECKCAST(0xC0, OperandType.CLASSREF),
+	INSTANCEOF(0xC1, OperandType.CLASSREF),
 
 	MONITORENTER(0xC2),
 	MONITOREXIT(0xC3),
 
 	WIDE(0xC4),
 
-	MULTIANEWARRAY(0xC5),
+	MULTIANEWARRAY(0xC5, OperandType.CLASSREF, OperandType.BYTE),
 
 	IFNULL(0xC6),
 	IFNONNULL(0xC7),
@@ -316,13 +288,39 @@ public enum Opcode {
 
 	;
 
-	private int opcode;
+	static private final Opcode[] enumsByOpcode = new Opcode[0xFF+1];
 
-	Opcode(int opcode) {
+	static {
+		initEnumsByOpcode();
+	}
+
+	static public Opcode forOpcode(int opcode) {
+		if (enumsByOpcode == null) {
+			initEnumsByOpcode();
+		}
+		return enumsByOpcode[opcode];
+	}
+
+	int opcode;
+	OperandType[] operands;
+
+	Opcode(int opcode, OperandType ... operands) {
 		this.opcode = opcode;
+		this.operands = operands;
 	}
 
 	public int opcode() {
 		return opcode;
 	}
+
+	public List<OperandType> operands() {
+		return ArrayHelper.asImmutableList(operands);
+	}
+
+	static private synchronized void initEnumsByOpcode() {
+		for (Opcode o : values()) {
+			enumsByOpcode[o.opcode] = o;
+		}
+	}
+
 }
