@@ -39,6 +39,14 @@ CONSTANT_NameAndType_info {
 		return CPEntryType.NAME_AND_TYPE; 
 	}
 
+	public String name() {
+		return name.value();
+	}
+
+	public String stype() {
+		return type.value();
+	}
+
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		final int nameidx = in.readUnsignedShort();
 		final int descidx = in.readUnsignedShort();

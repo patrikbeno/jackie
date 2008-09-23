@@ -34,6 +34,14 @@ CONSTANT_Fieldref_info {
 		nametype = factory().getNameAndType(name, type);
 	}
 
+	public ClassRef classref() {
+		return classref;
+	}
+
+	public NameAndType nametype() {
+		return nametype;
+	}
+
 	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
 		final int classidx = in.readUnsignedShort();
 		final int nametypeidx = in.readUnsignedShort();
