@@ -11,7 +11,7 @@ public class Log {
 		ALL, DBG, TRC, INF, WRN, ERR, NOTHING
 	}
 
-	static final Level MINLEVEL = Level.DBG;
+	static final Level MINLEVEL = Level.valueOf(System.getProperty("Log.MINLEVEL", Level.INF.name()));
 
 	static public void enter() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
@@ -44,7 +44,8 @@ public class Log {
 			return;
 		}
 
-		System.out.printf("%5d [%s] ", (System.currentTimeMillis()-START), level);
+//		System.out.printf("%5d [%s] ", (System.currentTimeMillis()-START), level);
+		System.out.printf("[%s] ", level);
 		System.out.printf(msg, args);
 		System.out.println();
 	}
