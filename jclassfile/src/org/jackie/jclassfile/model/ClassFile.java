@@ -223,31 +223,39 @@ ClassFile {
 	public void save(DataOutput out) throws IOException {
 		Log.enter();
 
-		out.writeInt(magic);
-		out.writeShort(minor);
-		out.writeShort(major);
+		newContext();
+		try {
+			context().set(ClassFileContext.class, new ClassFileContext(this));
+			
+			out.writeInt(magic);
+			out.writeShort(minor);
+			out.writeShort(major);
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream tmpout = new DataOutputStream(baos);
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			DataOutputStream tmpout = new DataOutputStream(baos);
 
-		flags.save(tmpout);
-		writeConstantReference(classname, tmpout);
-		writeConstantReference(superclass, tmpout);
+			flags.save(tmpout);
+			writeConstantReference(classname, tmpout);
+			writeConstantReference(superclass, tmpout);
 
-		// interfaces
-		tmpout.writeShort(sizeof(interfaces));
-		for (ClassRef i : iterable(interfaces)) {
-			i.writeReference(tmpout);
+			// interfaces
+			tmpout.writeShort(sizeof(interfaces));
+			for (ClassRef i : iterable(interfaces)) {
+				i.writeReference(tmpout);
+			}
+
+			save(tmpout, fields);
+			save(tmpout, methods);
+			save(tmpout, attributes);
+
+			pool.save(out);
+
+			tmpout.close();
+			out.write(baos.toByteArray());
+
+		} finally {
+			closeContext();
 		}
-
-		save(tmpout, fields);
-		save(tmpout, methods);
-		save(tmpout, attributes);
-
-		pool.save(out);
-
-		tmpout.close();
-		out.write(baos.toByteArray());
 
 		Log.leave();
 	}
