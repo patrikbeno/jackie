@@ -28,7 +28,7 @@ public class Assert {
 
 		if (!expected.isAssignableFrom(o.getClass())) {
 			throw new ClassCastException(String.format(
-					"Incompatible types: Expected %s, found: %s",
+					"Incompatible types. Expected: %s, found: %s",
 					expected.getName(), o.getClass().getName()));
 		}
 		return (T) o;
