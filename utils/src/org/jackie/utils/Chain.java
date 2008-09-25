@@ -1,84 +1,47 @@
 package org.jackie.utils;
 
-import static org.jackie.utils.Assert.doAssert;
+import org.jackie.utils.Chain.Internal;
 
 /**
  * @author Patrik Beno
  */
-public class Chain<T extends Chain<T>> {
+public interface Chain<T extends Chain<T>> extends Iterable<T> {
 
-	private T previous;
-	private T next;
-
-	public T previous() {
-		return previous;
+	interface Internal {
+		void setPrevious(Internal previous);
+		void setNext(Internal next);
 	}
 
-	public T next() {
-		return next;
-	}
+	T previous();
 
-	public T head() {
-		T element = $this();
-		while (element.previous() != null) {
-			element = element.previous();
-		}
-		return element;
-	}
+	T next();
 
-	public T tail() {
-		T element = $this();
-		while (element.next() != null) {
-			element = element.next();
-		}
-		return element;
-	}
+	T head();
 
-	public T append(T element) {
-		doAssert(next == null, "cannot append(). Use truncate()+append() or insert()");
-		link($this(), element);
-		return tail();
-	}
+	T tail();
+
+	T append(T element);
+
+	T insert(T element);
+
+	T truncate();
+
+	T delete();
 
 	/**
-	 * inserts element at current position (element becomes this' predecessor /this.previous/);
-	 * its' effectivelly prepend(), maybe that would be the better name
-	 * @param element
-	 * @return always this, allowing to do successive chained inserts
+	 * Length of this chain from this element to tail().
+	 * To determine full chain length, navigate to head() (head().length()).
+	 * @return
 	 */
-	public T insert(T element) {
-		link(previous, element);
-		link(element, $this());
-		return $this();
-	}
+	int length();
 
-	public T truncate() {
-		link($this(), null);
-		return $this();
-	}
+	/**
+	 * index of this element in the whole chain
+	 * @return
+	 */
+	int index();
 
-	public T delete() {
-		link(previous, next);
-		return next != null ? next : previous;
-	}
+	boolean isHead();
 
-	public boolean isHead() {
-		return previous == null;
-	}
-
-	public boolean isTail() {
-		return next == null;
-	}
-
-	private void link(T previous, T next) {
-		if (previous != null) { previous.next = next; }
-		if (next != null) { next.previous = previous; }
-	}
-
-	private T $this() {
-		//noinspection unchecked
-		return (T) this;
-	}
-
-
+	boolean isTail();
 }

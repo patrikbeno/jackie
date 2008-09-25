@@ -1,7 +1,7 @@
 package org.jackie.test.utils;
 
-import org.jackie.utils.Chain;
 import org.jackie.utils.Assert;
+import org.jackie.utils.ChainImpl;
 import org.testng.annotations.Test;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.Arrays;
  */
 public class ChainTest {
 
-	static class IntChain extends Chain<IntChain> {
+	static class IntChain extends ChainImpl<IntChain> {
 		int id;
 		IntChain(int id) {
 			this.id = id;
@@ -33,6 +33,10 @@ public class ChainTest {
 		return new IntChain(id);
 	}
 
+	static IntChain createTestChain() {
+		return create(1).append(create(2)).append(create(3)).append(create(4)).head();
+	}
+
 	List<Integer> expected = Arrays.asList(1,2,3,4);
 
 	@Test
@@ -40,6 +44,8 @@ public class ChainTest {
 		IntChain chain = create(1).append(create(2)).append(create(3)).append(create(4));
 		Assert.expected(1, chain.head().id, "head?");
 		Assert.expected(4, chain.tail().id, "tail?");
+		Assert.doAssert(chain.head().isHead(), "isHead?");
+		Assert.doAssert(chain.tail().isTail(), "isTail?");
 	}
 
 	@Test(dependsOnMethods="headtail")
@@ -70,5 +76,24 @@ public class ChainTest {
 		unwanted.delete().delete().delete();
 
 		Assert.expected(expected, chain.dump(), "Chain.delete()");
+	}
+
+	@Test
+	public void index() {
+		IntChain chain = createTestChain();
+		Assert.expected(4, chain.length(), "length?");
+		Assert.expected(1, chain.index(), "index?");
+		Assert.expected(2, chain.next().index(), "index?");
+	}
+
+	@Test
+	public void iterator() {
+		IntChain chain = createTestChain();
+		int expect = 0;
+		for (IntChain element : chain) {
+			expect++;
+			Assert.expected(expect, element.id, "iterator?");
+		}
+		Assert.expected(expect, 4, "iterator max?");
 	}
 }
