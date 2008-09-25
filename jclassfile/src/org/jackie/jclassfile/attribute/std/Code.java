@@ -8,9 +8,9 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Countdown;
-import static org.jackie.utils.Assert.expected;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -137,7 +137,7 @@ Code_attribute {
 			out.writeShort(item.startpc);
 			out.writeShort(item.endpc);
 			out.writeShort(item.handlerpc);
-			item.exception.writeReference(out);
+			Helper.writeConstantReference(item.exception, out);
 		}
 
 		// attributes
