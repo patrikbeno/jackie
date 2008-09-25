@@ -82,8 +82,9 @@ public class ChainTest {
 	public void index() {
 		IntChain chain = createTestChain();
 		Assert.expected(4, chain.length(), "length?");
-		Assert.expected(1, chain.index(), "index?");
-		Assert.expected(2, chain.next().index(), "index?");
+		Assert.expected(0, chain.index(), "index?");
+		Assert.expected(1, chain.next().index(), "index?");
+		Assert.expected(3, chain.tail().index(), "index?");
 	}
 
 	@Test
