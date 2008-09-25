@@ -18,7 +18,8 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 
 	protected AbstractInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 		this.opcode = opcode;
-		load(in, previous);
+		if (previous != null) { previous.append(this); }
+		load(in);
 	}
 
 	public int opcode() {
@@ -47,9 +48,9 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		return list;
 	}
 
-	protected void load(DataInput in, Instruction previous) throws IOException {
-		loadOperands(in, previous);
-		if (previous != null) { previous.append(this); }
+	protected void load(DataInput in) throws IOException {
+		// opcode we already have
+		loadOperands(in);
 	}
 
 	public final void save(DataOutput out) throws IOException {
@@ -57,7 +58,7 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		saveOperands(out);
 	}
 
-	protected abstract void loadOperands(DataInput in, Instruction previous) throws IOException;
+	protected abstract void loadOperands(DataInput in) throws IOException;
 
 	protected abstract void saveOperands(DataOutput out) throws IOException;
 

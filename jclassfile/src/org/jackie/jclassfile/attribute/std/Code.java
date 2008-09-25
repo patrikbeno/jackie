@@ -9,6 +9,7 @@ import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.utils.IOHelper;
+import org.jackie.utils.Countdown;
 import static org.jackie.utils.Assert.expected;
 
 import java.io.DataInput;
@@ -88,7 +89,7 @@ Code_attribute {
 		exceptions: {
 			int exlen = in.readUnsignedShort();
 			exceptions = new ArrayList<ExceptionTableItem>(exlen);
-			while (exlen-- > 0) {
+			for (Countdown c = new Countdown(exlen); c.next();) {
 				ExceptionTableItem item = new ExceptionTableItem();
 				item.startpc = in.readUnsignedShort();
 				item.endpc = in.readUnsignedShort();

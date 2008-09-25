@@ -279,6 +279,6 @@ ClassFile {
 	}
 
 	public String toString() {
-		return String.format("ClassFile(%s)", classname.value());
+		return String.format("ClassFile(%s)", classname != null ? classname.value() : "?");
 	}
 }

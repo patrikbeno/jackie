@@ -4,7 +4,9 @@ import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import static org.jackie.utils.Assert.expected;
+import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Assert;
+import org.jackie.utils.Countdown;
 
 import java.io.DataOutput;
 import java.io.IOException;
@@ -22,7 +24,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 		}
 		protected void saveOperands(DataOutput out) throws IOException {
 		}
@@ -36,7 +38,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			int index = in.readUnsignedShort();
 			constant = (T) classFileContext().constantPool().getConstant(index, Constant.class);
 		}
@@ -59,7 +61,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			int index = in.readUnsignedByte();
 			constant = classFileContext().constantPool().getConstant(index, Constant.class);
 		}
@@ -82,7 +84,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			branchoffset = in.readShort();
 		}
 
@@ -123,7 +125,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			index = in.readUnsignedByte();
 		}
 
@@ -150,7 +152,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			value = in.readByte();
 		}
 
@@ -167,7 +169,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			value = in.readShort();
 		}
 
@@ -184,7 +186,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			value = in.readInt();
 		}
 
@@ -213,7 +215,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			type = in.readUnsignedByte();
 		}
 
@@ -235,7 +237,7 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
+		protected void loadOperands(DataInput in) throws IOException {
 			index = in.readUnsignedByte();
 			value = in.readUnsignedByte();
 		}
@@ -258,42 +260,91 @@ public class Instructions {
 			this.match = match;
 			this.offset = offset;
 		}
+
+		public String toString() {
+			return String.format("%d:%d", match, offset);
+		}
 	}
 
-	static public class SwitchInstruction extends AbstractInstruction {
+	static public class LookupSwitchInstruction extends AbstractInstruction {
 
 		int dflt;
 		List<Match> matches;
 
-		public SwitchInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
+		public LookupSwitchInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
 		}
 
-		protected void loadOperands(DataInput in, Instruction previous) throws IOException {
-			int offset = (previous != null) ? previous.offset() + previous.size() : 0;
-			int padding = offset % 4 - 1;
-			while (padding-- > 0) { in.readByte(); }
+		protected void loadOperands(DataInput in) throws IOException {
+			for (Countdown c = new Countdown(padding()); c.next();) {
+				in.readByte();
+			}
 
 			dflt = in.readInt();
 			int npairs = in.readInt();
 			matches = new ArrayList<Match>(npairs);
-			while (npairs-- > 0) {
+			for (int i = 0; i < npairs; i++) {
 				Match c = new Match(in.readInt(), in.readInt());
 				matches.add(c);
 			}
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
-			throw Assert.notYetImplemented(); // todo implement SwitchInstruction.saveOperands()
+			throw Assert.notYetImplemented(); // todo implement LookupSwitchInstruction.saveOperands()
+		}
+
+		int padding() {
+			return 3 - offset() % 4;
 		}
 
 		public int size() {
-			int padding = offset() % 4 - 1;
-			return 1 /*opcode*/ + padding + 4 /*dflt*/ + 4 /*npairs*/ + matches.size()*8;
+			return 1 /*opcode*/ + padding() + 4 /*dflt*/ + 4 /*npairs*/ + matches.size()*8;
 		}
 	}
 
-	
+	static public class SwitchTableInstruction extends AbstractInstruction {
+
+		int dflt;
+		int low;
+		int high;
+		List<Match> matches;
+
+		public SwitchTableInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
+			super(opcode, in, previous);
+		}
+
+		protected void loadOperands(DataInput in) throws IOException {
+			for (Countdown c = new Countdown(padding()); c.next();) {
+				in.readByte();
+			}
+
+			dflt = in.readInt();
+			low = in.readInt();
+			high = in.readInt();
+			doAssert(low <= high, "low(%d)<=high(%d)", low, high);
+
+			int count = high - low + 1;
+			matches = new ArrayList<Match>(count);
+			for (Countdown c = new Countdown(count); c.next();) {
+				Match m = new Match(in.readInt(), in.readInt());
+				matches.add(m);
+			}
+		}
+
+		protected void saveOperands(DataOutput out) throws IOException {
+			throw Assert.notYetImplemented(); // todo implement LookupSwitchInstruction.saveOperands()
+		}
+
+		int padding() {
+			return 3 - offset() % 4;
+		}
+
+		public int size() {
+			return 1 /*opcode*/ + padding() + 4*3 /*dflt,low,high*/ + matches.size()*8;
+		}
+	}
+
+
 
 
 

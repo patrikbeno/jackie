@@ -1,6 +1,5 @@
 package org.jackie.jclassfile.code.impl;
 
-import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.code.InstructionFactory;
 import org.jackie.jclassfile.code.impl.Instructions.ArrayInstruction;
@@ -13,7 +12,8 @@ import org.jackie.jclassfile.code.impl.Instructions.ByteInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.ShortInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.LocalVarOpInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.BytePoolRefInstruction;
-import org.jackie.jclassfile.code.impl.Instructions.SwitchInstruction;
+import org.jackie.jclassfile.code.impl.Instructions.LookupSwitchInstruction;
+import org.jackie.jclassfile.code.impl.Instructions.SwitchTableInstruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.utils.Assert;
 
@@ -89,9 +89,15 @@ public class Factories {
 		}
 	};
 
-	static public final InstructionFactory SWITCH = new InstructionFactory() {
+	static public final InstructionFactory LOOKUPSWITCH = new InstructionFactory() {
 		public Instruction loadInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			return new SwitchInstruction(opcode, in, previous);
+			return new LookupSwitchInstruction(opcode, in, previous);
+		}
+	};
+
+	static public final InstructionFactory SWITCHTABLE = new InstructionFactory() {
+		public Instruction loadInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
+			return new SwitchTableInstruction(opcode, in, previous);
 		}
 	};
 
