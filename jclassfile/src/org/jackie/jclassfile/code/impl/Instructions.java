@@ -24,6 +24,10 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
+		public SimpleInstruction(int opcode) {
+			super(opcode);
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
 		}
 		protected void saveOperands(DataOutput out) throws IOException {
@@ -36,6 +40,11 @@ public class Instructions {
 
 		public PoolRefInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
+		}
+
+		public PoolRefInstruction(int opcode, T constant) {
+			super(opcode);
+			this.constant = constant;
 		}
 
 		protected void loadOperands(DataInput in) throws IOException {
@@ -61,6 +70,10 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
+		public BytePoolRefInstruction(int opcode, Constant constant) {
+			super(opcode, constant);
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
 			int index = in.readUnsignedByte();
 			constant = classFileContext().constantPool().getConstant(index, Constant.class);
@@ -82,6 +95,11 @@ public class Instructions {
 
 		public BranchOffsetInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
+		}
+
+		public BranchOffsetInstruction(int opcode, Instruction instruction) {
+			super(opcode);
+			this.instruction = instruction;
 		}
 
 		protected void loadOperands(DataInput in) throws IOException {
@@ -125,6 +143,11 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
+		public FrameRefInstruction(int opcode, int index) {
+			super(opcode);
+			this.index = index;
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
 			index = in.readUnsignedByte();
 		}
@@ -145,11 +168,20 @@ public class Instructions {
 		protected ConstantInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
 		}
+
+		protected ConstantInstruction(int opcode, T value) {
+			super(opcode);
+			this.value = value;
+		}
 	}
 
 	static public class ByteInstruction extends ConstantInstruction<Byte> {
 		public ByteInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
+		}
+
+		public ByteInstruction(int opcode, Byte value) {
+			super(opcode, value);
 		}
 
 		protected void loadOperands(DataInput in) throws IOException {
@@ -169,6 +201,10 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
+		public ShortInstruction(int opcode, Short value) {
+			super(opcode, value);
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
 			value = in.readShort();
 		}
@@ -186,6 +222,10 @@ public class Instructions {
 			super(opcode, in, previous);
 		}
 
+		public IntegerInstruction(int opcode, Integer value) {
+			super(opcode, value);
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
 			value = in.readInt();
 		}
@@ -199,28 +239,61 @@ public class Instructions {
 	}
 
 	static public class ArrayInstruction extends AbstractInstruction {
-		
-		static final int T_BOOLEAN = 4;
-		static final int T_CHAR 	= 5;
-		static final int T_FLOAT 	= 6;
-		static final int T_DOUBLE 	= 7;
-		static final int T_BYTE 	= 8;
-		static final int T_SHORT 	= 9;
-		static final int T_INT 		= 10;
-		static final int T_LONG 	= 11;
 
-		int type;
+		static public enum Type {
+			BOOLEAN(4, boolean.class),
+			CHAR(5, char.class),
+			FLOAT(6, float.class),
+			DOUBLE(7, double.class),
+			BYTE(8, byte.class),
+			SHORT(9, short.class),
+			INT(10, int.class),
+			LONG(11, long.class),
+			;
+			int code;
+			Class type;
+
+			Type(int code, Class type) {
+				this.code = code;
+				this.type = type;
+			}
+
+			static Type forClass(Class cls) {
+				for (Type t : values()) {
+					if (t.type.equals(cls)) {
+						return t;
+					}
+				}
+				throw Assert.invariantFailed("No type for %s", cls);
+			}
+
+			static Type forCode(int code) {
+				for (Type t : values()) {
+					if (t.code == code) {
+						return t;
+					}
+				}
+				throw Assert.invariantFailed("No type for code: %d", code);
+			}
+		}
+
+		Type type;
 
 		public ArrayInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
 		}
 
+		public ArrayInstruction(int opcode, Class type) {
+			super(opcode);
+			this.type = Type.forClass(type);
+		}
+
 		protected void loadOperands(DataInput in) throws IOException {
-			type = in.readUnsignedByte();
+			type = Type.forCode(in.readUnsignedByte());
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
-			out.writeByte(type); 
+			out.writeByte(type.code);
 		}
 		public int size() {
 			return 2;
@@ -235,6 +308,12 @@ public class Instructions {
 
 		public LocalVarOpInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
+		}
+
+		public LocalVarOpInstruction(int opcode, int index, int value) {
+			super(opcode);
+			this.index = index;
+			this.value = value;
 		}
 
 		protected void loadOperands(DataInput in) throws IOException {
@@ -283,9 +362,9 @@ public class Instructions {
 			dflt = in.readInt();
 			int npairs = in.readInt();
 			matches = new ArrayList<Match>(npairs);
-			for (int i = 0; i < npairs; i++) {
-				Match c = new Match(in.readInt(), in.readInt());
-				matches.add(c);
+			for (Countdown c = new Countdown(npairs); c.next();) {
+				Match m = new Match(in.readInt(), in.readInt());
+				matches.add(m);
 			}
 		}
 

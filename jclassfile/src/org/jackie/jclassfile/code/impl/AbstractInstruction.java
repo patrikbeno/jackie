@@ -22,6 +22,10 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		load(in);
 	}
 
+	protected AbstractInstruction(int opcode) {
+		this.opcode = opcode;
+	}
+
 	public int opcode() {
 		return opcode;
 	}
