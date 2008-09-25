@@ -1,9 +1,9 @@
 package org.jackie.jclassfile.code;
 
-import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.context.ContextObject;
+import org.jackie.jclassfile.code.impl.Opcode;
 
 import java.util.BitSet;
 
@@ -19,10 +19,7 @@ public class InstructionFactoryManager implements ContextObject {
 			context().set(InstructionFactoryManager.class, ifm);
 
 			// fixme QDH
-			new SimpleInstructionFactory();
-			new MethodRefInstructionFactory();
-			new FieldRefInstructionFactory();
-			new ClassRefInstructionFactory();
+			Opcode.registerInstructionFactories();
 		}
 		return NOTNULL(context(InstructionFactoryManager.class));
 	}

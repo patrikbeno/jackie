@@ -5,6 +5,8 @@ import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.utils.Log;
+import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.typecast;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -88,7 +90,7 @@ public class ConstantPool extends Base {
 		if (index == 0) { return null; }
 
 		Constant c = constants.get(index-1);
-		return type.cast(c);
+		return typecast(c, type);
 	}
 
 	protected Constant createConstant(DataInput in) throws IOException {

@@ -24,6 +24,8 @@ CONSTANT_Methodref_info {
 		return CPEntryType.METHODREF;
 	}
 
-
+	protected String valueToString() {
+		return String.format("%s.%s%s", classref.value(), nametype.name(), nametype.stype());
+	}
 
 }

@@ -6,7 +6,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 /**
  * @author Patrik Beno
  */
-public class InterfaceMethodRef extends BaseRef {
+public class InterfaceMethodRef extends MethodRef {
 
 	/*
 CONSTANT_InterfaceMethodref_info {
@@ -18,10 +18,6 @@ CONSTANT_InterfaceMethodref_info {
 
 	InterfaceMethodRef(ConstantPool pool) {
 		super(pool);
-	}
-
-	InterfaceMethodRef(ConstantPool pool, String clsname, String name, String type) {
-		super(pool, clsname, name, type);
 	}
 
 	public CPEntryType type() {

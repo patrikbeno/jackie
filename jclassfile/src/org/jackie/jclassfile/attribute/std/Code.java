@@ -2,15 +2,14 @@ package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeProvider;
-import org.jackie.jclassfile.code.v1.Insn;
 import org.jackie.jclassfile.code.CodeParser;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.model.ClassFileProvider;
-import org.jackie.utils.Assert;
 import org.jackie.utils.IOHelper;
+import static org.jackie.utils.Assert.expected;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -63,7 +62,7 @@ Code_attribute {
 	int maxStack;
 	int maxLocals;
 
-	List<Instruction> instructions;
+	Instruction instructions;
 	List<ExceptionTableItem> exceptions;
 	List<AttributeInfo> attributes;
 

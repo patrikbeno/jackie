@@ -1,38 +1,36 @@
 package org.jackie.jclassfile.code;
 
 import static org.jackie.jclassfile.code.InstructionFactoryManager.instructionFactoryManager;
+import static org.jackie.utils.Assert.expected;
 
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
 import java.io.DataInput;
-import java.util.List;
-import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
  */
 public class CodeParser {
 
-	public List<Instruction> parse(DataInput in, int length) throws IOException {
-
-		List<Instruction> instructions = new ArrayList<Instruction>();
+	public Instruction parse(DataInput in, int length) throws IOException {
 
 		int toread = length;
+		Instruction insn = null;
+
 		while (toread > 0) {
-			Instruction insn = read(in);
-			instructions.add(insn);
+			insn = read(in, insn);
 			toread -= insn.size();
 		}
 
-		return instructions;
+		expected(0, toread, "length != read");
+
+		return insn.head();
 	}
 
-	Instruction read(DataInput in) throws IOException {
+	Instruction read(DataInput in, Instruction previous) throws IOException {
 		int opcode = in.readUnsignedByte();
 
 		InstructionFactory f = instructionFactoryManager().getFactory(opcode);
-		Instruction insn = f.loadInstruction(opcode, in);
+		Instruction insn = f.loadInstruction(opcode, in, previous);
 
 		return insn;
 	}

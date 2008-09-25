@@ -86,8 +86,13 @@ cp_info {
 		references++;
 	}
 
+	public void writeByteReference(DataOutput out) throws IOException {
+		out.writeByte(NOTNULL(getIndex()));
+		references++;
+	}
+
 	public String toString() {
-		return String.format("%s #%s: \"%s\"", type().name(), getIndex(), valueToString());
+		return String.format("#%d %s: %s", getIndex(), type().name(), valueToString());
 	}
 
 	protected String valueToString() {

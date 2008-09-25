@@ -1,10 +1,8 @@
-package org.jackie.jclassfile.code;
+package org.jackie.jclassfile.code.impl;
 
-import org.jackie.utils.ArrayHelper;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Arrays;
+import org.jackie.jclassfile.code.InstructionFactory;
+import org.jackie.jclassfile.code.InstructionFactoryManager;
+import static org.jackie.jclassfile.code.InstructionFactoryManager.instructionFactoryManager;
 
 /**
  * @author Patrik Beno
@@ -33,18 +31,18 @@ public enum Opcode {
 	DCONST_0(0x0E),
 	DCONST_1(0x0F),
 
-	BIPUSH(0x10),
-	SIPUSH(0x11),
+	BIPUSH(0x10, Factories.BYTE),
+	SIPUSH(0x11, Factories.SHORT),
 
-	LDC(0x12),
-	LDC_W(0x13),
-	LDC2_W(0x14),
+	LDC(0x12, Factories.POOLREF_BYTE),
+	LDC_W(0x13, Factories.POOLREF),
+	LDC2_W(0x14, Factories.POOLREF),
 
-	ILOAD(0x15, OperandType.FRAMEREF),
-	LLOAD(0x16, OperandType.FRAMEREF),
-	FLOAD(0x17, OperandType.FRAMEREF),
-	DLOAD(0x18, OperandType.FRAMEREF),
-	ALOAD(0x19, OperandType.FRAMEREF),
+	ILOAD(0x15, Factories.FRAMEREF),
+	LLOAD(0x16, Factories.FRAMEREF),
+	FLOAD(0x17, Factories.FRAMEREF),
+	DLOAD(0x18, Factories.FRAMEREF),
+	ALOAD(0x19, Factories.FRAMEREF),
 
 	ILOAD_0(0x1A),
 	ILOAD_1(0x1B),
@@ -80,11 +78,11 @@ public enum Opcode {
 	CALOAD(0x34),
 	SALOAD(0x35),
 
-	ISTORE(0x36, OperandType.FRAMEREF),
-	LSTORE(0x37, OperandType.FRAMEREF),
-	FSTORE(0x38, OperandType.FRAMEREF),
-	DSTORE(0x39, OperandType.FRAMEREF),
-	ASTORE(0x3A, OperandType.FRAMEREF),
+	ISTORE(0x36, Factories.FRAMEREF),
+	LSTORE(0x37, Factories.FRAMEREF),
+	FSTORE(0x38, Factories.FRAMEREF),
+	DSTORE(0x39, Factories.FRAMEREF),
+	ASTORE(0x3A, Factories.FRAMEREF),
 
 	ISTORE_0(0x3B),
 	ISTORE_1(0x3C),
@@ -180,7 +178,7 @@ public enum Opcode {
 	IXOR(0x82),
 	LXOR(0x83),
 
-	IINC(0x84),
+	IINC(0x84, Factories.LOCALVAROP),
 
 	I2L(0x85),
 	I2F(0x86),
@@ -210,31 +208,31 @@ public enum Opcode {
 	DCMPL(0x97),
 	DCMPG(0x98),
 
-	IFEQ(0x99, OperandType.BRANCHOFFSET),
-	IFNE(0x9A, OperandType.BRANCHOFFSET),
+	IFEQ(0x99, Factories.BRANCHOFFSET),
+	IFNE(0x9A, Factories.BRANCHOFFSET),
 
-	IFLT(0x9B, OperandType.BRANCHOFFSET),
-	IFGE(0x9C, OperandType.BRANCHOFFSET),
-	IFGT(0x9D, OperandType.BRANCHOFFSET),
-	IFLE(0x9E, OperandType.BRANCHOFFSET),
+	IFLT(0x9B, Factories.BRANCHOFFSET),
+	IFGE(0x9C, Factories.BRANCHOFFSET),
+	IFGT(0x9D, Factories.BRANCHOFFSET),
+	IFLE(0x9E, Factories.BRANCHOFFSET),
 
-	IF_ICMPEQ(0x9F, OperandType.BRANCHOFFSET),
-	IF_ICMPNE(0xA0, OperandType.BRANCHOFFSET),
-	IF_ICMPLT(0xA1, OperandType.BRANCHOFFSET),
-	IF_ICMPGE(0xA2, OperandType.BRANCHOFFSET),
-	IF_ICMPGT(0xA3, OperandType.BRANCHOFFSET),
-	IF_ICMPLE(0xA4, OperandType.BRANCHOFFSET),
-	IF_ACMPEQ(0xA5, OperandType.BRANCHOFFSET),
-	IF_ACMPNE(0xA6, OperandType.BRANCHOFFSET),
+	IF_ICMPEQ(0x9F, Factories.BRANCHOFFSET),
+	IF_ICMPNE(0xA0, Factories.BRANCHOFFSET),
+	IF_ICMPLT(0xA1, Factories.BRANCHOFFSET),
+	IF_ICMPGE(0xA2, Factories.BRANCHOFFSET),
+	IF_ICMPGT(0xA3, Factories.BRANCHOFFSET),
+	IF_ICMPLE(0xA4, Factories.BRANCHOFFSET),
+	IF_ACMPEQ(0xA5, Factories.BRANCHOFFSET),
+	IF_ACMPNE(0xA6, Factories.BRANCHOFFSET),
 
-	GOTO(0xA7, OperandType.BRANCHOFFSET),
+	GOTO(0xA7, Factories.BRANCHOFFSET),
 
-	JSR(0xA8),
+	JSR(0xA8, Factories.BRANCHOFFSET),
 
-	RET(0xA9),
+	RET(0xA9, Factories.FRAMEREF),
 
-	TABLESWITCH(0xAA),
-	LOOKUPSWITCH(0xAB),
+	TABLESWITCH(0xAA, Factories.UNSUPPORTED),
+	LOOKUPSWITCH(0xAB, Factories.SWITCH),
 
 	IRETURN(0xAC),
 	LRETURN(0xAD),
@@ -243,42 +241,42 @@ public enum Opcode {
 	ARETURN(0xB0),
 	RETURN(0xB1),
 
-	GETSTATIC(0xB2, OperandType.FIELDREF),
-	PUTSTATIC(0xB3, OperandType.FIELDREF),
+	GETSTATIC(0xB2, Factories.FIELDREF),
+	PUTSTATIC(0xB3, Factories.FIELDREF),
 
-	GETFIELD(0xB4, OperandType.FIELDREF),
-	PUTFIELD(0xB5, OperandType.FIELDREF),
+	GETFIELD(0xB4, Factories.FIELDREF),
+	PUTFIELD(0xB5, Factories.FIELDREF),
 
-	INVOKEVIRTUAL(0xB6, OperandType.METHODREF),
-	INVOKESPECIAL(0xB7, OperandType.METHODREF),
-	INVOKESTATIC(0xB8, OperandType.METHODREF),
-	INVOKEINTERFACE(0xB9, OperandType.METHODREF),
+	INVOKEVIRTUAL(0xB6, Factories.METHODREF),
+	INVOKESPECIAL(0xB7, Factories.METHODREF),
+	INVOKESTATIC(0xB8, Factories.METHODREF),
+	INVOKEINTERFACE(0xB9, Factories.METHODREF),
 
 	XXXUNUSEDXXX1(0xBA),
 
-	NEW(0xBB, OperandType.CLASSREF),
+	NEW(0xBB, Factories.CLASSREF),
 
-	NEWARRAY(0xBC, OperandType.BYTE),
-	ANEWARRAY(0xBD, OperandType.CLASSREF),
+	NEWARRAY(0xBC, Factories.ARRAY),
+	ANEWARRAY(0xBD, Factories.CLASSREF),
 	ARRAYLENGTH(0xBE),
 
 	ATHROW(0xBF),
 
-	CHECKCAST(0xC0, OperandType.CLASSREF),
-	INSTANCEOF(0xC1, OperandType.CLASSREF),
+	CHECKCAST(0xC0, Factories.CLASSREF),
+	INSTANCEOF(0xC1, Factories.CLASSREF),
 
 	MONITORENTER(0xC2),
 	MONITOREXIT(0xC3),
 
-	WIDE(0xC4),
+	WIDE(0xC4, Factories.UNSUPPORTED),
 
-	MULTIANEWARRAY(0xC5, OperandType.CLASSREF, OperandType.BYTE),
+	MULTIANEWARRAY(0xC5, Factories.UNSUPPORTED),
 
-	IFNULL(0xC6),
-	IFNONNULL(0xC7),
+	IFNULL(0xC6, Factories.BRANCHOFFSET),
+	IFNONNULL(0xC7, Factories.BRANCHOFFSET),
 
-	GOTO_W(0xC8),
-	JSR_W(0xC9),
+	GOTO_W(0xC8, Factories.UNSUPPORTED),
+	JSR_W(0xC9, Factories.UNSUPPORTED),
 
 	//	RESERVED OPCODES:
 
@@ -302,24 +300,35 @@ public enum Opcode {
 	}
 
 	int opcode;
-	OperandType[] operands;
+	InstructionFactory factory;
 
-	Opcode(int opcode, OperandType ... operands) {
+	Opcode(int opcode, InstructionFactory factory) {
 		this.opcode = opcode;
-		this.operands = operands;
+		this.factory = factory;
+	}
+
+	Opcode(int opcode) {
+		this(opcode, Factories.SIMPLE);
 	}
 
 	public int opcode() {
 		return opcode;
 	}
 
-	public List<OperandType> operands() {
-		return ArrayHelper.asImmutableList(operands);
+	public InstructionFactory factory() {
+		return factory;
 	}
 
 	static private synchronized void initEnumsByOpcode() {
 		for (Opcode o : values()) {
 			enumsByOpcode[o.opcode] = o;
+		}
+	}
+
+	static public void registerInstructionFactories() {
+		InstructionFactoryManager ifm = instructionFactoryManager();
+		for (Opcode o : values()) {
+			ifm.registerFactory(o.opcode(), o.factory());
 		}
 	}
 

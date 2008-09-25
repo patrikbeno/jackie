@@ -10,5 +10,5 @@ import java.util.Set;
  */
 public interface InstructionFactory {
 
-	Instruction loadInstruction(int opcode, DataInput in) throws IOException;
+	Instruction loadInstruction(int opcode, DataInput in, Instruction previous) throws IOException;
 }

@@ -27,4 +27,8 @@ CONSTANT_Fieldref_info {
 	public CPEntryType type() {
 		return CPEntryType.FIELDREF;
 	}
+
+	protected String valueToString() {
+		return String.format("%s.%s : %s", classref.value(), nametype.name(), nametype.stype());
+	}
 }
