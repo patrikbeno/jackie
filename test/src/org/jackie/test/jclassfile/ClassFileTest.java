@@ -106,12 +106,5 @@ public class ClassFileTest {
 		}};
 	}
 
-	@Test
-	public void loadCode() throws IOException {
-		byte[] bytecode = Util.getByteCode(CodeSample.class);
-
-		ClassFile cf = new ClassFile();
-		cf.load(new DataInputStream(new ByteArrayInputStream(bytecode)));
-	}
 }
 
