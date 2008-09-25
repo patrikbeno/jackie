@@ -40,8 +40,12 @@ public class Assert {
 	}
 
 	static public UnsupportedOperationException unsupported() {
+		return unsupported("");
+	}
+
+	static public UnsupportedOperationException unsupported(String msg, Object ... args) {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
-		return new UnsupportedOperationException(ste.toString());
+		return new UnsupportedOperationException(String.format("%s : %s", ste.toString(), String.format(msg, args)));
 	}
 
 	static public AssertionError unexpected(Throwable thrown) {
