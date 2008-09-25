@@ -22,6 +22,7 @@ import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.jvm.structure.JVariable;
 import static org.jackie.utils.Assert.NOTNULL;
+import org.jackie.compiler.spi.NodeCompiler;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -165,8 +166,7 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 				classfile.addMethod(m);
 
 				for (JAttribute a : attributes().getAttributes()) {
-					if (a.getName().equals("Code")) { continue; }
-					((GenericAttribute)a).compile(m); //fixme revisit attribute compilation
+					((NodeCompiler)a).compile(m);
 				}
 			}
 		});

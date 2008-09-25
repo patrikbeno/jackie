@@ -10,6 +10,7 @@ import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.structure.JField;
 import static org.jackie.utils.Assert.NOTNULL;
+import org.jackie.compiler.spi.NodeCompiler;
 
 /**
  * @author Patrik Beno
@@ -73,7 +74,7 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 				classfile.addField(f);
 
 				for (JAttribute a : attributes().getAttributes()) {
-					((GenericAttribute)a).compile(f); //fixme revisit attribute compilation
+					((NodeCompiler)a).compile(f);
 				}
 			}
 		});

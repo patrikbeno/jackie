@@ -9,11 +9,12 @@ import org.jackie.jvm.Editor;
 import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.utils.Assert;
+import org.jackie.compiler.spi.NodeCompiler;
 
 /**
  * @author Patrik Beno
  */
-public class GenericAttribute implements JAttribute {
+public class GenericAttribute implements JAttribute, NodeCompiler<AttributeSupport> {
 
 	JNode owner;
 	String name;
@@ -58,13 +59,8 @@ public class GenericAttribute implements JAttribute {
 		};
 	}
 
-	public <T extends ClassFileProvider & AttributeSupport> void compile(T t) {
-		// fixme attribute handling (this sucks)
-		org.jackie.jclassfile.attribute.GenericAttribute newattr = new org.jackie.jclassfile.attribute.GenericAttribute(
-				t,
-				t.classFile().pool().factory().getUtf8(value.name()));
-		newattr.data(((org.jackie.jclassfile.attribute.GenericAttribute) value).data());
-		t.addAttribute(newattr);
+	public void compile(AttributeSupport context) {
+		context.addAttribute(value);
 	}
-
+	
 }
