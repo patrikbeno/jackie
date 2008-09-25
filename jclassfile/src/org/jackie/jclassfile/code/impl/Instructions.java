@@ -369,7 +369,16 @@ public class Instructions {
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
-			throw Assert.notYetImplemented(); // todo implement LookupSwitchInstruction.saveOperands()
+			// padding
+			for (Countdown c = new Countdown(padding()); c.next();) {
+				out.writeByte(0);
+			}
+			out.writeInt(dflt);
+			out.writeInt(matches.size());
+			for (Match m : matches) {
+				out.writeInt(m.match);
+				out.writeInt(m.offset);
+			}
 		}
 
 		int padding() {
@@ -381,14 +390,14 @@ public class Instructions {
 		}
 	}
 
-	static public class SwitchTableInstruction extends AbstractInstruction {
+	static public class TableSwitchInstruction extends AbstractInstruction {
 
 		int dflt;
 		int low;
 		int high;
-		List<Match> matches;
+		int[] jumpoffsets;
 
-		public SwitchTableInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
+		public TableSwitchInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
 			super(opcode, in, previous);
 		}
 
@@ -403,15 +412,27 @@ public class Instructions {
 			doAssert(low <= high, "low(%d)<=high(%d)", low, high);
 
 			int count = high - low + 1;
-			matches = new ArrayList<Match>(count);
-			for (Countdown c = new Countdown(count); c.next();) {
-				Match m = new Match(in.readInt(), in.readInt());
-				matches.add(m);
+			doAssert(count<0xFFFF, "suspicious count: %s", count);
+
+			jumpoffsets = new int[count];
+			for (int i=0; i<jumpoffsets.length; i++) {
+				jumpoffsets[0] = in.readInt();
 			}
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
-			throw Assert.notYetImplemented(); // todo implement LookupSwitchInstruction.saveOperands()
+			// padding
+			for (Countdown c = new Countdown(padding()); c.next();) {
+				out.writeByte(0);
+			}
+			out.writeInt(dflt);
+			out.writeInt(low);
+			out.writeInt(high);
+			
+			out.writeInt(jumpoffsets.length);
+			for (int offset : jumpoffsets) {
+				out.writeInt(offset);
+			}
 		}
 
 		int padding() {
@@ -419,7 +440,7 @@ public class Instructions {
 		}
 
 		public int size() {
-			return 1 /*opcode*/ + padding() + 4*3 /*dflt,low,high*/ + matches.size()*8;
+			return 1 /*opcode*/ + padding() + 4*3 /*dflt,low,high*/ + jumpoffsets.length*4;
 		}
 	}
 

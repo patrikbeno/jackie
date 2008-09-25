@@ -13,7 +13,7 @@ import org.jackie.jclassfile.code.impl.Instructions.ShortInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.LocalVarOpInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.BytePoolRefInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.LookupSwitchInstruction;
-import org.jackie.jclassfile.code.impl.Instructions.SwitchTableInstruction;
+import org.jackie.jclassfile.code.impl.Instructions.TableSwitchInstruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.utils.Assert;
 
@@ -97,7 +97,7 @@ public class Factories {
 
 	static public final InstructionFactory SWITCHTABLE = new InstructionFactory() {
 		public Instruction loadInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			return new SwitchTableInstruction(opcode, in, previous);
+			return new TableSwitchInstruction(opcode, in, previous);
 		}
 	};
 
