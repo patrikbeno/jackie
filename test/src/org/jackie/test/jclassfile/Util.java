@@ -15,7 +15,9 @@ public class Util {
 
 	static public byte[] getByteCode(Class cls) {
 		try {
-			URL url = NOTNULL(cls.getResource(cls.getSimpleName() + ".class"));
+			String sname = cls.getName();
+			sname = sname.substring(sname.lastIndexOf('.')+1);
+			URL url = NOTNULL(cls.getResource(sname + ".class"));
 			URLConnection con = url.openConnection();
 			byte[] bytes = new byte[con.getContentLength()];
 			DataInputStream in = new DataInputStream(con.getInputStream());
