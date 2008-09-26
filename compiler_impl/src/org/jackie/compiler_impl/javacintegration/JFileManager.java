@@ -43,6 +43,7 @@ public class JFileManager implements JavaFileManager {
 		return Thread.currentThread().getContextClassLoader();
 	}
 
+	// todo optimize this (performance issue: 10% total time when compiling codebase like ASM)
 	public Iterable<JavaFileObject> list(Location location, String packageName,
 													 Set<JavaFileObject.Kind> kinds,
 													 boolean recurse) throws IOException {
@@ -50,14 +51,14 @@ public class JFileManager implements JavaFileManager {
 		Assert.doAssert(kinds.size() == 1, "Too many kinds (expecting single one): %s", kinds);
 
 		Set<JavaFileObject> selected = new HashSet<JavaFileObject>();
-		String prefix = packageName.replace(".", "/") + "/";
+		String prefix = packageName.replace('.', '/') + "/";
 		Kind kind = kinds.iterator().next();
 		FileManager fm = selectFileManager(kind);
 
 		for (String pathname : fm.getPathNames()) {
-			boolean matches = true;
-			matches &= pathname.startsWith(prefix) && pathname.endsWith(kind.extension);
-			matches &= recurse || pathname.indexOf('/', prefix.length() + 1) == -1;
+			boolean matches = 
+					(pathname.endsWith(kind.extension) && pathname.startsWith(prefix))
+					&& (recurse || pathname.indexOf('/', prefix.length() + 1) == -1);
 			if (matches) {
 				JFO jfo = new JFO(fm.getFileObject(pathname), kind);
 				selected.add(jfo);
