@@ -34,6 +34,7 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		return 1;
 	}
 
+	// todo optimize this (this is HUGE performance bottleneck)
 	public int offset() {
 		int offset = 0;
 		Instruction insn = previous();
