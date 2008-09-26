@@ -2,6 +2,7 @@ package org.jackie.jclassfile.code;
 
 import static org.jackie.jclassfile.code.InstructionFactoryManager.instructionFactoryManager;
 import static org.jackie.utils.Assert.expected;
+import org.jackie.utils.Log;
 
 import java.io.IOException;
 import java.io.DataInput;
@@ -31,6 +32,8 @@ public class CodeParser {
 
 		InstructionFactory f = instructionFactoryManager().getFactory(opcode);
 		Instruction insn = f.loadInstruction(opcode, in, previous);
+
+		Log.debug("Loaded instruction :%s", insn);
 
 		return insn;
 	}

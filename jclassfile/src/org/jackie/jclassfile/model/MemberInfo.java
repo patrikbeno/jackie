@@ -6,6 +6,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.utils.CollectionsHelper.*;
+import org.jackie.utils.Log;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -84,6 +85,9 @@ field|member info {
 		flags = new Flags(in);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = classfile.pool().getConstant(in.readUnsignedShort(), Utf8.class);
+
+		Log.debug("Loading method %s.%s", classfile.classname(), name(), descriptor());
+
 		attributes = AttributeHelper.loadAttributes(this, in);
 	}
 
