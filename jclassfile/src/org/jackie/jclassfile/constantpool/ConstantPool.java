@@ -7,6 +7,7 @@ import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.utils.Log;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.utils.Assert.NOTNULL;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -89,8 +90,8 @@ public class ConstantPool extends Base {
 	public <T extends Constant> T getConstant(int index, Class<T> type) {
 		if (index == 0) { return null; }
 
-		Constant c = constants.get(index-1);
-		return typecast(c, type);
+		T c = typecast(constants.get(index - 1), type);
+		return NOTNULL(c, "No constant found for index %s", index);
 	}
 
 	protected Constant createConstant(DataInput in) throws IOException {
