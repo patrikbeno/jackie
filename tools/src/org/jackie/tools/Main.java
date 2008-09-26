@@ -4,10 +4,10 @@ import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.CyclicBuffer;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Assert;
-import org.jackie.compiler_impl.CompilerImpl;
-import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
-import org.jackie.compiler_impl.filemanager.JarFileManager;
-import org.jackie.compiler_impl.filemanager.DirFileManager;
+import org.jackie.compilerimpl.CompilerImpl;
+import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
+import org.jackie.compilerimpl.filemanager.JarFileManager;
+import org.jackie.compilerimpl.filemanager.DirFileManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 

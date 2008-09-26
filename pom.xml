@@ -33,7 +33,7 @@
 		<module>compiler</module>
 
 		<!-- implementations -->
-		<module>compiler_impl</module>
+		<module>compilerimpl</module>
 
 		<!-- jackie plugins/extensions -->
 		<module>java5</module>

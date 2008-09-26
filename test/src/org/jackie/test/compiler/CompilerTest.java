@@ -2,9 +2,9 @@ package org.jackie.test.compiler;
 
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
-import org.jackie.compiler_impl.CompilerImpl;
-import org.jackie.compiler_impl.filemanager.InMemoryFileManager;
-import org.jackie.compiler_impl.filemanager.JarFileManager;
+import org.jackie.compilerimpl.CompilerImpl;
+import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
+import org.jackie.compilerimpl.filemanager.JarFileManager;
 import org.jackie.utils.Assert;
 import org.jackie.utils.CyclicBuffer;
 import org.jackie.utils.IOHelper;

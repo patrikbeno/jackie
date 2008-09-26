@@ -52,7 +52,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
-			<artifactId>${pom.groupId}.compiler_impl</artifactId>
+			<artifactId>${pom.groupId}.compilerimpl</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
