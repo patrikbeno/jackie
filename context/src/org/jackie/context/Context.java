@@ -2,6 +2,7 @@ package org.jackie.context;
 
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Assert;
+import org.jackie.utils.Closeable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * @author Patrik Beno
  */
-public class Context {
+public class Context implements Closeable {
 
 	static private final int STACKTRACE_OFFSET = 4;
 
@@ -48,4 +49,15 @@ public class Context {
 					"Unauthorized caller (%s). Context can be closed by its creator only (%s)", ste, creator);
 	}
 
+	public void close() {
+		for (Object o : items.values()) {
+			if (o instanceof Closeable) {
+				try {
+					((Closeable) o).close();
+				} catch (Exception e) {
+					Assert.logNotYetHandled(e);
+				}
+			}
+		}
+	}
 }

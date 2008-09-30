@@ -68,6 +68,8 @@ public class ContextManager {
 
 		ctx.authorizeClose();
 
+		ctx.close();
+
 		ctx = ctx.parent;
 		tlContext.set(ctx);
 
