@@ -1,8 +1,9 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.utils.Assert;
 
 import java.io.DataInput;
@@ -26,11 +27,11 @@ RuntimeVisibleParameterAnnotations_attribute {
    }
 	 */
 
-	public ParameterAnnotations(ClassFileProvider owner) {
+	public ParameterAnnotations(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 

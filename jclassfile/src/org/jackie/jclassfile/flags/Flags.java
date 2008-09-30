@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.flags;
 
 import org.jackie.jclassfile.model.Base;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -13,14 +14,13 @@ import java.util.List;
  */
 public class Flags extends Base {
 
-   int flags;
-
-	public Flags() {
+	static public Flags create(DataInput in, ConstantPool pool) throws IOException {
+		Flags flags = new Flags();
+		flags.load(in);
+		return flags;
 	}
 
-	public Flags(DataInput in) throws IOException {
-		load(in);
-	}
+	int flags;
 
 	public void set(Access flag) {
       flags |= flag.value();

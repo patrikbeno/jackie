@@ -6,14 +6,13 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
-import org.jackie.jclassfile.ClassFileContext;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
 import static org.jackie.utils.Assert.NOTNULL;
-import static org.jackie.context.ContextManager.newContext;
-import static org.jackie.context.ContextManager.closeContext;
 import static org.jackie.context.ContextManager.context;
+import static org.jackie.context.ContextManager.closeContext;
+import static org.jackie.context.ContextManager.newContext;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -27,7 +26,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class ClassFile extends Base implements ClassFileProvider, AttributeSupport {
+public class ClassFile extends Base implements ConstantPoolSupport, AttributeSupport {
 
 	/*
 ClassFile {
@@ -50,7 +49,9 @@ ClassFile {
     }
     */
 
-   int magic = 0xCAFEBABE;
+	static public final boolean DEBUG = true;
+
+	int magic = 0xCAFEBABE;
 	int minor;
 	int major = 50;
 
@@ -66,12 +67,16 @@ ClassFile {
 	List<AttributeInfo> attributes;
 
 	{
-		pool = new ConstantPool(this);
 		flags = new Flags();
+		pool = new ConstantPool(this);
+	}
+
+	public ConstantPool constantPool() {
+		return pool;
 	}
 
 	public ClassFile classname(String clsname) {
-		classname = pool().factory().getClassRef(clsname);
+		classname = constantPool().factory().getClassRef(clsname);
 		return this;
 	}
 
@@ -84,7 +89,7 @@ ClassFile {
 	}
 
 	public ClassFile superclass(String clsname) {
-		superclass = pool().factory().getClassRef(clsname);
+		superclass = constantPool().factory().getClassRef(clsname);
 		return this;
 	}
 
@@ -100,7 +105,7 @@ ClassFile {
 		if (interfaces == null) {
 			interfaces = new ArrayList<ClassRef>();
 		}
-		interfaces.add(pool().factory().getClassRef(className));
+		interfaces.add(constantPool().factory().getClassRef(className));
 	}
 
 	public List<FieldInfo> fields() {
@@ -152,46 +157,36 @@ ClassFile {
 
 	///
 
-	public ClassFile classFile() {
-		return this;
-	}
-
-	public ConstantPool pool() {
-		return pool;
-	}
-
 	public void load(final DataInput in) throws IOException {
 		Log.enter();
 
 		newContext();
 		try {
-			context().set(ClassFileContext.class, new ClassFileContext(this));
-
 			magic = in.readInt();
 			minor = in.readUnsignedShort();
 			major = in.readUnsignedShort();
 
-			pool.load(in);
+			constantPool().load(in);
 
-			flags = new Flags(in);
-			classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			flags = Flags.create(in, constantPool());
+			classname = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
 			Log.debug("Loading class %s", classname.value());
 
-			superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			superclass = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
 
 			// interfaces
 			{
-				int count = in.readUnsignedShort();
+			int count = in.readUnsignedShort();
 				interfaces = new ArrayList<ClassRef>(count);
 				while (count-- > 0) {
-					ClassRef iface = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+					ClassRef iface = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
 					interfaces.add(iface);
 				}
 			}
 
 			// fields
 			{
-				int count = in.readUnsignedShort();
+			int count = in.readUnsignedShort();
 				fields = new ArrayList<FieldInfo>(count);
 				while (count-- > 0) {
 					FieldInfo f = new FieldInfo(this);
@@ -202,7 +197,7 @@ ClassFile {
 
 			// methods
 			{
-				int count = in.readUnsignedShort();
+			int count = in.readUnsignedShort();
 				methods = new ArrayList<MethodInfo>(count);
 				while (count-- > 0) {
 					MethodInfo m = new MethodInfo(this);
@@ -212,7 +207,6 @@ ClassFile {
 			}
 
 			attributes = AttributeHelper.loadAttributes(this, in);
-
 		} finally {
 			closeContext();
 		}
@@ -225,8 +219,6 @@ ClassFile {
 
 		newContext();
 		try {
-			context().set(ClassFileContext.class, new ClassFileContext(this));
-			
 			out.writeInt(magic);
 			out.writeShort(minor);
 			out.writeShort(major);
@@ -248,11 +240,10 @@ ClassFile {
 			save(tmpout, methods);
 			save(tmpout, attributes);
 
-			pool.save(out);
+			constantPool().save(out);
 
 			tmpout.close();
 			out.write(baos.toByteArray());
-
 		} finally {
 			closeContext();
 		}
@@ -281,4 +272,5 @@ ClassFile {
 	public String toString() {
 		return String.format("ClassFile(%s)", classname != null ? classname.value() : "?");
 	}
+
 }

@@ -2,7 +2,7 @@ package org.jackie.jclassfile.code.impl;
 
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Constant;
-import static org.jackie.jclassfile.ClassFileContext.classFileContext;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.utils.Assert.expected;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Assert;
@@ -20,15 +20,15 @@ import java.util.ArrayList;
 public class Instructions {
 
 	static public class SimpleInstruction extends AbstractInstruction {
-		public SimpleInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public SimpleInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public SimpleInstruction(int opcode) {
 			super(opcode);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 		}
 		protected void saveOperands(DataOutput out) throws IOException {
 		}
@@ -38,8 +38,8 @@ public class Instructions {
 
 		T constant;
 
-		public PoolRefInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public PoolRefInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public PoolRefInstruction(int opcode, T constant) {
@@ -47,9 +47,9 @@ public class Instructions {
 			this.constant = constant;
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			int index = in.readUnsignedShort();
-			constant = (T) classFileContext().constantPool().getConstant(index, Constant.class);
+			constant = (T) pool.getConstant(index, Constant.class);
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
@@ -66,17 +66,17 @@ public class Instructions {
 	}
 
 	static public class BytePoolRefInstruction extends PoolRefInstruction<Constant> {
-		public BytePoolRefInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public BytePoolRefInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public BytePoolRefInstruction(int opcode, Constant constant) {
 			super(opcode, constant);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			int index = in.readUnsignedByte();
-			constant = classFileContext().constantPool().getConstant(index, Constant.class);
+			constant = pool.getConstant(index, Constant.class);
 		}
 
 		protected void saveOperands(DataOutput out) throws IOException {
@@ -93,16 +93,11 @@ public class Instructions {
 		Short branchoffset;
 		Instruction instruction;
 
-		public BranchOffsetInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public BranchOffsetInstruction(int opcode, Instruction previous) {
+			super(opcode, previous);
 		}
 
-		public BranchOffsetInstruction(int opcode, Instruction instruction) {
-			super(opcode);
-			this.instruction = instruction;
-		}
-
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			branchoffset = in.readShort();
 		}
 
@@ -139,8 +134,8 @@ public class Instructions {
 
 		int index; // local variable index
 
-		public FrameRefInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public FrameRefInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public FrameRefInstruction(int opcode, int index) {
@@ -148,7 +143,7 @@ public class Instructions {
 			this.index = index;
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			index = in.readUnsignedByte();
 		}
 
@@ -165,8 +160,8 @@ public class Instructions {
 	static abstract public class ConstantInstruction<T> extends AbstractInstruction {
 		T value;
 
-		protected ConstantInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		protected ConstantInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		protected ConstantInstruction(int opcode, T value) {
@@ -176,15 +171,15 @@ public class Instructions {
 	}
 
 	static public class ByteInstruction extends ConstantInstruction<Byte> {
-		public ByteInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public ByteInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public ByteInstruction(int opcode, Byte value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			value = in.readByte();
 		}
 
@@ -197,15 +192,15 @@ public class Instructions {
 	}
 
 	static public class ShortInstruction extends ConstantInstruction<Short> {
-		public ShortInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public ShortInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public ShortInstruction(int opcode, Short value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			value = in.readShort();
 		}
 
@@ -218,15 +213,15 @@ public class Instructions {
 	}
 
 	static public class IntegerInstruction extends ConstantInstruction<Integer> {
-		public IntegerInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public IntegerInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public IntegerInstruction(int opcode, Integer value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			value = in.readInt();
 		}
 
@@ -279,8 +274,8 @@ public class Instructions {
 
 		Type type;
 
-		public ArrayInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public ArrayInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public ArrayInstruction(int opcode, Class type) {
@@ -288,7 +283,7 @@ public class Instructions {
 			this.type = Type.forClass(type);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			type = Type.forCode(in.readUnsignedByte());
 		}
 
@@ -306,8 +301,8 @@ public class Instructions {
 		int index;
 		int value;
 
-		public LocalVarOpInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public LocalVarOpInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
 		public LocalVarOpInstruction(int opcode, int index, int value) {
@@ -316,7 +311,7 @@ public class Instructions {
 			this.value = value;
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			index = in.readUnsignedByte();
 			value = in.readUnsignedByte();
 		}
@@ -350,11 +345,11 @@ public class Instructions {
 		int dflt;
 		List<Match> matches;
 
-		public LookupSwitchInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public LookupSwitchInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			for (Countdown c = new Countdown(padding()); c.next();) {
 				in.readByte();
 			}
@@ -397,11 +392,11 @@ public class Instructions {
 		int high;
 		int[] jumpoffsets;
 
-		public TableSwitchInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
-			super(opcode, in, previous);
+		public TableSwitchInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
 		}
 
-		protected void loadOperands(DataInput in) throws IOException {
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
 			for (Countdown c = new Countdown(padding()); c.next();) {
 				in.readByte();
 			}

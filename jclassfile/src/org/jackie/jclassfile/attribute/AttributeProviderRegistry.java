@@ -1,6 +1,5 @@
 package org.jackie.jclassfile.attribute;
 
-import static org.jackie.jclassfile.ClassFileContext.classFileContext;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Log;
 import org.jackie.context.ContextObject;

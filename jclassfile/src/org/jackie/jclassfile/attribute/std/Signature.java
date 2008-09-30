@@ -1,10 +1,11 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -19,7 +20,7 @@ public class Signature extends AttributeInfo {
 		public String name() {
 			return "Signature";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new Signature(owner);
 		}
 	}
@@ -35,11 +36,11 @@ Signature_attribute {
 
 	Utf8 value;
 
-	public Signature(ClassFileProvider owner) {
+	public Signature(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in, 2);
 		value = pool().getConstant(in.readUnsignedShort(), Utf8.class);
 		return null;

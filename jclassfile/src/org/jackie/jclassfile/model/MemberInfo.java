@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public abstract class MemberInfo extends Base implements ClassFileProvider, AttributeSupport {
+public abstract class MemberInfo extends Base implements AttributeSupport {
    /*
 field|member info {
     	u2 access_flags;
@@ -41,6 +41,10 @@ field|member info {
 		this.classfile = classfile;
 	}
 
+	public ConstantPool constantPool() {
+		return classfile.constantPool();
+	}
+
 	public Flags flags() {
 		if (flags == null) {
 			flags = new Flags();
@@ -53,7 +57,7 @@ field|member info {
 	}
 
 	public void name(String name) {
-		this.name = classFile().pool().factory().getUtf8(name);
+		this.name = classFile().constantPool().factory().getUtf8(name);
 	}
 
 	public String descriptor() {
@@ -61,7 +65,7 @@ field|member info {
 	}
 
 	public void descriptor(String descriptor) {
-		this.descriptor = classFile().pool().factory().getUtf8(descriptor);
+		this.descriptor = classFile().constantPool().factory().getUtf8(descriptor);
 	}
 
 	public List<AttributeInfo> attributes() {
@@ -80,13 +84,13 @@ field|member info {
 	}
 
 	public void load(DataInput in) throws IOException {
-		ConstantPool pool = classfile.pool();
+		ConstantPool pool = classfile.constantPool();
 
-		flags = new Flags(in);
+		flags = Flags.create(in, pool);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
-		descriptor = classfile.pool().getConstant(in.readUnsignedShort(), Utf8.class);
+		descriptor = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 
-		Log.debug("Loading method %s.%s", classfile.classname(), name(), descriptor());
+		Log.debug("Loading field %s.%s : %s", classfile.classname(), name(), descriptor());
 
 		attributes = AttributeHelper.loadAttributes(this, in);
 	}

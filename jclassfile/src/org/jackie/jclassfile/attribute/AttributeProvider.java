@@ -1,7 +1,6 @@
 package org.jackie.jclassfile.attribute;
 
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 /**
  * @author Patrik Beno
@@ -9,6 +8,7 @@ import org.jackie.jclassfile.model.ClassFileProvider;
 public interface AttributeProvider {
 
 	String name();
-	AttributeInfo createAttribute(ClassFileProvider owner);
+	
+	AttributeInfo createAttribute(AttributeSupport owner);
 
 }

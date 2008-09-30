@@ -16,7 +16,7 @@ CONSTANT_Methodref_info {
     }
 	 */
 
-	MethodRef(ConstantPool pool) {
+	public MethodRef(ConstantPool pool) {
 		super(pool);
 	}
 

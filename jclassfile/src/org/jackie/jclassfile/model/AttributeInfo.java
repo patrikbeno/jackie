@@ -3,6 +3,7 @@ package org.jackie.jclassfile.model;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import static org.jackie.utils.Assert.doAssert;
 
 import java.io.DataInput;
@@ -21,17 +22,17 @@ public abstract class AttributeInfo extends Base {
 		 }
 		 */
 
-	protected ClassFileProvider owner;
+	protected AttributeSupport owner;
 
 	protected Utf8 name;
 	Task resolver;
 
-	protected AttributeInfo(ClassFileProvider owner, Utf8 name) {
+	protected AttributeInfo(AttributeSupport owner, Utf8 name) {
 		this.owner = owner;
 		this.name = name;
 	}
 
-	protected AttributeInfo(ClassFileProvider owner) {
+	protected AttributeInfo(AttributeSupport owner) {
 		this.owner = owner;
 		this.name = pool().factory().getUtf8(getClass().getSimpleName());
 	}
@@ -40,9 +41,13 @@ public abstract class AttributeInfo extends Base {
 		return name.value();
 	}
 
+	protected ConstantPool pool() {
+		return owner.constantPool();
+	}
+
 	public void load(DataInput in) throws IOException {
 		// name is expected to be loaded by attribute resolver (and passed in constructor)
-		resolver = readConstantDataOrGetResolver(in);
+		resolver = readConstantDataOrGetResolver(in, pool());
 		if (resolver != null) { // todo debug
 			resolver.execute();
 		}
@@ -65,13 +70,9 @@ public abstract class AttributeInfo extends Base {
 		out.writeInt(length);
 	}
 
-	protected abstract Task readConstantDataOrGetResolver(DataInput in) throws IOException;
+	protected abstract Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException;
 
 	protected abstract void writeData(DataOutput out) throws IOException;
-
-	protected ConstantPool pool() {
-		return owner.classFile().pool();
-	}
 
 	public String toString() {
 		return String.format("%s {%s}", name.value(), valueToString());

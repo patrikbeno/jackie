@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.model;
 
 import static org.jackie.utils.Assert.doAssert;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 
 import java.io.DataInput;
 import java.io.DataOutput;

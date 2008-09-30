@@ -1,8 +1,8 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 /**
  * @author Patrik Beno
@@ -13,12 +13,12 @@ public class RuntimeInvisibleParameterAnnotations extends ParameterAnnotations {
 		public String name() {
 			return "RuntimeInvisibleParameterAnnotations";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new RuntimeInvisibleParameterAnnotations(owner);
 		}
 	}
 
-	public RuntimeInvisibleParameterAnnotations(ClassFileProvider owner) {
+	public RuntimeInvisibleParameterAnnotations(AttributeSupport owner) {
 		super(owner);
 	}
 

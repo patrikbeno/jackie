@@ -21,11 +21,7 @@ cp_info {
     }
 	 */
 
-	protected ConstantPool pool;
-
-	Integer index;
-	int references;
-	Task resolver; // load()
+	ConstantPool pool;
 
 	protected Constant(ConstantPool pool) {
 		this.pool = pool;
@@ -33,16 +29,16 @@ cp_info {
 
 	public abstract CPEntryType type();
 
+	public int index() {
+		return pool().indexOf(this, true);
+	}
+
+	protected ConstantPool pool() {
+		return pool;
+	}
+
 	protected Factory factory() {
-		return pool.factory;
-	}
-
-	public Integer getIndex() {
-		return index;
-	}
-
-	void setIndex(Integer index) {
-		this.index = index;
+		return pool.factory();
 	}
 
 	public boolean isLongData() { // occupies 2 entries in the pool
@@ -64,35 +60,21 @@ cp_info {
 
 	protected abstract void writeConstantData(DataOutput out) throws IOException;
 
-	protected void setResolver(Task task) {
-		resolver = task;
-	}
-
-	boolean isResolved() {
-		return resolver == null;
-	}
-
-	void resolve() {
-		try {
-			resolver.execute();
-			resolver = null;
-		} catch (IOException e) {
-			throw Assert.notYetHandled(e);
-		}
+	public <T extends Constant> T intern() {
+		return (T) pool().intern(this);
 	}
 
 	public void writeReference(DataOutput out) throws IOException {
-		out.writeShort(NOTNULL(getIndex()));
-		references++;
+		out.writeShort(index());
 	}
 
 	public void writeByteReference(DataOutput out) throws IOException {
-		out.writeByte(NOTNULL(getIndex()));
-		references++;
+		out.writeByte(index());
 	}
 
 	public String toString() {
-		return String.format("#%d %s: %s", getIndex(), type().name(), valueToString());
+		Integer idx = pool().indexOf(this);
+		return String.format("#%s %s: %s", (idx != null) ? idx : "?", type().name(), valueToString());
 	}
 
 	protected String valueToString() {

@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.code.impl;
 
 import org.jackie.jclassfile.code.Instruction;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.ChainImpl;
 
 import java.io.DataOutput;
@@ -16,10 +17,9 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 
 	int opcode;
 
-	protected AbstractInstruction(int opcode, DataInput in, Instruction previous) throws IOException {
+	protected AbstractInstruction(int opcode, Instruction previous) {
 		this.opcode = opcode;
 		if (previous != null) { previous.append(this); }
-		load(in);
 	}
 
 	protected AbstractInstruction(int opcode) {
@@ -53,9 +53,9 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		return list;
 	}
 
-	protected void load(DataInput in) throws IOException {
+	public void load(DataInput in, ConstantPool pool) throws IOException {
 		// opcode we already have
-		loadOperands(in);
+		loadOperands(in, pool);
 	}
 
 	public final void save(DataOutput out) throws IOException {
@@ -63,7 +63,7 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		saveOperands(out);
 	}
 
-	protected abstract void loadOperands(DataInput in) throws IOException;
+	protected abstract void loadOperands(DataInput in, ConstantPool pool) throws IOException;
 
 	protected abstract void saveOperands(DataOutput out) throws IOException;
 

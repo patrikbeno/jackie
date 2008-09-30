@@ -1,9 +1,10 @@
 package org.jackie.jclassfile.attribute.dbg;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInput;
@@ -20,7 +21,7 @@ public class SourceDebugExtension extends AttributeInfo {
 		public String name() {
 			return "SourceDebugExtension";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new SourceDebugExtension(owner);
 		}
 	}
@@ -36,11 +37,11 @@ SourceDebugExtension_attribute {
 
 	String value;
 
-	public SourceDebugExtension(ClassFileProvider owner) {
+	public SourceDebugExtension(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in);
 		value = in.readUTF();
 		return null;

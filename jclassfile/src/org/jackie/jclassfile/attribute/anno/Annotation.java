@@ -1,7 +1,6 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.constantpool.ConstantPool;
-import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import static org.jackie.utils.CollectionsHelper.sizeof;
@@ -44,9 +43,7 @@ annotation {
 		return elements;
 	}
 
-	void load(DataInput in) throws IOException {
-		ConstantPool pool = constantPool();
-
+	void load(DataInput in, ConstantPool pool) throws IOException {
 		type = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		int count = in.readUnsignedShort();
 		elements = new ArrayList<ElementValue>(count);
@@ -56,7 +53,7 @@ annotation {
 
 			ElementValue evalue = ElementValue.forTag(tag);
 			evalue.init(this,  ename, tag);
-			evalue.load(in);
+			evalue.load(in, pool);
 
 			elements.add(evalue);
 		}

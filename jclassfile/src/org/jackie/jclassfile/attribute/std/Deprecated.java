@@ -1,9 +1,10 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -18,7 +19,7 @@ public class Deprecated extends AttributeInfo {
 		public String name() {
 			return "Deprecated";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new Deprecated(owner);
 		}
 	}
@@ -30,11 +31,12 @@ Deprecated_attribute {
     }   
     */
 
-	public Deprecated(ClassFileProvider owner) {
+
+	public Deprecated(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in, 0);
 		return null;
 	}

@@ -1,11 +1,12 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.NameAndType;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -20,7 +21,7 @@ public class EnclosingMethod extends AttributeInfo {
 		public String name() {
 			return "EnclosingMethod";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new EnclosingMethod(owner);
 		}
 	}
@@ -38,11 +39,11 @@ EnclosingZethod_attributeC{
 	ClassRef cls;
 	NameAndType method;
 
-	public EnclosingMethod(ClassFileProvider owner) {
+	public EnclosingMethod(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in, 4);
 		cls = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
 		method = pool().getConstant(in.readUnsignedShort(), NameAndType.class);

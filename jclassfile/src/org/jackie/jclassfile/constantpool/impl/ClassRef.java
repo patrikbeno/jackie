@@ -2,8 +2,8 @@ package org.jackie.jclassfile.constantpool.impl;
 
 import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
-import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -44,7 +44,7 @@ CONSTANT_Class_info {
 		final int nameidx = in.readUnsignedShort();
 		return new Task() {
 			public void execute() throws IOException {
-				value = pool.getConstant(nameidx, Utf8.class);
+				value = pool().getConstant(nameidx, Utf8.class);
 			}
 		};
 	}

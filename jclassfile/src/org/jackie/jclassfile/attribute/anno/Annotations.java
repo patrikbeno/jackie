@@ -1,8 +1,9 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.utils.Assert;
 
 import java.io.ByteArrayInputStream;
@@ -29,7 +30,7 @@ annotation annotations[num_annotations];
 
 	List<Annotation> annotations;
 
-	public Annotations(ClassFileProvider owner) {
+	public Annotations(AttributeSupport owner) {
 		super(owner);
 	}
 
@@ -37,7 +38,7 @@ annotation annotations[num_annotations];
 		return annotations;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		// just read data, don't parse now
 		final int len = readLength(in);
 		final byte[] bytes = new byte[len];
@@ -50,7 +51,7 @@ annotation annotations[num_annotations];
 				annotations = new ArrayList<Annotation>(count);
 				while (count-- > 0) {
 					Annotation a = new Annotation(Annotations.this);
-					a.load(in);
+					a.load(in, pool());
 					annotations.add(a);
 				}
 			}

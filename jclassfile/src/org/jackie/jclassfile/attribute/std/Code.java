@@ -2,12 +2,13 @@ package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.code.CodeParser;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Countdown;
@@ -29,7 +30,7 @@ public class Code extends AttributeInfo {
 		public String name() {
 			return "Code";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new Code(owner);
 		}
 	}
@@ -68,11 +69,11 @@ Code_attribute {
 	List<AttributeInfo> attributes;
 
 
-	public Code(ClassFileProvider owner) {
+	public Code(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		int attrlen = readLength(in);
 
 		metastuff: {
@@ -83,7 +84,7 @@ Code_attribute {
 		code: {
 			CodeParser parser = new CodeParser();
 			int len = in.readInt();
-			instructions = parser.parse(in, len);
+			instructions = parser.parse(in, len, pool);
 		}
 
 		exceptions: {

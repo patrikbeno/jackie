@@ -1,12 +1,13 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.jclassfile.util.Helper;
 
 import java.io.DataInput;
@@ -25,7 +26,7 @@ public class InnerClasses extends AttributeInfo {
 		public String name() {
 			return "InnerClasses";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new InnerClasses(owner);
 		}
 	}
@@ -58,11 +59,11 @@ InnerClasses_attribute {
 	List<Item> classes;
 
 
-	public InnerClasses(ClassFileProvider owner) {
+	public InnerClasses(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in);
 		int count = in.readUnsignedShort();
 		classes = new ArrayList<Item>(count);
@@ -71,7 +72,7 @@ InnerClasses_attribute {
 			item.inner = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
 			item.outer = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
 			item.innerName = pool().getConstant(in.readUnsignedShort(), Utf8.class);
-			item.access = new Flags(in);
+			item.access = Flags.create(in, pool());
 			classes.add(item);
 		}
 		return null;

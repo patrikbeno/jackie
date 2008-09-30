@@ -1,12 +1,10 @@
 package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
-import org.jackie.jclassfile.constantpool.ConstantPool;
-import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
-import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 import org.jackie.utils.Assert;
 
 import java.io.DataInput;
@@ -26,7 +24,7 @@ public class AnnotationDefault extends AttributeInfo {
 		public String name() {
 			return NAME;
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new AnnotationDefault(owner);
 		}
 	}
@@ -41,7 +39,7 @@ AnnotationDefault_attribute {
 
 	ElementValue value;
 
-	public AnnotationDefault(ClassFileProvider owner) {
+	public AnnotationDefault(AttributeSupport owner) {
 		super(owner);
 	}
 
@@ -49,7 +47,7 @@ AnnotationDefault_attribute {
 		return value;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, final ConstantPool pool) throws IOException {
 		// just read data, don't parse now
 		final int len = readLength(in);
 		final byte[] bytes = new byte[len];
@@ -62,7 +60,7 @@ AnnotationDefault_attribute {
 				Tag tag = Tag.forId((char) in.readByte());
 				ElementValue evalue = ElementValue.forTag(tag);
 				evalue.init(this,  null, tag);
-				evalue.load(in);
+				evalue.load(in, pool);
 
 				value = evalue;
 			}

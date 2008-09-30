@@ -16,7 +16,8 @@ CONSTANT_InterfaceMethodref_info {
     }
 	 */
 
-	InterfaceMethodRef(ConstantPool pool) {
+
+	public InterfaceMethodRef(ConstantPool pool) {
 		super(pool);
 	}
 

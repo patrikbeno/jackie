@@ -8,11 +8,11 @@ import org.jackie.utils.Assert;
 /**
  * @author Patrik Beno
  */
-public abstract class Factory {
+public class Factory {
 
 	ConstantPool pool;
 
-	protected Factory(ConstantPool pool) {
+	public Factory(ConstantPool pool) {
 		this.pool = pool;
 	}
 

@@ -1,10 +1,11 @@
 package org.jackie.jclassfile.attribute.std;
 
 import org.jackie.jclassfile.attribute.AttributeProvider;
+import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
 import java.io.DataInput;
 import java.io.DataOutput;
@@ -21,7 +22,7 @@ public class Exceptions extends AttributeInfo {
 		public String name() {
 			return "Exceptions";
 		}
-		public AttributeInfo createAttribute(ClassFileProvider owner) {
+		public AttributeInfo createAttribute(AttributeSupport owner) {
 			return new Exceptions(owner);
 		}
 	}
@@ -37,11 +38,11 @@ Exceptions_attribute {
 
 	List<ClassRef> exceptions;
 
-	public Exceptions(ClassFileProvider owner) {
+	public Exceptions(AttributeSupport owner) {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		readLength(in);
 		int count = in.readUnsignedShort();
 		exceptions = new ArrayList<ClassRef>(count);

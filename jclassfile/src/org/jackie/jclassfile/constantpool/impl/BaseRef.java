@@ -29,9 +29,10 @@ CONSTANT_Fieldref_info {
 	}
 
 	BaseRef(ConstantPool pool, String clsname, String name, String type) {
-		this(pool);
-		classref = factory().getClassRef(clsname);
-		nametype = factory().getNameAndType(name, type);
+		super(pool);
+		Factory factory = factory();
+		classref = factory.getClassRef(clsname);
+		nametype = factory.getNameAndType(name, type);
 	}
 
 	public ClassRef classref() {
@@ -47,6 +48,7 @@ CONSTANT_Fieldref_info {
 		final int nametypeidx = in.readUnsignedShort();
 		return new Task() {
 			public void execute() throws IOException {
+				ConstantPool pool = pool();
 				classref = pool.getConstant(classidx, ClassRef.class);
 				nametype = pool.getConstant(nametypeidx, NameAndType.class);
 			}

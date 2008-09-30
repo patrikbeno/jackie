@@ -16,11 +16,11 @@ CONSTANT_Fieldref_info {
     }
 	 */
 
-	FieldRef(ConstantPool pool) {
+	public FieldRef(ConstantPool pool) {
 		super(pool);
 	}
 
-	FieldRef(ConstantPool pool, String clsname, String name, String type) {
+	public FieldRef(ConstantPool pool, String clsname, String name, String type) {
 		super(pool, clsname, name, type);
 	}
 

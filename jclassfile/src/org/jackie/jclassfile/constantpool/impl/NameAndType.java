@@ -52,6 +52,7 @@ CONSTANT_NameAndType_info {
 		final int descidx = in.readUnsignedShort();
 		return new Task() {
 			public void execute() throws IOException {
+				ConstantPool pool = pool();
 				name = pool.getConstant(nameidx, Utf8.class);
 				type = pool.getConstant(descidx, Utf8.class);
 			}

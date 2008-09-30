@@ -1,15 +1,13 @@
 package org.jackie.jclassfile.attribute;
 
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
-import org.jackie.jclassfile.model.ClassFileProvider;
 
-import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author Patrik Beno
@@ -25,7 +23,7 @@ public class GenericAttribute extends AttributeInfo {
 
 	byte[] data;
 
-	public GenericAttribute(ClassFileProvider owner, Utf8 name) {
+	public GenericAttribute(AttributeSupport owner, Utf8 name) {
 		super(owner, name);
 	}
 
@@ -41,7 +39,7 @@ public class GenericAttribute extends AttributeInfo {
 		this.data = bytes;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
 		data = new byte[readLength(in)];
 		in.readFully(data);
 		return null;

@@ -2,7 +2,6 @@ package org.jackie.jclassfile.attribute.anno;
 
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.constantpool.impl.DoubleRef;
 import org.jackie.jclassfile.constantpool.impl.FloatRef;
 import org.jackie.jclassfile.constantpool.impl.IntegerRef;
@@ -11,7 +10,6 @@ import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.utils.Assert;
-import static org.jackie.utils.Assert.typecast;
 
 import java.io.DataInput;
 import java.io.IOException;
@@ -89,7 +87,7 @@ element_value {
 		return tag;
 	}
 
-	abstract void load(DataInput in) throws IOException;
+	abstract void load(DataInput in, ConstantPool pool) throws IOException;
 
 	public String toString() {
 		return String.format("%s=%s", name != null ? name.value() : null, valueToString());
@@ -102,26 +100,26 @@ element_value {
 	static public class ConstElementValue extends ElementValue {
 		Constant value;
 
-		void load(DataInput in) throws IOException {
+		void load(DataInput in, ConstantPool pool) throws IOException {
 			switch (tag) {
 				case BYTE:
 				case CHAR:
 				case SHORT:
 				case BOOLEAN:
 				case INT:
-					value(in, IntegerRef.class);
+					value(in, IntegerRef.class, pool);
 					break;
 				case DOUBLE:
-					value(in, DoubleRef.class);
+					value(in, DoubleRef.class, pool);
 					break;
 				case FLOAT:
-					value(in, FloatRef.class);
+					value(in, FloatRef.class, pool);
 					break;
 				case LONG:
-					value(in, LongRef.class);
+					value(in, LongRef.class, pool);
 					break;
 				case STRING:
-					value(in, Utf8.class);
+					value(in, Utf8.class, pool);
 					break;
 				default:
 					throw Assert.invariantFailed(tag);
@@ -156,8 +154,8 @@ element_value {
 			return value.toString();
 		}
 
-		void value(DataInput in, Class<? extends Constant> type) throws IOException {
-			value = constantPool().getConstant(in.readUnsignedShort(), type);
+		void value(DataInput in, Class<? extends Constant> type, ConstantPool pool) throws IOException {
+			value = pool.getConstant(in.readUnsignedShort(), type);
 		}
 	}
 
@@ -169,8 +167,8 @@ element_value {
 			return new TypeDescriptor(classinfo.value());
 		}
 
-		void load(DataInput in) throws IOException {
-			classinfo = constantPool().getConstant(in.readUnsignedShort(), Utf8.class);
+		void load(DataInput in, ConstantPool pool) throws IOException {
+			classinfo = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
 
 		protected String valueToString() {
@@ -190,8 +188,7 @@ element_value {
 			return value.value();
 		}
 
-		void load(DataInput in) throws IOException {
-			ConstantPool pool = constantPool();
+		void load(DataInput in, ConstantPool pool) throws IOException {
 			type = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 			value = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
@@ -208,9 +205,9 @@ element_value {
 			return annotation;
 		}
 
-		void load(DataInput in) throws IOException {
+		void load(DataInput in, ConstantPool pool) throws IOException {
 			annotation = new Annotation(owner);
-			annotation.load(in);
+			annotation.load(in, pool);
 		}
 
 		protected String valueToString() {
@@ -225,7 +222,7 @@ element_value {
 			return values;
 		}
 
-		void load(DataInput in) throws IOException {
+		void load(DataInput in, ConstantPool pool) throws IOException {
 			int count = in.readUnsignedShort();
 			values = new ArrayList<ElementValue>(count);
 			while (count-- > 0) {
@@ -233,7 +230,7 @@ element_value {
 
 				ElementValue evalue = ElementValue.forTag(tag);
 				evalue.init(this, null, tag);
-				evalue.load(in);
+				evalue.load(in, pool);
 
 				values.add(evalue);
 			}
