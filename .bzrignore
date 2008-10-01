@@ -9,3 +9,4 @@ bzrdiff.sh
 build.sh
 .build
 .wiki/data
+atlassian-ide-plugin*.xml
