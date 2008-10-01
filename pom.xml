@@ -52,6 +52,9 @@
 		<module>test</module>
 	</modules>
 
+	<scm>
+		<connection>scm:bazaar:sftp://patrik@greenhorn.sk/bazaar/jackie/trunk/</connection>
+	</scm>	
 
 	<properties>
 		<build.dir>${basedir}/target</build.dir><!-- allow overriding compiler output -->
