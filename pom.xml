@@ -110,6 +110,13 @@
 					<testFailureIgnore>true</testFailureIgnore>
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-release-plugin</artifactId>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<preparationGoals />
+				</configuration>
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
