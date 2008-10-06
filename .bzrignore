@@ -10,3 +10,4 @@ build.sh
 .build
 .wiki/data
 atlassian-ide-plugin*.xml
+.wiki/data*.tgz
