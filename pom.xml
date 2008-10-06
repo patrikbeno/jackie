@@ -53,7 +53,7 @@
 	</modules>
 
 	<scm>
-		<connection>scm:bazaar:sftp://patrik@greenhorn.sk/bazaar/jackie/trunk/</connection>
+		<connection>scm:bazaar:.</connection>
 	</scm>	
 
 	<properties>
@@ -112,6 +112,27 @@
 			</plugin>
 		</plugins>
 
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-scm-plugin</artifactId>
+					<version>1.1</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-release-plugin</artifactId>
+					<version>2.0-beta-7</version>
+					<dependencies>
+						<dependency>
+							<groupId>org.apache.maven.scm</groupId>
+							<artifactId>maven-scm-provider-bazaar</artifactId>
+							<version>1.1.greenhorn</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 
 	<dependencies>
