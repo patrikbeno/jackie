@@ -11,5 +11,4 @@ deleteCompiledCode 2> /dev/null
 echo "Updating data archive..."
 packData
 
-echo "Done!"
 
