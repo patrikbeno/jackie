@@ -26,8 +26,10 @@ public class CmdLineSupport {
 	}
 
 	protected void parseOption(String encoded) {
+		if (encoded.length() == 0) { return; }
+
 		String[] values = encoded.split("=", 2);
-		doAssert(values.length == 2, "Invalid option: %s", encoded);
+		doAssert(values.length == 2, "Invalid option: '%s'", encoded);
 
 		String name = values[0];
 		String value = values[1];
