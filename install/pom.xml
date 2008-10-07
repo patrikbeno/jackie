@@ -65,6 +65,50 @@
 
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>setup</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>unpack</goal>
+									<goal>build-classpath</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${pom.groupId}</groupId>
+									<artifactId>org.jackie.bin</artifactId>
+									<version>${pom.version}</version>
+									<outputDirectory>bin</outputDirectory>
+									<excludes>META-INF/**</excludes>
+								</artifactItem>
+							</artifactItems>
+							<outputFile>bin/.classpath</outputFile>
+						</configuration>
+					</plugin>
+					<plugin>
+						<artifactId>maven-clean-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>greenhorn.snapshots</id>
