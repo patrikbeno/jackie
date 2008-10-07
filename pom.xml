@@ -47,9 +47,14 @@
 
 		<!-- end user stuff -->
 		<module>tools</module>
+		<module>bin</module>
+		<module>install</module>
 
 		<!-- test -->
 		<module>test</module>
+
+		<!-- hacking -->
+		<!--<module>../javac</module>-->
 	</modules>
 
 	<scm>
@@ -152,7 +157,22 @@
 		</dependency>
 	</dependencies>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>greenhorn.snapshots</id>
+			<url>dav:http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>greenhorn.internal</id>
+			<url>dav:http://archiva.greenhorn.sk/archiva/repository/internal</url>
+		</repository>
+	</distributionManagement>
+
 	<pluginRepositories>
+		<pluginRepository>
+			<id>cache</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+		</pluginRepository>
 <!--
 		<pluginRepository>
 			<id>apache.snapshots</id>
@@ -166,6 +186,15 @@
 	</pluginRepositories>
 	
 	<repositories>
+		<repository>
+			<id>internal</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+		</repository>
+		<repository>
+			<id>cache</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+		</repository>
+
 <!--
 		<repository>
 			<id>apache.snapshots</id>

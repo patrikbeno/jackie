@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>org.jackie</groupId>
+	<artifactId>org.jackie.install</artifactId>
+	<version>0.1-SNAPSHOT</version>
+
+	<name>${pom.artifactId}-${pom.version}</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.bin</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.asmtools</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.compiler</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.compilerimpl</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.context</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.event</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.java5</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.jclassfile</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.tools</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.utils</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+
+	</dependencies>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>greenhorn.snapshots</id>
+			<url>dav:http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>greenhorn.internal</id>
+			<url>dav:http://archiva.greenhorn.sk/archiva/repository/internal</url>
+		</repository>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>greenhorn.internal</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+		</repository>
+		<repository>
+			<id>greenhorn.snapshots</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+		</repository>
+		<repository>
+			<id>greenhorn.cache</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>greenhorn.internal</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>greenhorn.snapshots</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>greenhorn.cache</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+</project>
