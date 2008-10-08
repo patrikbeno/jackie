@@ -9,10 +9,12 @@ import org.jackie.jclassfile.constantpool.impl.LongRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.Assert;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +91,13 @@ element_value {
 
 	abstract void load(DataInput in, ConstantPool pool) throws IOException;
 
+	void save(DataOutput out) throws IOException {
+		out.writeByte(tag.id());
+		saveValue(out);
+	}
+
+	abstract void saveValue(DataOutput out) throws IOException;
+
 	public String toString() {
 		return String.format("%s=%s", name != null ? name.value() : null, valueToString());
 	}
@@ -96,6 +105,10 @@ element_value {
 	protected String valueToString() {
 		return null;
 	}
+
+
+	/// IMPLEMENTATIONS ///--------------------------------------------------------------------------
+
 
 	static public class ConstElementValue extends ElementValue {
 		Constant value;
@@ -125,6 +138,10 @@ element_value {
 					throw Assert.invariantFailed(tag);
 			}
 
+		}
+
+		void saveValue(DataOutput out) throws IOException {
+			value.writeReference(out);
 		}
 
 		public Object value() {
@@ -171,6 +188,10 @@ element_value {
 			classinfo = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
 
+		void saveValue(DataOutput out) throws IOException {
+			classinfo.writeReference(out);
+		}
+
 		protected String valueToString() {
 			return classinfo.value();
 		}
@@ -193,6 +214,11 @@ element_value {
 			value = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
 
+		void saveValue(DataOutput out) throws IOException {
+			type.writeReference(out);
+			value.writeReference(out);
+		}
+
 		protected String valueToString() {
 			return String.format("%s(%s)", value.value(), type.value());
 		}
@@ -208,6 +234,10 @@ element_value {
 		void load(DataInput in, ConstantPool pool) throws IOException {
 			annotation = new Annotation(owner);
 			annotation.load(in, pool);
+		}
+
+		void saveValue(DataOutput out) throws IOException {
+			annotation.save(out);
 		}
 
 		protected String valueToString() {
@@ -233,6 +263,13 @@ element_value {
 				evalue.load(in, pool);
 
 				values.add(evalue);
+			}
+		}
+
+		void saveValue(DataOutput out) throws IOException {
+			out.writeShort(values.size());
+			for (ElementValue e : values) {
+				e.save(out);
 			}
 		}
 

@@ -5,12 +5,15 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.utils.Assert;
+import org.jackie.utils.IOHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInput;
 import java.io.DataInputStream;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,18 @@ annotation annotations[num_annotations];
 	}
 
 	protected void writeData(DataOutput out) throws IOException {
-		throw Assert.notYetImplemented(); // todo implement this
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		DataOutput tmpout = new DataOutputStream(baos);
+
+		tmpout.writeShort(annotations.size()); // count
+		for (Annotation a : annotations) {
+			a.save(tmpout);
+		}
+
+		IOHelper.close(tmpout);
+		byte[] bytes = baos.toByteArray();
+
+		writeLength(out, bytes.length);
+		out.write(bytes);
 	}
 }

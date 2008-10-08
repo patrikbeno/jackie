@@ -3,10 +3,13 @@ package org.jackie.jclassfile.attribute.anno;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.util.Helper;
 import static org.jackie.utils.CollectionsHelper.sizeof;
+import org.jackie.utils.Assert;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +59,14 @@ annotation {
 			evalue.load(in, pool);
 
 			elements.add(evalue);
+		}
+	}
+
+	void save(DataOutput out) throws IOException {
+		Helper.writeConstantReference(type, out);
+		out.writeShort(elements.size());
+		for (ElementValue e : elements) {
+			e.save(out);
 		}
 	}
 
