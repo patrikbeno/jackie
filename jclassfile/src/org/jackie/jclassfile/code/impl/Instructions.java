@@ -439,6 +439,29 @@ public class Instructions {
 		}
 	}
 
+	static public class MultiArrayInstruction extends PoolRefInstruction {
+
+		int dimensions;
+
+		public MultiArrayInstruction(int opcode, Instruction previous) throws IOException {
+			super(opcode, previous);
+		}
+
+		protected void loadOperands(DataInput in, ConstantPool pool) throws IOException {
+			super.loadOperands(in, pool);
+			dimensions = in.readUnsignedByte();
+		}
+
+		protected void saveOperands(DataOutput out) throws IOException {
+			super.saveOperands(out);
+			out.writeByte(dimensions);
+		}
+
+		public int size() {
+			return super.size() + 1;
+		}
+	}
+
 
 
 

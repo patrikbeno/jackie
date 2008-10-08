@@ -14,6 +14,7 @@ import org.jackie.jclassfile.code.impl.Instructions.LocalVarOpInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.BytePoolRefInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.LookupSwitchInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.TableSwitchInstruction;
+import org.jackie.jclassfile.code.impl.Instructions.MultiArrayInstruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.Assert;
@@ -114,6 +115,13 @@ public class Factories {
 		}
 	};
 
+	static public final InstructionFactory MULTIARRAY = new InstructionFactory() {
+		public Instruction loadInstruction(int opcode, Instruction previous, DataInput in,
+													  ConstantPool pool) throws IOException {
+			return load(in, pool, new MultiArrayInstruction(opcode, previous));
+		}
+	};
+
 	///
 
 	static public final InstructionFactory UNSUPPORTED = new InstructionFactory() {
@@ -123,8 +131,7 @@ public class Factories {
 		}
 	};
 
-	static Instruction load(DataInput in, ConstantPool pool, AbstractInstruction insn
-	) throws IOException {
+	static Instruction load(DataInput in, ConstantPool pool, AbstractInstruction insn) throws IOException {
 		insn.load(in, pool);
 		return insn;
 	}
