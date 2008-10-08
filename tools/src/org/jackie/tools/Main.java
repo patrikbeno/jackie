@@ -8,6 +8,7 @@ import org.jackie.compilerimpl.CompilerImpl;
 import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
 import org.jackie.compilerimpl.filemanager.JarFileManager;
 import org.jackie.compilerimpl.filemanager.DirFileManager;
+import org.jackie.compilerimpl.filemanager.FilteredJarFileManager;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 
@@ -64,7 +65,11 @@ public class Main {
 			{
 				sources = _sources != null ? _sources : (_sources=new DirFileManager(srcdir));
 				workspace = new InMemoryFileManager();
-				dependencies = _dependencies != null ? _dependencies : (_dependencies = Arrays.asList((FileManager) new JarFileManager(rtjar)));
+				dependencies = _dependencies != null ? _dependencies : (_dependencies = Arrays.asList(
+						(FileManager) new FilteredJarFileManager(rtjar,
+																			  // warning: temporary solution to allow javac sources compilation (conflict with classes already in rt.jar)
+																			  "com.sun.(source|tools.javac).*",
+																			  "javax.(annotation.processing|lang.model|tools).*")));
 			}
 
 			protected void save() {
