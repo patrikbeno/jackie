@@ -1,6 +1,8 @@
 package org.jackie.compilerimpl.javacintegration;
 
+import sun.nio.ch.ChannelInputStream;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.utils.Log;
 
 import javax.tools.SimpleJavaFileObject;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.io.Writer;
 import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
 
 /**
  * @author Patrik Beno
@@ -25,7 +28,26 @@ public class JFO extends SimpleJavaFileObject {
 	}
 
 	public InputStream openInputStream() throws IOException {
-		return Channels.newInputStream(fobject.getInputChannel());
+//		return Channels.newInputStream(fobject.getInputChannel());
+
+		// workaround: javac's ClassReader relies on (available() > 0)
+		// while default implementation (Channels.newInputStream()) always returns 0 :-(
+		// considered bug in javac
+		return new ChannelInputStream(fobject.getInputChannel()) {
+
+			int size = (int) fobject.getSize();
+			int pos;
+
+			public int available() throws IOException {
+				return size - pos;
+			}
+
+			protected int read(ByteBuffer bytebuffer) throws IOException {
+				int read = super.read(bytebuffer);
+				if (read > 0) { pos += read; }
+				return read;
+			}
+		};
 	}
 
 	public OutputStream openOutputStream() throws IOException {
