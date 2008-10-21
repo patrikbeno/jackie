@@ -69,6 +69,7 @@
 		<profile>
 			<id>setup</id>
 			<build>
+				<defaultGoal>install</defaultGoal>
 				<plugins>
 					<plugin>
 						<artifactId>maven-dependency-plugin</artifactId>
