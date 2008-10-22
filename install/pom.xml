@@ -16,6 +16,7 @@
 			<groupId>${pom.groupId}</groupId>
 			<artifactId>org.jackie.bin</artifactId>
 			<version>${pom.version}</version>
+			<type>zip</type>
 		</dependency>
 		<dependency>
 			<groupId>${pom.groupId}</groupId>
@@ -68,6 +69,11 @@
 	<profiles>
 		<profile>
 			<id>setup</id>
+			<activation>
+				<property>
+					<name>setup</name>
+				</property>
+			</activation>
 			<build>
 				<defaultGoal>install</defaultGoal>
 				<plugins>
@@ -87,6 +93,7 @@
 									<groupId>${pom.groupId}</groupId>
 									<artifactId>org.jackie.bin</artifactId>
 									<version>${pom.version}</version>
+									<type>zip</type>
 									<outputDirectory>bin</outputDirectory>
 									<excludes>META-INF/**</excludes>
 								</artifactItem>
@@ -108,6 +115,74 @@
 				</plugins>
 			</build>
 		</profile>
+		
+		<profile>
+			<id>offline</id>
+			<activation>
+				<property>
+					<name>setup</name>
+					<value>offline</value>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>downloaded</id>
+					<url>file:downloaded</url>
+				</repository>
+				<repository>
+					<id>local</id>
+					<url>file://h:/.m2/repository</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>downloaded</id>
+					<url>file:downloaded</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>local</id>
+					<url>file://h:/.m2/repository</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
+
+		<profile>
+			<id>online</id>
+			<activation>
+				<property>
+					<name>setup</name>
+					<value>online</value>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>greenhorn.internal</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+				</repository>
+				<repository>
+					<id>greenhorn.snapshots</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+				</repository>
+				<repository>
+					<id>greenhorn.cache</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+				</repository>
+			</repositories>
+			<pluginRepositories>
+				<pluginRepository>
+					<id>greenhorn.internal</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>greenhorn.snapshots</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+				</pluginRepository>
+				<pluginRepository>
+					<id>greenhorn.cache</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+				</pluginRepository>
+			</pluginRepositories>
+		</profile>
 	</profiles>
 
 	<distributionManagement>
@@ -120,35 +195,5 @@
 			<url>dav:http://archiva.greenhorn.sk/archiva/repository/internal</url>
 		</repository>
 	</distributionManagement>
-
-	<repositories>
-		<repository>
-			<id>greenhorn.internal</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
-		</repository>
-		<repository>
-			<id>greenhorn.snapshots</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
-		</repository>
-		<repository>
-			<id>greenhorn.cache</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
-		</repository>
-	</repositories>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>greenhorn.internal</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>greenhorn.snapshots</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
-		</pluginRepository>
-		<pluginRepository>
-			<id>greenhorn.cache</id>
-			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>

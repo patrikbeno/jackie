@@ -157,6 +157,22 @@
 		</dependency>
 	</dependencies>
 
+	<reporting>
+		<outputDirectory>${build.dir}/site</outputDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<configuration>
+					<aggregate>true</aggregate>
+					<!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
+					<!--<destDir>myapidocs</destDir>-->
+					<subpackages>org.jackie</subpackages>
+					<exludePackageNames>org.jackie.test:org.jackie.compilerimpl</exludePackageNames>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>greenhorn.snapshots</id>
@@ -170,52 +186,23 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>cache</id>
+			<id>greenhorn.cache</id>
 			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
-		</pluginRepository>
-<!--
-		<pluginRepository>
-			<id>apache.snapshots</id>
-			<url>http://cvs.apache.org/maven-snapshot-repository</url>
-		</pluginRepository>
--->
-		<pluginRepository>
-			<id>howardlewisship</id>
-			<url>http://howardlewisship.com/repository</url>
 		</pluginRepository>
 	</pluginRepositories>
 	
 	<repositories>
 		<repository>
-			<id>internal</id>
+			<id>greenhorn.internal</id>
 			<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
 		</repository>
 		<repository>
-			<id>cache</id>
+			<id>greenhorn.snapshots</id>
+			<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+		</repository>
+		<repository>
+			<id>greenhorn.cache</id>
 			<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
-		</repository>
-
-<!--
-		<repository>
-			<id>apache.snapshots</id>
-			<url>http://cvs.apache.org/maven-snapshot-repository</url>
-		</repository>
--->
-		<repository>
-			<id>M2-snapshots</id>
-			<url>http://people.apache.org/repo/m2-snapshot-repository/</url>
-		</repository>
-		<repository>
-			<id>jboss</id>
-			<url>http://repository.jboss.com/maven2</url>
-		</repository>
-		<repository>
-			<id>mojavelinux</id>
-			<url>http://repository.mojavelinux.com/maven2</url>
-		</repository>
-		<repository>
-			<id>howardlewisship</id>
-			<url>http://howardlewisship.com/repository</url>
 		</repository>
 	</repositories>
 
