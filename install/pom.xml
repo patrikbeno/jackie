@@ -8,6 +8,7 @@
 	<groupId>org.jackie</groupId>
 	<artifactId>org.jackie.install</artifactId>
 	<version>0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
 
 	<name>${pom.artifactId}-${pom.version}</name>
 
@@ -63,6 +64,11 @@
 			<artifactId>org.jackie.utils</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>javac</groupId>
+			<artifactId>javac</artifactId>
+			<version>1.7</version>
+		</dependency>
 
 	</dependencies>
 
@@ -78,12 +84,29 @@
 				<defaultGoal>install</defaultGoal>
 				<plugins>
 					<plugin>
+						<artifactId>maven-idea-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>install</phase>
+								<goals>
+									<goal>idea</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<downloadSources>true</downloadSources>
+							<downloadJavadocs>true</downloadJavadocs>
+						</configuration>
+					</plugin>
+					<plugin>
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
+								<phase>install</phase>
 								<goals>
 									<goal>unpack</goal>
 									<goal>build-classpath</goal>
+									<goal>sources</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -111,6 +134,18 @@
 								</goals>
 							</execution>
 						</executions>
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>.</directory>
+									<includes>
+										<include>*.ipr</include>
+										<include>*.iml</include>
+										<include>*.iws</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
