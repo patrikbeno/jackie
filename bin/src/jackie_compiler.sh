@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd $(dirname $0)
+mydir=$(realpath $(dirname $0))
 
-java -classpath "$(cat .classpath)" org.jackie.tools.Main "$*"
+java -classpath "$(cat $mydir/.classpath)" org.jackie.tools.Main $*
