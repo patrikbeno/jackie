@@ -80,11 +80,16 @@
 					<name>setup</name>
 				</property>
 			</activation>
+			<properties>
+				<sources>false</sources>
+				<javadocs>false</javadocs>
+			</properties>
 			<build>
 				<defaultGoal>install</defaultGoal>
 				<plugins>
 					<plugin>
 						<artifactId>maven-idea-plugin</artifactId>
+						<version>2.2</version>
 						<executions>
 							<execution>
 								<phase>install</phase>
@@ -94,8 +99,8 @@
 							</execution>
 						</executions>
 						<configuration>
-							<downloadSources>true</downloadSources>
-							<downloadJavadocs>true</downloadJavadocs>
+							<downloadSources>${sources}</downloadSources>
+							<downloadJavadocs>${javadocs}</downloadJavadocs>
 						</configuration>
 					</plugin>
 					<plugin>
@@ -106,7 +111,6 @@
 								<goals>
 									<goal>unpack</goal>
 									<goal>build-classpath</goal>
-									<goal>sources</goal>
 								</goals>
 							</execution>
 						</executions>
@@ -164,19 +168,11 @@
 					<id>downloaded</id>
 					<url>file:downloaded</url>
 				</repository>
-				<repository>
-					<id>local</id>
-					<url>file://h:/.m2/repository</url>
-				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
 					<id>downloaded</id>
 					<url>file:downloaded</url>
-				</pluginRepository>
-				<pluginRepository>
-					<id>local</id>
-					<url>file://h:/.m2/repository</url>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
@@ -193,28 +189,70 @@
 				<repository>
 					<id>greenhorn.internal</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
 				</repository>
 				<repository>
 					<id>greenhorn.snapshots</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>interval:10</updatePolicy>
+					</snapshots>
 				</repository>
 				<repository>
 					<id>greenhorn.cache</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
 				</repository>
 			</repositories>
 			<pluginRepositories>
 				<pluginRepository>
 					<id>greenhorn.internal</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
 				</pluginRepository>
 				<pluginRepository>
 					<id>greenhorn.snapshots</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+					<releases>
+						<enabled>false</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>interval:10</updatePolicy>
+					</snapshots>
 				</pluginRepository>
 				<pluginRepository>
 					<id>greenhorn.cache</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
 				</pluginRepository>
 			</pluginRepositories>
 		</profile>
