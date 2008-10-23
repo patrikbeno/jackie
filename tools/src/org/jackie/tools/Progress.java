@@ -2,6 +2,8 @@ package org.jackie.tools;
 
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
+import org.jackie.compiler.filemanager.FileManagerDelegate;
+import org.jackie.compiler.filemanager.FileObjectDelegate;
 
 import java.util.Set;
 import java.nio.charset.Charset;
@@ -60,35 +62,6 @@ class Progress {
 	}
 
 
-	class FileManagerDelegate implements FileManager {
-
-		FileManager fm;
-
-		public FileManagerDelegate(FileManager fm) {
-			this.fm = fm;
-		}
-
-		public Set<String> getPathNames() {
-			return fm.getPathNames();
-		}
-
-		public FileObject getFileObject(String pathname) {
-			return fm.getFileObject(pathname);
-		}
-
-		public FileObject create(String pathname) {
-			return fm.create(pathname);
-		}
-
-		public void remove(String pathname) {
-			fm.remove(pathname);
-		}
-
-		public Iterable<FileObject> getFileObjects() {
-			return fm.getFileObjects();
-		}
-	}
-
 	class RFileManager extends FileManagerDelegate {
 		RFileManager(FileManager fm) {
 			super(fm);
@@ -106,39 +79,6 @@ class Progress {
 
 		public FileObject create(String pathname) {
 			return new WFileObject(super.create(pathname)); 
-		}
-	}
-
-	class FileObjectDelegate implements FileObject {
-
-		FileObject fo;
-
-		FileObjectDelegate(FileObject fo) {
-			this.fo = fo;
-		}
-
-		public String getPathName() {
-			return fo.getPathName();
-		}
-
-		public Charset getCharset() {
-			return fo.getCharset();
-		}
-
-		public long getSize() {
-			return fo.getSize();
-		}
-
-		public long getLastModified() {
-			return fo.getLastModified();
-		}
-
-		public ReadableByteChannel getInputChannel() {
-			return fo.getInputChannel();
-		}
-
-		public WritableByteChannel getOutputChannel() {
-			return fo.getOutputChannel();
 		}
 	}
 
