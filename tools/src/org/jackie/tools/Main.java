@@ -6,7 +6,6 @@ import org.jackie.utils.IOHelper;
 import org.jackie.utils.Assert;
 import org.jackie.compilerimpl.CompilerImpl;
 import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
-import org.jackie.compilerimpl.filemanager.JarFileManager;
 import org.jackie.compilerimpl.filemanager.DirFileManager;
 import org.jackie.compilerimpl.filemanager.FilteredJarFileManager;
 import org.jackie.compiler.filemanager.FileManager;
@@ -50,8 +49,11 @@ public class Main {
 		this.jarname = jarname;
 	}
 
-	FileManager _sources;
-	List<FileManager> _dependencies;
+	Progress progress;
+
+	FileManager sources;
+	List<FileManager> dependencies;
+	FileManager workspace;
 
 	void run() {
 		doAssert(srcdir.exists(), "Missing sources directory: %s", srcdir);
@@ -61,45 +63,64 @@ public class Main {
 		final File rtjar = new File(jhome, "lib/rt.jar");
 		assert rtjar.exists();
 
+		progress = new Progress();
+
+		if (sources == null) {
+			sources = new DirFileManager(srcdir);
+		}
+		if (dependencies == null) {
+			dependencies = Arrays.asList((FileManager) new FilteredJarFileManager(
+					rtjar,
+					// warning: temporary solution to allow javac sources compilation (conflict with classes already in rt.jar)
+					"com.sun.(source|tools.javac).*",
+					"javax.(annotation.processing|lang.model|tools).*"));
+		}
+
 		CompilerImpl compiler = new CompilerImpl() {
 			{
-				sources = _sources != null ? _sources : (_sources=new DirFileManager(srcdir));
-				workspace = new InMemoryFileManager();
-				dependencies = _dependencies != null ? _dependencies : (_dependencies = Arrays.asList(
-						(FileManager) new FilteredJarFileManager(rtjar,
-																			  // warning: temporary solution to allow javac sources compilation (conflict with classes already in rt.jar)
-																			  "com.sun.(source|tools.javac).*",
-																			  "javax.(annotation.processing|lang.model|tools).*")));
+				sources = Main.this.sources;
+				dependencies = Main.this.dependencies;
+				workspace = Main.this.workspace = new InMemoryFileManager();
+
+				// wrap file managers with progress info stuff
+				if (System.getProperty("jackie.showProgress", "true").equals("true")) {
+					sources = progress.createReadableFileManager(sources);
+					workspace = progress.createWritableFileManager(workspace);
+				}
 			}
 
 			protected void save() {
-				try {
-					JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(jarname)));
-					CyclicBuffer buf = new CyclicBuffer(1024*8);
-					for (FileObject fo : workspace.getFileObjects()) {
-						buf.reset();
-						out.putNextEntry(new ZipEntry(fo.getPathName()));
-
-						ReadableByteChannel chin = fo.getInputChannel();
-						WritableByteChannel chout = Channels.newChannel(out);
-
-						while (buf.readFrom(chin) != -1 || !buf.isEmpty()) {
-							buf.writeTo(chout);
-						}
-
-						out.closeEntry();
-					}
-					IOHelper.close(out);
-
-				} catch (IOException e) {
-					throw Assert.notYetHandled(e);
-				}
-
+				saveJar();
 			}
 		};
+
 		compiler.compile();
 
+		progress.close();
+	}
 
+	void saveJar() {
+		try {
+			JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(jarname)));
+			CyclicBuffer buf = new CyclicBuffer(1024*8);
+			for (FileObject fo : workspace.getFileObjects()) {
+				buf.reset();
+				out.putNextEntry(new ZipEntry(fo.getPathName()));
+
+				ReadableByteChannel chin = fo.getInputChannel();
+				WritableByteChannel chout = Channels.newChannel(out);
+
+				while (buf.readFrom(chin) != -1 || !buf.isEmpty()) {
+					buf.writeTo(chout);
+				}
+
+				out.closeEntry();
+			}
+			IOHelper.close(out);
+
+		} catch (IOException e) {
+			throw Assert.notYetHandled(e);
+		}
 	}
 
 }
