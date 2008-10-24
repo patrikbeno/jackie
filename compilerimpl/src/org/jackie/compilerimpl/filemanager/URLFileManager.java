@@ -41,4 +41,7 @@ public abstract class URLFileManager extends AbstractFileManager implements File
 		}
 	}
 
+	public String toString() {
+		return base.toString();
+	}
 }

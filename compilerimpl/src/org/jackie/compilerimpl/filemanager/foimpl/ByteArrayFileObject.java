@@ -14,19 +14,14 @@ import java.nio.charset.Charset;
 /**
  * @author Patrik Beno
  */
-public class ByteArrayFileObject implements FileObject {
+public class ByteArrayFileObject extends BaseFileObject {
 
-	protected String pathname;
 	protected byte[] bytes;
 	protected boolean readonly;
 
 	public ByteArrayFileObject(String pathname) {
-		this.pathname = pathname;
+		super(pathname);
 		this.bytes = new byte[0];
-	}
-
-	public String getPathName() {
-		return pathname;
 	}
 
 	public Charset getCharset() {

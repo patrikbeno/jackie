@@ -13,19 +13,13 @@ import java.nio.charset.Charset;
 /**
  * @author Patrik Beno
  */
-public class SourceFileObject implements FileObject {
-
-	protected String pathname;
+public class SourceFileObject extends BaseFileObject {
 
 	protected URL url;
 
 	public SourceFileObject(String pathname, URL url) {
-		this.pathname = pathname;
+		super(pathname);
 		this.url = url;
-	}
-
-	public String getPathName() {
-		return pathname;
 	}
 
 	public Charset getCharset() {

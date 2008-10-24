@@ -15,18 +15,13 @@ import java.nio.charset.Charset;
 /**
  * @author Patrik Beno
  */
-public class URLFileObject implements FileObject {
+public class URLFileObject extends BaseFileObject {
 
 	protected URL base;
-	protected String pathname;
 
 	public URLFileObject(URL base, String pathname) {
+		super(pathname);
 		this.base = base;
-		this.pathname = pathname;
-	}
-
-	public String getPathName() {
-		return pathname;
 	}
 
 	public Charset getCharset() {
