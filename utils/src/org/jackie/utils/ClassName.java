@@ -1,5 +1,8 @@
 package org.jackie.utils;
 
+import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.doAssert;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,14 +31,18 @@ public class ClassName {
 
 
 	public ClassName(Class cls) {
+		NOTNULL(cls);
 		fqname = unwrapComponentClass(cls).getName() + dup(ARRAY_DIM_FLAG, dimensions=countArrayDimenstions(cls));
 	}
 
 	public ClassName(String fqname) {
-		this.fqname = fqname;
+		this.fqname = NOTNULL(fqname);
 	}
 
 	public ClassName(String fqname, int dimensions) {
+		NOTNULL(fqname);
+		doAssert(dimensions>=0, "dimensions: %s", dimensions);
+
 		this.fqname = fqname + dup(ARRAY_DIM_FLAG, dimensions);
 		this.dimensions = dimensions;
 	}
@@ -57,7 +64,9 @@ public class ClassName {
 	}
 
 	public PackageName getPackageName() {
-		return new PackageName(getPackageFQName());
+		return getPackageFQName().equals("")
+				? PackageName.DEFAULT
+				: new PackageName(getPackageFQName());
 	}
 
 	public String getName() {

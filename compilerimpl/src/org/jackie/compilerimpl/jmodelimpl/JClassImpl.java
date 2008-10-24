@@ -88,10 +88,10 @@ public class JClassImpl extends AbstractJNode implements JClass {
 	}
 
 	public String getFQName() {
-		if (jpackage != null) {
-			return jpackage.getFQName() + "." + name;
-		} else {
+		if (jpackage.isDefault()) {
 			return name;
+		} else {
+			return jpackage.getFQName() + "." + name;
 		}
 	}
 

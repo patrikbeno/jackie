@@ -127,30 +127,30 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 	}
 
 	public JPackage getJPackage(PackageName pckgname) {
-		JPackage p = (pckgname != null) ? packages.get(pckgname.getFQName()) : null;
+
+		String name = (pckgname == null || pckgname.isDefault()) ? "" : pckgname.getFQName();
+
+		JPackage p = packages.get(name);
 		if (p != null) {
 			return p;
 		}
 
 		p = createPackage(pckgname);
-		packages.put(p.getFQName(), p);
+		packages.put(name, p);
 
 		return p;
 	}
 
 	protected JPackage createPackage(PackageName pckgname) {
-		if (pckgname == null) {
+		if (pckgname == null || pckgname.isDefault()) {
 			JPackage p = new JPackageImpl(null);
-			p.edit().setName("");
 			return p;
 		}
 
 		JPackage parent = getJPackage(pckgname.getParent());
 
 		JPackage jpackage = new JPackageImpl(parent);
-		jpackage.edit()
-				.setName(pckgname.getName())
-				.setParent(parent);
+		jpackage.edit().setName(pckgname.getName());
 
 		return jpackage;
 	}

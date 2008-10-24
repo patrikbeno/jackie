@@ -43,7 +43,7 @@ public class PrimitiveTypeRegistry extends AbstractTypeRegistry {
 		try {
 			setEditable(true);
 			for (JPrimitive p : JPrimitive.values()) {
-				JClassImpl jclass = new JClassImpl(p.getPrimitiveClass().getName(), null, this);
+				JClassImpl jclass = new JClassImpl(p.getPrimitiveClass().getName(), createPackage(null), this);
 				jclass.loadLevel = LoadLevel.CODE; // mark as loaded (primitives are unloadable)
 				jclass.extensions().edit().add(new PrimitiveTypeImpl(jclass));
 				register(jclass);

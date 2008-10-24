@@ -5,6 +5,8 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.utils.Stack;
+import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -16,8 +18,6 @@ import java.util.Set;
 public class JPackageImpl extends AbstractJNode implements JPackage {
 
 	protected TypeRegistry typeRegistry;
-
-	public JPackage parent;
 
 	public String name;
 
@@ -39,6 +39,8 @@ public class JPackageImpl extends AbstractJNode implements JPackage {
 	}
 
 	public String getFQName() {
+		if (isDefault()) { return null; }
+
 		Stack<String> stack = new Stack<String>();
 		for (JPackage p = this; !p.isDefault(); p = p.getParentPackage()) {
 			stack.push(p.getName());
@@ -51,11 +53,11 @@ public class JPackageImpl extends AbstractJNode implements JPackage {
 	}
 
 	public boolean isDefault() {
-		return getParentPackage() == null && getName().equals("");
+		return getParentPackage() == null;
 	}
 
 	public JPackage getParentPackage() {
-		return parent;
+		return (JPackage) owner();
 	}
 
 	public Set<JPackage> getSubPackages() {
@@ -73,12 +75,16 @@ public class JPackageImpl extends AbstractJNode implements JPackage {
 	public Editor edit() {
 		return new Editor() {
 			public Editor setName(String name) {
+				if (isDefault()) {
+					Assert.expected(null, name, "Cannot rename default package!");
+				}
 				JPackageImpl.this.name = name;
 				return this;
 			}
 
 			public Editor setParent(JPackage parent) {
-				JPackageImpl.this.parent = parent;
+				doAssert(!isDefault(), "Cannot relocate (set aprent) to default package!");
+				JPackageImpl.this.owner = parent;
 				return this;
 			}
 
@@ -93,4 +99,7 @@ public class JPackageImpl extends AbstractJNode implements JPackage {
 		};
 	}
 
+	public String toString() {
+		return isDefault() ? "<default>" : getFQName();
+	}
 }
