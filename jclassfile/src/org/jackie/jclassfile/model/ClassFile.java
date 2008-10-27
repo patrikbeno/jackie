@@ -9,6 +9,7 @@ import static org.jackie.jclassfile.util.Helper.writeConstantReference;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
+import org.jackie.utils.IOHelper;
 import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.context.ContextManager.context;
 import static org.jackie.context.ContextManager.closeContext;
@@ -158,8 +159,6 @@ ClassFile {
 	///
 
 	public void load(final DataInput in) throws IOException {
-		Log.enter();
-
 		newContext();
 		try {
 			magic = in.readInt();
@@ -176,7 +175,7 @@ ClassFile {
 
 			// interfaces
 			{
-			int count = in.readUnsignedShort();
+				int count = in.readUnsignedShort();
 				interfaces = new ArrayList<ClassRef>(count);
 				while (count-- > 0) {
 					ClassRef iface = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
@@ -186,7 +185,7 @@ ClassFile {
 
 			// fields
 			{
-			int count = in.readUnsignedShort();
+				int count = in.readUnsignedShort();
 				fields = new ArrayList<FieldInfo>(count);
 				while (count-- > 0) {
 					FieldInfo f = new FieldInfo(this);
@@ -197,7 +196,7 @@ ClassFile {
 
 			// methods
 			{
-			int count = in.readUnsignedShort();
+				int count = in.readUnsignedShort();
 				methods = new ArrayList<MethodInfo>(count);
 				while (count-- > 0) {
 					MethodInfo m = new MethodInfo(this);
@@ -207,16 +206,13 @@ ClassFile {
 			}
 
 			attributes = AttributeHelper.loadAttributes(this, in);
+
 		} finally {
 			closeContext();
 		}
-
-		Log.leave();
 	}
 
 	public void save(DataOutput out) throws IOException {
-		Log.enter();
-
 		newContext();
 		try {
 			out.writeInt(magic);
@@ -247,8 +243,6 @@ ClassFile {
 		} finally {
 			closeContext();
 		}
-
-		Log.leave();
 	}
 
 	private void save(DataOutput out, List<? extends Base> items) throws IOException {
@@ -261,9 +255,13 @@ ClassFile {
 	public byte[] toByteArray() {
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream(1024*4);
+
 			DataOutput out = new DataOutputStream(baos);
 			save(out);
+			IOHelper.close(out);
+
 			return baos.toByteArray();
+
 		} catch (IOException e) {
 			throw Assert.unexpected(e);
 		}
