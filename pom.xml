@@ -25,6 +25,13 @@
 				<build.dir>${build.home}/${pom.groupId}/${pom.artifactId}-${pom.version}</build.dir>
 			</properties>
 		</profile>
+
+		<profile>
+			<id>javac</id>
+			<modules>
+				<module>../javac</module>
+			</modules>
+		</profile>
 	</profiles>
 
 	<modules>
@@ -52,9 +59,6 @@
 
 		<!-- test -->
 		<module>test</module>
-
-		<!-- hacking -->
-		<!--<module>../javac</module>-->
 	</modules>
 
 	<scm>
