@@ -4,6 +4,8 @@ import org.jackie.compilerimpl.bytecode.ByteCodeBuilder;
 import org.jackie.compilerimpl.jmodelimpl.ExtensionsImpl;
 import org.jackie.compilerimpl.jmodelimpl.JFlagsImpl;
 import org.jackie.compilerimpl.jmodelimpl.AccessModeHelper;
+import org.jackie.compilerimpl.jmodelimpl.FlagsHelper;
+import static org.jackie.compilerimpl.jmodelimpl.AccessModeHelper.toAccess;
 import org.jackie.compilerimpl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compilerimpl.jmodelimpl.code.JCodeImpl;
 import static org.jackie.compilerimpl.util.Helper.assertEditable;
@@ -167,8 +169,8 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 				m.name(getName());
 				m.methodDescriptor(getMethodDescriptor(JMethodImpl.this));
 
-				((JFlagsImpl)flags()).compile(m.flags());
-				m.flags().set(AccessModeHelper.toAccess(getAccessMode()));
+				FlagsHelper.toFlags(flags(), m.flags());
+				AccessModeHelper.toFlags(getAccessMode(), m.flags());
 
 				classfile.addMethod(m);
 

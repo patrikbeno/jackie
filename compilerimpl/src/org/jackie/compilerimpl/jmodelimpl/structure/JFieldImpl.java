@@ -1,6 +1,8 @@
 package org.jackie.compilerimpl.jmodelimpl.structure;
 
 import org.jackie.compilerimpl.bytecode.ByteCodeBuilder;
+import org.jackie.compilerimpl.jmodelimpl.FlagsHelper;
+import org.jackie.compilerimpl.jmodelimpl.AccessModeHelper;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jvm.JClass;
@@ -17,6 +19,10 @@ import org.jackie.compiler.spi.NodeCompiler;
 public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 
 	protected AccessMode accessMode;
+
+	{
+		accessMode = AccessMode.PACKAGE;
+	}
 
 	public JFieldImpl(JClass owner) {
 		super(owner);
@@ -70,6 +76,9 @@ public class JFieldImpl extends JVariableImpl<JClass> implements JField {
 				f.name(getName());
 				f.typeDescriptor(getTypeDescriptor(getType()));
 
+				FlagsHelper.toFlags(flags(), f.flags());
+				AccessModeHelper.toFlags(getAccessMode(), f.flags());
+				
 				classfile.addField(f);
 
 				for (JAttribute a : attributes().getAttributes()) {

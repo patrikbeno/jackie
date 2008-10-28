@@ -4,6 +4,7 @@ import org.jackie.jclassfile.flags.Access;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.NOTNULL;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -14,6 +15,8 @@ import java.util.Map;
 public class AccessModeHelper {
 
 	static public AccessMode toAccessMode(Flags flags) {
+		NOTNULL(flags);
+
 		if (flags.isSet(Access.PUBLIC)) {
 			return AccessMode.PUBLIC;
 		} else if (flags.isSet(Access.PROTECTED)) {
@@ -26,6 +29,8 @@ public class AccessModeHelper {
 	}
 
 	static public Access toAccess(AccessMode accessMode) {
+		NOTNULL(accessMode);
+
 		switch (accessMode) {
 			case PACKAGE:
 				return null;
@@ -37,6 +42,20 @@ public class AccessModeHelper {
 				return Access.PUBLIC;
 			default:
 				throw Assert.invariantFailed(accessMode);
+		}
+	}
+
+	static public void toFlags(AccessMode accessMode, Flags flags) {
+		NOTNULL(accessMode);
+		NOTNULL(flags);
+
+		flags.clear(Access.PUBLIC);
+		flags.clear(Access.PROTECTED);
+		flags.clear(Access.PRIVATE);
+
+		Access access = toAccess(accessMode);
+		if (access != null) {
+			flags.set(access);
 		}
 	}
 }

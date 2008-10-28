@@ -265,9 +265,13 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				if (getSuperClass() != null) {
 					classfile.superclass(toBinaryClassName(getSuperClass()));
 				}
+				
 				for (JClass iface : getInterfaces()) {
 					classfile.addInterface(toBinaryClassName(iface));
 				}
+
+				FlagsHelper.toFlags(flags(), classfile.flags());
+				AccessModeHelper.toFlags(getAccessMode(), classfile.flags());
 
 				for (JField f : getFields()) {
 					((JFieldImpl)f).compile(classfile);
