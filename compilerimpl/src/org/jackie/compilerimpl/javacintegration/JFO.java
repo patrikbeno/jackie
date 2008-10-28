@@ -92,4 +92,10 @@ public class JFO extends SimpleJavaFileObject {
 		Charset charset = fobject.getCharset();
 		return (charset != null) ? charset : Charset.defaultCharset();
 	}
+
+	@Override
+	public String toString() {
+		// javac uses toString() value for SourceFile attribute. For now, just comply...
+		return uri.toString();
+	}
 }
