@@ -10,13 +10,14 @@ import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.Flagged;
 import org.jackie.jvm.props.Named;
 import org.jackie.jvm.props.Typed;
+import org.jackie.jvm.props.Accessible;
 
 import java.util.List;
 
 /**
  * @author Patrik Beno
  */
-public interface JMethod extends JNode, Named, Typed, Flagged, Attributed, Extensible, Editable<JMethod.Editor> {
+public interface JMethod extends JNode, Named, Typed, Accessible, Flagged, Attributed, Extensible, Editable<JMethod.Editor> {
 
 	JClass getJClass();
 

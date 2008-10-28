@@ -1,13 +1,13 @@
 package org.jackie.compilerimpl.jmodelimpl.structure;
 
 import org.jackie.compilerimpl.jmodelimpl.ExtensionsImpl;
-import org.jackie.compilerimpl.jmodelimpl.FlagsImpl;
+import org.jackie.compilerimpl.jmodelimpl.JFlagsImpl;
 import org.jackie.compilerimpl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.jvm.JClass;
 import org.jackie.jvm.JNode;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.extension.Extensions;
-import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.props.JFlags;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.spi.JModelHelper;
 import org.jackie.jvm.structure.JVariable;
@@ -19,7 +19,7 @@ public abstract class JVariableImpl<N extends JNode> extends AbstractJNode imple
 
 	protected String name;
 	protected JClass type;
-	protected Flags flags;
+	protected JFlags JFlags;
 	protected Attributes attributes;
 	protected Extensions extensions;
 
@@ -39,11 +39,11 @@ public abstract class JVariableImpl<N extends JNode> extends AbstractJNode imple
 		return type;
 	}
 
-	public Flags flags() {
-		if (flags == null) {
-			flags = new FlagsImpl();
+	public JFlags flags() {
+		if (JFlags == null) {
+			JFlags = new JFlagsImpl();
 		}
-		return flags;
+		return JFlags;
 	}
 
 	public Attributes attributes() {

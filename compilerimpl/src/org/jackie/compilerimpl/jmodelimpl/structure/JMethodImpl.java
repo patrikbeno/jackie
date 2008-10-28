@@ -2,7 +2,8 @@ package org.jackie.compilerimpl.jmodelimpl.structure;
 
 import org.jackie.compilerimpl.bytecode.ByteCodeBuilder;
 import org.jackie.compilerimpl.jmodelimpl.ExtensionsImpl;
-import org.jackie.compilerimpl.jmodelimpl.FlagsImpl;
+import org.jackie.compilerimpl.jmodelimpl.JFlagsImpl;
+import org.jackie.compilerimpl.jmodelimpl.AccessModeHelper;
 import org.jackie.compilerimpl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compilerimpl.jmodelimpl.code.JCodeImpl;
 import static org.jackie.compilerimpl.util.Helper.assertEditable;
@@ -14,7 +15,7 @@ import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
-import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.props.JFlags;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JCode;
 import org.jackie.jvm.structure.JMethod;
@@ -36,7 +37,7 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 	protected JClass type;
 
 	protected AccessMode accessMode;
-	protected Flags flags;
+	protected JFlags JFlags;
 
 	protected Attributes attributes;
 	protected Extensions extensions;
@@ -57,6 +58,10 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 
 	public JClass getType() {
 		return type;
+	}
+
+	public AccessMode getAccessMode() {
+		return accessMode;
 	}
 
 	public Attributes attributes() {
@@ -100,11 +105,11 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
         return code;
     }
 
-	public Flags flags() {
-		if (flags == null) {
-			flags = new FlagsImpl();
+	public JFlags flags() {
+		if (JFlags == null) {
+			JFlags = new JFlagsImpl();
 		}
-		return flags;
+		return JFlags;
 	}
 
 	public boolean isEditable() {
@@ -161,6 +166,9 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 
 				m.name(getName());
 				m.methodDescriptor(getMethodDescriptor(JMethodImpl.this));
+
+				((JFlagsImpl)flags()).compile(m.flags());
+				m.flags().set(AccessModeHelper.toAccess(getAccessMode()));
 
 				classfile.addMethod(m);
 

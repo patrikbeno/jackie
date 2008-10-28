@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-public interface Flags extends Editable<Flags.Editor> {
+public interface JFlags extends Editable<JFlags.Editor> {
 
 	boolean isSet(Flag flag);
 
@@ -16,7 +16,7 @@ public interface Flags extends Editable<Flags.Editor> {
 	Set<Flag> getAllSet();
 
 
-	public interface Editor extends org.jackie.jvm.Editor<Flags> {
+	public interface Editor extends org.jackie.jvm.Editor<JFlags> {
 
 		Editor reset();
 

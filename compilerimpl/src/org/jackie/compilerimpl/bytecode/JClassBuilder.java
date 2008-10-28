@@ -4,6 +4,9 @@ import org.jackie.compiler.event.JClassEvents;
 import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.compilerimpl.jmodelimpl.JClassImpl;
 import org.jackie.compilerimpl.jmodelimpl.LoadLevel;
+import org.jackie.compilerimpl.jmodelimpl.AccessModeHelper;
+import org.jackie.compilerimpl.jmodelimpl.FlagsHelper;
+import static org.jackie.compilerimpl.jmodelimpl.AccessModeHelper.toAccessMode;
 import org.jackie.compilerimpl.jmodelimpl.attribute.GenericAttribute;
 import org.jackie.compilerimpl.jmodelimpl.structure.JFieldImpl;
 import org.jackie.compilerimpl.jmodelimpl.structure.JMethodImpl;
@@ -22,7 +25,7 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.attribute.Attributes;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
-import org.jackie.jvm.props.Flags.Editor;
+import org.jackie.jvm.props.JFlags.Editor;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
@@ -51,8 +54,8 @@ public class JClassBuilder extends AbstractBuilder {
 		events(JClassEvents.class).loading(jclass);
 		events(ExtensionEvents.class).resolveClassFlags(classfile.flags(), jclass);
 
-		resolveAccessMode();
-		resolveFlags();
+		jclass.edit().setAccessMode(toAccessMode(classfile.flags()));
+		FlagsHelper.toJFlags(classfile.flags(), jclass.flags());
 
 		if (classfile.superclass() != null) {
 			ClassName cname = getClassNameFromBinaryName(classfile.superclass());
@@ -72,44 +75,11 @@ public class JClassBuilder extends AbstractBuilder {
 			buildMethod(m);
 		}
 
-		for (AttributeInfo a : classfile.attributes()) {
-			buildAttribute(a, jclass.attributes());
-		}
+		buildAttributes(classfile.attributes(), jclass.attributes());
 
 		((JClassImpl)jclass).loadLevel = LoadLevel.CODE;
 
 		events(JClassEvents.class).loaded(jclass);
-	}
-
-	private void resolveAccessMode() {
-		Flags flags = classfile.flags();
-		if (flags.isSet(Access.PUBLIC)) {
-			jclass.edit().setAccessMode(AccessMode.PUBLIC);
-		} else if (flags.isSet(Access.PROTECTED)) {
-			jclass.edit().setAccessMode(AccessMode.PROTECTED);
-		} else if (flags.isSet(Access.PRIVATE)) {
-			jclass.edit().setAccessMode(AccessMode.PRIVATE);
-		} else {
-			jclass.edit().setAccessMode(AccessMode.PACKAGE);
-		}
-	}
-
-	private void resolveFlags() {
-		Flags flags = classfile.flags();
-		Editor jflags = jclass.flags().edit();
-
-		if (flags.isSet(Access.ABSTRACT)) {
-			jflags.add(Flag.ABSTRACT);
-		}
-		if (flags.isSet(Access.STATIC)) {
-			jflags.add(Flag.STATIC);
-		}
-		if (flags.isSet(Access.FINAL)) {
-			jflags.add(Flag.FINAL);
-		}
-		if (flags.isSet(Access.SYNTHETIC)) {
-			jflags.add(Flag.SYNTHETIC);
-		}
 	}
 
 	void buildField(final FieldInfo f) {
@@ -139,8 +109,12 @@ public class JClassBuilder extends AbstractBuilder {
 				for (TypeDescriptor d : desc.getParameterTypes()) {
 					JParameter p = new JParameterImpl(jmethod);
 					p.edit().setType(getJClass(d));
+					jparams.add(p);
 				}
 				jmethod.edit().setParameters(jparams);
+
+				jmethod.edit().setAccessMode(toAccessMode(m.flags()));
+				FlagsHelper.toJFlags(m.flags(), jmethod.flags());
 
 				jclass.edit().addMethod(jmethod);
 				buildAttributes(m.attributes(), jmethod.attributes());
@@ -155,6 +129,7 @@ public class JClassBuilder extends AbstractBuilder {
 	}
 
 	void buildAttribute(AttributeInfo a, Attributes dst) {
+		a.detach();
 		dst.edit().addAttribute(new GenericAttribute(dst.jnode(), a.name(), a));
 	}
 

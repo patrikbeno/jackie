@@ -16,7 +16,7 @@ import org.jackie.jvm.attribute.JAttribute;
 import org.jackie.jvm.extension.Extensions;
 import org.jackie.jvm.props.AccessMode;
 import org.jackie.jvm.props.Flag;
-import org.jackie.jvm.props.Flags;
+import org.jackie.jvm.props.JFlags;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
@@ -51,7 +51,7 @@ public class JClassImpl extends AbstractJNode implements JClass {
 	protected List<JMethod> methods;
 
 	protected AccessMode access;
-	protected FlagsImpl flags;
+	protected JFlagsImpl flags;
 
 	protected Extensions extensions;
 
@@ -109,10 +109,10 @@ public class JClassImpl extends AbstractJNode implements JClass {
 		return interfaces != null ? Collections.unmodifiableList(interfaces) : Collections.<JClass>emptyList();
 	}
 
-	public Flags flags() {
+	public JFlags flags() {
 		checkLoaded(LoadLevel.CLASS);
 		if (flags == null) {
-			flags = new FlagsImpl();
+			flags = new JFlagsImpl();
 		}
 		return flags;
 	}
@@ -224,7 +224,7 @@ public class JClassImpl extends AbstractJNode implements JClass {
 
 			public Editor setFlags(Flag ... flags) {
 				if (cthis.flags == null) {
-					cthis.flags = new FlagsImpl();
+					cthis.flags = new JFlagsImpl();
 				}
 				cthis.flags.reset().setAll(flags);
 				return this;

@@ -75,7 +75,7 @@ public class CompilerImpl implements Compiler {
 	void compileJavaSources() {
 		Log.enter();
 
-		List<String> options = Arrays.asList("-g"/*, "-source", "1.5", "-target", "1.5"*/);
+		List<String> options = Arrays.asList(/*"-g", "-source", "1.5", "-target", "1.5"*/);
 		JavacCompiler javac = new JavacCompiler(options,
 				sources, new MultiFileManager(dependencies), workspace);
 		javac.compile();

@@ -5,6 +5,6 @@ package org.jackie.jvm.props;
  */
 public interface Flagged {
 
-	Flags flags();
+	JFlags flags();
 
 }
