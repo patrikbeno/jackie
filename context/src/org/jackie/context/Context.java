@@ -35,8 +35,9 @@ public class Context implements Closeable {
 		return t;
 	}
 
-	public <T extends ContextObject> void set(Class<T> type, T object) {
+	public <T extends ContextObject> T set(Class<T> type, T object) {
 		items.put(type, Assert.typecast(object, type));
+		return object;
 	}
 
 	public <T extends ContextObject> void remove(Class<T> type) {
