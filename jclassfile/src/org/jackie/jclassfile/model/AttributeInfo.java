@@ -71,7 +71,7 @@ public abstract class AttributeInfo extends Base {
 	}
 
 	public void save(XDataOutput out) {
-		Log.debug("Saving attribute %s", name());
+		Log.debug("Saving attribute %s (%s)", name(), getClass());
 		name.writeReference(out);
 		writeData(out);
 	}
