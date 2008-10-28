@@ -3,23 +3,25 @@ package org.jackie.jclassfile.model;
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
-import org.jackie.utils.Assert;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
 import org.jackie.utils.IOHelper;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.ByteArrayDataOutput;
+import org.jackie.utils.XDataOutput;
 import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.context.ContextManager.context;
 import static org.jackie.context.ContextManager.closeContext;
 import static org.jackie.context.ContextManager.newContext;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.DataOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -27,7 +29,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class ClassFile extends Base implements ConstantPoolSupport, AttributeSupport {
+public class ClassFile implements AttributeSupport {
 
 	/*
 ClassFile {
@@ -56,8 +58,6 @@ ClassFile {
 	int minor;
 	int major = 50;
 
-	ConstantPool pool;
-
 	Flags flags;
 	ClassRef classname;
 	ClassRef superclass;
@@ -69,15 +69,10 @@ ClassFile {
 
 	{
 		flags = new Flags();
-		pool = new ConstantPool(this);
-	}
-
-	public ConstantPool constantPool() {
-		return pool;
 	}
 
 	public ClassFile classname(String clsname) {
-		classname = constantPool().factory().getClassRef(clsname);
+		classname = ClassRef.create(Utf8.create(clsname));
 		return this;
 	}
 
@@ -90,7 +85,7 @@ ClassFile {
 	}
 
 	public ClassFile superclass(String clsname) {
-		superclass = constantPool().factory().getClassRef(clsname);
+		superclass = ClassRef.create(Utf8.create(clsname));
 		return this;
 	}
 
@@ -106,7 +101,7 @@ ClassFile {
 		if (interfaces == null) {
 			interfaces = new ArrayList<ClassRef>();
 		}
-		interfaces.add(constantPool().factory().getClassRef(className));
+		interfaces.add(ClassRef.create(Utf8.create(className)));
 	}
 
 	public List<FieldInfo> fields() {
@@ -158,27 +153,29 @@ ClassFile {
 
 	///
 
-	public void load(final DataInput in) throws IOException {
+	public void load(XDataInput in) {
 		newContext();
 		try {
 			magic = in.readInt();
 			minor = in.readUnsignedShort();
 			major = in.readUnsignedShort();
 
-			constantPool().load(in);
+			ConstantPool pool = ConstantPool.create(true);
 
-			flags = Flags.create(in, constantPool());
-			classname = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
+			pool.load(in, pool);
+
+			flags = Flags.create(in, pool);
+			classname = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 			Log.debug("Loading class %s", classname.value());
 
-			superclass = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
+			superclass = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 
 			// interfaces
 			{
 				int count = in.readUnsignedShort();
 				interfaces = new ArrayList<ClassRef>(count);
 				while (count-- > 0) {
-					ClassRef iface = constantPool().getConstant(in.readUnsignedShort(), ClassRef.class);
+					ClassRef iface = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 					interfaces.add(iface);
 				}
 			}
@@ -189,7 +186,7 @@ ClassFile {
 				fields = new ArrayList<FieldInfo>(count);
 				while (count-- > 0) {
 					FieldInfo f = new FieldInfo(this);
-					f.load(in);
+					f.load(in, pool);
 					fields.add(f);
 				}
 			}
@@ -200,7 +197,7 @@ ClassFile {
 				methods = new ArrayList<MethodInfo>(count);
 				while (count-- > 0) {
 					MethodInfo m = new MethodInfo(this);
-					m.load(in);
+					m.load(in, pool);
 					methods.add(m);
 				}
 			}
@@ -212,15 +209,16 @@ ClassFile {
 		}
 	}
 
-	public void save(DataOutput out) throws IOException {
+	public void save(XDataOutput out) {
 		newContext();
 		try {
 			out.writeInt(magic);
 			out.writeShort(minor);
 			out.writeShort(major);
 
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream tmpout = new DataOutputStream(baos);
+			ConstantPool pool = context().set(ConstantPool.class, new ConstantPool());
+
+			ByteArrayDataOutput tmpout = new ByteArrayDataOutput();
 
 			flags.save(tmpout);
 			writeConstantReference(classname, tmpout);
@@ -236,16 +234,16 @@ ClassFile {
 			save(tmpout, methods);
 			save(tmpout, attributes);
 
-			constantPool().save(out);
+			pool.save(out);
 
-			tmpout.close();
-			out.write(baos.toByteArray());
+			out.write(tmpout.toByteArray());
+
 		} finally {
 			closeContext();
 		}
 	}
 
-	private void save(DataOutput out, List<? extends Base> items) throws IOException {
+	private void save(XDataOutput out, List<? extends Base> items) {
 		out.writeShort(sizeof(items));
 		for (Base item : iterable(items)) {
 			item.save(out);
@@ -253,18 +251,10 @@ ClassFile {
 	}
 
 	public byte[] toByteArray() {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream(1024*4);
+		ByteArrayDataOutput out = new ByteArrayDataOutput();
+		save(out);
+		return out.toByteArray();
 
-			DataOutput out = new DataOutputStream(baos);
-			save(out);
-			IOHelper.close(out);
-
-			return baos.toByteArray();
-
-		} catch (IOException e) {
-			throw Assert.unexpected(e);
-		}
 	}
 
 	public String toString() {

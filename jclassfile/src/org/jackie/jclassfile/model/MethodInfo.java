@@ -28,4 +28,7 @@ method_info {
 		this.descriptor(descriptor.getDescriptor());
 	}
 
+	public String toString() {
+		return String.format("%s %s", name.value(), descriptor.value());
+	}
 }

@@ -4,10 +4,8 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -22,21 +20,35 @@ CONSTANT_NameAndType_info {
     }
 	 */
 
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new NameAndType(); 
+		}
+	};
+
+	static public NameAndType create(Utf8 name, Utf8 type) {
+		return new NameAndType(name, type);
+	}
+
 	Utf8 name;
 	Utf8 type;
 
-	NameAndType(ConstantPool pool) {
-		super(pool);
+	protected NameAndType() {
 	}
 
-	NameAndType(ConstantPool pool, String name, String type) {
-		super(pool);
-		this.name = factory().getUtf8(name);
-		this.type = factory().getUtf8(type);
+	protected NameAndType(Utf8 name, Utf8 type) {
+		this.name = name;
+		this.type = type;
 	}
 
 	public CPEntryType type() {
 		return CPEntryType.NAME_AND_TYPE; 
+	}
+
+	public void register() {
+		name.register();
+		type.register();
+		super.register();
 	}
 
 	public String name() {
@@ -47,19 +59,18 @@ CONSTANT_NameAndType_info {
 		return type.value();
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, final ConstantPool pool) {
 		final int nameidx = in.readUnsignedShort();
 		final int descidx = in.readUnsignedShort();
 		return new Task() {
-			public void execute() throws IOException {
-				ConstantPool pool = pool();
+			public void execute() {
 				name = pool.getConstant(nameidx, Utf8.class);
 				type = pool.getConstant(descidx, Utf8.class);
 			}
 		};
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		name.writeReference(out);
 		type.writeReference(out);
 	}

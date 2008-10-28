@@ -6,10 +6,9 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,7 +58,7 @@ LocalVariableTypeTable_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in);
 
 		int count = in.readUnsignedShort();
@@ -68,15 +67,15 @@ LocalVariableTypeTable_attribute {
 			Item item = new Item();
 			item.startpc = in.readUnsignedShort();
 			item.length = in.readUnsignedShort();
-			item.name = pool().getConstant(in.readUnsignedShort(), Utf8.class);
-			item.signature = pool().getConstant(in.readUnsignedShort(), Utf8.class);
+			item.name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
+			item.signature = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 			items.add(item);
 		}
 
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 2 + items.size() * 10);
 		out.writeShort(items.size());
 		for (Item item : items) {

@@ -2,6 +2,7 @@ package org.jackie.test.jclassfile;
 
 import static org.jackie.utils.Assert.NOTNULL;
 import org.jackie.utils.Assert;
+import org.jackie.utils.ByteArrayDataInput;
 import org.jackie.jclassfile.model.ClassFile;
 
 import java.io.IOException;
@@ -50,7 +51,7 @@ public class Util {
 	static public ClassFile parseClassFile(final byte[] bytes) {
 		try {
 			ClassFile cf = new ClassFile();
-			cf.load(new DataInputStream(new ByteArrayInputStream(bytes)));
+			cf.load(new ByteArrayDataInput(bytes));
 			return cf;
 		} catch (Exception e) {
 			throw Assert.assertFailed(e);

@@ -2,6 +2,8 @@ package org.jackie.utils;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.DataInputStream;
 
 /**
  * @author Patrik Beno
@@ -12,6 +14,10 @@ public class DataInputWrapper implements XDataInput {
 
 	public DataInputWrapper(DataInput in) {
 		this.in = in;
+	}
+
+	public DataInputWrapper(InputStream in) {
+		this.in = new DataInputStream(in); 
 	}
 
 	public void readFully(byte[] b) {

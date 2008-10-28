@@ -4,24 +4,30 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
  */
 public class DoubleRef extends Constant implements ValueProvider {
 
-	double value;
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new DoubleRef();
+		}
+	};
 
-	DoubleRef(ConstantPool pool) {
-		super(pool);
+	static public DoubleRef create(double value) {
+		return new DoubleRef(value);
 	}
 
-	DoubleRef(ConstantPool pool, double value) {
-		super(pool);
+	double value;
+
+	protected DoubleRef() {
+	}
+
+	protected DoubleRef(double value) {
 		this.value = value;
 	}
 
@@ -29,7 +35,7 @@ public class DoubleRef extends Constant implements ValueProvider {
 		return CPEntryType.DOUBLE;
 	}
 
-	public Object value() {
+	public Double value() {
 		return value;
 	}
 
@@ -37,12 +43,12 @@ public class DoubleRef extends Constant implements ValueProvider {
 		return true;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		value = in.readDouble();
 		return null;
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		out.writeDouble(value);
 	}
 

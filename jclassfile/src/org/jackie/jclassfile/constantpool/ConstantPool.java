@@ -1,41 +1,53 @@
 package org.jackie.jclassfile.constantpool;
 
-import org.jackie.jclassfile.constantpool.impl.Factory;
 import org.jackie.jclassfile.model.Base;
-import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.utils.Log;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Closeable;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.WriteOnlyList;
+import org.jackie.utils.XDataOutput;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.utils.Assert.expected;
+import static org.jackie.utils.Assert.doAssert;
+import org.jackie.context.ContextObject;
+import static org.jackie.context.ContextManager.context;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Formattable;
+import java.util.Formatter;
 
 /**
  * @author Patrik Beno
  */
-public class ConstantPool extends Base implements Closeable {
+public class ConstantPool extends Base implements ContextObject, Closeable {
 
-	ClassFile classfile;
+	static public ConstantPool constantPool() {
+		ConstantPool pool = context().get(ConstantPool.class);
+		return NOTNULL(pool);
+	}
+
+	static public boolean available() {
+		ConstantPool pool = context().get(ConstantPool.class);
+		return pool != null;
+	}
+
+	static public ConstantPool create(boolean bindToContext) {
+		ConstantPool pool = new ConstantPool();
+		if (bindToContext) {
+			context().set(ConstantPool.class, pool);
+		}
+		return pool;
+	}
 
 	List<Constant> constants;
 	Map<Constant,Integer> indices;
 
-	Factory factory;
-
 	{
-		factory = new Factory(this);
-	}
-
-	public ConstantPool(ClassFile classfile) {
-		this.classfile = classfile;
 		init();
 	}
 
@@ -45,39 +57,32 @@ public class ConstantPool extends Base implements Closeable {
 		indices = new HashMap<Constant, Integer>();
 	}
 
-	public Factory factory() {
-		return factory;
-	}
-
-	public void load(DataInput in) throws IOException {
+	public void load(XDataInput in, ConstantPool pool) {
 		init();
 
 		indices = null; // will rebuild index after all constants are read
 
-		int count = in.readUnsignedShort() - 1;
+		int count = in.readUnsignedShort();
 
-		Log.debug("Loading constant pool (%s entries)", count);
+		Log.debug("Loading constant pool (size: %s)", count);
 
-		List<Task> resolvers = new ArrayList<Task>(count);
+		List<Task> secondPassResolvers = new WriteOnlyList<Task>();
 
 		// round #1: register constants
-		for (int i = 1; i <= count; i++) {
-			expected(constants.size(), i, "constant index?");
+		for (int i = 1; i < count; i++) { // start from #1, #0 is reserved by JVM for NULL and it's not saved in pool
+			expected(constants.size(), i, "broken constant index?");
 
-			Constant constant = createConstant(in);
-			constants.add(constant);
+			Constant c = loadConstant(in, secondPassResolvers);
+			constants.add(c);
 
-			Task resolver = constant.readConstantDataOrGetResolver(in);
-			if (resolver != null) { resolvers.add(resolver); }
-
-			if (constant.isLongData()) {
+			if (c.isLongData()) {
 				i++;
 				constants.add(null);
 			}
 		}
 
 		// round #2: resolve/initialize
-		for (Task resolver : resolvers) {
+		for (Task resolver : secondPassResolvers) {
 			resolver.execute();
 		}
 
@@ -92,14 +97,29 @@ public class ConstantPool extends Base implements Closeable {
 				i++;
 			}
 		}
+
+		Log.debug("Loaded constant pool (%s non-null entries, total pool size: %s)", 
+					 countNotNull(constants), constants.size());
+		for (Constant c : constants) {
+			if (c == null) { continue; }
+			Log.debug("\t%s", c);
+		}
+
 	}
 
-	public void save(DataOutput out) throws IOException {
-		Log.debug("Saving constant pool (%s entries)", constants.size());
+	public void save(XDataOutput out) {
+		for (Constant c : new ArrayList<Constant>(constants)) {
+			if (c == null) { continue; }
+			c.register();
+		}
+
+		Log.debug("Saving constant pool (%s non-null entries, total pool size: %s)",
+					 countNotNull(constants), constants.size());
 
 		out.writeShort(constants.size());
-		for (Constant c : new ArrayList<Constant>(constants)) {
-			if (c == null) { continue; } // skip #0 (null) and long value placeholders (Constant.isLongValue())
+		for (Constant c : constants) {
+			if (c == null) { continue; }
+			Log.debug("\t%s", c);
 			c.save(out);
 		}
 	}
@@ -107,13 +127,18 @@ public class ConstantPool extends Base implements Closeable {
 	public <T extends Constant> T getConstant(int index, Class<T> type) {
 		if (index == 0) { return null; }
 
+		doAssert(index <= constants.size(),
+					"Invalid constant pool index %s, requested type %s (Pool size: %s)",
+					index, type.getSimpleName(), constants.size());
+
+
 		T c = typecast(constants.get(index), type);
 		return NOTNULL(c, "No constant found for index %s", index);
 	}
 
-	protected Constant createConstant(DataInput in) throws IOException {
+	protected Constant loadConstant(XDataInput in, List<Task> secondPassResolvers) {
 		CPEntryType type = CPEntryType.forCode(in.readUnsignedByte());
-		Constant c = factory.createConstant(type);
+		Constant c = type.loader().load(in, this, secondPassResolvers);
 		return c;
 	}
 
@@ -131,6 +156,8 @@ public class ConstantPool extends Base implements Closeable {
 	}
 
 	public Integer indexOf(Constant constant, boolean register) {
+		if (indices == null) { return null; } // index was not yet built
+
 		Integer idx = indices.get(constant);
 		if (idx == null && register) {
 			constants.add(constant);
@@ -143,4 +170,15 @@ public class ConstantPool extends Base implements Closeable {
 		return idx;
 	}
 
+	Formattable countNotNull(final List<?> list) {
+		return new Formattable() {
+			public void formatTo(Formatter formatter, int flags, int width, int precision) {
+				int count = 0;
+				for (Object o : list) {
+					if (o != null) { count++; }
+				}
+				formatter.format("%s", count);
+			}
+		};
+	}
 }

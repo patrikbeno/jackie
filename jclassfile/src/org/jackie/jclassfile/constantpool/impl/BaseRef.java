@@ -3,10 +3,8 @@ package org.jackie.jclassfile.constantpool.impl;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -24,15 +22,18 @@ CONSTANT_Fieldref_info {
 	ClassRef classref;
 	NameAndType nametype;
 
-	BaseRef(ConstantPool pool) {
-		super(pool);
+	protected BaseRef() {
 	}
 
-	BaseRef(ConstantPool pool, String clsname, String name, String type) {
-		super(pool);
-		Factory factory = factory();
-		classref = factory.getClassRef(clsname);
-		nametype = factory.getNameAndType(name, type);
+	public void register() {
+		classref.register();
+		nametype.register();
+		super.register();
+	}
+
+	protected BaseRef(ClassRef classref, NameAndType nametype) {
+		this.classref = classref;
+		this.nametype = nametype;
 	}
 
 	public ClassRef classref() {
@@ -43,19 +44,18 @@ CONSTANT_Fieldref_info {
 		return nametype;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, final ConstantPool pool) {
 		final int classidx = in.readUnsignedShort();
 		final int nametypeidx = in.readUnsignedShort();
 		return new Task() {
-			public void execute() throws IOException {
-				ConstantPool pool = pool();
+			public void execute() {
 				classref = pool.getConstant(classidx, ClassRef.class);
 				nametype = pool.getConstant(nametypeidx, NameAndType.class);
 			}
 		};
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		classref.writeReference(out);
 		nametype.writeReference(out);
 	}

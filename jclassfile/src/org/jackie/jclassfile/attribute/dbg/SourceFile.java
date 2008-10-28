@@ -6,10 +6,8 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.model.AttributeInfo;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -39,13 +37,13 @@ SourceFile_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in, 2);
-		value = pool().getConstant(in.readUnsignedShort(), Utf8.class);
+		value = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 2);
 		value.writeReference(out);
 	}

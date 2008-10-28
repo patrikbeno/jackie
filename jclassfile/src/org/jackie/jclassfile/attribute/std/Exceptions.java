@@ -6,10 +6,9 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +41,18 @@ Exceptions_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in);
 		int count = in.readUnsignedShort();
 		exceptions = new ArrayList<ClassRef>(count);
 		while (count-- > 0) {
-			ClassRef cref = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
+			ClassRef cref = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 			exceptions.add(cref);
 		}
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 2+exceptions.size()*2); 
 		out.writeShort(exceptions.size());
 		for (ClassRef cref : exceptions) {

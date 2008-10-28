@@ -6,10 +6,17 @@ import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.Type;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.utils.ByteArrayDataInput;
+import org.jackie.utils.XDataOutputWrapper;
 import org.objectweb.asm.ClassReader;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.io.DataInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
+import java.io.DataOutputStream;
 
 /**
  * @author Patrik Beno
@@ -45,12 +52,19 @@ public class ClassFileTest {
 		f.flags().set(Access.PROTECTED);
 		cf.addField(f);
 
-		GenericAttribute a = new GenericAttribute(f, cf.constantPool().factory().getUtf8("AnyAttribute"));
+		GenericAttribute a = new GenericAttribute(f, Utf8.create("AnyAttribute"));
 		a.data(new byte[1024]);
 		f.addAttribute(a);
 
 		Util.validate("test.Complex", cf.toByteArray());
 	}
+
+//	public void loadAndSaveHelloWorld() throws IOException {
+//		byte[] bytes = Util.getByteCode(HelloWorld.class);
+//		ClassFile clsfile = new ClassFile();
+//		clsfile.load(new ByteArrayDataInput(bytes));
+//		clsfile.save(new XDataOutputWrapper(new FileOutputStream("h:\\projects\\jackie\\installed\\test.class")));
+//	}
 
 	private void loadSaveValidate(Class cls) {
 		byte[] original = Util.getByteCode(cls);

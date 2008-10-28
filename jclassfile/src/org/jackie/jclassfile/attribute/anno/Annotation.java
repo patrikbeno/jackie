@@ -5,11 +5,9 @@ import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.util.Helper;
 import static org.jackie.utils.CollectionsHelper.sizeof;
-import org.jackie.utils.Assert;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.IOException;
-import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,7 +44,7 @@ annotation {
 		return elements;
 	}
 
-	void load(DataInput in, ConstantPool pool) throws IOException {
+	void load(XDataInput in, ConstantPool pool) {
 		type = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		int count = in.readUnsignedShort();
 		elements = new ArrayList<ElementValue>(count);
@@ -62,7 +60,7 @@ annotation {
 		}
 	}
 
-	void save(DataOutput out) throws IOException {
+	void save(XDataOutput out) {
 		Helper.writeConstantReference(type, out);
 		out.writeShort(elements.size());
 		for (ElementValue e : elements) {

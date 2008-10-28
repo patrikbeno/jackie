@@ -4,16 +4,14 @@ import static org.jackie.jclassfile.code.InstructionFactoryManager.instructionFa
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.utils.Assert.expected;
 import org.jackie.utils.Log;
-
-import java.io.IOException;
-import java.io.DataInput;
+import org.jackie.utils.XDataInput;
 
 /**
  * @author Patrik Beno
  */
 public class CodeParser {
 
-	public Instruction parse(DataInput in, int length, ConstantPool pool) throws IOException {
+	public Instruction parse(XDataInput in, int length, ConstantPool pool) {
 
 		int toread = length;
 		Instruction insn = null;
@@ -28,7 +26,7 @@ public class CodeParser {
 		return insn.head();
 	}
 
-	Instruction read(DataInput in, Instruction previous, ConstantPool pool) throws IOException {
+	Instruction read(XDataInput in, Instruction previous, ConstantPool pool) {
 		int opcode = in.readUnsignedByte();
 
 		InstructionFactory f = instructionFactoryManager().getFactory(opcode);

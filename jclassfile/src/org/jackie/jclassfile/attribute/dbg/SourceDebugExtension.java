@@ -5,12 +5,9 @@ import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
+import org.jackie.utils.ByteArrayDataOutput;
 
 /**
  * @author Patrik Beno
@@ -41,18 +38,16 @@ SourceDebugExtension_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in);
 		value = in.readUTF();
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream tmpout = new DataOutputStream(baos);
-		tmpout.writeUTF(value);
-		tmpout.close();
-		byte[] bytes = baos.toByteArray();
+	protected void writeData(XDataOutput out) {
+		ByteArrayDataOutput bado = new ByteArrayDataOutput();
+		bado.writeUTF(value);
+		byte[] bytes = bado.toByteArray();
 
 		writeLength(out, bytes.length);
 		out.write(bytes);

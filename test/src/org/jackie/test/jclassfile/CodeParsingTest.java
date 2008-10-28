@@ -5,12 +5,11 @@ import org.jackie.test.jclassfile.CodeSamples.InvokeMethod;
 import org.jackie.test.jclassfile.CodeSamples.NoCode;
 import org.jackie.test.jclassfile.CodeSamples.Exceptions;
 import org.jackie.test.jclassfile.CodeSamples.Switches;
-import org.jackie.utils.Assert;
+import org.jackie.utils.ByteArrayDataInput;
 import org.testng.annotations.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
-import java.io.IOException;
 import java.text.MessageFormat;
 
 /**
@@ -43,13 +42,14 @@ public class CodeParsingTest {
 		load(MessageFormat.class);
 	}
 
+	@Test
+	public void failedHelloWorld() {
+		
+	}
+
 	void load(Class cls) {
-		try {
-			byte[] bytecode = Util.getByteCode(cls);
-			ClassFile cf = new ClassFile();
-			cf.load(new DataInputStream(new ByteArrayInputStream(bytecode)));
-		} catch (IOException e) {
-			throw Assert.unexpected(e);
-		}
+		byte[] bytecode = Util.getByteCode(cls);
+		ClassFile cf = new ClassFile();
+		cf.load(new ByteArrayDataInput(bytecode));
 	}
 }

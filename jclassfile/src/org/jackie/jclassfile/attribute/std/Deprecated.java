@@ -5,10 +5,8 @@ import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -36,12 +34,12 @@ Deprecated_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in, 0);
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 0);
 	}
 }

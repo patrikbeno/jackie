@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.code;
 
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.utils.XDataInput;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -12,6 +13,6 @@ import java.util.Set;
  */
 public interface InstructionFactory {
 
-	Instruction loadInstruction(int opcode, Instruction previous, DataInput in,
-										 ConstantPool pool) throws IOException;
+	Instruction loadInstruction(int opcode, Instruction previous, XDataInput in,
+										 ConstantPool pool);
 }

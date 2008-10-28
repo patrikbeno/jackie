@@ -9,10 +9,9 @@ import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.util.Helper;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,22 +62,22 @@ InnerClasses_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in);
 		int count = in.readUnsignedShort();
 		classes = new ArrayList<Item>(count);
 		while (count-- > 0) {
 			Item item = new Item();
-			item.inner = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
-			item.outer = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
-			item.innerName = pool().getConstant(in.readUnsignedShort(), Utf8.class);
-			item.access = Flags.create(in, pool());
+			item.inner = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			item.outer = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+			item.innerName = pool.getConstant(in.readUnsignedShort(), Utf8.class);
+			item.access = Flags.create(in, pool);
 			classes.add(item);
 		}
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 2+classes.size()*8);
 		out.writeShort(classes.size());
 		for (Item item : classes) {

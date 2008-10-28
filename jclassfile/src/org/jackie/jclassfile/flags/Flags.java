@@ -2,10 +2,9 @@ package org.jackie.jclassfile.flags;
 
 import org.jackie.jclassfile.model.Base;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,9 +13,9 @@ import java.util.List;
  */
 public class Flags extends Base {
 
-	static public Flags create(DataInput in, ConstantPool pool) throws IOException {
+	static public Flags create(XDataInput in, ConstantPool pool) {
 		Flags flags = new Flags();
-		flags.load(in);
+		flags.load(in, pool);
 		return flags;
 	}
 
@@ -44,11 +43,11 @@ public class Flags extends Base {
       return set.toString();
    }
 
-	public void load(DataInput in) throws IOException {
+	public void load(XDataInput in, ConstantPool pool) {
 		flags = in.readUnsignedShort();
 	}
 
-	public void save(DataOutput out) throws IOException {
+	public void save(XDataOutput out) {
 		out.writeShort(flags);
 	}
 }

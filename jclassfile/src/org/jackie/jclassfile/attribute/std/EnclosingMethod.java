@@ -7,10 +7,8 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.NameAndType;
 import org.jackie.jclassfile.model.AttributeInfo;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -43,14 +41,14 @@ EnclosingZethod_attributeC{
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		readLength(in, 4);
-		cls = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
-		method = pool().getConstant(in.readUnsignedShort(), NameAndType.class);
+		cls = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+		method = pool.getConstant(in.readUnsignedShort(), NameAndType.class);
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		writeLength(out, 4);
 		cls.writeReference(out);
 		method.writeReference(out);

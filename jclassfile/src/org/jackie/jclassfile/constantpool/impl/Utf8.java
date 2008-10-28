@@ -4,10 +4,8 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -21,15 +19,23 @@ CONSTANT_Utf8_info {
     	u1 bytes[length];
     }
 	 */
-	
-	String value;
 
-	Utf8(ConstantPool pool) {
-		super(pool);
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new Utf8();  
+		}
+	};
+
+	static public Utf8 create(String value) {
+		return new Utf8(value);
 	}
 
-	Utf8(ConstantPool pool, String value) {
-		super(pool);
+	String value;
+
+	protected Utf8() {
+	}
+
+	protected Utf8(String value) {
 		this.value = value;
 	}
 
@@ -41,12 +47,12 @@ CONSTANT_Utf8_info {
 		return value;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		value = in.readUTF();
 		return null;
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		out.writeUTF(value);
 	}
 

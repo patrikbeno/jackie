@@ -2,6 +2,12 @@ package org.jackie.jclassfile.constantpool.impl;
 
 import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.jclassfile.constantpool.Constant;
+import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.utils.Assert;
+import org.jackie.utils.XDataInput;
+
+import java.util.List;
 
 /**
  * @author Patrik Beno
@@ -16,9 +22,21 @@ CONSTANT_InterfaceMethodref_info {
     }
 	 */
 
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new InterfaceMethodRef(); 
+		}
+	};
 
-	public InterfaceMethodRef(ConstantPool pool) {
-		super(pool);
+	static public InterfaceMethodRef create(ClassRef classref, NameAndType nametype) {
+		return new InterfaceMethodRef(classref, nametype);
+	}
+
+	protected InterfaceMethodRef() {
+	}
+
+	protected InterfaceMethodRef(ClassRef classref, NameAndType nametype) {
+		super(classref, nametype);
 	}
 
 	public CPEntryType type() {

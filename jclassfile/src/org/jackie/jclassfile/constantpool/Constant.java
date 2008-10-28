@@ -1,13 +1,13 @@
 package org.jackie.jclassfile.constantpool;
 
-import org.jackie.jclassfile.constantpool.impl.Factory;
+import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.model.Base;
 import org.jackie.utils.Assert;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 import static org.jackie.utils.Assert.NOTNULL;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import java.util.List;
 
 /**
  * @author Patrik Beno
@@ -21,59 +21,62 @@ cp_info {
     }
 	 */
 
-	ConstantPool pool;
+	static public abstract class Loader {
 
-	protected Constant(ConstantPool pool) {
-		this.pool = pool;
+		protected abstract Constant create();
+
+		public Constant load(XDataInput in, ConstantPool pool, List<Task> secondPass) {
+			Constant c = create();
+			Task task = c.readConstantDataOrGetResolver(in, pool);
+			if (task != null) { secondPass.add(task); }
+			return c;
+		}
+	}
+
+	protected Constant() {
 	}
 
 	public abstract CPEntryType type();
 
-	public int index() {
-		return pool().indexOf(this, true);
+	public Integer index() {
+		return ConstantPool.available() ? constantPool().indexOf(this) : null;
 	}
 
-	protected ConstantPool pool() {
-		return pool;
-	}
-
-	protected Factory factory() {
-		return pool.factory();
+	public void register() {
+		constantPool().indexOf(this, true);
 	}
 
 	public boolean isLongData() { // occupies 2 entries in the pool
 		return false;
 	}
 
-	public final void load(DataInput in) throws IOException {
-		throw Assert.unsupported(); // see ConstantPool.load()
+	public final void load(XDataInput in, ConstantPool pool) {
+		throw Assert.unsupported("see ConstantPool.load()");
 	}
 
-	public final void save(DataOutput out) throws IOException {
+	public final void save(XDataOutput out) {
 		// u1 tag;
 		out.writeByte(type().code());
 		// u1 info[];
 		writeConstantData(out);
 	}
 
-	protected abstract Task readConstantDataOrGetResolver(DataInput in) throws IOException;
+	protected abstract Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool);
 
-	protected abstract void writeConstantData(DataOutput out) throws IOException;
+	protected abstract void writeConstantData(XDataOutput out);
 
-	public <T extends Constant> T intern() {
-		return (T) pool().intern(this);
+	public void writeReference(XDataOutput out) {
+		register();
+		out.writeShort(NOTNULL(index()));
 	}
 
-	public void writeReference(DataOutput out) throws IOException {
-		out.writeShort(index());
-	}
-
-	public void writeByteReference(DataOutput out) throws IOException {
-		out.writeByte(index());
+	public void writeByteReference(XDataOutput out) {
+		register();
+		out.writeByte(NOTNULL(index()));
 	}
 
 	public String toString() {
-		Integer idx = pool().indexOf(this);
+		Integer idx = constantPool().indexOf(this, false);
 		return String.format("#%s %s: %s", (idx != null) ? idx : "?", type().name(), valueToString());
 	}
 

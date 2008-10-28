@@ -1,5 +1,18 @@
 package org.jackie.jclassfile.constantpool;
 
+import org.jackie.jclassfile.constantpool.Constant.Loader;
+import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.jclassfile.constantpool.impl.ClassRef;
+import org.jackie.jclassfile.constantpool.impl.FieldRef;
+import org.jackie.jclassfile.constantpool.impl.MethodRef;
+import org.jackie.jclassfile.constantpool.impl.InterfaceMethodRef;
+import org.jackie.jclassfile.constantpool.impl.NameAndType;
+import org.jackie.jclassfile.constantpool.impl.StringRef;
+import org.jackie.jclassfile.constantpool.impl.IntegerRef;
+import org.jackie.jclassfile.constantpool.impl.FloatRef;
+import org.jackie.jclassfile.constantpool.impl.LongRef;
+import org.jackie.jclassfile.constantpool.impl.DoubleRef;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,34 +23,39 @@ import java.util.List;
  */
 public enum CPEntryType {
 
-	UTF8(1),
+	UTF8(1, Utf8.LOADER),
 
-   CLASS(7),
-   FIELDREF(9),
-   METHODREF(10),
-   INTERFACE_METHODREF(11),
-	NAME_AND_TYPE(12),
+   CLASS(7, ClassRef.LOADER),
+   FIELDREF(9, FieldRef.LOADER),
+   METHODREF(10, MethodRef.LOADER),
+   INTERFACE_METHODREF(11, InterfaceMethodRef.LOADER),
+	NAME_AND_TYPE(12, NameAndType.LOADER),
 
-   STRING(8),
-   INTEGER(3),
-   FLOAT(4),
-   LONG(5),
-   DOUBLE(6),
+   STRING(8, StringRef.LOADER),
+   INTEGER(3, IntegerRef.LOADER),
+   FLOAT(4, FloatRef.LOADER),
+   LONG(5, LongRef.LOADER),
+   DOUBLE(6, DoubleRef.LOADER),
 
 	;
 
 	static private final CPEntryType[] INDEX_BY_VALUE = valuesSortedByCode(true);
 
 	private int code;
+	private Loader loader;
 
-	private CPEntryType(int code) {
+	private CPEntryType(int code, Loader loader) {
 		this.code = code;
+		this.loader = loader;
 	}
 
 	public int code() {
 		return code;
 	}
 
+	public Loader loader() {
+		return loader;
+	}
 
 	static public CPEntryType forCode(int code) {
 		return INDEX_BY_VALUE[code];

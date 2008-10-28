@@ -5,10 +5,8 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.utils.Assert;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -31,11 +29,11 @@ RuntimeVisibleParameterAnnotations_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

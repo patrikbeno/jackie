@@ -1,6 +1,9 @@
 package org.jackie.jclassfile.code;
 
 import org.jackie.utils.Chain;
+import org.jackie.utils.XDataOutput;
+import org.jackie.jclassfile.attribute.std.Code;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -30,5 +33,5 @@ public interface Instruction extends Chain<Instruction> {
 
 	List<Instruction> asList();
 
-	void save(DataOutput out) throws IOException;
+	void save(XDataOutput out);
 }

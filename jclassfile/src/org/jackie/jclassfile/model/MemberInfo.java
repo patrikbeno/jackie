@@ -7,10 +7,9 @@ import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -41,10 +40,6 @@ field|member info {
 		this.classfile = classfile;
 	}
 
-	public ConstantPool constantPool() {
-		return classfile.constantPool();
-	}
-
 	public Flags flags() {
 		if (flags == null) {
 			flags = new Flags();
@@ -57,7 +52,7 @@ field|member info {
 	}
 
 	public void name(String name) {
-		this.name = classFile().constantPool().factory().getUtf8(name);
+		this.name = Utf8.create(name);
 	}
 
 	public String descriptor() {
@@ -65,7 +60,7 @@ field|member info {
 	}
 
 	public void descriptor(String descriptor) {
-		this.descriptor = classFile().constantPool().factory().getUtf8(descriptor);
+		this.descriptor = Utf8.create(descriptor);
 	}
 
 	public List<AttributeInfo> attributes() {
@@ -83,9 +78,7 @@ field|member info {
 		return classfile;
 	}
 
-	public void load(DataInput in) throws IOException {
-		ConstantPool pool = classfile.constantPool();
-
+	public void load(XDataInput in, ConstantPool pool) {
 		flags = Flags.create(in, pool);
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = pool.getConstant(in.readUnsignedShort(), Utf8.class);
@@ -95,7 +88,9 @@ field|member info {
 		attributes = AttributeHelper.loadAttributes(this, in);
 	}
 
-	public void save(DataOutput out) throws IOException {
+	public void save(XDataOutput out) {
+		Log.debug("Saving %s", this);
+
 		flags().save(out);
 		name.writeReference(out);
 		descriptor.writeReference(out);

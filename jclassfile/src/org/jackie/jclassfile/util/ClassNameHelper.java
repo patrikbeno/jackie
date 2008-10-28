@@ -14,6 +14,24 @@ public class ClassNameHelper {
 	}
 
 	static public String toBinaryClassName(String javaClassName) {
-		return javaClassName.replace('.', '/');
+		String result = javaClassName.replace('.', '/').replace("[]","");
+		return result;
+
+//		StringBuilder sb = new StringBuilder();
+//		for (int i = 0; i < javaClassName.length(); i++) {
+//			char c = javaClassName.charAt(i);
+//			switch (c) {
+//				case '.':
+//					sb.append('/');
+//					break;
+//				case '[':
+//				case ']':
+//					break;
+//				default:
+//					sb.append(c);
+//			}
+//		}
+//		return sb.toString();
+
 	}
 }

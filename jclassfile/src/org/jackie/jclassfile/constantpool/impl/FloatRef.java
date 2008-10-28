@@ -4,24 +4,30 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
  */
 public class FloatRef extends Constant implements ValueProvider {
 
-	float value;
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new FloatRef(); 
+		}
+	};
 
-	FloatRef(ConstantPool pool) {
-		super(pool);
+	static public FloatRef create(float value) {
+		return new FloatRef(value);
 	}
 
-	FloatRef(ConstantPool pool, float value) {
-		super(pool);
+	float value;
+
+	protected FloatRef() {
+	}
+
+	protected FloatRef(float value) {
 		this.value = value;
 	}
 
@@ -33,12 +39,12 @@ public class FloatRef extends Constant implements ValueProvider {
 		return value;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		value = in.readFloat();
 		return null;
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		out.writeFloat(value);
 	}
 

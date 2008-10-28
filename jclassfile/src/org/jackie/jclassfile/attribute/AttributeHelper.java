@@ -1,11 +1,12 @@
 package org.jackie.jclassfile.attribute;
 
 import org.jackie.jclassfile.constantpool.impl.Utf8;
+import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
+import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.utils.Log;
+import org.jackie.utils.XDataInput;
 
-import java.io.DataInput;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +15,22 @@ import java.util.List;
  */
 public class AttributeHelper {
 
-	static public List<AttributeInfo> loadAttributes(AttributeSupport owner, DataInput in) throws IOException {
+	static public List<AttributeInfo> loadAttributes(AttributeSupport owner, XDataInput in) {
+		ConstantPool pool = constantPool();
+
 		int count = in.readUnsignedShort();
 		List<AttributeInfo> attributes = new ArrayList<AttributeInfo>(count);
 		while (count-- > 0) {
-			Utf8 name = owner.constantPool().getConstant(in.readUnsignedShort(), Utf8.class);
+			Utf8 name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 			AttributeProvider provider = AttributeProviderRegistry.instance().getProvider(name.value());
 			AttributeInfo a = (provider != null)
 					? provider.createAttribute(owner)
 					: new GenericAttribute(owner, name);
 			Log.debug("Loading attribute %s using provider %s", name.value(), provider != null ? provider : "<generic>");			
-			a.load(in);
+			a.load(in, pool);
 			attributes.add(a);
 		}
+		
 		return attributes;
 	}
 

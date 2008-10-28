@@ -12,12 +12,11 @@ import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Countdown;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
+import org.jackie.utils.ByteArrayDataOutput;
+import org.jackie.utils.Log;
 
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +72,7 @@ Code_attribute {
 		super(owner);
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		int attrlen = readLength(in);
 
 		metastuff: {
@@ -95,7 +94,7 @@ Code_attribute {
 				item.startpc = in.readUnsignedShort();
 				item.endpc = in.readUnsignedShort();
 				item.handlerpc = in.readUnsignedShort();
-				item.exception = pool().getConstant(in.readUnsignedShort(), ClassRef.class);
+				item.exception = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
 				exceptions.add(item);
 			}
 		}
@@ -107,20 +106,19 @@ Code_attribute {
 		return null;
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		int codesize = calculateCodeSize();
 
 		// render attributes first: need their length for header
 		byte[] attrs;
 		attributes: {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			DataOutputStream tmpout = new DataOutputStream(baos);
+			ByteArrayDataOutput tmpout = new ByteArrayDataOutput();
 			tmpout.writeShort(attributes.size());
 			for (AttributeInfo a : attributes) {
 				a.save(tmpout);
 			}
 			IOHelper.close(tmpout);
-			attrs = baos.toByteArray();
+			attrs = tmpout.toByteArray();
 		}
 
 		writeLength(out, 2+2+4+codesize+2+exceptions.size()*8+attrs.length);
@@ -128,6 +126,7 @@ Code_attribute {
 		out.writeShort(maxStack);
 		out.writeShort(maxLocals);
 
+		Log.debug("Instructions (%s):", instructions.asList().size());
 		out.writeInt(codesize);
 		for (Instruction insn : instructions) {
 			insn.save(out);

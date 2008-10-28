@@ -1,9 +1,10 @@
 package org.jackie.jclassfile.model;
 
 import static org.jackie.utils.Assert.doAssert;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 
-import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
@@ -13,17 +14,17 @@ import java.io.IOException;
 public abstract class Base {
 
 	abstract
-	public void load(DataInput in) throws IOException;
+	public void load(XDataInput in, ConstantPool pool);
 
 	abstract
-	public void save(DataOutput out) throws IOException;
+	public void save(XDataOutput out);
 
 
-	protected int readLength(DataInput in) throws IOException {
+	protected int readLength(XDataInput in) {
 		return readLength(in, null);
 	}
 
-	protected int readLength(DataInput in, Integer expected) throws IOException {
+	protected int readLength(XDataInput in, Integer expected) {
 		int len = in.readUnsignedShort();
 		if (expected != null) {
 			doAssert(len == expected, "Invalid length: %s. Expected: %s", len, expected);
@@ -31,7 +32,7 @@ public abstract class Base {
 		return len;
 	}
 
-	protected void writeLength(DataOutput out, int length) throws IOException {
+	protected void writeLength(XDataOutput out, int length) {
 		out.writeShort(length);
 	}
 

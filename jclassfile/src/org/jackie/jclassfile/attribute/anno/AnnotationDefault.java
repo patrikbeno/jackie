@@ -6,12 +6,9 @@ import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.utils.Assert;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
-import java.io.DataInputStream;
-import java.io.ByteArrayInputStream;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.ByteArrayDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -47,19 +44,19 @@ AnnotationDefault_attribute {
 		return value;
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in, final ConstantPool pool) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, final ConstantPool pool) {
 		// just read data, don't parse now
 		final int len = readLength(in);
 		final byte[] bytes = new byte[len];
 		in.readFully(bytes);
 
 		return new Task() {
-			public void execute() throws IOException {
-				DataInput in = new DataInputStream(new ByteArrayInputStream(bytes));
+			public void execute() {
+				XDataInput in = new ByteArrayDataInput(bytes);
 
 				Tag tag = Tag.forId((char) in.readByte());
 				ElementValue evalue = ElementValue.forTag(tag);
-				evalue.init(this,  null, tag);
+				evalue.init(this, null, tag);
 				evalue.load(in, pool);
 
 				value = evalue;
@@ -67,7 +64,7 @@ AnnotationDefault_attribute {
 		};
 	}
 
-	protected void writeData(DataOutput out) throws IOException {
+	protected void writeData(XDataOutput out) {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 }

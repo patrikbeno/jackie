@@ -4,10 +4,8 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-
-import java.io.DataInput;
-import java.io.DataOutput;
-import java.io.IOException;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
@@ -20,35 +18,48 @@ CONSTANT_String_info {
     }
 	 */
 
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new StringRef(); 
+		}
+	};
+
+	static public StringRef create(Utf8 value) {
+		return new StringRef(value);
+	}
+	
 	Utf8 value;
 
-	StringRef(ConstantPool pool) {
-		super(pool);
+	protected StringRef() {
 	}
 
-	StringRef(ConstantPool pool, String value) {
-		super(pool);
-		this.value = factory().getUtf8(value);
+	protected StringRef(Utf8 value) {
+		this.value = value;
 	}
 
 	public CPEntryType type() {
 		return CPEntryType.STRING;
 	}
 
-	public Object value() {
+	public void register() {
+		value.register();
+		super.register();
+	}
+
+	public String value() {
 		return value.value();
 	}
 
-	protected Task readConstantDataOrGetResolver(DataInput in) throws IOException {
+	protected Task readConstantDataOrGetResolver(XDataInput in, final ConstantPool pool) {
 		final int index = in.readUnsignedShort();
 		return new Task() {
-			public void execute() throws IOException {
-				value = pool().getConstant(index, Utf8.class);
+			public void execute() {
+				value = pool.getConstant(index, Utf8.class);
 			}
 		};
 	}
 
-	protected void writeConstantData(DataOutput out) throws IOException {
+	protected void writeConstantData(XDataOutput out) {
 		value.writeReference(out);
 	}
 

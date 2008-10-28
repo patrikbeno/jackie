@@ -3,8 +3,10 @@ package org.jackie.jclassfile.code.impl;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.ChainImpl;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
+import org.jackie.utils.Log;
 
-import java.io.DataOutput;
 import java.io.IOException;
 import java.io.DataInput;
 import java.util.List;
@@ -53,19 +55,20 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		return list;
 	}
 
-	public void load(DataInput in, ConstantPool pool) throws IOException {
+	public void load(XDataInput in, ConstantPool pool) {
 		// opcode we already have
 		loadOperands(in, pool);
 	}
 
-	public final void save(DataOutput out) throws IOException {
+	public final void save(XDataOutput out) {
+		Log.debug("\t%s", this);
 		out.writeByte(opcode);
 		saveOperands(out);
 	}
 
-	protected abstract void loadOperands(DataInput in, ConstantPool pool) throws IOException;
+	protected abstract void loadOperands(XDataInput in, ConstantPool pool);
 
-	protected abstract void saveOperands(DataOutput out) throws IOException;
+	protected abstract void saveOperands(XDataOutput out);
 
 	public String toString() {
 		return String.format("#%d (@%d) %s", index(), offset(), Opcode.forOpcode(opcode()));

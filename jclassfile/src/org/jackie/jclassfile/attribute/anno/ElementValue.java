@@ -9,12 +9,10 @@ import org.jackie.jclassfile.constantpool.impl.LongRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.TypeDescriptor;
-import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.Assert;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.XDataOutput;
 
-import java.io.DataInput;
-import java.io.IOException;
-import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,14 +87,14 @@ element_value {
 		return tag;
 	}
 
-	abstract void load(DataInput in, ConstantPool pool) throws IOException;
+	abstract void load(XDataInput in, ConstantPool pool);
 
-	void save(DataOutput out) throws IOException {
+	void save(XDataOutput out) {
 		out.writeByte(tag.id());
 		saveValue(out);
 	}
 
-	abstract void saveValue(DataOutput out) throws IOException;
+	abstract void saveValue(XDataOutput out);
 
 	public String toString() {
 		return String.format("%s=%s", name != null ? name.value() : null, valueToString());
@@ -113,7 +111,7 @@ element_value {
 	static public class ConstElementValue extends ElementValue {
 		Constant value;
 
-		void load(DataInput in, ConstantPool pool) throws IOException {
+		void load(XDataInput in, ConstantPool pool) {
 			switch (tag) {
 				case BYTE:
 				case CHAR:
@@ -140,7 +138,7 @@ element_value {
 
 		}
 
-		void saveValue(DataOutput out) throws IOException {
+		void saveValue(XDataOutput out) {
 			value.writeReference(out);
 		}
 
@@ -171,7 +169,7 @@ element_value {
 			return value.toString();
 		}
 
-		void value(DataInput in, Class<? extends Constant> type, ConstantPool pool) throws IOException {
+		void value(XDataInput in, Class<? extends Constant> type, ConstantPool pool) {
 			value = pool.getConstant(in.readUnsignedShort(), type);
 		}
 	}
@@ -184,11 +182,11 @@ element_value {
 			return new TypeDescriptor(classinfo.value());
 		}
 
-		void load(DataInput in, ConstantPool pool) throws IOException {
+		void load(XDataInput in, ConstantPool pool) {
 			classinfo = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
 
-		void saveValue(DataOutput out) throws IOException {
+		void saveValue(XDataOutput out) {
 			classinfo.writeReference(out);
 		}
 
@@ -209,12 +207,12 @@ element_value {
 			return value.value();
 		}
 
-		void load(DataInput in, ConstantPool pool) throws IOException {
+		void load(XDataInput in, ConstantPool pool) {
 			type = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 			value = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		}
 
-		void saveValue(DataOutput out) throws IOException {
+		void saveValue(XDataOutput out) {
 			type.writeReference(out);
 			value.writeReference(out);
 		}
@@ -231,12 +229,12 @@ element_value {
 			return annotation;
 		}
 
-		void load(DataInput in, ConstantPool pool) throws IOException {
+		void load(XDataInput in, ConstantPool pool) {
 			annotation = new Annotation(owner);
 			annotation.load(in, pool);
 		}
 
-		void saveValue(DataOutput out) throws IOException {
+		void saveValue(XDataOutput out) {
 			annotation.save(out);
 		}
 
@@ -252,7 +250,7 @@ element_value {
 			return values;
 		}
 
-		void load(DataInput in, ConstantPool pool) throws IOException {
+		void load(XDataInput in, ConstantPool pool) {
 			int count = in.readUnsignedShort();
 			values = new ArrayList<ElementValue>(count);
 			while (count-- > 0) {
@@ -266,7 +264,7 @@ element_value {
 			}
 		}
 
-		void saveValue(DataOutput out) throws IOException {
+		void saveValue(XDataOutput out) {
 			out.writeShort(values.size());
 			for (ElementValue e : values) {
 				e.save(out);

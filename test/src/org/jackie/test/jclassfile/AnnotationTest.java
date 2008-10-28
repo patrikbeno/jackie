@@ -5,6 +5,8 @@ import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 import org.jackie.jclassfile.attribute.anno.RuntimeVisibleAnnotations;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.test.java5.annotation.Explicit;
+import org.jackie.utils.XDataInput;
+import org.jackie.utils.DataInputWrapper;
 import org.testng.annotations.Test;
 
 import java.io.DataInput;
@@ -25,7 +27,7 @@ public class AnnotationTest {
 		try {
 			AttributeProviderRegistry.instance().addProvider(new RuntimeVisibleAnnotations.Provider());
 
-			DataInput in = new DataInputStream(
+			XDataInput in = new DataInputWrapper(
 					Thread.currentThread().getContextClassLoader().getResourceAsStream(path));
 			classfile.load(in);
 

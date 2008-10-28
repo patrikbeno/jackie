@@ -2,6 +2,12 @@ package org.jackie.jclassfile.constantpool.impl;
 
 import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.jclassfile.constantpool.Constant;
+import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.utils.Assert;
+import org.jackie.utils.XDataInput;
+
+import java.util.List;
 
 /**
  * @author Patrik Beno
@@ -16,12 +22,17 @@ CONSTANT_Fieldref_info {
     }
 	 */
 
-	public FieldRef(ConstantPool pool) {
-		super(pool);
+	static public final Loader LOADER = new Loader() {
+		protected Constant create() {
+			return new FieldRef(); 
+		}
+	};
+
+	protected FieldRef() {
 	}
 
-	public FieldRef(ConstantPool pool, String clsname, String name, String type) {
-		super(pool, clsname, name, type);
+	protected FieldRef(ClassRef classref, NameAndType nametype) {
+		super(classref, nametype);
 	}
 
 	public CPEntryType type() {
