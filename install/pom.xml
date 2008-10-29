@@ -186,8 +186,15 @@
 
 			<repositories>
 				<repository>
-					<id>downloaded</id>
+					<id>offlinerepo</id>
 					<url>${offlinerepo}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
+					</snapshots>
 				</repository>
 				<repository>
 					<id>greenhorn.internal</id>
@@ -226,8 +233,15 @@
 
 			<pluginRepositories>
 				<pluginRepository>
-					<id>downloaded</id>
+					<id>offlinerepo</id>
 					<url>${offlinerepo}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
+					</snapshots>
 				</pluginRepository>
 				<pluginRepository>
 					<id>greenhorn.internal</id>
