@@ -32,20 +32,38 @@ public class Main {
 
 	static public void main(String[] args) {
 
-		Option<File> sources = Option.create("srcdir", File.class, null, "Source tree directory");
-		Option<File[]> classpath = Option.create("classpath", File[].class, null, "Class path");
-		Option<File> jarname = Option.create("jarname", File.class, null, "Output jar file name");
-		Option<Boolean> overwrite = Option.create("overwrite", Boolean.class, false, "Overwrite output file? (default: false)");
-		Option<Boolean> showprogress = Option.create("showprogress", Boolean.class, true, "Show compilation progress? (default: true)");
+		CmdLineSupport cmdline = new CmdLineSupport(Main.class);
 
-		CmdLineSupport cmdline = new CmdLineSupport(sources, classpath, jarname, overwrite, showprogress);
+		Option<File> sources = cmdline.createOption("srcdir", File.class)
+				.description("Source tree directory")
+				.mandatory(true);
+		Option<File[]> classpath = cmdline.createOption("classpath", File[].class)
+				.description("Class path");
+		Option<File> jarname = cmdline.createOption("jarname", File.class)
+				.description("Output jar file name")
+				.mandatory(true);
+		Option<Boolean> overwrite = cmdline.createOption("overwrite", Boolean.class)
+				.description("Overwrite output file?")
+				.dflt(false);
+		Option<Boolean> showprogress = cmdline.createOption("showprogress", Boolean.class)
+				.description("Show compilation progress?")
+				.dflt(true);
+		Option<Boolean> help = cmdline.createOption("help", Boolean.class)
+				.description("Show usage help")
+				.dflt(false);
+
 		try {
 			cmdline.parse(args);
 
 		} catch (Throwable t) {
-			System.out.println(t);
+			System.out.printf("Error: %s%n", t.getMessage());
 			cmdline.printcfg();
 			System.exit(-1);
+		}
+
+		if (help.get()) {
+			cmdline.printcfg();
+			System.exit(0);
 		}
 
 		Main main = new Main();
