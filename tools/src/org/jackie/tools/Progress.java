@@ -5,8 +5,6 @@ import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.filemanager.FileManagerDelegate;
 import org.jackie.compiler.filemanager.FileObjectDelegate;
 
-import java.util.Set;
-import java.nio.charset.Charset;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 
@@ -31,7 +29,9 @@ class Progress {
 	ProgressInfo progress = new ProgressInfo();
 
 	public void close() {
+		progress.finished = System.currentTimeMillis();
 		System.out.println();
+		System.out.printf("Elapsed: %s msec%n", progress.finished - progress.started);
 	}
 
 
@@ -41,13 +41,16 @@ class Progress {
 		private int read;
 		private int written;
 
+		private long started = System.currentTimeMillis();
+		private long finished;
+
 		void read() {
 			read++;
 			update();
 		}
 
-		void written() {
-			written++;
+		void written(FileManager fileManager) {
+			written = fileManager.getPathNames().size();
 			update();
 		}
 
@@ -57,7 +60,9 @@ class Progress {
 		}
 
 		void update() {
-			System.out.printf("\rRead %d of %d files. Written %d files", read, toRead, written);
+			System.out.printf(
+					"\rRead %d of %d files. Written %d files.",
+					read, toRead, written);
 		}
 	}
 
@@ -78,7 +83,8 @@ class Progress {
 		}
 
 		public FileObject create(String pathname) {
-			return new WFileObject(super.create(pathname)); 
+			progress.written(this);
+			return super.create(pathname); 
 		}
 	}
 
@@ -92,16 +98,4 @@ class Progress {
 			return super.getInputChannel();
 		}
 	}
-
-	class WFileObject extends FileObjectDelegate {
-		WFileObject(FileObject fo) {
-			super(fo);
-		}
-
-		public WritableByteChannel getOutputChannel() {
-			progress.written();
-			return super.getOutputChannel();
-		}
-	}
-
 }

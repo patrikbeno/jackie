@@ -4,6 +4,7 @@ import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.CyclicBuffer;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Assert;
+import static org.jackie.utils.CollectionsHelper.iterable;
 import org.jackie.compilerimpl.CompilerImpl;
 import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
 import org.jackie.compilerimpl.filemanager.DirFileManager;
@@ -17,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.jar.JarOutputStream;
 import java.nio.channels.ReadableByteChannel;
@@ -29,25 +31,40 @@ import java.nio.channels.Channels;
 public class Main {
 
 	static public void main(String[] args) {
-		if (args.length != 2) {
-			System.out.println("Usage: compile {sourceDirectory} {outputJarName}");
+
+		Option<File> sources = Option.create("srcdir", File.class, null, "Source tree directory");
+		Option<File[]> classpath = Option.create("classpath", File[].class, null, "Class path");
+		Option<File> jarname = Option.create("jarname", File.class, null, "Output jar file name");
+		Option<Boolean> overwrite = Option.create("overwrite", Boolean.class, false, "Overwrite output file? (default: false)");
+		Option<Boolean> showprogress = Option.create("showprogress", Boolean.class, true, "Show compilation progress? (default: true)");
+
+		CmdLineSupport cmdline = new CmdLineSupport(sources, classpath, jarname, overwrite, showprogress);
+		try {
+			cmdline.parse(args);
+
+		} catch (Throwable t) {
+			System.out.println(t);
+			cmdline.printcfg();
 			System.exit(-1);
 		}
 
-		String srcdir = args[0];
-		String jarname = args[1];
+		Main main = new Main();
+		configure: {
+			main.srcdir = sources.get();
+			main.jarname = jarname.get();
+			main.classpath = classpath.get() != null ? Arrays.asList(classpath.get()) : null;
+			main.overwrite = overwrite.get();
+			main.showprogress = showprogress.get();
+		}
 
-		Main main = new Main(new File(srcdir), new File(jarname));
 		main.run();
 	}
 
 	File srcdir;
 	File jarname;
-
-	public Main(File srcdir, File jarname) {
-		this.srcdir = srcdir;
-		this.jarname = jarname;
-	}
+	List<File> classpath;
+	boolean overwrite;
+	boolean showprogress;
 
 	Progress progress;
 
@@ -56,12 +73,8 @@ public class Main {
 	FileManager workspace;
 
 	void run() {
-		doAssert(srcdir.exists(), "Missing sources directory: %s", srcdir);
-//		doAssert(!jarname.exists(), "Ouput file already exists: %s", jarname);
-
-		String jhome = System.getProperty("java.home");
-		final File rtjar = new File(jhome, "lib/rt.jar");
-		assert rtjar.exists();
+		doAssert(srcdir != null && srcdir.exists(), "Missing sources directory: %s", srcdir);
+		doAssert((jarname != null && !jarname.exists()) || overwrite, "Ouput file already exists: %s", jarname);
 
 		progress = new Progress();
 
@@ -69,11 +82,14 @@ public class Main {
 			sources = new DirFileManager(srcdir);
 		}
 		if (dependencies == null) {
-			dependencies = Arrays.asList((FileManager) new FilteredJarFileManager(
-					rtjar,
-					// warning: temporary solution to allow javac sources compilation (conflict with classes already in rt.jar)
-					"com.sun.(source|tools.javac).*",
-					"javax.(annotation.processing|lang.model|tools).*"));
+			dependencies = new ArrayList<FileManager>();
+			for (File f : iterable(classpath)) {
+				dependencies.add(new FilteredJarFileManager(
+						f,
+						// warning: temporary solution to allow javac sources compilation (conflict with classes already in rt.jar)
+						"com.sun.(source|tools.javac).*",
+						"javax.(annotation.processing|lang.model|tools).*"));
+			}
 		}
 
 		CompilerImpl compiler = new CompilerImpl() {
@@ -93,6 +109,8 @@ public class Main {
 				saveJar();
 			}
 		};
+
+		System.out.printf("Compiling sources in %s to %s%n", srcdir, jarname);
 
 		compiler.compile();
 

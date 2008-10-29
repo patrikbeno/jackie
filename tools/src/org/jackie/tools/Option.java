@@ -2,8 +2,14 @@ package org.jackie.tools;
 
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
+import static java.util.Arrays.asList;
+import java.lang.reflect.Array;
 
 /**
  * @author Patrik Beno
@@ -25,11 +31,12 @@ public class Option<T> {
 	String description;
 
 	T converted;
+	T dflt;
 
 	private Option(String name, Class<T> type, T dflt, String description) {
 		this.name = NOTNULL(name);
 		this.type = NOTNULL(type);
-		this.converted = dflt;
+		this.dflt = dflt;
 		this.description = description;
 	}
 
@@ -39,6 +46,10 @@ public class Option<T> {
 
 	public Class type() {
 		return type;
+	}
+
+	public String description() {
+		return description;
 	}
 
 	public String value() {
@@ -54,26 +65,45 @@ public class Option<T> {
 	}
 
 	public T get() {
-		if (value == null) {
-			return null;
-		}
 		if (converted != null) {
 			return converted;
 		}
 
-		converted = type.cast(convert());
+		converted = (value != null) ? type.cast(convert()) : dflt;
 
 		return converted;
 	}
 
 	private Object convert() {
+		return convert(value, type);
+	}
+
+	private Object convert(String value, Class type) {
 		if (type.equals(String.class)) {
 			return value;
+
+		} else if (type.equals(Boolean.class)) {
+			doAssert(BOOLEAN.contains(value), "Illegal value. Valid values: %s", BOOLEAN);
+			return TRUE.contains(value);
+
 		} else if (type.equals(File.class)) {
 			return value != null ? new File(value) : null;
+
+		} else if (type.isArray()) {
+			String[] strings = value.split(",");
+			Object[] items = (Object[]) Array.newInstance(type.getComponentType(), strings.length);
+			for (int i = 0; i < strings.length; i++) {
+				items[i] = convert(strings[i], type.getComponentType());
+			}
+			return items;
+
 		} else {
-			throw Assert.invariantFailed("Unhandled type: %s", type.getName());
+			throw Assert.invariantFailed("Unhandled type: %s", this.type.getName());
 		}
 	}
+
+	static final List<String> TRUE = asList("true", "yes", "", "1");
+	static final List<String> FALSE = asList("false", "no", "0");
+	static final List<String> BOOLEAN = new ArrayList<String>() {{ addAll(TRUE); addAll(FALSE); }};
 
 }

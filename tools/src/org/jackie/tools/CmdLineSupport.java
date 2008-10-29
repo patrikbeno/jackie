@@ -39,5 +39,12 @@ public class CmdLineSupport {
 
 		option.value(value);
 		option.validate();
-	}	
+	}
+
+	public void printcfg() {
+		System.out.println("Options:");
+		for (Option o : options.values()) {
+			System.out.printf("    %-15s\t:%-10s\t%s%n", o.name(), o.type().getSimpleName(), o.description());
+		}
+	}
 }

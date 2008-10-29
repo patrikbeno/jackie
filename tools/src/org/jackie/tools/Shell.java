@@ -114,15 +114,14 @@ public class Shell {
 		quit = true;
 	}
 
-	Main main;
-
 	public void compile() {
 		long started = System.currentTimeMillis();
 		System.out.printf("Compiling %s to %s%n", sources, jarfile);
 
-		if (main == null) {
-			main = new Main(sources, jarfile);
-		}
+		Main main = new Main();
+		main.srcdir = sources;
+		main.jarname = jarfile;
+
 		main.run();
 
 		long elapsed = System.currentTimeMillis() - started;
