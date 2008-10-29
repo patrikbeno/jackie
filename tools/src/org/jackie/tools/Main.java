@@ -110,7 +110,7 @@ public class Main {
 			}
 		};
 
-		System.out.printf("Compiling sources in %s to %s%n", srcdir, jarname);
+		System.out.printf("\rCompiling sources in %s to %s%n", srcdir, jarname);
 
 		compiler.compile();
 

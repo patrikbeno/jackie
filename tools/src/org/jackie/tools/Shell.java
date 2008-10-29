@@ -6,11 +6,15 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.FileInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Properties;
 
 /**
  * @author Patrik Beno
@@ -19,42 +23,61 @@ public class Shell {
 
 	static public void main(String[] args) {
 
-		Option<File> sources = Option.create("sources", File.class);
-		Option<File> jarfile = Option.create("jarfile", File.class);
+		Option<File> properties = Option.create(
+				"properties",
+				File.class, new File("shell.properties"),
+				"Path to shell configuration properties");
 
+		CmdLineSupport cmdline = new CmdLineSupport(properties);
 		try {
-			CmdLineSupport cmdline = new CmdLineSupport(sources, jarfile);
 			cmdline.parse(args);
-
-
-		} catch (Throwable t) {
-			System.out.println(t);
+		} catch (Exception e) {
+			System.out.println(e);
+			cmdline.printcfg();
 			System.exit(-1);
 		}
 
-		Shell shell = new Shell(sources.get(), jarfile.get());
+		Shell shell = new Shell(properties.get());
 		shell.run();
 	}
 
-	File sources;
-	File jarfile;
-
+	Properties properties;
+	Main main;
 	boolean quit;
 
-	List<String> commands = getCommands();
+	List<String> commands;
+	Map<String, Method> commandsByName;
 
-	Shell(File sources, File jarfile) {
-		this.sources = sources;
-		this.jarfile = jarfile;
+	{
+		main = new Main();
+		gatherCommands();
+	}
+
+	public Shell(File fproperties) {
+		try {
+			System.out.printf("Loading configuration from %s%n", fproperties.getAbsoluteFile());
+
+			properties = new Properties();
+			properties.load(new FileInputStream(fproperties));
+
+			main.srcdir = new File(properties.getProperty("sources"));
+			main.classpath = new ArrayList<File>();
+			for (String s : properties.getProperty("classpath").split(";")) {
+				main.classpath.add(new File(s));
+			}
+			main.jarname = new File(properties.getProperty("jarname"));
+			main.overwrite = true;
+
+			showcfg();
+
+		} catch (IOException e) {
+			throw Assert.notYetHandled(e);
+		}
 	}
 
 	void run() {
 		System.out.println("(-: Welcome to Jackie Shell! :-)");
-		System.out.println();
-		System.out.println("Configuration:");
-		System.out.printf("\tsources=%s%n", sources);
-		System.out.printf("\tjarfile=%s%n", jarfile);
-		System.out.println();
+		help();
 
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -74,17 +97,24 @@ public class Shell {
 			return;
 		}
 		try {
-			if (!commands.contains(command)) {
-				System.out.printf("Unrecognized command: \"%s\"%n", command);
+			String[] args = command.split(" ");
+			String cmd = args[0];
+
+			if (!commands.contains(cmd)) {
+				System.out.printf("Unrecognized command: \"%s\"%n", cmd);
 				help();
 				return;
 			}
 
-			Method m = getClass().getMethod(command);
-			m.invoke(this);
-			
-		} catch (NoSuchMethodException e) {
-			throw Assert.notYetHandled(e);
+
+			Method m = commandsByName.get(cmd);
+
+			if (m.getParameterTypes().length > 0) {
+				m.invoke(this, (Object) args);
+			} else {
+				m.invoke(this);
+			}
+
 		} catch (IllegalAccessException e) {
 			throw Assert.notYetHandled(e);
 		} catch (InvocationTargetException e) {
@@ -92,21 +122,24 @@ public class Shell {
 		}
 	}
 
-	List<String> getCommands() {
+	void gatherCommands() {
 		List<String> commands = new ArrayList<String>();
+		Map<String,Method> byname = new HashMap<String, Method>();
 		for (Method m : getClass().getDeclaredMethods()) {
 			if (Modifier.isPublic(m.getModifiers()) && !Modifier.isStatic(m.getModifiers())) {
 				commands.add(m.getName());
+				byname.put(m.getName(), m);
 			}
 		}
-		return commands;
+		this.commandsByName = byname;
+		this.commands = commands;
 	}
 
 
 	/// commands
 
 	public void help() {
-		System.out.printf("Commands: %s%n", getCommands());
+		System.out.printf("Commands: %s%n", commands);
 	}
 
 	public void quit() {
@@ -115,16 +148,14 @@ public class Shell {
 	}
 
 	public void compile() {
-		long started = System.currentTimeMillis();
-		System.out.printf("Compiling %s to %s%n", sources, jarfile);
-
-		Main main = new Main();
-		main.srcdir = sources;
-		main.jarname = jarfile;
-
 		main.run();
-
-		long elapsed = System.currentTimeMillis() - started;
-		System.out.printf("Compilation finished in %s ms%n", elapsed);
 	}
+
+	public void showcfg() {
+		System.out.println("Configuration:");
+		System.out.printf("Sources        : %s%n", main.srcdir);
+		System.out.printf("Class path     : %s%n", main.classpath);
+		System.out.printf("Output jar file: %s%n", main.jarname);
+	}
+
 }
