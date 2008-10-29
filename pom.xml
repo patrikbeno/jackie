@@ -126,6 +126,25 @@
 					<preparationGoals />
 				</configuration>
 			</plugin>
+			<plugin>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.5</version>
+				<executions>
+					<execution>
+						<phase>deploy</phase>
+						<goals>
+							<goal>aggregate</goal>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
+					<!--<destDir>myapidocs</destDir>-->
+					<!--<subpackages>org.jackie</subpackages>-->
+					<excludePackageNames>org.jackie.test.*:org.jackie.compilerimpl.*:org.jackie.event.impl.*:org.jackie.java5.annotation.impl.*</excludePackageNames>
+				</configuration>
+			</plugin>			
 		</plugins>
 
 		<pluginManagement>
@@ -163,18 +182,6 @@
 
 	<reporting>
 		<outputDirectory>${build.dir}/site</outputDirectory>
-		<plugins>
-			<plugin>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<aggregate>true</aggregate>
-					<!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
-					<!--<destDir>myapidocs</destDir>-->
-					<subpackages>org.jackie</subpackages>
-					<exludePackageNames>org.jackie.test:org.jackie.compilerimpl</exludePackageNames>
-				</configuration>
-			</plugin>
-		</plugins>
 	</reporting>
 
 	<distributionManagement>
