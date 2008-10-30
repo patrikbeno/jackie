@@ -144,7 +144,7 @@
 					<!--<subpackages>org.jackie</subpackages>-->
 					<excludePackageNames>org.jackie.test.*:org.jackie.compilerimpl.*:org.jackie.event.impl.*:org.jackie.java5.annotation.impl.*</excludePackageNames>
 				</configuration>
-			</plugin>			
+			</plugin>
 		</plugins>
 
 		<pluginManagement>
