@@ -25,5 +25,5 @@ function runWIKI() {
 	export PYTHONPATH="$PWD:$PYTHONPATH"
 	# http://moinmo.in/
 	# http://moinmo.in/MoinMoinDownload
-	moin server standalone $1
+	moin.sh server standalone $1
 }
