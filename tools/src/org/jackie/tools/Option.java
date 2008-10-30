@@ -16,29 +16,38 @@ import java.lang.reflect.Array;
  */
 public class Option<T> {
 
-	static <T> Option<T> create(String name, Class<T> type, T dflt, String description) {
-		return new Option<T>(name, type, dflt, description);
-	}
-
-	static <T> Option<T> create(String name, Class<T> type) {
-		return create(name, type, null, null);
-	}
-
-
 	String name;
 	Class<T> type;
-	String value;
 	String description;
 
-	T converted;
+	boolean mandatory;
 	T dflt;
 
-	private Option(String name, Class<T> type, T dflt, String description) {
+	String value;
+	T converted;
+
+	Option(String name, Class<T> type) {
 		this.name = NOTNULL(name);
 		this.type = NOTNULL(type);
-		this.dflt = dflt;
-		this.description = description;
 	}
+
+	public Option<T> description(String desc) {
+		this.description = desc;
+		return this;
+	}
+
+	public Option<T> mandatory(boolean mandatory) {
+		this.mandatory = mandatory;
+		return this;
+	}
+
+	public Option<T> dflt(T dflt) {
+		this.dflt = dflt;
+		return this;
+	}
+
+
+	/// read ///
 
 	public String name() {
 		return name;
@@ -52,17 +61,18 @@ public class Option<T> {
 		return description;
 	}
 
+	public boolean mandatory() {
+		return mandatory;
+	}
+
+	public T dflt() {
+		return dflt;
+	}
+
 	public String value() {
 		return value;
 	}
 
-	public void value(String value) {
-		this.value = value;
-	}
-
-	public void validate() {
-		converted = type.cast(convert());
-	}
 
 	public T get() {
 		if (converted != null) {
@@ -70,6 +80,10 @@ public class Option<T> {
 		}
 
 		converted = (value != null) ? type.cast(convert()) : dflt;
+
+		if (mandatory) {
+			Assert.doAssert(converted != null, "Missing option %s", name());
+		}
 
 		return converted;
 	}
@@ -90,7 +104,7 @@ public class Option<T> {
 			return value != null ? new File(value) : null;
 
 		} else if (type.isArray()) {
-			String[] strings = value.split(",");
+			String[] strings = value.split(File.pathSeparator);
 			Object[] items = (Object[]) Array.newInstance(type.getComponentType(), strings.length);
 			for (int i = 0; i < strings.length; i++) {
 				items[i] = convert(strings[i], type.getComponentType());

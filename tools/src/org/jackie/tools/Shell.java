@@ -1,6 +1,7 @@
 package org.jackie.tools;
 
 import org.jackie.utils.Assert;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,22 +24,26 @@ public class Shell {
 
 	static public void main(String[] args) {
 
-		Option<File> properties = Option.create(
-				"properties",
-				File.class, new File("shell.properties"),
-				"Path to shell configuration properties");
+		CmdLineSupport cmdline = new CmdLineSupport(Shell.class);
 
-		CmdLineSupport cmdline = new CmdLineSupport(properties);
+		Option<File> properties = cmdline.createOption("properties", File.class)
+				.description("Path to shell configuration properties")
+				.mandatory(true);
+
 		try {
 			cmdline.parse(args);
-		} catch (Exception e) {
-			System.out.println(e);
+		} catch (Throwable t) {
+			System.out.println(t.getMessage());
 			cmdline.printcfg();
 			System.exit(-1);
 		}
 
-		Shell shell = new Shell(properties.get());
-		shell.run();
+		try {
+			Shell shell = new Shell(properties.get());
+			shell.run();
+		} catch (Throwable t) {
+			System.out.printf("Error: %s%n", t.getMessage());
+		}
 	}
 
 	Properties properties;
@@ -55,8 +60,11 @@ public class Shell {
 
 	public Shell(File fproperties) {
 		try {
-			System.out.printf("Loading configuration from %s%n", fproperties.getAbsoluteFile());
+			doAssert(fproperties.exists() && fproperties.isFile() && fproperties.canRead(),
+						"Missing, invalid or unreadable: %s%n", fproperties.getAbsoluteFile());
 
+			System.out.printf("Loading configuration from %s%n", fproperties.getAbsoluteFile());
+			
 			properties = new Properties();
 			properties.load(new FileInputStream(fproperties));
 
