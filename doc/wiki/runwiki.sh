@@ -14,7 +14,7 @@ fi
 unpackData
 
 echo "Starting WIKI..."
-runWIKI $1
+runWIKI $*
 
 echo "Postprocessing..."
 ./update_archive.sh
