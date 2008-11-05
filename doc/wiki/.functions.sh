@@ -1,31 +1,30 @@
 #!/bin/bash
 
-function deleteCaches() {
-	find data -type d -name "cache" | xargs rm -rf
-	find -type f -name "*.pyc" | xargs rm
-}
-
-function deleteCompiledCode() {
-	find -type f -name "*.pyc" | xargs rm
-}
-
-function deleteData() {
-	rm -rf data
-	rm -rf underlay
-}
-
-function unpackData() {	
+function prepareRuntimeData() {
 	tar xf data.tar
+	tar xf underlay.tar
 }
 
-function packData() {	
-	find data -not -name "*pyc" | grep -v "$(find data -type d -name cache)" | sort | xargs tar cf data.tar
+function deleteRuntimeData() {
+	if [ -d data ]; then rm -rf data; fi
+	if [ -d underlay ]; then rm -rf underlay; fi
+}
+
+function createDataArchive() {
+	basedir=$(realpath .)
+	workdir=$(mktemp -d)
+	cp -abR data $workdir/
+	cd $workdir
+	find data -type d -name cache | xargs rm -rf
+	find data -type f -name "*pyc" -delete
+	find data -type f | sort -u | xargs tar cf $basedir/data.tar
+	cd $basedir
+	rm -rf $workdir
 }
 
 function runWIKI() {
 	export PYTHONPATH="$PWD:$PYTHONPATH"
 	# http://moinmo.in/
 	# http://moinmo.in/MoinMoinDownload
-	tar xf underlay.tar
-	moin.sh server standalone $*
+	moin.sh server standalone --config-dir=. --interface=localhost --port=10086 $*
 }
