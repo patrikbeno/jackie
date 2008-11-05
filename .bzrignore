@@ -11,3 +11,5 @@ build.sh
 .wiki/data
 atlassian-ide-plugin*.xml
 .wiki/data*.tgz
+doc/wiki/underlay*
+doc/wiki/data_*

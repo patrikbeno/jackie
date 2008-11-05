@@ -11,6 +11,7 @@ function deleteCompiledCode() {
 
 function deleteData() {
 	rm -rf data
+	rm -rf underlay
 }
 
 function unpackData() {	
@@ -18,12 +19,13 @@ function unpackData() {
 }
 
 function packData() {	
-	find data -type f | sort | xargs tar cf data.tar
+	find data -not -name "*pyc" | grep -v "$(find data -type d -name cache)" | sort | xargs tar cf data.tar
 }
 
 function runWIKI() {
 	export PYTHONPATH="$PWD:$PYTHONPATH"
 	# http://moinmo.in/
 	# http://moinmo.in/MoinMoinDownload
-	moin.sh server standalone $1
+	tar xf underlay.tar
+	moin.sh server standalone $*
 }
