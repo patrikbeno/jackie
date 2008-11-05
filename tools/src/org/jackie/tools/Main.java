@@ -75,7 +75,11 @@ public class Main {
 			main.showprogress = showprogress.get();
 		}
 
-		main.run();
+		try {
+			main.run();
+		} catch (Throwable e) {
+			System.err.println(e);
+		}
 	}
 
 	File srcdir;
@@ -92,7 +96,7 @@ public class Main {
 
 	void run() {
 		doAssert(srcdir != null && srcdir.exists(), "Missing sources directory: %s", srcdir);
-		doAssert((jarname != null && !jarname.exists()) || overwrite, "Ouput file already exists: %s", jarname);
+		doAssert((jarname != null && !jarname.exists()) || overwrite, "Ouput file already exists: %s. Use overwrite=true.", jarname);
 
 		progress = new Progress();
 
