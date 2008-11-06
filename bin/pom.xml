@@ -20,6 +20,7 @@
 			<plugin>
 				<groupId>org.jboss.maven.plugins</groupId>
 				<artifactId>maven-zip-plugin</artifactId>
+				<version>1.0</version>
 				<extensions>true</extensions>
 			</plugin>
 		</plugins>
