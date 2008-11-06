@@ -2,6 +2,7 @@
 #
 # On http://jackie.greenhorn.sk there is a running JackieWiki instance.
 # This script downloads current (live & running) wiki data directory and updates local data.tar
+# Finally, commits archive into local bazaar branch
 #
 
 cd $(dirname $0)
@@ -32,5 +33,5 @@ tar xf data.tar
 createDataArchive
 deleteRuntimeData
 
-echo "Done:"
-ls -l data.tar
+echo "Committing data.tar"
+bzr ci -m "[doc] wiki data update" data.tar
