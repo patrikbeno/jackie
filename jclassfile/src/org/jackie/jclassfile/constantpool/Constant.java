@@ -76,7 +76,7 @@ cp_info {
 	}
 
 	public String toString() {
-		Integer idx = constantPool().indexOf(this, false);
+		Integer idx = index();
 		return String.format("#%s %s: %s", (idx != null) ? idx : "?", type().name(), valueToString());
 	}
 

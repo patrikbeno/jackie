@@ -12,7 +12,10 @@ import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.utils.Assert.expected;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.context.ContextObject;
+import org.jackie.context.Context;
+import org.jackie.context.ContextManager;
 import static org.jackie.context.ContextManager.context;
+import static org.jackie.context.ContextManager.contextManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,8 +35,7 @@ public class ConstantPool extends Base implements ContextObject, Closeable {
 	}
 
 	static public boolean available() {
-		ConstantPool pool = context().get(ConstantPool.class);
-		return pool != null;
+		return contextManager().hasContext() && context().get(ConstantPool.class) != null;
 	}
 
 	static public ConstantPool create(boolean bindToContext) {
