@@ -72,6 +72,10 @@ Code_attribute {
 		super(owner);
 	}
 
+	public Instruction instructions() {
+		return instructions;
+	}
+
 	protected Task readConstantDataOrGetResolver(XDataInput in, ConstantPool pool) {
 		int attrlen = readLength(in);
 
