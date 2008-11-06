@@ -4,7 +4,7 @@
 
 	<groupId>org.jackie</groupId>
 	<artifactId>org.jackie</artifactId>
-	<version>0.1-M1</version>
+	<version>0.1-M2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${pom.artifactId}-${pom.version}</name>

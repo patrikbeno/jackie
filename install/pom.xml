@@ -4,7 +4,7 @@
 
 	<groupId>org.jackie</groupId>
 	<artifactId>org.jackie.install</artifactId>
-	<version>0.1-M1</version>
+	<version>0.1-M2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>${pom.artifactId}-${pom.version}</name>
@@ -166,8 +166,8 @@
 									<tasks>
 										<echo message="##############################" />
 										<echo message="### Installation Completed ###" />
-										<echo message="### Thank You!      ###" />
-										<echo message="### See doc/README    ###" />
+										<echo message="### Thank You! ###" />
+										<echo message="### See doc/README ###" />
 										<echo message="##############################" />
 									</tasks>
 								</configuration>
