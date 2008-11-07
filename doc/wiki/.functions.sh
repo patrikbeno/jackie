@@ -26,5 +26,5 @@ function runWIKI() {
 	export PYTHONPATH="$PWD:$PYTHONPATH"
 	# http://moinmo.in/
 	# http://moinmo.in/MoinMoinDownload
-	moin.sh server standalone --config-dir=. --interface=localhost --port=10086 $* > moin.log 2>&1
+	moin.sh server standalone --config-dir=. --interface=localhost --port=10086 $*
 }
