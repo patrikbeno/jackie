@@ -250,17 +250,6 @@
 						<updatePolicy>interval:10</updatePolicy>
 					</snapshots>
 				</repository>
-				<repository>
-					<id>greenhorn.cache</id>
-					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
-					<releases>
-						<enabled>true</enabled>
-						<updatePolicy>never</updatePolicy>
-					</releases>
-					<snapshots>
-						<enabled>false</enabled>
-					</snapshots>
-				</repository>
 			</repositories>
 
 			<pluginRepositories>
@@ -286,6 +275,33 @@
 						<updatePolicy>never</updatePolicy>
 					</snapshots>
 				</pluginRepository>
+			</pluginRepositories>
+
+		</profile>
+
+		<profile>
+			<id>greenhorn.cache</id>
+			<activation>
+				<property>
+					<name>greenhorn.cache</name>
+				</property>
+			</activation>
+
+			<repositories>
+				<repository>
+					<id>greenhorn.cache</id>
+					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
+					<releases>
+						<enabled>true</enabled>
+						<updatePolicy>never</updatePolicy>
+					</releases>
+					<snapshots>
+						<enabled>false</enabled>
+					</snapshots>
+				</repository>
+			</repositories>
+
+			<pluginRepositories>
 				<pluginRepository>
 					<id>greenhorn.cache</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/cache</url>
@@ -300,7 +316,7 @@
 			</pluginRepositories>
 
 		</profile>
-		
+
 	</profiles>
 
 	<distributionManagement>
