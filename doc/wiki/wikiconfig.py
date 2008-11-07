@@ -38,7 +38,7 @@ class Config(DefaultConfig):
     # Wiki logo. You can use an image, text or both. [Unicode]
     # For no logo or text, use '' - the default is to show the sitename.
     # See also url_prefix setting below!
-    #logo_string = u'<img src="/moin_static180/common/moinmoin.png" alt="MoinMoin Logo">'
+    logo_string = u'<img src="/moin_static180/common/moinmoin.png" alt="MoinMoin Logo">'
 
     # name of entry page / front page [Unicode], choose one of those:
 
@@ -73,7 +73,7 @@ class Config(DefaultConfig):
     # you can safely replace the underlay directory with a new one. This
     # directory is part of MoinMoin distribution, you don't have to
     # backup it.
-    #data_underlay_dir = './underlay/'
+    data_underlay_dir = '/usr/share/moin/underlay/'
 
     # The URL prefix we use to access the static stuff (img, css, js).
     # NOT touching this is maybe the best way to handle this setting as moin

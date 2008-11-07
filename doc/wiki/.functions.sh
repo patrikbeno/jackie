@@ -2,12 +2,12 @@
 
 function prepareRuntimeData() {
 	tar xf data.tar
-	tar xf underlay.tar
+	#tar xf underlay.tar
 }
 
 function deleteRuntimeData() {
 	if [ -d data ]; then rm -rf data; fi
-	if [ -d underlay ]; then rm -rf underlay; fi
+	#if [ -d underlay ]; then rm -rf underlay; fi
 }
 
 function createDataArchive() {
