@@ -33,5 +33,7 @@ tar xf data.tar
 createDataArchive
 deleteRuntimeData
 
-echo "Committing data.tar"
-bzr ci -m "[doc] wiki data update" data.tar
+if [ "$1" == "--commit" ]; then
+	echo "Committing data.tar"
+	bzr ci -m "[doc] wiki data update" data.tar
+fi
