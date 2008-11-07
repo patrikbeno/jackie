@@ -2,23 +2,14 @@
 
 cd $(dirname $0)
 
-. .functions.sh
-
-echo "Preparing data..."
-if [ -d data ]; then
-	fname="data_$(date +%Y%m%d_%H%M).tgz"
-	echo "!!! data directory exists; backing up: $fname"
-	tar czf $fname data
-fi
-deleteRuntimeData
-prepareRuntimeData
-
 echo "Starting WIKI..."
-runWIKI $*
+# http://moinmo.in/
+# http://moinmo.in/MoinMoinDownload
+/usr/share/moin/server/moin server standalone --config-dir=. --interface=localhost --port=10086 $*
 
-echo "Postprocessing..."
-createDataArchive
-deleteRuntimeData
+echo "Deleting runtime data..."
+find data -type d -name cache | xargs rm -rf
+find data -type f -name "*pyc" -delete
 
 echo "Done!"
 
