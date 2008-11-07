@@ -14,3 +14,5 @@ atlassian-ide-plugin*.xml
 doc/wiki/underlay*
 doc/wiki/data_*
 doc/wiki/data/**/cache
+doc/wiki/data/event-log
+doc/wiki/data/event-log
