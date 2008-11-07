@@ -166,8 +166,8 @@
 									<tasks>
 										<echo message="##############################" />
 										<echo message="### Installation Completed ###" />
-										<echo message="### Thank You! ###" />
-										<echo message="### See doc/README ###" />
+										<echo message="###       Thank You!       ###" />
+										<echo message="###     See doc/README     ###" />
 										<echo message="##############################" />
 									</tasks>
 								</configuration>
@@ -181,6 +181,14 @@
 				</plugins>
 			</build>
 
+		</profile>
+
+		<profile>
+			<id>offline</id>
+			<activation>
+				<activeByDefault/>
+			</activation>
+
 			<repositories>
 				<repository>
 					<id>offlinerepo</id>
@@ -193,6 +201,33 @@
 						<updatePolicy>always</updatePolicy>
 					</snapshots>
 				</repository>
+			</repositories>
+
+			<pluginRepositories>
+				<pluginRepository>
+					<id>offlinerepo</id>
+					<url>${offlinerepo}</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+					<snapshots>
+						<enabled>true</enabled>
+						<updatePolicy>always</updatePolicy>
+					</snapshots>
+				</pluginRepository>
+			</pluginRepositories>
+
+		</profile>
+
+		<profile>
+			<id>online</id>
+			<activation>
+				<property>
+					<name>online</name>
+				</property>
+			</activation>
+
+			<repositories>
 				<repository>
 					<id>greenhorn.internal</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
@@ -230,17 +265,6 @@
 
 			<pluginRepositories>
 				<pluginRepository>
-					<id>offlinerepo</id>
-					<url>${offlinerepo}</url>
-					<releases>
-						<enabled>true</enabled>
-					</releases>
-					<snapshots>
-						<enabled>true</enabled>
-						<updatePolicy>always</updatePolicy>
-					</snapshots>
-				</pluginRepository>
-				<pluginRepository>
 					<id>greenhorn.internal</id>
 					<url>http://archiva.greenhorn.sk/archiva/repository/internal</url>
 					<releases>
@@ -259,7 +283,7 @@
 					</releases>
 					<snapshots>
 						<enabled>true</enabled>
-						<updatePolicy>interval:10</updatePolicy>
+						<updatePolicy>never</updatePolicy>
 					</snapshots>
 				</pluginRepository>
 				<pluginRepository>
