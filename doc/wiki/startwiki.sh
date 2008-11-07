@@ -2,4 +2,4 @@
 
 cd $(dirname $0)
 
-./runwiki.sh $* --start
+./runwiki.sh --interface jackie.greenhorn.sk --port 10086 --start $*
