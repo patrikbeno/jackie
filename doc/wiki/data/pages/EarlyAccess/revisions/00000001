@@ -1,0 +1,17 @@
+#pragma section-numbers off
+
+##<<TableOfContents>>
+
+= Early Access Program =
+
+<!> TODO
+
+'''Milestone''' releases are single development iterations. Consider it '''alpha quality, unstable'''.
+
+'''Beta''' releases are mostly feature complete (with respect to particular release scope). Nonetheless, '''expect''' and (please) '''report bugs'''. 
+
+'''Release candidates''' are feature-complete and believed to be '''bug-free'''. They are in '''heavy testing''' period.
+
+'''Final releases''' are published after the last RC (release candidate) is proven to be '''free of critical bugs''' (showstoppers).
+
+See also [[Versioning]]

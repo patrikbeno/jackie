@@ -1,0 +1,30 @@
+= Release Notes - Jackie - Version 0.1-M1 =
+    
+<!> Milestone Release. See [[EarlyAccess]] <<BR>>
+<!> Technology Preview <<BR>>
+<!> Unstable <<BR>>
+
+----
+
+{{{#!HTML
+<h2>        Bug
+</h2>
+<ul>
+<li>[<a href='http://jira.greenhorn.sk/browse/JAC-9'>JAC-9</a>] -         [jclassfile] Invalid class file generated (buggy attribute handling)
+</li>
+</ul>
+            
+<h2>        Task
+</h2>
+<ul>
+<li>[<a href='http://jira.greenhorn.sk/browse/JAC-1'>JAC-1</a>] -         [compiler] implement jmodel API
+</li>
+<li>[<a href='http://jira.greenhorn.sk/browse/JAC-4'>JAC-4</a>] -         initialize distribution package
+</li>
+<li>[<a href='http://jira.greenhorn.sk/browse/JAC-5'>JAC-5</a>] -         prepare Archiva on Greenhorn.SK
+</li>
+<li>[<a href='http://jira.greenhorn.sk/browse/JAC-8'>JAC-8</a>] -         initialize WIKI documentation
+</li>
+</ul>
+}}}
+    

@@ -1,0 +1,22 @@
+#pragma section-numbers on
+
+...todo...
+
+ * binaries
+ * sources
+ * developer connection - bazaar repository
+
+= Overview =
+
+This page contains only links to downloadable packages.
+For installation instructions, see [Documentation]
+
+= Snapshots =
+
+http://archiva.greenhorn.sk/archiva/repository/snapshots/org/jackie/org.jackie.install/0.1-SNAPSHOT/
+
+(pick up most recent *.pom)
+
+= Releases =
+
+http://archiva.greenhorn.sk/archiva/repository/internal/org/jackie/org.jackie.install/

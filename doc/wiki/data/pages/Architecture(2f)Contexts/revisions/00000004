@@ -1,0 +1,48 @@
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Introduction =
+
+= Overview =
+
+= Architecture =
+
+= Examples =
+
+{{{#!java
+// API is optimized for use with static imports
+// Note: you should never use wildcard imports (this is just an example)
+import static org.jackie.context.ContextManager.*; 
+
+// create new context
+newContext();
+try {
+    // register your context object(s)
+    context().set(MyContextObject.class, new MyContextObject());
+
+    // access context
+    MyContextObject mco = context(MyContextObject.class);
+
+} finally {
+    // must explicitly close context within the scope of the method
+    closeContext();
+}
+}}}
+
+== Tips, Hints, Random Ideas ==
+
+=== Lazily initialized, singleton-like context objects ===
+
+{{{#!java
+class MyContext implements ContextObject {
+    static public MyContext getInstance() {
+        MyContext o = context(MyContext.class);
+        if (o == null) {
+            o = new MyContext();
+            context().set(MyContext.class, o); 
+        }
+        return o;
+    }
+}
+}}}

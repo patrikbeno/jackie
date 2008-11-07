@@ -1,0 +1,27 @@
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Bytecode Optimizations =
+
+= Operator Functions =
+
+Useless but illustrative example
+
+{{{
+@OperatorFunction
+boolean OR(boolean condition1, boolean condition2);
+}}}
+
+Usage:
+{{{
+if (condition1 OR condition2) { ... }
+}}}
+
+Effectivelly the same as:
+{{{
+if (OR(condition1, condition2)) { ... }
+}}}
+
+http://forums.java.net/jive/thread.jspa?threadID=132&tstart=0
+

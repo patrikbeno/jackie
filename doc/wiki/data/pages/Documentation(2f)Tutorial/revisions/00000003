@@ -1,0 +1,91 @@
+#pragma section-numbers off
+
+<<TableOfContents>>
+
+= Introduction =
+
+This is simple tutorial to help beginners evaluate Jackie.
+
+= Step #1: Download =
+
+{{{
+# this is install POM URL 
+# (check http://archiva.greenhorn.sk/archiva/repository/snapshots/org/jackie/org.jackie.install for updates)
+$> install_pom="http://archiva.greenhorn.sk/archiva/repository/snapshots/org/jackie/org.jackie.install/0.1-SNAPSHOT/org.jackie.install-0.1-20081105.211313-36.pom"
+
+# installation directory (customize this)
+$> install_dir="$HOME/java/jackie" 
+
+# let's start
+$> cd $install_dir
+
+# download it
+$> wget -O pom.xml $install_pom
+}}}
+
+(For extra details, see [[Download]]).
+
+= Step #2: Install =
+
+{{{
+$> mvn -Psetup
+}}}
+
+Have a break. This may take some time. In the meantime, check out other stuff on this site :-)
+
+= Step #3: Explore results =
+
+Jackie libraries are installed into your '''maven repository''' (usually ~/.m2/repository)
+Jackie documentation and user scripts are installed into the '''installation directory''' you configured above.
+
+In your maven repository, you should see something like this:
+
+{{{
+# go to the groupId directory
+$> cd ~/.m2/repository/org/jackie
+
+# see what artifacts are there...
+$> ls -1 
+org.jackie
+org.jackie.asmtools
+org.jackie.bin
+org.jackie.compiler
+org.jackie.compilerimpl
+org.jackie.context
+org.jackie.event
+org.jackie.install
+org.jackie.java5
+org.jackie.jclassfile
+org.jackie.jvm
+org.jackie.test
+org.jackie.tools
+org.jackie.utils
+}}}
+
+Now explore installation directory:
+
+{{{
+$> find bin
+bin/
+bin/.classpath
+bin/jackie_compiler.sh
+bin/jackie_shell.sh
+}}}
+
+= Step #4: Use It =
+
+Just run {{jackie_compiler.sh}} to see what it can do:
+
+{{{
+$> bin/jackie_compiler.sh           
+Error: Missing option srcdir
+Usage: org.jackie.tools.Main [name=value] ... 
+Options:
+    NAME              TYPE       MANDATORY  DESCRIPTION (DEFAULT VALUE)
+    srcdir            File       Y          Source tree directory (null)
+    classpath         File[]                Class path (null)
+    jarname           File       Y          Output jar file name (null)
+    overwrite         Boolean               Overwrite output file? (false)
+    showprogress      Boolean               Show compilation progress? (true)
+    help              Boolean               Show usage help (false)
+}}}

@@ -1,0 +1,32 @@
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Introduction =
+
+= Overview =
+
+= Architecture =
+
+= Examples =
+
+Declare your events (server / event provider):
+{{{#!java
+class PageEvents implements Event {
+    public void onLoad() {}
+    public void onUnLoad() {}
+}
+}}}
+
+Register event listener (client / event consumer):
+{{{#!java
+Events.registerEventListener(PageEvents.class, new PageEvents() {
+    // override only methods you are interested in
+    public void onLoad() { ... }
+});
+}}}
+
+Fire event (server / event provider):
+{{{#!java
+Events.events(PageEvents.class).onLoad();
+}}}

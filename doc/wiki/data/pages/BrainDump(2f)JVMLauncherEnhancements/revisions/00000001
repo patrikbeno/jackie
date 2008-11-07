@@ -1,0 +1,4 @@
+= JVM Preloading =
+
+'''Goal:''' faster application startup
+'''Idea:''' JVM waits in background, listens on a specific port for trigger; specific classes are loaded but not initialized; native launcher connects to a given port where the standby JVM awaits startup signal. Triggering launcher becomes new standby JVM

@@ -1,0 +1,28 @@
+= Version Numbers =
+
+ * '''snapshots''' (daily/nightly builds)
+ * '''milestones''' (development iterations)
+ * '''beta releases'''
+ * '''release candidates''' (public)
+ * '''final releases''' (public)
+
+= Releases =
+
+Release '''1.0''' is considered first generally usable public release.
+
+Until we get there, sequence of '''0.x''' releases will be published.
+
+(Click [[Status|here]] to check out current status.)
+
+== Snapshots ==
+
+== Milestones ==
+
+Milestones are small development increments.
+Every release has several '''milestones''', usually between 3 to 5.
+
+== Beta Period / Releases ==
+
+== Release Candidates ==
+
+== Final Release ==

@@ -1,0 +1,9 @@
+= General Contract Definition =
+
+== Method Parameters ==
+
+ @Optional:: parameter can be null; default is NOT null
+ 
+== Method Return Values ==
+
+ @Nullable:: method can return NULL value; default is NOT NULL

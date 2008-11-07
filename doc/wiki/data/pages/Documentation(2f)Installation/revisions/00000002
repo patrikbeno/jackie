@@ -1,0 +1,62 @@
+
+
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Overview =
+
+Jackie is plain Java library built using Maven.
+Installation process deploys (1) Jackie modules into local Maven repository and (2) utility scripts, documentation, etc into current directory (where installation process is ran from)
+
+= Prerequisities =
+
+You need:
+
+ 1. Java Runtime Environment (http://java.sun.com/). Download here: http://java.sun.com/javase/downloads/index.jsp 
+ 1. Maven (http://maven.apache.org). Download here: http://maven.apache.org/download.html
+
+Windows (optional, recommended):
+
+ 1. Cygwin (http://www.cygwin.com/). Download here: http://www.cygwin.com/setup.exe
+
+
+= Download =
+
+There are several installtation options:
+
+ 1. online installation via Maven
+ 1. partially offline installation 
+ 1. full offline installation
+
+Online installation (#1) should be '''easiest''' and is ideal for incremental updates. 
+
+Full offline (#2) is supposed to be '''most reliable''' and '''fastest'''. Suitable for users with fast internet connections who don't mind downloading packages several megabytes in size.
+
+Semi-offline (#2) installation is a compromise between big downloads and installation speed. Only Jackie libraries are distributed and its dependencies are updated/downloaded online using Maven.
+
+Visit [[Download]] page.
+
+= Online Installation =
+
+Create directory where you want Jackie to be installed, download installation pom and save it to this directory. Execute {{{mvn -Dsetup=online}}} to start installation.
+
+Whole process is in a little more exact manner described below:
+
+{{{
+# configuration
+jackie_home=/path/to/jackie
+install_pom="http://archiva.greenhorn.sk/archiva/repository/snapshots/org/jackie/org.jackie.install/0.1-SNAPSHOT/org.jackie.install-0.1-20081022.221657-6.pom"
+
+cd $jackie_home
+
+# download install pom
+wget -O pom.xml $install_pom
+
+# run install
+mvn -Dsetup=online
+}}}
+
+This may take a few moments even on a local network. 
+
+= Offline Installation =

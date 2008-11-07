@@ -1,0 +1,12 @@
+= Release Notes - Jackie - Version 0.1-M1 =
+
+== Bug ==
+    * [JAC-9] - [jclassfile] Invalid class file generated (buggy attribute handling)
+
+
+
+== Task ==
+    * [JAC-1] - [compiler] implement jmodel API
+    * [JAC-4] - initialize distribution package
+    * [JAC-5] - prepare Archiva on Greenhorn.SK
+    * [JAC-8] - initialize WIKI documentation

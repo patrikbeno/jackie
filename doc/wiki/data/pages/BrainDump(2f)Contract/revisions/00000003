@@ -1,0 +1,21 @@
+= General Contract Definition =
+
+== Method Parameters ==
+
+ @Optional::
+ :: parameter can be null; default is NOT null
+ 
+== Method Return Values ==
+
+ @Nullable:: 
+ :: method can return NULL value; default is NOT NULL
+
+== Issues ==
+
+Maybe contract model should be chosen so that the compilation won't break standard code (i.e. without any contract annotations).
+This means that the '''defaults''' should be chosen so that they '''add''' behaviour, not that their absence '''changes behaviour'''.
+
+Therefore, no {{{@optional}}}, no {{{@Nullable}}}, just:
+
+ @NotNull::
+ :: parameter cannot be null; method cannot return null value; field cannot be null after instance initialization is finished

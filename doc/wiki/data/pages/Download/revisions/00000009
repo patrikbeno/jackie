@@ -1,0 +1,19 @@
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Overview =
+
+This page contains only links to downloadable packages.
+For installation instructions, see [[Documentation/Installation]]
+
+= Snapshots =
+
+http://archiva.greenhorn.sk/archiva/repository/snapshots/org/jackie/org.jackie.install/
+
+Select the version you want (usually most recent: currently 0.1-SNAPSHOT) and pick up most recent snapshot build (the one on the bottom, usually).
+
+
+= Releases =
+
+http://archiva.greenhorn.sk/archiva/repository/internal/org/jackie/org.jackie.install/

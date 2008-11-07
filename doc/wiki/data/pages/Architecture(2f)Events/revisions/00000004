@@ -1,0 +1,43 @@
+#pragma section-numbers on
+
+<<TableOfContents>>
+
+= Introduction =
+
+= Overview =
+
+= Architecture =
+
+= TODO =
+
+'''Event listeners per producer'''
+
+Current design supports global listeners for global events. What if someone wants to register listener for events fired by a particular producer (object) ?
+
+'''Generic access to producer of the currently processed event'''
+
+It would be nice if one could determine the origin of the current event. But is this needed? Is this even wanted? What if this would created potential for unwanted coupling between server and client?
+ 
+
+= Examples =
+
+Declare your events (server / event provider):
+{{{#!java
+class PageEvents implements Event {
+    public void onLoad() {}
+    public void onUnLoad() {}
+}
+}}}
+
+Register event listener (client / event consumer):
+{{{#!java
+Events.registerEventListener(PageEvents.class, new PageEvents() {
+    // override only methods you are interested in
+    public void onLoad() { ... }
+});
+}}}
+
+Fire event (server / event provider):
+{{{#!java
+Events.events(PageEvents.class).onLoad();
+}}}

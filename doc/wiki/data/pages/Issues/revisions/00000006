@@ -1,0 +1,11 @@
+#pragma section-numbers on
+
+##<<TableOfContents>>
+
+ * http://jira.greenhorn.sk
+
+This is [[http://www.atlassian.com/software/jira/personal.jsp|personal]] [[http://www.atlassian.com/software/jira/|JIRA]] instance (max. 3 users). Therefore, it is configured so that '''anonymous users can create issues'''. 
+
+If you have any problems using this JIRA instance, report your problem here:
+
+ * http://code.google.com/p/jackie/issues/list

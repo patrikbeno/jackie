@@ -1,0 +1,64 @@
+#pragma section-numbers off
+
+This page documents current development road map of the Jackie project. 
+
+See also: 
+ * [[/Versioning]] 
+ * [[http://jira.greenhorn.sk/browse/JAC?report=com.atlassian.jira.plugin.system.project:roadmap-panel|JIRA Road Map (development)]]
+
+<!> work in progress <!>
+
+##Early alpha to be published in October 2008.
+
+= Release 0.1 =
+
+== M1 (October 2008) ==
+
+(First results)
+
+ * ability to load and save model
+ * simple command line utility (something like {{{jackie srcdir dst.jar}}})
+ * simple stateful command line shell
+
+== M2 (November 2008) ==
+
+(Getting hands dirty)
+
+ * experimental: jackie used to build jackie (secondary build system, maven remains the primary build engine)
+ * simple compiler server
+ * simple shell/server integration
+
+== M3 (December 2008) ==
+
+(First contact)
+
+ * initial version of the aspectizer framework (engine, APIs)
+ * support for {{{@NotNull}}} aspect
+
+== M4 (Q1 2009) ==
+
+(First contact)
+
+(Preliminary plan, subject to change)
+
+ * Model/APIs review and completion
+ * Pluggability improvements
+ * User interface improvements
+ * Documentation improvements
+
+== BETA Period (Q2 2009) ==
+
+ * bugfixes
+ * performance tuning
+ * testing
+ * documentation
+
+There may be several '''beta''' releases, published weekly or bi-weekly.
+
+== FINAL (July 2009) ==
+
+ * bugfixes
+ * documentation, examples
+ * packaging and distribution tuning
+
+Final release may be preceded by a few '''release candidates''' (typically one, usually not more than two)
