@@ -127,6 +127,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>2.5</version>
 				<executions>
+<!-- fixme: javadoc:aggregate causes install/deploy problems
 					<execution>
 						<phase>deploy</phase>
 						<goals>
@@ -134,6 +135,7 @@
 							<goal>jar</goal>
 						</goals>
 					</execution>
+-->
 				</executions>
 				<configuration>
 					<!--<reportOutputDirectory>${project.reporting.outputDirectory}/myoutput</reportOutputDirectory>-->
