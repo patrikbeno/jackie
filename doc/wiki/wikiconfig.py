@@ -38,7 +38,7 @@ class Config(DefaultConfig):
     # Wiki logo. You can use an image, text or both. [Unicode]
     # For no logo or text, use '' - the default is to show the sitename.
     # See also url_prefix setting below!
-    logo_string = u'<img src="/moin_static172/common/moinmoin.png" alt="MoinMoin Logo">'
+    #logo_string = u'<img src="/moin_static180/common/moinmoin.png" alt="MoinMoin Logo">'
 
     # name of entry page / front page [Unicode], choose one of those:
 
@@ -73,16 +73,16 @@ class Config(DefaultConfig):
     # you can safely replace the underlay directory with a new one. This
     # directory is part of MoinMoin distribution, you don't have to
     # backup it.
-    data_underlay_dir = './underlay/'
+    #data_underlay_dir = './underlay/'
 
     # The URL prefix we use to access the static stuff (img, css, js).
     # NOT touching this is maybe the best way to handle this setting as moin
-    # uses a good internal default (something like '/moin_static172' for moin
+    # uses a good internal default (something like '/moin_static180' for moin
     # version 1.7.2).
     # For Twisted and standalone server, the default will automatically work.
     # For others, you should make a matching server config (e.g. an Apache
     # Alias definition pointing to the directory with the static stuff).
-    #url_prefix_static = '/moin_static172'
+    #url_prefix_static = '/moin_static180'
 
 
     # Security ----------------------------------------------------------
@@ -117,7 +117,7 @@ class Config(DefaultConfig):
     # SMTP server, e.g. "mail.provider.com" (None to disable mail)
     #mail_smarthost = ""
 
-    # The return address, e.g u"Jürgen Wiki <noreply@mywiki.org>" [Unicode]
+    # The return address, e.g u"JÃ¼rgen Wiki <noreply@mywiki.org>" [Unicode]
     #mail_from = u""
 
     # "user pwd" if you need to use SMTP AUTH
@@ -143,7 +143,8 @@ class Config(DefaultConfig):
 
 
     # The default theme anonymous or new users get
-    theme_default = 'modern'
+    #theme_default = 'modern'
+    theme_default = 'modernized'
 
 
     # Language options --------------------------------------------------
