@@ -2,4 +2,4 @@
 
 cd $(dirname $0)
 
-./runwiki.sh --interface jackie.greenhorn.sk --port 10086 --start $*
+moin server standalone --config-dir=. --interface jackie.greenhorn.sk --port 10086 --start $*
