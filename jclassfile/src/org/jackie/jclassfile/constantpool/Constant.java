@@ -77,7 +77,11 @@ cp_info {
 
 	public String toString() {
 		Integer idx = index();
-		return String.format("#%s %s: %s", (idx != null) ? idx : "?", type().name(), valueToString());
+		if (idx != null) {
+			return String.format("#%s %s: %s", idx, type().name(), valueToString());
+		} else {
+			return String.format("%s: %s", type().name(), valueToString());
+		}
 	}
 
 	protected String valueToString() {
