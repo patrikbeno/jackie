@@ -216,8 +216,11 @@ ClassFile {
 			out.writeShort(minor);
 			out.writeShort(major);
 
-			ConstantPool pool = context().set(ConstantPool.class, new ConstantPool());
+			ConstantPool pool = ConstantPool.create(true);
 
+			// cannot write directly to target (out):
+			// pool must be written first but it is not completed
+			// until all fields/methods/attributes and stuff is done
 			ByteArrayDataOutput tmpout = new ByteArrayDataOutput();
 
 			flags.save(tmpout);
@@ -234,8 +237,8 @@ ClassFile {
 			save(tmpout, methods);
 			save(tmpout, attributes);
 
+			// done, ready to write the pool & the rest
 			pool.save(out);
-
 			out.write(tmpout.toByteArray());
 
 		} finally {
