@@ -1,5 +1,7 @@
 package org.jackie.utils;
 
+import static org.jackie.utils.Assert.doAssert;
+
 import java.util.EmptyStackException;
 import java.util.Iterator;
 
@@ -30,6 +32,9 @@ public class Stack<T> implements Iterable<T> {
 	}
 
 	public T peek() {
+		if (current == null) {
+			throw new JackieException("Empty stack!");
+		}
 		return current.object;
 	}
 
@@ -84,7 +89,9 @@ public class Stack<T> implements Iterable<T> {
 		}
 
 		public T next() {
-			return current.object;
+			T o = current.object;
+			current = current.previous;
+			return o;
 		}
 
 		public void remove() {
