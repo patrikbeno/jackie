@@ -83,7 +83,7 @@ field|member info {
 		name = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 		descriptor = pool.getConstant(in.readUnsignedShort(), Utf8.class);
 
-		Log.debug("Loading field %s.%s : %s", classfile.classname(), name(), descriptor());
+		Log.debug("Loading member %s.%s : %s", classfile.classname(), name(), descriptor());
 
 		attributes = AttributeHelper.loadAttributes(this, in);
 	}
