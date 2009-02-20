@@ -67,7 +67,7 @@ public class AttributeProviderRegistry implements ContextObject {
 				populate(props);
 			}
 		} catch (Throwable t) {
-			Assert.unexpected(t);
+			throw Assert.unexpected(t);
 		}
 		Log.leave();
 	}
@@ -89,7 +89,11 @@ public class AttributeProviderRegistry implements ContextObject {
 			providers.put(name, provider);
 
 		} catch (ClassNotFoundException e) {
-			throw Assert.notYetHandled(e);
+			if (clsname.endsWith(".Provider")) {
+				createProvider(name, clsname.replace(".Provider", "$Provider"));
+			} else {
+				throw Assert.notYetHandled(e);
+			}
 		} catch (IllegalAccessException e) {
 			throw Assert.notYetHandled(e);
 		} catch (InstantiationException e) {
