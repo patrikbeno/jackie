@@ -9,6 +9,7 @@ import org.jackie.utils.XDataInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * @author Patrik Beno
@@ -34,4 +35,10 @@ public class AttributeHelper {
 		return attributes;
 	}
 
+	static public void removeAttribute(String name, List<AttributeInfo> attributes) {
+		for (Iterator<AttributeInfo> it = attributes.iterator(); it.hasNext();) {
+			AttributeInfo a = it.next();
+			if (a.name().equals(name)) { it.remove(); }
+		}
+	}
 }

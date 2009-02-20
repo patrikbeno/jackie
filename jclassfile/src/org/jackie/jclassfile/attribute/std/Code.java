@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class Code extends AttributeInfo {
+public class Code extends AttributeInfo implements AttributeSupport {
 
 	static public class Provider implements AttributeProvider {
 		public String name() {
@@ -50,7 +50,7 @@ Code_attribute {
     	}	exception_table[exception_table_length];
     	u2 attributes_count;
     	attribute_info attributes[attributes_count];
-    }   
+    }
     */
 
 	class ExceptionTableItem {
@@ -105,6 +105,13 @@ Code_attribute {
 
 		attributes: {
 			attributes = AttributeHelper.loadAttributes(owner, in);
+
+			// JAC-30 workaround; fixme: QDH to workaround missing StackMapTable implementation
+			AttributeHelper.removeAttribute("StackMapTable", attributes);
+			// JAC-32: also temporarily ignore other debugging attributes
+			AttributeHelper.removeAttribute("LineNumberTable", attributes);
+			AttributeHelper.removeAttribute("LocalVariableTable", attributes);
+			AttributeHelper.removeAttribute("LocalVariableTypeTable", attributes);
 		}
 
 		return null;
@@ -146,6 +153,13 @@ Code_attribute {
 
 		// attributes
 		out.write(attrs);
+	}
+	public List<AttributeInfo> attributes() {
+		return attributes;
+	}
+
+	public void addAttribute(AttributeInfo attribute) {
+		attributes.add(attribute);
 	}
 
 	int calculateCodeSize() {

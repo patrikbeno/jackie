@@ -203,6 +203,9 @@ ClassFile {
 			}
 
 			attributes = AttributeHelper.loadAttributes(this, in);
+			// JAC-32
+			AttributeHelper.removeAttribute("SourceFile", attributes);
+			AttributeHelper.removeAttribute("SourceDebugExtension", attributes);
 
 		} finally {
 			closeContext();
