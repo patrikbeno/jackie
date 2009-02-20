@@ -53,6 +53,11 @@ public class DumpClass {
 				dumpCode(m);
 			}
 
+			print("Attributes");
+			for (AttributeInfo a : cf.attributes()) {
+				print("\t%s @ %s: %s", a.name(), a.owner(), a);
+			}
+
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);
 		}
