@@ -10,9 +10,9 @@ import org.jackie.utils.Countdown;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Patrik Beno
@@ -411,7 +411,7 @@ public class Instructions {
 
 			jumpoffsets = new int[count];
 			for (int i=0; i<jumpoffsets.length; i++) {
-				jumpoffsets[0] = in.readInt();
+				jumpoffsets[i] = in.readInt();
 			}
 		}
 
@@ -423,8 +423,7 @@ public class Instructions {
 			out.writeInt(dflt);
 			out.writeInt(low);
 			out.writeInt(high);
-			
-			out.writeInt(jumpoffsets.length);
+
 			for (int offset : jumpoffsets) {
 				out.writeInt(offset);
 			}
@@ -436,6 +435,11 @@ public class Instructions {
 
 		public int size() {
 			return 1 /*opcode*/ + padding() + 4*3 /*dflt,low,high*/ + jumpoffsets.length*4;
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s (low:%s, high:%s, dflt:%s, jumpoffsets: %s)", super.toString(), low, high, dflt, Arrays.toString(jumpoffsets));
 		}
 	}
 
