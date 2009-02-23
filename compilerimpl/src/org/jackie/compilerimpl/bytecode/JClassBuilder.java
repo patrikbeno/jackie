@@ -30,6 +30,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.ClassName;
+import org.jackie.utils.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +91,11 @@ public class JClassBuilder extends AbstractBuilder {
 						.setName(f.name())
 						.setType(getJClass(f.typeDescriptor()));
 
+				jfield.edit().setAccessMode(toAccessMode(f.flags()));
+				FlagsHelper.toJFlags(f.flags(), jfield.flags());
+
 				jclass.edit().addField(jfield);
+				buildAttributes(f.attributes(), jfield.attributes());
 			}
 		});
 	}

@@ -10,6 +10,7 @@ import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.Assert;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.flags.Access;
+import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.event.Events;
 
 /**
@@ -23,6 +24,12 @@ public class AnnotationTypeProvider implements ExtensionProvider<JClass>, Lifecy
 				jclass.extensions().edit().add(new AnnotationTypeImpl(jclass));
 			}
 		}
+		@Override
+		public void onCompile(JClass jclass, ClassFile classfile) {
+			if (!jclass.extensions().supports(AnnotationType.class)) { return; }
+			classfile.flags().set(Access.ANNOTATION);
+		}
+
 	};
 
 	public Class<? extends Extension> getType() {

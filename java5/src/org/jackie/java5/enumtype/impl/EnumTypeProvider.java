@@ -9,6 +9,7 @@ import org.jackie.jvm.extension.Extension;
 import org.jackie.utils.Assert;
 import org.jackie.jclassfile.flags.Flags;
 import org.jackie.jclassfile.flags.Access;
+import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.event.Events;
 
 /**
@@ -22,6 +23,12 @@ public class EnumTypeProvider implements ExtensionProvider<JClass> {
 				jclass.extensions().edit().add(new EnumTypeImpl(jclass));
 			}
 		}
+		@Override
+		public void onCompile(JClass jclass, ClassFile classfile) {
+			if (!jclass.extensions().supports(EnumType.class)) { return; }
+			classfile.flags().set(Access.ENUM);
+		}
+
 	};
 
 	public Class<? extends Extension> getType() {

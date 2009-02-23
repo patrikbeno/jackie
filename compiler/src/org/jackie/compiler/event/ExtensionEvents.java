@@ -7,6 +7,7 @@ import org.jackie.jvm.attribute.Attributed;
 import org.jackie.jvm.attribute.special.ExtensionAttribute;
 import org.jackie.jvm.JClass;
 import org.jackie.jclassfile.flags.Flags;
+import org.jackie.jclassfile.model.ClassFile;
 
 /**
  * @author Patrik Beno
@@ -19,4 +20,5 @@ public abstract class ExtensionEvents implements Event {
 
 	public void removed(Extension extension) {}
 
+	public void onCompile(JClass jclass, ClassFile classfile) {}
 }
