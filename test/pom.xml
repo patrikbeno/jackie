@@ -53,6 +53,11 @@
 			<version>${pom.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.jackie</groupId>
+			<artifactId>${pom.groupId}.tools</artifactId>
+			<version>${pom.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
 			<version>${testng.version}</version>
