@@ -49,7 +49,7 @@ public class Assert {
 	}
 
 	static public AssertionError unexpected(Throwable thrown) {
-		return new AssertionError(thrown, "Unexpected: %s", thrown.getClass());
+		return new AssertionError(thrown, "Unexpected: %s", thrown.getClass().getName());
 	}
 
 	static public AssertionError notYetHandled(Throwable t) {
