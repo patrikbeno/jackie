@@ -19,6 +19,14 @@ public class Flags extends Base {
 		return flags;
 	}
 
+	static public Flags create(Access ... flags) {
+		Flags result = new Flags();
+		for (Access a : flags) {
+			result.set(a);
+		}
+		return result;
+	}
+
 	int flags;
 
 	public void set(Access flag) {
@@ -49,5 +57,22 @@ public class Flags extends Base {
 
 	public void save(XDataOutput out) {
 		out.writeShort(flags);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Flags flags1 = (Flags) o;
+
+		if (flags != flags1.flags) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		return flags;
 	}
 }
