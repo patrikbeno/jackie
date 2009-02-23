@@ -36,8 +36,10 @@ public abstract class ByteCodeBuilder {
 	}
 
 	protected TypeDescriptor getTypeDescriptor(JClass jclass) {
-		PrimitiveType primitive = jclass.extensions().get(PrimitiveType.class);
 		ArrayType array = jclass.extensions().get(ArrayType.class);
+		PrimitiveType primitive = (array != null)
+				? array.getComponentType().extensions().get(PrimitiveType.class)
+				: jclass.extensions().get(PrimitiveType.class);
 		TypeDescriptor d = new TypeDescriptor(
 				primitive != null ? Type.forClass(primitive.getPrimitiveClass()) : Type.CLASS,
 				array != null ? array.getDimensions() : 0,
