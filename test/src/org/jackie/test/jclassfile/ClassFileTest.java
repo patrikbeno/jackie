@@ -7,16 +7,10 @@ import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.Type;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
-import org.jackie.utils.ByteArrayDataInput;
-import org.jackie.utils.XDataOutputWrapper;
 import org.objectweb.asm.ClassReader;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
-import java.io.DataInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileOutputStream;
-import java.io.DataOutputStream;
 
 /**
  * @author Patrik Beno
@@ -25,7 +19,7 @@ import java.io.DataOutputStream;
 public class ClassFileTest {
 
 	public void loadAndSaveSample() throws Exception {
-		loadSaveValidate(Sample.class);
+		loadSaveValidate(Samples.class);
 	}
 
 	public void loadAndSaveClassReader() throws Exception {

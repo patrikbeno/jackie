@@ -10,5 +10,5 @@ import java.net.URLConnection;
 /**
  * @author Patrik Beno
  */
-public class Sample {
+public class Samples {
 }

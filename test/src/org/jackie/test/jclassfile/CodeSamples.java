@@ -50,4 +50,10 @@ public class CodeSamples {
 		}
 	}
 
+	static class ClassWithPrimitiveField {
+		char c;
+		{
+			c = 'a';
+		}
+	}
 }

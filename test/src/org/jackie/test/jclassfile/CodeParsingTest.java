@@ -7,6 +7,7 @@ import org.jackie.test.jclassfile.CodeSamples.Exceptions;
 import org.jackie.test.jclassfile.CodeSamples.Switches;
 import org.jackie.utils.ByteArrayDataInput;
 import org.testng.annotations.Test;
+import org.objectweb.asm.Type;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -40,6 +41,7 @@ public class CodeParsingTest {
 	@Test(dependsOnMethods={"nocode","invokemethod","exceptions"})
 	public void kill_dash_nine() {
 		load(MessageFormat.class);
+		load(Type.class);
 	}
 
 	@Test
