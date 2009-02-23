@@ -8,12 +8,16 @@ public class TimedTask {
 	long started;
 	long finished;
 
+	static public TimedTask started() {
+		return new TimedTask().start();
+	}
 
 	public TimedTask() {
 	}
 
 	public long duration() {
-		return finished - started;
+		long end = (finished > 0L) ? finished : System.currentTimeMillis();
+		return end - started;
 	}
 
 	public TimedTask start() {
