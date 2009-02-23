@@ -115,6 +115,16 @@ ClassFile {
 		fields.add(field);
 	}
 
+	public FieldInfo getField(String name) {
+		// fixme performance
+		for (FieldInfo f : fields()) {
+			if (f.name().equals(name)) {
+				return f;
+			}
+		}
+		return null;
+	}
+
 	public List<MethodInfo> methods() {
 		return methods != null ? methods : Collections.<MethodInfo>emptyList();
 	}
@@ -124,6 +134,16 @@ ClassFile {
 			methods = new ArrayList<MethodInfo>();
 		}
 		methods.add(method);
+	}
+
+	public MethodInfo getMethod(String name, String descriptor) {
+		// fixme performance
+		for (MethodInfo m : methods()) {
+			if (m.name().equals(name) && m.descriptor().equals(descriptor)) {
+				return m;
+			}
+		}
+		return null;
 	}
 
 	public List<AttributeInfo> attributes() {

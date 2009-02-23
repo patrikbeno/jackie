@@ -15,6 +15,7 @@ import org.jackie.utils.XDataOutput;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Formatter;
 
 /**
  * @author Patrik Beno
@@ -86,5 +87,15 @@ InnerClasses_attribute {
 			Helper.writeConstantReference(item.innerName, out);
 			item.access.save(out);
 		}
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		Formatter f = new Formatter(sb);
+		for (Item item : classes) {
+			f.format("%s %s %s %s;", item.inner, item.outer, item.innerName, item.access);
+		}
+		return sb.toString();
 	}
 }
