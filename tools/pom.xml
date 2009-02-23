@@ -17,6 +17,12 @@
 			<artifactId>${pom.groupId}.compilerimpl</artifactId>
 			<version>${pom.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>${pom.groupId}</groupId>
+			<artifactId>org.jackie.java5</artifactId>
+			<version>${pom.version}</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 </project>
