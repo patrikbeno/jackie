@@ -7,6 +7,7 @@ import org.jackie.jvm.extension.Extension;
 import org.jackie.jvm.extension.Extensible;
 import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.utils.Assert.expected;
+import org.jackie.utils.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +40,7 @@ public class ExtensionManagerImpl implements ExtensionManager {
 		NOTNULL(provider);
 		expected(type, provider.getType(), "Invalid provider type");
 
+		Log.debug("Registering extension %s => %s", type.getName(), provider.getClass().getName());
 		providers.put(type, provider);
 	}
 

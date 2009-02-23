@@ -4,8 +4,11 @@ import org.jackie.jvm.props.Flag;
 import org.jackie.jvm.props.JFlags;
 import org.jackie.utils.Assert;
 import org.jackie.utils.FlagSupport;
+import org.jackie.jclassfile.flags.Access;
 
 import java.util.Set;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
@@ -55,4 +58,15 @@ public class JFlagsImpl extends FlagSupport<Flag> implements JFlags {
 			}
 		};
 	}
+
+	public String toString() {
+		List<Flag> set = new ArrayList<Flag>();
+		for (Flag flag : Flag.values()) {
+			if (isSet(flag)) {
+				set.add(flag);
+			}
+		}
+		return set.toString();
+	}
+
 }
