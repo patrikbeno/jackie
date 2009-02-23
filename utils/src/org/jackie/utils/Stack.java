@@ -1,9 +1,9 @@
 package org.jackie.utils;
 
-import static org.jackie.utils.Assert.doAssert;
-
 import java.util.EmptyStackException;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
  * @author Patrik Beno
@@ -99,4 +99,12 @@ public class Stack<T> implements Iterable<T> {
 		}
 	}
 
+	@Override
+	public String toString() {
+		List<T> list = new ArrayList<T>(size());
+		for (T t : this) {
+			list.add(t);
+		}
+		return list.toString();
+	}
 }
