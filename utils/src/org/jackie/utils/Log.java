@@ -1,5 +1,10 @@
 package org.jackie.utils;
 
+import java.io.FileWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
+
 /**
  * @author Patrik Beno
  */
@@ -12,6 +17,7 @@ public class Log {
 	}
 
 	static final Level MINLEVEL = Level.valueOf(System.getProperty("Log.MINLEVEL", Level.INF.name()));
+	static final boolean FILE = false;
 
 	static public void enter() {
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[2];
@@ -39,7 +45,23 @@ public class Log {
 		log(Level.ERR, msg, args);
 	}
 
+	static PrintStream out;
+
+	static {
+		try {
+			out = FILE ? new PrintStream(new File(".jackie.log")) : null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	static public void log(Level level, String msg, Object... args) {
+		if (out != null) {
+			out.printf("[%s] ", level);
+			out.printf(msg, args);
+			out.println();
+		}
+
 		if (level.ordinal() < MINLEVEL.ordinal()) {
 			return;
 		}
