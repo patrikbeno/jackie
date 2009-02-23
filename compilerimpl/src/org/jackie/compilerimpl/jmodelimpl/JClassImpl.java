@@ -2,6 +2,7 @@ package org.jackie.compilerimpl.jmodelimpl;
 
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.spi.NodeCompiler;
+import org.jackie.compiler.event.ExtensionEvents;
 import org.jackie.compilerimpl.bytecode.ByteCodeBuilder;
 import org.jackie.compilerimpl.jmodelimpl.attribute.AttributesImpl;
 import org.jackie.compilerimpl.jmodelimpl.structure.JFieldImpl;
@@ -22,6 +23,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
+import static org.jackie.event.Events.events;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -272,6 +274,8 @@ public class JClassImpl extends AbstractJNode implements JClass {
 
 				FlagsHelper.toFlags(flags(), classfile.flags());
 				AccessModeHelper.toFlags(getAccessMode(), classfile.flags());
+
+				events(ExtensionEvents.class).onCompile(JClassImpl.this, classfile);
 
 				for (JField f : getFields()) {
 					((JFieldImpl)f).compile(classfile);
