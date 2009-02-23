@@ -6,15 +6,24 @@ import org.jackie.utils.DependencyInfo;
 import org.jackie.utils.CyclicBuffer;
 import org.jackie.utils.IOHelper;
 import org.jackie.utils.Assert;
+import org.jackie.utils.Log;
+import org.jackie.utils.TimedTask;
 import static org.jackie.utils.CollectionsHelper.iterable;
+import org.jackie.compilerimpl.filemanager.JarFileManager;
+import org.jackie.compilerimpl.filemanager.DirFileManager;
+import org.jackie.compilerimpl.filemanager.InMemoryFileManager;
+import org.jackie.compilerimpl.filemanager.JavaRuntimeFileManager;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.zip.ZipEntry;
 import java.util.jar.JarOutputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.File;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.channels.Channels;
@@ -25,12 +34,48 @@ import java.nio.channels.Channels;
 public class MultiModuleCompiler {
 
 	static public void main(String[] args) {
+		new MultiModuleCompiler().run();
 	}
 
+	void run() {
+		Module java = new Module("java", null, new JavaRuntimeFileManager());
+		Module javac = Module.createSource("javac", "h:\\projects\\jackie\\javac\\src");
+		Module asm = Module.createSource("org.objectweb.asm", "h:\\projects\\jackie\\asm\\src");
 
-	class Module extends DependencyInfo {
+		Module utils = Module.createSource("org.jackie.utils", "h:\\projects\\jackie\\trunk\\utils\\src");
+		Module asmtools = Module.createSource("org.jackie.asmtools", "h:\\projects\\jackie\\trunk\\asmtools\\src");
+		Module context = Module.createSource("org.jackie.context", "h:\\projects\\jackie\\trunk\\context\\src");
+		Module event = Module.createSource("org.jackie.event", "h:\\projects\\jackie\\trunk\\event\\src");
+
+		javac.depend(java);
+		asm.depend(java);
+		utils.depend(java, javac, asm);
+		asmtools.depend(java, asm, utils);
+		context.depend(utils);
+		event.depend(utils, context, asmtools);
+
+		root = Module.project(java, javac, asm, utils, asmtools, context, event);
+
+		compile();
+	}
+
+	static class Module extends DependencyInfo {
 		FileManager sources;
 		FileManager binaries;
+
+		static Module createSource(String name, String srcdir) {
+			return new Module(name, new DirFileManager(new File(srcdir)), new InMemoryFileManager());
+		}
+
+		static Module createBinary(String name, String jarname) {
+			return new Module(name, null, new JarFileManager(new File(jarname)));
+		}
+
+		static Module project(Module ... modules) {
+			Module project = new Module("<project>", null, null);
+			project.depend(modules);
+			return project;
+		}
 
 		Module(String name, FileManager sources, FileManager binaries) {
 			super(name);
@@ -42,18 +87,35 @@ public class MultiModuleCompiler {
 			super.depend(dependencies);
 		}
 
+		public Set<Module> dependencies() {
+			return (Set<Module>) super.dependencies(); // todo implement this
+		}
+
 		public List<Module> sortDependencies() {
 			//noinspection unchecked
 			return (List<Module>) super.sortDependencies();
 		}
 	}
 
-	Module project;
+	Module root;
 
 	public void compile() {
-		for (Module m : project.sortDependencies()) {
+		TimedTask timer = TimedTask.started();
+
+		printInfo();
+
+		List<Module> sorted = root.sortDependencies();
+		Log.info("Compiling %s modules: %s", sorted.size(), sorted);
+
+		for (Module m : sorted) {
+			if (m.sources == null && m.binaries != null) {
+				Log.info("Binary module: %s (already compiled)", m.name());
+				continue;
+			}
 			compile(m);
 		}
+
+		Log.info("Finished in %s msec", timer.duration());
 	}
 
 	protected void compile(final Module module) {
@@ -71,12 +133,19 @@ public class MultiModuleCompiler {
 				saveJar(module.name(), module.binaries);
 			}
 		};
+		TimedTask timer = TimedTask.started();
+
+		Log.info("Compiling module %s. Dependencies: %s.", module.name(), module.dependencies());
 		compiler.compile();
+
+		Log.info("Compiled in %s msec.", timer.duration());
 	}
 
 	void saveJar(String jarname, FileManager files) {
 		try {
-			JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(jarname)));
+			File f = new File(String.format("h:/var/trash/%s.jar", jarname));
+			Log.info("Saving %s (%s files)", f, files.getPathNames().size());
+			JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
 			CyclicBuffer buf = new CyclicBuffer(1024*8);
 			for (FileObject fo : files.getFileObjects()) {
 				buf.reset();
@@ -95,6 +164,27 @@ public class MultiModuleCompiler {
 
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);
+		}
+	}
+
+	private void printInfo() {
+		Set<String> sources = new HashSet<String>();
+		Set<String> binaries = new HashSet<String>();
+
+		populateDependencies(root, sources, binaries);
+
+		Log.info("Configured %s source modules: %s", sources.size(), sources);
+		Log.info("There are total %s binary modules (dependencies): %s", binaries.size(), binaries);
+	}
+
+	void populateDependencies(Module module, Set<String> sources, Set<String> binaries) {
+		Set<String> dst
+				= module.sources != null ? sources
+				: module.binaries != null ? binaries
+				: null;
+		if (dst != null) { dst.add(module.name()); }
+		for (Module d : module.dependencies()) {
+			populateDependencies(d, sources, binaries);
 		}
 	}
 
