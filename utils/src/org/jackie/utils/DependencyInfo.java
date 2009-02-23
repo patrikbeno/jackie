@@ -27,7 +27,7 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 		return name;
 	}
 
-	public Set<DependencyInfo> dependencies() {
+	public Set<? extends DependencyInfo> dependencies() {
 		return dependencies;
 	}
 
@@ -38,9 +38,11 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	public List<? extends DependencyInfo> sortDependencies() {
 		List<DependencyInfo> sorted = new ArrayList<DependencyInfo>();
 		Stack<DependencyInfo> inprogress = new Stack<DependencyInfo>();
+		Log.debug("Sorting: %s", dependencies);
 		for (DependencyInfo m : dependencies) {
 			process(m, inprogress, sorted);
 		}
+		Log.info("Sorted: %s", sorted);
 		return sorted;
 	}
 
