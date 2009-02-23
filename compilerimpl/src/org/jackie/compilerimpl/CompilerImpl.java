@@ -1,6 +1,7 @@
 package org.jackie.compilerimpl;
 
 import org.jackie.compiler.Compiler;
+import org.jackie.compiler.spi.DefaultExtensionManagerConfigurator;
 import org.jackie.compiler.context.CompilerContext;
 import org.jackie.compiler.extension.ExtensionManager;
 import org.jackie.compiler.filemanager.FileManager;
@@ -44,6 +45,8 @@ public class CompilerImpl implements Compiler {
 			context().set(CompilerContext.class, new CompilerContext());
 			context().set(ExtensionManager.class, new ExtensionManagerImpl());
 
+			DefaultExtensionManagerConfigurator.configure();
+
 			compileJavaSources();
 
 			context().set(TypeRegistry.class, new CompilerWorkspaceRegistry(
@@ -75,7 +78,7 @@ public class CompilerImpl implements Compiler {
 	void compileJavaSources() {
 		Log.enter();
 
-		List<String> options = Arrays.asList(/*"-g", "-source", "1.5", "-target", "1.5"*/);
+		List<String> options = Arrays.asList("-g", "-source", "1.5", "-target", "1.5");
 		JavacCompiler javac = new JavacCompiler(options,
 				sources, new MultiFileManager(dependencies), workspace);
 		javac.compile();
