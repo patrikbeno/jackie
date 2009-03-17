@@ -23,11 +23,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Formattable;
 import java.util.Formatter;
+import java.util.Iterator;
 
 /**
  * @author Patrik Beno
  */
-public class ConstantPool extends Base implements ContextObject, Closeable {
+public class ConstantPool extends Base implements ContextObject, Closeable, Iterable<Constant> {
 
 	static public ConstantPool constantPool() {
 		ConstantPool pool = context().get(ConstantPool.class);
@@ -180,6 +181,25 @@ public class ConstantPool extends Base implements ContextObject, Closeable {
 					if (o != null) { count++; }
 				}
 				formatter.format("%s", count);
+			}
+		};
+	}
+
+	public Iterator<Constant> iterator() {
+		return new Iterator<Constant>() {
+
+			int index;
+
+			public boolean hasNext() {
+				return index < constants.size();
+			}
+
+			public Constant next() {
+				return constants.get(index++);
+			}
+
+			public void remove() {
+				throw Assert.unsupported(); 
 			}
 		};
 	}
