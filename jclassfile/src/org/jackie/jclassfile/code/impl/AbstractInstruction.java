@@ -71,6 +71,6 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 	protected abstract void saveOperands(XDataOutput out);
 
 	public String toString() {
-		return String.format("#%d (@%d) %s", index(), offset(), Opcode.forOpcode(opcode()));
+		return String.format("#%d (@%d) %s", index()+1, offset(), Opcode.forOpcode(opcode()));
 	}
 }

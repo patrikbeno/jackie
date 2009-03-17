@@ -15,6 +15,7 @@ import org.jackie.jclassfile.code.impl.Instructions.BytePoolRefInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.LookupSwitchInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.TableSwitchInstruction;
 import org.jackie.jclassfile.code.impl.Instructions.MultiArrayInstruction;
+import org.jackie.jclassfile.code.impl.Instructions.InvokeInterfaceInstruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.Assert;
@@ -47,6 +48,13 @@ public class Factories {
 		public Instruction loadInstruction(int opcode, Instruction previous, XDataInput in,
 													  ConstantPool pool) {
 			return load(in, pool, new BytePoolRefInstruction(opcode, previous));
+		}
+	};
+
+	static public final InstructionFactory INVOKE_INTERFACE = new InstructionFactory() {
+		public Instruction loadInstruction(int opcode, Instruction previous, XDataInput in,
+													  ConstantPool pool) {
+			return load(in, pool, new InvokeInterfaceInstruction(opcode, previous)); 
 		}
 	};
 

@@ -3,12 +3,12 @@ package org.jackie.jclassfile.code.impl;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
-import static org.jackie.utils.Assert.expected;
-import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Countdown;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
+import org.jackie.utils.Log;
+import static org.jackie.utils.Assert.*;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -76,7 +76,7 @@ public class Instructions {
 
 		protected void loadOperands(XDataInput in, ConstantPool pool) {
 			int index = in.readUnsignedByte();
-			constant = pool.getConstant(index, Constant.class);
+			constant = NOTNULL(pool.getConstant(index, Constant.class));
 		}
 
 		protected void saveOperands(XDataOutput out) {
@@ -85,6 +85,38 @@ public class Instructions {
 
 		public int size() {
 			return 2;
+		}
+	}
+
+	static public class InvokeInterfaceInstruction extends PoolRefInstruction<Constant> {
+
+		int nargs;
+
+		public InvokeInterfaceInstruction(int opcode, Instruction previous) {
+			super(opcode, previous);
+		}
+
+		public InvokeInterfaceInstruction(int opcode, Constant constant) {
+			super(opcode, constant);
+		}
+
+		@Override
+		protected void loadOperands(XDataInput in, ConstantPool pool) {
+			super.loadOperands(in, pool);
+			nargs = in.readUnsignedByte();
+			int end = in.readUnsignedByte();
+		}
+
+		@Override
+		protected void saveOperands(XDataOutput out) {
+			super.saveOperands(out);
+			out.writeByte(nargs);
+			out.writeByte(0);
+		}
+
+		@Override
+		public int size() {
+			return super.size() + 2;
 		}
 	}
 
@@ -127,6 +159,11 @@ public class Instructions {
 			branchoffset = null; // forget this, we will recompute it in on demand
 
 			return (this.instruction = insn);
+		}
+
+		@Override
+		public String toString() {
+			return String.format("%s %s", super.toString(), branchoffset);
 		}
 	}
 
