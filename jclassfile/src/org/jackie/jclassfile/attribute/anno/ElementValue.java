@@ -91,6 +91,7 @@ element_value {
 	abstract void load(XDataInput in, ConstantPool pool);
 
 	void save(XDataOutput out) {
+		name.writeReference(out);
 		out.writeByte(tag.id());
 		saveValue(out);
 	}

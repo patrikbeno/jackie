@@ -1,5 +1,7 @@
 package org.jackie.test.jvm;
 
+import com.sun.tools.javac.util.Version;
+
 /**
  * @author Patrik Beno
  */
@@ -27,4 +29,6 @@ public class Samples {
 		String test() { return CONSTANT; }
 	}
 
+	@Version("1.0")
+	static class Annotated {}
 }

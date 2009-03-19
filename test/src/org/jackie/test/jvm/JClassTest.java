@@ -19,6 +19,7 @@ import org.jackie.test.jclassfile.CodeSamples;
 import org.jackie.test.jclassfile.Util;
 import org.jackie.test.java5.annotation.TestCase;
 import org.jackie.test.jvm.Samples.Bug;
+import org.jackie.test.jvm.Samples.Annotated;
 import org.jackie.jvm.JClass;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.jclassfile.model.FieldInfo;
@@ -105,12 +106,35 @@ public class JClassTest extends TestCase {
 
 				try {
 					DumpClass.dump(new ByteArrayInputStream(Util.getByteCode(cls)), new PrintStream("by-javac.txt"));
-					DumpClass.dump(new ByteArrayInputStream(javac.toByteArray()), new PrintStream("by-javac-rewritten.txt"));
 					Util.save(javac.toByteArray(), "by-javac-rewritten.class");
+					DumpClass.dump(new ByteArrayInputStream(javac.toByteArray()), new PrintStream("by-javac-rewritten.txt"));
+
 //					ClassFile cf = new ClassFile();
 //					cf.load(new ByteArrayDataInput(javac.toByteArray()));
 //					DumpClass.dump(new ByteArrayInputStream(cf.toByteArray()), new PrintStream("by-javac-rewritten-twice.txt"));
 //					DumpClass.dump(new ByteArrayInputStream(jackie.toByteArray()), new PrintStream("by-jackie.txt"));
+				} catch (FileNotFoundException e) {
+					throw Assert.notYetHandled(e);
+				}
+
+//				expected(javac.attributes(), jackie.attributes(), "attributes? %s", cls);
+			}
+		});
+	}
+
+	@Test
+	public void bug2() {
+		run(new Runnable() {
+			public void run() {
+				Class cls = Samples.Annotated.class;
+				ClassFile javac = javac(cls);
+
+				try {
+					Util.save(Util.getByteCode(cls), "by-javac.class");
+					Util.save(javac.toByteArray(), "by-javac-rewritten.class");
+
+					DumpClass.dump(new ByteArrayInputStream(Util.getByteCode(cls)), new PrintStream("by-javac.txt"));
+					DumpClass.dump(new ByteArrayInputStream(javac.toByteArray()), new PrintStream("by-javac-rewritten.txt"));
 				} catch (FileNotFoundException e) {
 					throw Assert.notYetHandled(e);
 				}
