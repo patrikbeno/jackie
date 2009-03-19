@@ -27,7 +27,7 @@ public class AttributeHelper {
 			AttributeInfo a = (provider != null)
 					? provider.createAttribute(owner)
 					: new GenericAttribute(owner, name);
-			Log.debug("Loading attribute %s using provider %s", name.value(), provider != null ? provider : "<generic>");			
+			Log.debug("Loading attribute %s using provider %s", name.value(), provider != null ? provider : "<generic>");
 			a.load(in, pool);
 			attributes.add(a);
 		}
@@ -52,9 +52,9 @@ public class AttributeHelper {
 		AttributeHelper.removeAttribute("LocalVariableTable", attributes);
 		AttributeHelper.removeAttribute("LocalVariableTypeTable", attributes);
 		// hacking annotations
-		AttributeHelper.removeAttribute("RuntimeVisibleAnnotations", attributes);
-		AttributeHelper.removeAttribute("RuntimeVisibleParameterAnnotations", attributes);
-		AttributeHelper.removeAttribute("RuntimeInvisibleAnnotations", attributes);
-		AttributeHelper.removeAttribute("RuntimeInvisibleParameterAnnotations", attributes);
+//		AttributeHelper.removeAttribute("RuntimeVisibleAnnotations", attributes);
+//		AttributeHelper.removeAttribute("RuntimeVisibleParameterAnnotations", attributes);
+//		AttributeHelper.removeAttribute("RuntimeInvisibleAnnotations", attributes);
+//		AttributeHelper.removeAttribute("RuntimeInvisibleParameterAnnotations", attributes);
 	}
 }
