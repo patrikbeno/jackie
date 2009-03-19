@@ -48,4 +48,10 @@ Signature_attribute {
 		writeLength(out, 2);
 		value.writeReference(out);
 	}
+
+	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		value = pool.register(value);
+	}
 }

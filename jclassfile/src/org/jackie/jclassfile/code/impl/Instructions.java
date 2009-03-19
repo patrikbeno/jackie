@@ -1,13 +1,14 @@
 package org.jackie.jclassfile.code.impl;
 
 import org.jackie.jclassfile.code.Instruction;
+import org.jackie.jclassfile.code.CodeParser;
+import org.jackie.jclassfile.code.CodeResolver;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Countdown;
-import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
-import org.jackie.utils.Log;
+import org.jackie.utils.XDataInput;
 import static org.jackie.utils.Assert.*;
 
 import java.util.List;
@@ -20,15 +21,15 @@ import java.util.Arrays;
 public class Instructions {
 
 	static public class SimpleInstruction extends AbstractInstruction {
-		public SimpleInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public SimpleInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public SimpleInstruction(int opcode) {
 			super(opcode);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
+		protected void loadOperands(CodeParser codeParser) {
 		}
 		protected void saveOperands(XDataOutput out) {
 		}
@@ -38,8 +39,8 @@ public class Instructions {
 
 		T constant;
 
-		public PoolRefInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public PoolRefInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public PoolRefInstruction(int opcode, T constant) {
@@ -47,9 +48,15 @@ public class Instructions {
 			this.constant = constant;
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			int index = in.readUnsignedShort();
-			constant = (T) pool.getConstant(index, Constant.class);
+		protected void loadOperands(CodeParser codeParser) {
+			int index = codeParser.input().readUnsignedShort();
+			constant = (T) codeParser.constantPool().getConstant(index, Constant.class);
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			constant = pool.register(constant);
 		}
 
 		protected void saveOperands(XDataOutput out) {
@@ -66,21 +73,29 @@ public class Instructions {
 	}
 
 	static public class BytePoolRefInstruction extends PoolRefInstruction<Constant> {
-		public BytePoolRefInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+
+		public BytePoolRefInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public BytePoolRefInstruction(int opcode, Constant constant) {
 			super(opcode, constant);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			int index = in.readUnsignedByte();
-			constant = NOTNULL(pool.getConstant(index, Constant.class));
+		protected void loadOperands(CodeParser codeParser) {
+			int index = codeParser.input().readUnsignedByte();
+			constant = NOTNULL(codeParser.constantPool().getConstant(index, Constant.class));
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			pool.register(constant, true);
 		}
 
 		protected void saveOperands(XDataOutput out) {
 			constant.writeByteReference(out);
+			doAssert(constant.index() <= 255, "invalid index (%s>=255). Instruction: %s", constant.index(), this);
 		}
 
 		public int size() {
@@ -92,8 +107,8 @@ public class Instructions {
 
 		int nargs;
 
-		public InvokeInterfaceInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public InvokeInterfaceInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public InvokeInterfaceInstruction(int opcode, Constant constant) {
@@ -101,10 +116,11 @@ public class Instructions {
 		}
 
 		@Override
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			super.loadOperands(in, pool);
+		protected void loadOperands(CodeParser codeParser) {
+			super.loadOperands(codeParser);
+			XDataInput in = codeParser.input();
 			nargs = in.readUnsignedByte();
-			int end = in.readUnsignedByte();
+			int end = in.readUnsignedByte(); // should be 0 todo: assert
 		}
 
 		@Override
@@ -122,15 +138,41 @@ public class Instructions {
 
 	static public class BranchOffsetInstruction extends AbstractInstruction {
 
-		Short branchoffset;
 		Instruction instruction;
 
-		public BranchOffsetInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public BranchOffsetInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			branchoffset = in.readShort();
+		public BranchOffsetInstruction(int opcode, Instruction instruction) {
+			super(opcode);
+			this.instruction = instruction;
+		}
+
+		protected void loadOperands(CodeParser codeParser) {
+			final int branchoffset = codeParser.input().readShort();
+			codeParser.addResolver(new CodeResolver() {
+				public void execute() {
+					// resolve branchoffset to instruction
+					int absoffset = offset() + branchoffset;
+					Instruction insn = head();
+					int offset = 0;
+					while (offset < absoffset) {
+						offset += insn.size();
+						insn = insn.next();
+					}
+
+					expected(absoffset, offset, "Offset not found");
+
+					instruction = insn;
+				}
+			});
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			instruction.registerConstants(pool);
 		}
 
 		protected void saveOperands(XDataOutput out) {
@@ -143,27 +185,12 @@ public class Instructions {
 		}
 
 		public Instruction instruction() {
-			if (instruction != null) { return instruction; }
-
-			// resolve branchoffset to instruction
-			int absoffset = offset() + branchoffset;
-			Instruction insn = head();
-			int offset = 0;
-			while (offset < absoffset) {
-				offset += insn.size();
-				insn = insn.next();
-			}
-
-			expected(absoffset, offset, "Offset not found");
-
-			branchoffset = null; // forget this, we will recompute it in on demand
-
-			return (this.instruction = insn);
+			return instruction;
 		}
 
 		@Override
 		public String toString() {
-			return String.format("%s %s", super.toString(), branchoffset);
+			return String.format("%s #%s (@%s)", super.toString(), instruction().index(), instruction().offset());
 		}
 	}
 
@@ -171,17 +198,18 @@ public class Instructions {
 
 		int index; // local variable index
 
-		public FrameRefInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public FrameRefInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
+
 
 		public FrameRefInstruction(int opcode, int index) {
 			super(opcode);
 			this.index = index;
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			index = in.readUnsignedByte();
+		protected void loadOperands(CodeParser codeParser) {
+			index = codeParser.input().readUnsignedByte();
 		}
 
 		protected void saveOperands(XDataOutput out) {
@@ -195,11 +223,13 @@ public class Instructions {
 	}
 
 	static abstract public class ConstantInstruction<T> extends AbstractInstruction {
+
 		T value;
 
-		protected ConstantInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public ConstantInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
+
 
 		protected ConstantInstruction(int opcode, T value) {
 			super(opcode);
@@ -208,63 +238,67 @@ public class Instructions {
 	}
 
 	static public class ByteInstruction extends ConstantInstruction<Byte> {
-		public ByteInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+
+		public ByteInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public ByteInstruction(int opcode, Byte value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			value = in.readByte();
+		protected void loadOperands(CodeParser codeParser) {
+			value = codeParser.input().readByte();
 		}
 
 		protected void saveOperands(XDataOutput out) {
 			out.writeByte(value);
 		}
+
 		public int size() {
 			return 2;
 		}
 	}
 
 	static public class ShortInstruction extends ConstantInstruction<Short> {
-		public ShortInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public ShortInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public ShortInstruction(int opcode, Short value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			value = in.readShort();
+		protected void loadOperands(CodeParser codeParser) {
+			value = codeParser.input().readShort();
 		}
 
 		protected void saveOperands(XDataOutput out) {
 			out.writeShort(value);
 		}
+
 		public int size() {
 			return super.size() + 2;
 		}
 	}
 
 	static public class IntegerInstruction extends ConstantInstruction<Integer> {
-		public IntegerInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public IntegerInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public IntegerInstruction(int opcode, Integer value) {
 			super(opcode, value);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			value = in.readInt();
+		protected void loadOperands(CodeParser codeParser) {
+			value = codeParser.input().readInt();
 		}
 
 		protected void saveOperands(XDataOutput out) {
 			out.writeInt(value);
 		}
+
 		public int size() {
 			return 5;
 		}
@@ -311,8 +345,8 @@ public class Instructions {
 
 		Type type;
 
-		public ArrayInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public ArrayInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public ArrayInstruction(int opcode, Class type) {
@@ -320,13 +354,14 @@ public class Instructions {
 			this.type = Type.forClass(type);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			type = Type.forCode(in.readUnsignedByte());
+		protected void loadOperands(CodeParser codeParser) {
+			type = Type.forCode(codeParser.input().readUnsignedByte());
 		}
 
 		protected void saveOperands(XDataOutput out) {
 			out.writeByte(type.code);
 		}
+
 		public int size() {
 			return 2;
 		}
@@ -338,8 +373,8 @@ public class Instructions {
 		int index;
 		int value;
 
-		public LocalVarOpInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public LocalVarOpInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
 		public LocalVarOpInstruction(int opcode, int index, int value) {
@@ -348,7 +383,8 @@ public class Instructions {
 			this.value = value;
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
+		protected void loadOperands(CodeParser codeParser) {
+			XDataInput in = codeParser.input();
 			index = in.readUnsignedByte();
 			value = in.readUnsignedByte();
 		}
@@ -364,6 +400,7 @@ public class Instructions {
 	}
 
 	static public class Match {
+		
 		public int match;
 		public int offset;
 
@@ -382,11 +419,13 @@ public class Instructions {
 		int dflt;
 		List<Match> matches;
 
-		public LookupSwitchInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public LookupSwitchInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
+		protected void loadOperands(CodeParser codeParser) {
+			XDataInput in = codeParser.input();
+
 			for (Countdown c = new Countdown(padding()); c.next();) {
 				in.readByte();
 			}
@@ -429,11 +468,13 @@ public class Instructions {
 		int high;
 		int[] jumpoffsets;
 
-		public TableSwitchInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public TableSwitchInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
+		protected void loadOperands(CodeParser codeParser) {
+			XDataInput in = codeParser.input();
+
 			for (Countdown c = new Countdown(padding()); c.next();) {
 				in.readByte();
 			}
@@ -484,13 +525,14 @@ public class Instructions {
 
 		int dimensions;
 
-		public MultiArrayInstruction(int opcode, Instruction previous) {
-			super(opcode, previous);
+		public MultiArrayInstruction(int opcode, CodeParser codeParser) {
+			super(opcode, codeParser);
 		}
 
-		protected void loadOperands(XDataInput in, ConstantPool pool) {
-			super.loadOperands(in, pool);
-			dimensions = in.readUnsignedByte();
+
+		protected void loadOperands(CodeParser codeParser) {
+			super.loadOperands(codeParser);
+			dimensions = codeParser.input().readUnsignedByte();
 		}
 
 		protected void saveOperands(XDataOutput out) {

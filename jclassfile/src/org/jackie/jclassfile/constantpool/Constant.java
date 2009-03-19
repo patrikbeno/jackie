@@ -6,6 +6,7 @@ import org.jackie.utils.Assert;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.doAssert;
 
 import java.util.List;
 
@@ -33,17 +34,28 @@ cp_info {
 		}
 	}
 
+	ConstantPool pool;
+
 	protected Constant() {
 	}
 
 	public abstract CPEntryType type();
 
-	public Integer index() {
-		return ConstantPool.available() ? constantPool().indexOf(this) : null;
+	public ConstantPool pool() {
+		return pool;
 	}
 
-	public void register() {
-		constantPool().indexOf(this, true);
+	public void detach() {
+		pool = null;
+	}
+
+	public boolean isRegistered() {
+		return pool != null && pool.isRegistered(this);
+	}
+
+	public int index() {
+		doAssert(isRegistered(), "Unknown constant index. Constant not registered: %s", this);
+		return pool().indexOf(this);
 	}
 
 	public boolean isLongData() { // occupies 2 entries in the pool
@@ -66,19 +78,16 @@ cp_info {
 	protected abstract void writeConstantData(XDataOutput out);
 
 	public void writeReference(XDataOutput out) {
-		register();
 		out.writeShort(NOTNULL(index()));
 	}
 
 	public void writeByteReference(XDataOutput out) {
-		register();
 		out.writeByte(NOTNULL(index()));
 	}
 
 	public String toString() {
-		Integer idx = index();
-		if (idx != null) {
-			return String.format("#%s %s: %s", idx, type().name(), valueToString());
+		if (isRegistered()) {
+			return String.format("#%s %s: %s", index(), type().name(), valueToString());
 		} else {
 			return String.format("%s: %s", type().name(), valueToString());
 		}

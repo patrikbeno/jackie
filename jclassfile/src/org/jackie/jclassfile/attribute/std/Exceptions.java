@@ -59,4 +59,12 @@ Exceptions_attribute {
 			cref.writeReference(out);
 		}
 	}
+
+	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		for (ClassRef e : exceptions) {
+			e = pool.register(e);
+		}
+	}
 }

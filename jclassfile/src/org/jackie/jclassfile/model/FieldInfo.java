@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.model;
 
 import org.jackie.jclassfile.util.TypeDescriptor;
+import static org.jackie.utils.CollectionsHelper.iterable;
 
 /**
  * @author Patrik Beno
@@ -27,4 +28,5 @@ field_info {
 	public void typeDescriptor(TypeDescriptor descriptor) {
 		this.descriptor(descriptor.getDescriptor());
 	}
+
 }

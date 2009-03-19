@@ -47,4 +47,10 @@ ConstantValue_attribute {
 		writeLength(out, 2);
 		constant.writeReference(out);
 	}
+
+	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		constant = pool.register(constant);
+	}
 }

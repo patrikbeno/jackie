@@ -36,4 +36,7 @@ RuntimeVisibleParameterAnnotations_attribute {
 	protected void writeData(XDataOutput out) {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
+
+	public void registerConstants(ConstantPool pool) {
+	}
 }

@@ -53,4 +53,11 @@ EnclosingZethod_attributeC{
 		cls.writeReference(out);
 		method.writeReference(out);
 	}
+
+	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		cls = pool.register(cls);
+		method = pool.register(method);
+	}
 }

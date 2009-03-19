@@ -22,4 +22,9 @@ public class Samples {
 		void debugging(char[] c) {}
 	}
 
+	static class Bug {
+		final String CONSTANT = "hey!";
+		String test() { return CONSTANT; }
+	}
+
 }

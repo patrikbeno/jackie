@@ -3,11 +3,15 @@ package org.jackie.test.jclassfile;
 import static org.jackie.utils.Assert.NOTNULL;
 import org.jackie.utils.Assert;
 import org.jackie.utils.ByteArrayDataInput;
+import org.jackie.utils.Log;
+import org.jackie.utils.IOHelper;
 import org.jackie.jclassfile.model.ClassFile;
+import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.jclassfile.constantpool.Constant;
 
 import java.io.IOException;
 import java.io.DataInputStream;
-import java.io.ByteArrayInputStream;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -71,4 +75,22 @@ public class Util {
 		}};
 	}
 
+	static public void dumpConstantPool(ConstantPool pool) {
+		Log.info("Dumping ConstantPool:");
+		for (Constant c : pool) {
+			Log.info("\t%s", c);
+		}
+	}
+
+	static public void save(byte[] bytes, String fileName) {
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(fileName);
+			out.write(bytes);
+		} catch (IOException e) {
+			throw Assert.notYetHandled(e);
+		} finally {
+			IOHelper.close(out);
+		}
+	}
 }

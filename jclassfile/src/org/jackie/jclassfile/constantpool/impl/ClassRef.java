@@ -4,13 +4,14 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
  */
-public class ClassRef extends Constant implements ValueProvider {
+public class ClassRef extends Constant implements ValueProvider, ConstantPoolSupport {
 
 	/*
 CONSTANT_Class_info {
@@ -43,9 +44,8 @@ CONSTANT_Class_info {
 		return CPEntryType.CLASS;
 	}
 
-	public void register() {
-		value.register();
-		super.register();
+	public void registerConstants(ConstantPool pool) {
+		value = pool.register(value);
 	}
 
 	public String value() {

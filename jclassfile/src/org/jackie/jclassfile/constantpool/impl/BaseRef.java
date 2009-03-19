@@ -3,13 +3,14 @@ package org.jackie.jclassfile.constantpool.impl;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
  */
-public abstract class BaseRef extends Constant {
+public abstract class BaseRef extends Constant implements ConstantPoolSupport {
 
 	/*
 CONSTANT_Fieldref_info {
@@ -25,10 +26,9 @@ CONSTANT_Fieldref_info {
 	protected BaseRef() {
 	}
 
-	public void register() {
-		classref.register();
-		nametype.register();
-		super.register();
+	public void registerConstants(ConstantPool pool) {
+		classref = pool.register(classref);
+		nametype = pool.register(nametype);
 	}
 
 	protected BaseRef(ClassRef classref, NameAndType nametype) {

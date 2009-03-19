@@ -9,6 +9,7 @@ import org.jackie.jclassfile.constantpool.impl.LongRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.constantpool.impl.ValueProvider;
 import org.jackie.jclassfile.util.TypeDescriptor;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.utils.Assert;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
@@ -19,7 +20,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
 */
-public abstract class ElementValue {
+public abstract class ElementValue implements ConstantPoolSupport {
 
 	/*
 element_value {
@@ -96,6 +97,10 @@ element_value {
 
 	abstract void saveValue(XDataOutput out);
 
+	public void registerConstants(ConstantPool pool) {
+		name = pool.register(name);
+	}
+
 	public String toString() {
 		return String.format("%s=%s", name != null ? name.value() : null, valueToString());
 	}
@@ -165,6 +170,12 @@ element_value {
 			return converted;
 		}
 
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			value = pool.register(value);
+		}
+
 		protected String valueToString() {
 			return value.toString();
 		}
@@ -188,6 +199,12 @@ element_value {
 
 		void saveValue(XDataOutput out) {
 			classinfo.writeReference(out);
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			classinfo = pool.register(classinfo);
 		}
 
 		protected String valueToString() {
@@ -217,6 +234,13 @@ element_value {
 			value.writeReference(out);
 		}
 
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			type = pool.register(type);
+			value = pool.register(value);
+		}
+
 		protected String valueToString() {
 			return String.format("%s(%s)", value.value(), type.value());
 		}
@@ -236,6 +260,12 @@ element_value {
 
 		void saveValue(XDataOutput out) {
 			annotation.save(out);
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			annotation.registerConstants(pool);
 		}
 
 		protected String valueToString() {
@@ -268,6 +298,14 @@ element_value {
 			out.writeShort(values.size());
 			for (ElementValue e : values) {
 				e.save(out);
+			}
+		}
+
+		@Override
+		public void registerConstants(ConstantPool pool) {
+			super.registerConstants(pool);
+			for (ElementValue e : values) {
+				e.registerConstants(pool);
 			}
 		}
 

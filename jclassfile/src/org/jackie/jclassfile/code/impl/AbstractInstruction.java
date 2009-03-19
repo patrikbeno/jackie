@@ -1,14 +1,12 @@
 package org.jackie.jclassfile.code.impl;
 
 import org.jackie.jclassfile.code.Instruction;
+import org.jackie.jclassfile.code.CodeParser;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.utils.ChainImpl;
-import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 import org.jackie.utils.Log;
 
-import java.io.IOException;
-import java.io.DataInput;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -19,13 +17,13 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 
 	int opcode;
 
-	protected AbstractInstruction(int opcode, Instruction previous) {
-		this.opcode = opcode;
-		if (previous != null) { previous.append(this); }
-	}
-
 	protected AbstractInstruction(int opcode) {
 		this.opcode = opcode;
+	}
+
+	protected AbstractInstruction(int opcode, CodeParser codeParser) {
+		this(opcode);
+		codeParser.append(this);
 	}
 
 	public int opcode() {
@@ -55,18 +53,21 @@ public abstract class AbstractInstruction extends ChainImpl<Instruction> impleme
 		return list;
 	}
 
-	public void load(XDataInput in, ConstantPool pool) {
+	public void load(CodeParser codeParser) {
 		// opcode we already have
-		loadOperands(in, pool);
+		loadOperands(codeParser);
 	}
 
-	public final void save(XDataOutput out) {
+	public void registerConstants(ConstantPool pool) {
+	}
+
+	public void save(XDataOutput out) {
 		Log.debug("\t%s", this);
 		out.writeByte(opcode);
 		saveOperands(out);
 	}
 
-	protected abstract void loadOperands(XDataInput in, ConstantPool pool);
+	protected abstract void loadOperands(CodeParser codeParser);
 
 	protected abstract void saveOperands(XDataOutput out);
 

@@ -13,6 +13,6 @@ import java.util.Set;
  */
 public interface InstructionFactory {
 
-	Instruction loadInstruction(int opcode, Instruction previous, XDataInput in,
-										 ConstantPool pool);
+	Instruction loadInstruction(int opcode,
+										 CodeParser codeParser);
 }

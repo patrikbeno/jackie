@@ -5,6 +5,7 @@ import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.flags.Flags;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
 import org.jackie.utils.XDataInput;
@@ -17,7 +18,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public abstract class MemberInfo extends Base implements AttributeSupport {
+public abstract class MemberInfo extends Base implements AttributeSupport, ConstantPoolSupport {
    /*
 field|member info {
     	u2 access_flags;
@@ -86,6 +87,14 @@ field|member info {
 		Log.debug("Loading member %s.%s : %s", classfile.classname(), name(), descriptor());
 
 		attributes = AttributeHelper.loadAttributes(this, in);
+	}
+
+	public void registerConstants(ConstantPool pool) {
+		name = pool.register(name);
+		descriptor = pool.register(descriptor);
+		for (AttributeInfo a : iterable(attributes)) {
+			a.registerConstants(pool);
+		}
 	}
 
 	public void save(XDataOutput out) {

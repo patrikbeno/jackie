@@ -4,13 +4,14 @@ import org.jackie.jclassfile.constantpool.CPEntryType;
 import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.Task;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 
 /**
  * @author Patrik Beno
  */
-public class NameAndType extends Constant {
+public class NameAndType extends Constant implements ConstantPoolSupport {
 
 	/*
 CONSTANT_NameAndType_info {
@@ -45,10 +46,9 @@ CONSTANT_NameAndType_info {
 		return CPEntryType.NAME_AND_TYPE; 
 	}
 
-	public void register() {
-		name.register();
-		type.register();
-		super.register();
+	public void registerConstants(ConstantPool pool) {
+		name = pool.register(name);
+		type = pool.register(type);
 	}
 
 	public String name() {

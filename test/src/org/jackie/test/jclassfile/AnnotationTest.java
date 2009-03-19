@@ -3,6 +3,7 @@ package org.jackie.test.jclassfile;
 import static org.jackie.context.ContextManager.*;
 import org.jackie.jclassfile.attribute.AttributeProviderRegistry;
 import org.jackie.jclassfile.attribute.anno.RuntimeVisibleAnnotations;
+import org.jackie.jclassfile.attribute.anno.RuntimeInvisibleAnnotations;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.test.java5.annotation.Explicit;
 import org.jackie.utils.XDataInput;
@@ -26,10 +27,12 @@ public class AnnotationTest {
 		newContext();
 		try {
 			AttributeProviderRegistry.instance().addProvider(new RuntimeVisibleAnnotations.Provider());
+			AttributeProviderRegistry.instance().addProvider(new RuntimeInvisibleAnnotations.Provider());
 
 			XDataInput in = new DataInputWrapper(
 					Thread.currentThread().getContextClassLoader().getResourceAsStream(path));
 			classfile.load(in);
+			classfile.toByteArray();
 
 			System.out.println(classfile);
 		} finally {

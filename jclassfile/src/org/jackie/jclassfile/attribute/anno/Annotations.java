@@ -70,4 +70,11 @@ annotation annotations[num_annotations];
 		out.write(bytes);
 	}
 
+	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		for (Annotation a : annotations) {
+			a.registerConstants(pool);
+		}
+	}
 }

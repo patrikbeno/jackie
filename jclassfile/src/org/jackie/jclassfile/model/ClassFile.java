@@ -6,8 +6,10 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
+import org.jackie.jclassfile.constantpool.impl.FieldRef;
 import org.jackie.jclassfile.flags.Flags;
 import static org.jackie.jclassfile.util.Helper.writeConstantReference;
+import org.jackie.jclassfile.util.Helper;
 import static org.jackie.utils.CollectionsHelper.*;
 import org.jackie.utils.Log;
 import org.jackie.utils.IOHelper;
@@ -173,6 +175,12 @@ ClassFile {
 
 	///
 
+	ConstantPool pool;
+
+	public ConstantPool pool() {
+		return pool;
+	}
+
 	public void load(XDataInput in) {
 		newContext();
 		try {
@@ -180,7 +188,7 @@ ClassFile {
 			minor = in.readUnsignedShort();
 			major = in.readUnsignedShort();
 
-			ConstantPool pool = ConstantPool.create(true);
+			pool = ConstantPool.create(true);
 
 			pool.load(in, pool);
 
@@ -223,9 +231,7 @@ ClassFile {
 			}
 
 			attributes = AttributeHelper.loadAttributes(this, in);
-			// JAC-32
-			AttributeHelper.removeAttribute("SourceFile", attributes);
-			AttributeHelper.removeAttribute("SourceDebugExtension", attributes);
+			AttributeHelper.qdhRemoveUnsupportedAttributes(attributes);
 
 		} finally {
 			closeContext();
@@ -240,6 +246,7 @@ ClassFile {
 			out.writeShort(major);
 
 			ConstantPool pool = ConstantPool.create(true);
+			registerConstants(pool);
 
 			// cannot write directly to target (out):
 			// pool must be written first but it is not completed
@@ -267,6 +274,22 @@ ClassFile {
 		} finally {
 			closeContext();
 		}
+	}
+
+	private void registerConstants(ConstantPool pool) {
+		classname = pool.register(classname);
+		superclass = pool.register(superclass);
+		interfaces = Helper.register(interfaces, pool);
+		for (FieldInfo f : iterable(fields)) {
+			f.registerConstants(pool);
+		}
+		for (MethodInfo m : iterable(methods)) {
+			m.registerConstants(pool);
+		}
+		for (AttributeInfo a : iterable(attributes)) {
+			a.registerConstants(pool);
+		}
+		pool.rebuild();
 	}
 
 	private void save(XDataOutput out, List<? extends Base> items) {

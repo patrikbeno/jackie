@@ -90,6 +90,16 @@ InnerClasses_attribute {
 	}
 
 	@Override
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		for (Item i : classes) {
+			if (i.inner != null) { i.inner = pool.register(i.inner); }
+			if (i.outer != null) { i.outer = pool.register(i.outer); }
+			if (i.innerName != null) { i.innerName = pool.register(i.innerName); }
+		}
+	}
+
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		Formatter f = new Formatter(sb);

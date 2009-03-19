@@ -5,6 +5,7 @@ import org.jackie.jclassfile.model.FieldInfo;
 import org.jackie.jclassfile.model.MethodInfo;
 import org.jackie.jclassfile.model.AttributeInfo;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
+import org.jackie.jclassfile.constantpool.Constant;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.code.Instruction;
 import org.jackie.jclassfile.attribute.std.Code;
@@ -51,6 +52,12 @@ public class DumpClass {
 		print(out, "Attributes");
 		for (AttributeInfo a : cf.attributes()) {
 			print(out, "\t%s @ %s: %s", a.name(), a.owner(), a);
+		}
+
+		print(out, "Constant pool");
+		int i=0;
+		for (Constant c : cf.pool()) {
+			print(out, "\t#%s %s", ++i, c);
 		}
 	}
 

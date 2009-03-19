@@ -19,7 +19,6 @@ public abstract class Base {
 	abstract
 	public void save(XDataOutput out);
 
-
 	protected int readLength(XDataInput in) {
 		return readLength(in, null);
 	}

@@ -41,4 +41,20 @@ public class AttributeHelper {
 			if (a.name().equals(name)) { it.remove(); }
 		}
 	}
+
+	static public void qdhRemoveUnsupportedAttributes(List<AttributeInfo> attributes) {
+		// JAC-30 workaround; fixme: QDH to workaround missing StackMapTable implementation
+		AttributeHelper.removeAttribute("StackMapTable", attributes);
+		// JAC-32: also temporarily ignore other debugging attributes
+		AttributeHelper.removeAttribute("SourceFile", attributes);
+		AttributeHelper.removeAttribute("SourceDebugExtension", attributes);
+		AttributeHelper.removeAttribute("LineNumberTable", attributes);
+		AttributeHelper.removeAttribute("LocalVariableTable", attributes);
+		AttributeHelper.removeAttribute("LocalVariableTypeTable", attributes);
+		// hacking annotations
+		AttributeHelper.removeAttribute("RuntimeVisibleAnnotations", attributes);
+		AttributeHelper.removeAttribute("RuntimeVisibleParameterAnnotations", attributes);
+		AttributeHelper.removeAttribute("RuntimeInvisibleAnnotations", attributes);
+		AttributeHelper.removeAttribute("RuntimeInvisibleParameterAnnotations", attributes);
+	}
 }

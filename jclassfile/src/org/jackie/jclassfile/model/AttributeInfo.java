@@ -5,6 +5,7 @@ import org.jackie.jclassfile.constantpool.Task;
 import static org.jackie.jclassfile.constantpool.ConstantPool.constantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.attribute.AttributeSupport;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
@@ -13,7 +14,7 @@ import org.jackie.utils.Log;
 /**
  * @author Patrik Beno
  */
-public abstract class AttributeInfo extends Base {
+public abstract class AttributeInfo extends Base implements ConstantPoolSupport {
 	/*
 	attribute_info {
 			 u2 attribute_name_index;
@@ -74,6 +75,10 @@ public abstract class AttributeInfo extends Base {
 		Log.debug("Saving attribute %s (%s)", name(), getClass());
 		name.writeReference(out);
 		writeData(out);
+	}
+
+	public void registerConstants(ConstantPool pool) {
+		name = pool.register(name);
 	}
 
 	protected int readLength(XDataInput in, Integer expected) {

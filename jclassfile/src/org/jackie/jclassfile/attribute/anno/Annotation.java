@@ -4,6 +4,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.Utf8;
 import org.jackie.jclassfile.util.TypeDescriptor;
 import org.jackie.jclassfile.util.Helper;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import static org.jackie.utils.CollectionsHelper.sizeof;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
 */
-public class Annotation {
+public class Annotation implements ConstantPoolSupport {
 
 	/*
 annotation {
@@ -65,6 +66,13 @@ annotation {
 		out.writeShort(elements.size());
 		for (ElementValue e : elements) {
 			e.save(out);
+		}
+	}
+
+	public void registerConstants(ConstantPool pool) {
+		type = pool.register(type);
+		for (ElementValue e : elements) {
+			e.registerConstants(pool);
 		}
 	}
 

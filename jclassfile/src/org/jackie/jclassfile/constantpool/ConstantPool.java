@@ -1,6 +1,7 @@
 package org.jackie.jclassfile.constantpool;
 
 import org.jackie.jclassfile.model.Base;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.utils.Log;
 import org.jackie.utils.Assert;
 import org.jackie.utils.Closeable;
@@ -12,8 +13,6 @@ import static org.jackie.utils.Assert.NOTNULL;
 import static org.jackie.utils.Assert.expected;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.context.ContextObject;
-import org.jackie.context.Context;
-import org.jackie.context.ContextManager;
 import static org.jackie.context.ContextManager.context;
 import static org.jackie.context.ContextManager.contextManager;
 
@@ -24,6 +23,10 @@ import java.util.Map;
 import java.util.Formattable;
 import java.util.Formatter;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 
 /**
  * @author Patrik Beno
@@ -47,8 +50,19 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 		return pool;
 	}
 
+
+	// normalized and ordered (by index) constants as written in physical constant pool
+	// result of load() or rebuild()
 	List<Constant> constants;
-	Map<Constant,Integer> indices;
+
+	// registry for constants that must be in lower pool (index <= 255)
+	Set<Constant> lowindex;
+
+	// constant index, provided for fast index lookup
+	Map<Constant,Integer> index;
+
+	// instance internization: for fast constant by value lookup
+	Map<Constant,Constant> identity;
 
 	{
 		init();
@@ -56,14 +70,13 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 
 	void init() {
 		constants = new ArrayList<Constant>();
-		constants.add(null); // index #0 is reserved
-		indices = new HashMap<Constant, Integer>();
+		lowindex = new HashSet<Constant>();
+		index = new HashMap<Constant, Integer>();
+		identity = new HashMap<Constant, Constant>();
 	}
 
 	public void load(XDataInput in, ConstantPool pool) {
 		init();
-
-		indices = null; // will rebuild index after all constants are read
 
 		int count = in.readUnsignedShort();
 
@@ -72,7 +85,8 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 		List<Task> secondPassResolvers = new WriteOnlyList<Task>();
 
 		// round #1: register constants
-		for (int i = 1; i < count; i++) { // start from #1, #0 is reserved by JVM for NULL and it's not saved in pool
+		constants.add(null); // #0 is reserved by JVM for NULL and it's not saved in pool
+		for (int i = 1; i < count; i++) {
 			expected(constants.size(), i, "broken constant index?");
 
 			Constant c = loadConstant(in, secondPassResolvers);
@@ -90,16 +104,7 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 		}
 
 		// round #3: build index
-		buildIndex: {
-			indices = new HashMap<Constant, Integer>(constants.size());
-			int i = 0;
-			for (Constant c : constants) {
-				if (c != null) {
-					indices.put(c, i);
-				}
-				i++;
-			}
-		}
+		reindex();
 
 		Log.debug("Loaded constant pool (%s non-null entries, total pool size: %s)", 
 					 countNotNull(constants), constants.size());
@@ -110,11 +115,47 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 
 	}
 
-	public void save(XDataOutput out) {
-		for (Constant c : new ArrayList<Constant>(constants)) {
-			if (c == null) { continue; }
-			c.register();
+	public void rebuild() {
+
+		List<Constant> all = new ArrayList<Constant>();
+		for (Constant c : constants) {
+			if (c != null) { all.add(c); }
 		}
+		
+		Collections.sort(all, new Comparator<Constant>() {
+			public int compare(Constant c1, Constant c2) {
+				// constants in lowindex go first, no matter what
+				if (lowindex.contains(c1)) { return -1; }
+				if (lowindex.contains(c2)) { return 1; }
+				// if none of them is in lowindex, compare by their type code
+				return Integer.valueOf(c1.type().code()).compareTo(c2.type().code());
+			}
+		});
+
+		List<Constant> newlist = new ArrayList<Constant>();
+		newlist.add(null); // #0 is reserved by JVM for NULL and it's not saved in pool
+		for (Constant c : all) {
+			newlist.add(c);
+			if (c.isLongData()) { newlist.add(null); }
+		}
+
+		this.constants = new ArrayList<Constant>(newlist);
+		reindex();
+	}
+
+	void reindex() {
+		Map<Constant,Integer> newindex = new HashMap<Constant, Integer>();
+		int idx = 0;
+		for (Constant c : constants) {
+			if (c != null) { newindex.put(c, idx); }
+			idx++;
+		}
+
+		this.index = newindex;
+	}
+
+	public void save(XDataOutput out) {
+		rebuild();
 
 		Log.debug("Saving constant pool (%s non-null entries, total pool size: %s)",
 					 countNotNull(constants), constants.size());
@@ -139,38 +180,56 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 		return NOTNULL(c, "No constant found for index %s", index);
 	}
 
+	public int indexOf(Constant constant) {
+		NOTNULL(index, "ConstantPool not indexed.");
+
+		Integer idx = index.get(constant);
+		NOTNULL(idx, "Unregistered or foreign constant: %s", constant);
+
+		return idx;
+	}
+
 	protected Constant loadConstant(XDataInput in, List<Task> secondPassResolvers) {
 		CPEntryType type = CPEntryType.forCode(in.readUnsignedByte());
 		Constant c = type.loader().load(in, this, secondPassResolvers);
 		return c;
 	}
 
-	public <T extends Constant> T intern(T constant) {
-		Integer idx = indexOf(constant, true);
-		Constant interned = constants.get(idx);
-		return Assert.typecast(interned, (Class<T>) constant.getClass());
-	}
-
 	public void close() {
 	}
 
-	public Integer indexOf(Constant constant) {
-		return indexOf(constant, false);
+	public boolean isRegistered(Constant constant) {
+		return identity.containsKey(constant);
 	}
 
-	public Integer indexOf(Constant constant, boolean register) {
-		if (indices == null) { return null; } // index was not yet built
-
-		Integer idx = indices.get(constant);
-		if (idx == null && register) {
-			constants.add(constant);
-			idx = constants.size() - 1;
-			indices.put(constant, idx);
-			if (constant.isLongData()) { // long data (long, double) occupy two entries in the pool
-				constants.add(null);
-			}
+	public <T extends Constant> T register(T constant) {
+		T registered = (T) identity.get(constant);
+		if (registered != null) {
+			return registered;
 		}
-		return idx;
+
+		// delegate to register dependent constants
+		if (constant instanceof ConstantPoolSupport) {
+			((ConstantPoolSupport) constant).registerConstants(this);
+		}
+
+		// finally register this constant
+		constant.pool = this;
+		identity.put(constant, constant);
+		constants.add(constant);
+
+		return constant;
+	}
+
+	public <T extends Constant> T register(T constant, boolean asLowIndex) {
+		if (asLowIndex && !lowindex.contains(constant)) {
+			doAssert(lowindex.size() < 255, "Cannot register 'low index' constant. LowIndex buffer is full. Constant: %s", constant);
+		}
+
+		T registered = register(constant);
+		lowindex.add(registered);
+
+		return registered;
 	}
 
 	Formattable countNotNull(final List<?> list) {

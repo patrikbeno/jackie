@@ -5,6 +5,7 @@ import org.jackie.jclassfile.attribute.AttributeProvider;
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.code.CodeParser;
 import org.jackie.jclassfile.code.Instruction;
+import org.jackie.jclassfile.code.ConstantPoolSupport;
 import org.jackie.jclassfile.constantpool.Task;
 import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public class Code extends AttributeInfo implements AttributeSupport {
+public class Code extends AttributeInfo implements AttributeSupport, ConstantPoolSupport {
 
 	static public class Provider implements AttributeProvider {
 		public String name() {
@@ -85,9 +86,9 @@ Code_attribute {
 		}
 
 		code: {
-			CodeParser parser = new CodeParser();
 			int len = in.readInt();
-			instructions = parser.parse(in, len, pool);
+			CodeParser parser = new CodeParser(in, len, pool);
+			instructions = parser.parse();
 		}
 
 		exceptions: {
@@ -105,16 +106,23 @@ Code_attribute {
 
 		attributes: {
 			attributes = AttributeHelper.loadAttributes(owner, in);
-
-			// JAC-30 workaround; fixme: QDH to workaround missing StackMapTable implementation
-			AttributeHelper.removeAttribute("StackMapTable", attributes);
-			// JAC-32: also temporarily ignore other debugging attributes
-			AttributeHelper.removeAttribute("LineNumberTable", attributes);
-			AttributeHelper.removeAttribute("LocalVariableTable", attributes);
-			AttributeHelper.removeAttribute("LocalVariableTypeTable", attributes);
+			AttributeHelper.qdhRemoveUnsupportedAttributes(attributes);
 		}
 
 		return null;
+	}
+
+	public void registerConstants(ConstantPool pool) {
+		super.registerConstants(pool);
+		for (Instruction insn : instructions) {
+			insn.registerConstants(pool);
+		}
+		for (ExceptionTableItem e : exceptions) {
+			e.exception = pool.register(e.exception);
+		}
+		for (AttributeInfo a : attributes) {
+			a.registerConstants(pool);
+		}
 	}
 
 	protected void writeData(XDataOutput out) {

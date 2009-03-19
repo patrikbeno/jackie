@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Patrik Beno
  */
-public interface Instruction extends Chain<Instruction> {
+public interface Instruction extends Chain<Instruction>, ConstantPoolSupport {
 
 	int opcode();
 
