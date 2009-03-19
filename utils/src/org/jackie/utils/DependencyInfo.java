@@ -38,16 +38,14 @@ public class DependencyInfo implements Comparable<DependencyInfo> {
 	public List<? extends DependencyInfo> sortDependencies() {
 		List<DependencyInfo> sorted = new ArrayList<DependencyInfo>();
 		Stack<DependencyInfo> inprogress = new Stack<DependencyInfo>();
-		Log.debug("Sorting: %s", dependencies);
 		for (DependencyInfo m : dependencies) {
 			process(m, inprogress, sorted);
 		}
-		Log.info("Sorted: %s", sorted);
 		return sorted;
 	}
 
 	/**
-	 * Silly and slow but very simple topsort-sort algorithm (usable for small graphs or where speed
+	 * Silly and slow but very simple topo-sort algorithm (usable for small graphs or where speed
 	 * is not critical).
 	 *
 	 * @param dependency dependency to process
