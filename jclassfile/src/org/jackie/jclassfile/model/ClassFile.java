@@ -233,6 +233,8 @@ ClassFile {
 			attributes = AttributeHelper.loadAttributes(this, in);
 			AttributeHelper.qdhRemoveUnsupportedAttributes(attributes);
 
+			pool.close();
+
 		} finally {
 			closeContext();
 		}
