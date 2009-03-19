@@ -40,7 +40,10 @@ public abstract class AttributeInfo extends Base implements ConstantPoolSupport 
 	protected AttributeInfo(AttributeSupport owner) {
 		this.owner = owner;
 		this.name = Utf8.create(getClass().getSimpleName());
-
+		// todo this is ugly, redesign this
+		if (ConstantPool.available()) {
+			this.name = ConstantPool.constantPool().register(name);
+		}
 	}
 
 	/// properties ///
@@ -65,7 +68,7 @@ public abstract class AttributeInfo extends Base implements ConstantPoolSupport 
 
 	public void load(XDataInput in, ConstantPool pool) {
 		// name is expected to be loaded by attribute resolver (and passed in constructor)
-		resolver = readConstantDataOrGetResolver(in, constantPool());
+		resolver = readConstantDataOrGetResolver(in, pool);
 		if (resolver != null) { // todo debug
 			resolver.execute();
 		}
