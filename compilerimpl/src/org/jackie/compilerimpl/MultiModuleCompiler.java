@@ -39,13 +39,20 @@ public class MultiModuleCompiler {
 
 	void run() {
 		Module java = new Module("java", null, new JavaRuntimeFileManager());
-		Module javac = Module.createSource("javac", "h:\\projects\\jackie\\javac\\src");
-		Module asm = Module.createSource("org.objectweb.asm", "h:\\projects\\jackie\\asm\\src");
+		Module javac = Module.createSource("javac", "../javac/src");
+		Module asm = Module.createSource("org.objectweb.asm", "../asm/src");
 
-		Module utils = Module.createSource("org.jackie.utils", "h:\\projects\\jackie\\trunk\\utils\\src");
-		Module asmtools = Module.createSource("org.jackie.asmtools", "h:\\projects\\jackie\\trunk\\asmtools\\src");
-		Module context = Module.createSource("org.jackie.context", "h:\\projects\\jackie\\trunk\\context\\src");
-		Module event = Module.createSource("org.jackie.event", "h:\\projects\\jackie\\trunk\\event\\src");
+		Module utils = Module.createSource("org.jackie.utils", "utils/src");
+		Module context = Module.createSource("org.jackie.context", "context/src");
+		Module asmtools = Module.createSource("org.jackie.asmtools", "asmtools/src");
+		Module event = Module.createSource("org.jackie.event", "event/src");
+		Module jclassfile = Module.createSource("org.jackie.jclassfile", "jclassfile/src");
+
+		Module jvm = Module.createSource("org.jackie.jvm", "jvm/src");
+		Module compiler = Module.createSource("org.jackie.compiler", "compiler/src");
+		Module compilerimpl = Module.createSource("org.jackie.compilerimpl", "compilerimpl/src");
+		Module java5 = Module.createSource("org.jackie.java5", "java5/src");
+		Module tools = Module.createSource("org.jackie.tools", "tools/src");
 
 		javac.depend(java);
 		asm.depend(java);
@@ -53,8 +60,14 @@ public class MultiModuleCompiler {
 		asmtools.depend(java, asm, utils);
 		context.depend(utils);
 		event.depend(utils, context, asmtools);
+		jclassfile.depend(java, utils, context);
+		jvm.depend(java, utils);
+		compiler.depend(java, jvm, context, event, jclassfile);
+		compilerimpl.depend(java, compiler, jclassfile, context, utils);
+		java5.depend(java, compiler, utils, jclassfile, asm);
+		tools.depend(java, compilerimpl, utils, java5);
 
-		root = Module.project(java, javac, asm, utils, asmtools, context, event);
+		root = Module.project(java, javac, asm, utils, asmtools, context, event, jclassfile, compiler/*, compilerimpl, java5, tools*/);
 
 		compile();
 	}
