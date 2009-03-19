@@ -192,10 +192,18 @@ public class ConstantPool extends Base implements ContextObject, Closeable, Iter
 	protected Constant loadConstant(XDataInput in, List<Task> secondPassResolvers) {
 		CPEntryType type = CPEntryType.forCode(in.readUnsignedByte());
 		Constant c = type.loader().load(in, this, secondPassResolvers);
+		c.pool = this;
 		return c;
 	}
 
 	public void close() {
+		for (Constant c : this) {
+			if (c != null) { c.detach(); }
+		}
+		constants.clear();
+		lowindex.clear();
+		index.clear();
+		identity.clear();
 	}
 
 	public boolean isRegistered(Constant constant) {
