@@ -99,7 +99,8 @@ Code_attribute {
 				item.startpc = in.readUnsignedShort();
 				item.endpc = in.readUnsignedShort();
 				item.handlerpc = in.readUnsignedShort();
-				item.exception = pool.getConstant(in.readUnsignedShort(), ClassRef.class);
+				int idx = in.readUnsignedShort();
+				item.exception = pool.getConstant(idx, ClassRef.class);
 				exceptions.add(item);
 			}
 		}
@@ -118,7 +119,7 @@ Code_attribute {
 			insn.registerConstants(pool);
 		}
 		for (ExceptionTableItem e : exceptions) {
-			e.exception = pool.register(e.exception);
+			if (e.exception != null) { e.exception = pool.register(e.exception); }
 		}
 		for (AttributeInfo a : attributes) {
 			a.registerConstants(pool);
