@@ -91,7 +91,6 @@ element_value {
 	abstract void load(XDataInput in, ConstantPool pool);
 
 	void save(XDataOutput out) {
-		name.writeReference(out);
 		out.writeByte(tag.id());
 		saveValue(out);
 	}
@@ -99,7 +98,7 @@ element_value {
 	abstract void saveValue(XDataOutput out);
 
 	public void registerConstants(ConstantPool pool) {
-		name = pool.register(name);
+		if (name != null) { name = pool.register(name); }
 	}
 
 	public String toString() {

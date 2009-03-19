@@ -65,6 +65,7 @@ annotation {
 		Helper.writeConstantReference(type, out);
 		out.writeShort(elements.size());
 		for (ElementValue e : elements) {
+			e.name.writeReference(out);
 			e.save(out);
 		}
 	}
