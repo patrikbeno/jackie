@@ -38,6 +38,20 @@ public class MultiModuleCompiler {
 	}
 
 	void run() {
+		configure();
+		compile();
+	}
+
+	private void configure1() {
+		Module java = new Module("java", null, new JavaRuntimeFileManager());
+		Module a = Module.createSource("a", "test/data/TestProject/A/src");
+		Module b = Module.createSource("b", "test/data/TestProject/B/src");
+		a.depend(java);
+		b.depend(java, a);
+		root = Module.project(java, a, b);
+	}
+
+	protected void configure() {
 		Module java = new Module("java", null, new JavaRuntimeFileManager());
 		Module javac = Module.createSource("javac", "../javac/src");
 		Module asm = Module.createSource("org.objectweb.asm", "../asm/src");
@@ -63,13 +77,11 @@ public class MultiModuleCompiler {
 		jclassfile.depend(java, utils, context);
 		jvm.depend(java, utils);
 		compiler.depend(java, jvm, context, event, jclassfile);
-		compilerimpl.depend(java, compiler, jclassfile, context, utils);
+		compilerimpl.depend(java, javac, compiler, jclassfile, context, utils);
 		java5.depend(java, compiler, utils, jclassfile, asm);
 		tools.depend(java, compilerimpl, utils, java5);
 
-		root = Module.project(java, javac, asm, utils, asmtools, context, event, jclassfile, compiler/*, compilerimpl, java5, tools*/);
-
-		compile();
+		root = Module.project(java, javac, asm, utils, asmtools, context, event, jclassfile, compiler, compilerimpl, java5, tools);
 	}
 
 	static class Module extends DependencyInfo {
@@ -156,7 +168,7 @@ public class MultiModuleCompiler {
 
 	void saveJar(String jarname, FileManager files) {
 		try {
-			File f = new File(String.format("h:/var/trash/%s.jar", jarname));
+			File f = new File(String.format("%s.jar", jarname));
 			Log.info("Saving %s (%s files)", f, files.getPathNames().size());
 			JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
 			CyclicBuffer buf = new CyclicBuffer(1024*8);
