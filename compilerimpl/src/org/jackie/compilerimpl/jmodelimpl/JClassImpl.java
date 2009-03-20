@@ -275,8 +275,6 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				FlagsHelper.toFlags(flags(), classfile.flags());
 				AccessModeHelper.toFlags(getAccessMode(), classfile.flags());
 
-				events(ExtensionEvents.class).onCompile(JClassImpl.this, classfile);
-
 				for (JField f : getFields()) {
 					((JFieldImpl)f).compile(classfile);
 				}
@@ -286,6 +284,8 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				for (JAttribute a : attributes().getAttributes()) {
 					((NodeCompiler)a).compile(classfile);
 				}
+
+				events(ExtensionEvents.class).onCompile(JClassImpl.this, classfile);				
 			}
 		});
 	}

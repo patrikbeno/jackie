@@ -27,6 +27,7 @@ import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import static java.util.Collections.emptyList;
 
 /**
  * @author Patrik Beno
@@ -107,7 +108,7 @@ ClassFile {
 	}
 
 	public List<FieldInfo> fields() {
-		return fields;
+		return fields != null ? fields : Collections.<FieldInfo>emptyList();
 	}
 
 	public void addField(FieldInfo field) {
