@@ -7,6 +7,7 @@ import org.jackie.jclassfile.constantpool.ConstantPool;
 import org.jackie.jclassfile.constantpool.impl.ClassRef;
 import org.jackie.jclassfile.constantpool.impl.NameAndType;
 import org.jackie.jclassfile.model.AttributeInfo;
+import org.jackie.jclassfile.util.Helper;
 import org.jackie.utils.XDataInput;
 import org.jackie.utils.XDataOutput;
 
@@ -51,13 +52,13 @@ EnclosingZethod_attributeC{
 	protected void writeData(XDataOutput out) {
 		writeLength(out, 4);
 		cls.writeReference(out);
-		method.writeReference(out);
+		Helper.writeConstantReference(method, out);
 	}
 
 	@Override
 	public void registerConstants(ConstantPool pool) {
 		super.registerConstants(pool);
 		cls = pool.register(cls);
-		method = pool.register(method);
+		if (method != null) { method = pool.register(method); }
 	}
 }
