@@ -163,13 +163,14 @@ public class MultiModuleCompiler {
 		Log.info("Compiling module %s. Dependencies: %s.", module.name(), module.dependencies());
 		compiler.compile();
 
-		Log.info("Compiled in %s msec.", timer.duration());
+		Log.info("Saved %s files (%sK). Compiled in %s msec.",
+					module.binaries.getPathNames().size(), new File(module.name()+".jar").length()/1024, timer.duration());
 	}
 
 	void saveJar(String jarname, FileManager files) {
 		try {
 			File f = new File(String.format("%s.jar", jarname));
-			Log.info("Saving %s (%s files)", f, files.getPathNames().size());
+			Log.debug("Saving %s (%s files)", f, files.getPathNames().size());
 			JarOutputStream out = new JarOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
 			CyclicBuffer buf = new CyclicBuffer(1024*8);
 			for (FileObject fo : files.getFileObjects()) {
