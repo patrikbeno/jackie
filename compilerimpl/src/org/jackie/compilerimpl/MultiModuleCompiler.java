@@ -160,11 +160,14 @@ public class MultiModuleCompiler {
 		};
 		TimedTask timer = TimedTask.started();
 
-		Log.info("Compiling module %s. Dependencies: %s.", module.name(), module.dependencies());
+		Log.info("[%s] Compiling %s files. Dependencies: %s.",
+					module.name(), module.sources.getPathNames().size(), module.dependencies());
+
 		compiler.compile();
 
-		Log.info("Saved %s files (%sK). Compiled in %s msec.",
-					module.binaries.getPathNames().size(), new File(module.name()+".jar").length()/1024, timer.duration());
+		File f = new File(module.name() + ".jar");
+		Log.info("[%s] Compiled in %s msec. Saved %s files (%sK).",
+					module.name(), f.length()/1024, timer.duration(), module.binaries.getPathNames().size());
 	}
 
 	void saveJar(String jarname, FileManager files) {
