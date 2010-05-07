@@ -7,7 +7,7 @@
 	<version>0.1-M2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>${pom.artifactId}-${pom.version}</name>
+	<name>${pom.artifactId}</name>
 
 	<dependencies>
 		<dependency>
@@ -321,12 +321,12 @@
 
 	<distributionManagement>
 		<snapshotRepository>
-			<id>greenhorn.snapshots</id>
-			<url>dav:http://archiva.greenhorn.sk/archiva/repository/snapshots</url>
+			<id>nexus.greenhorn.sk-snapshots</id>
+			<url>http://nexus.greenhorn.sk/content/repositories/snapshots</url>
 		</snapshotRepository>
 		<repository>
-			<id>greenhorn.internal</id>
-			<url>dav:http://archiva.greenhorn.sk/archiva/repository/internal</url>
+			<id>nexus.greenhorn.sk-releases</id>
+			<url>http://nexus.greenhorn.sk/content/repositories/releases</url>
 		</repository>
 	</distributionManagement>
 
