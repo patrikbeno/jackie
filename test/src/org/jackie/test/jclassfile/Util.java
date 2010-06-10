@@ -21,17 +21,20 @@ import java.net.URLConnection;
 public class Util {
 
 	static public byte[] getByteCode(Class cls) {
+		DataInputStream in = null;
 		try {
 			String sname = cls.getName();
 			sname = sname.substring(sname.lastIndexOf('.')+1);
 			URL url = NOTNULL(cls.getResource(sname + ".class"));
 			URLConnection con = url.openConnection();
 			byte[] bytes = new byte[con.getContentLength()];
-			DataInputStream in = new DataInputStream(con.getInputStream());
+			in = new DataInputStream(con.getInputStream());
 			in.readFully(bytes);
 			return bytes;
 		} catch (IOException e) {
 			throw Assert.unexpected(e);
+		} finally {
+			IOHelper.close(in);
 		}
 	}
 
