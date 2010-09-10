@@ -1,5 +1,6 @@
 package org.jackie.test.jclassfile;
 
+import org.jackie.test.JackieTest;
 import org.testng.annotations.Test;
 import org.jackie.jclassfile.model.ClassFile;
 import org.jackie.utils.ByteArrayDataInput;
@@ -19,7 +20,7 @@ import java.io.File;
  * @author Patrik Beno
  */
 @Test
-public class BugTest {
+public class BugTest extends JackieTest {
 
 	public void loadJavaHelperViaClassLoader() throws Exception {
 
@@ -28,11 +29,13 @@ public class BugTest {
 		cf.load(new ByteArrayDataInput(Util.getByteCode(cls)));
 		byte[] bytes = cf.toByteArray();
 
-		FileOutputStream out1 = new FileOutputStream("c:\\home\\patrik\\var\\run\\jackie\\before.class");
+		final File dir = createTempDir(DirOwner.METHOD);
+
+		FileOutputStream out1 = new FileOutputStream(new File(dir, "before.class"));
 		out1.write(Util.getByteCode(cls));
 		IOHelper.close(out1);
 
-		FileOutputStream out2 = new FileOutputStream("c:\\home\\patrik\\var\\run\\jackie\\after.class");
+		FileOutputStream out2 = new FileOutputStream(new File(dir, "after.class"));
 		out2.write(bytes);
 		IOHelper.close(out2);
 

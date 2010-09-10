@@ -68,17 +68,36 @@
 
 	<build>
 		<testSourceDirectory>${basedir}/src</testSourceDirectory>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-surefire-plugin</artifactId>
-				<configuration>
-					<suiteXmlFiles>
-						<suiteXmlFile>src/testng.xml</suiteXmlFile>
-					</suiteXmlFiles>
-				</configuration>
-			</plugin>
-		</plugins>
 	</build>
+	
+	<profiles>
+		<profile>
+			<id>test</id>
+			<activation>
+				<property>
+					<name>test</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>install</phase>
+							</execution>
+						</executions>
+						<configuration>
+							<skip>false</skip>
+							<suiteXmlFiles>
+								<suiteXmlFile>src/testng.xml</suiteXmlFile>
+							</suiteXmlFiles>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 </project>
