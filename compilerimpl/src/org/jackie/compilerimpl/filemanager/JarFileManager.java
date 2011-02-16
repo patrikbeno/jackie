@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
+import org.jackie.utils.IOHelper;
 
 /**
  * @author Patrik Beno
@@ -26,15 +27,19 @@ public class JarFileManager extends URLFileManager {
 	}
 
 	protected Set<String> populatePathNames() {
+		FileInputStream in = null;
 		try {
 			Set<String> entries = new HashSet<String>();
-			JarInputStream jin = new JarInputStream(new BufferedInputStream(new FileInputStream(jarfile)));
+			in = new FileInputStream(jarfile);
+			JarInputStream jin = new JarInputStream(new BufferedInputStream(in));
 			for (JarEntry je; (je = jin.getNextJarEntry()) != null;) {
 				entries.add(je.getName());
 			}
 			return entries;
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);
+		} finally {
+			IOHelper.close(in);
 		}
 	}
 

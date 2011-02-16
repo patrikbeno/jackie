@@ -1,6 +1,8 @@
 package org.jackie.jclassfile.attribute;
 
+import java.io.InputStream;
 import org.jackie.utils.Assert;
+import org.jackie.utils.IOHelper;
 import org.jackie.utils.Log;
 import org.jackie.context.ContextObject;
 import static org.jackie.context.ContextManager.context;
@@ -60,11 +62,17 @@ public class AttributeProviderRegistry implements ContextObject {
 		try {
 			Enumeration<URL> e = Thread.currentThread().getContextClassLoader().getResources(RESOURCE);
 			while (e.hasMoreElements()) {
-				URL url = e.nextElement();
-				Log.debug("Loading attribute providers from %s", url);
-				Properties props = new Properties();
-				props.load(url.openStream());
-				populate(props);
+				InputStream in = null;
+				try {
+					URL url = e.nextElement();
+					Log.debug("Loading attribute providers from %s", url);
+					in = url.openStream();
+					Properties props = new Properties();
+					props.load(in);
+					populate(props);
+				} finally {
+					IOHelper.close(in);
+				}
 			}
 		} catch (Throwable t) {
 			throw Assert.unexpected(t);

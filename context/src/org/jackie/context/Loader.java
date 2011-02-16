@@ -1,6 +1,8 @@
 package org.jackie.context;
 
+import java.io.InputStream;
 import org.jackie.utils.Assert;
+import org.jackie.utils.IOHelper;
 import org.jackie.utils.Log;
 
 import java.io.IOException;
@@ -29,13 +31,18 @@ public class Loader {
 			ClassLoader cl = Thread.currentThread().getContextClassLoader();
 			Enumeration<URL> e = cl.getResources(resource);
 			while (e.hasMoreElements()) {
-				URL url = e.nextElement();
-				Log.debug("Loading type:implementation mapping from %s", url);
-				Properties props = new Properties();
-				props.load(url.openStream());
-				load(props);
+				InputStream in = null;
+				try {
+					URL url = e.nextElement();
+					Log.debug("Loading type:implementation mapping from %s", url);
+					in = url.openStream();
+					Properties props = new Properties();
+					props.load(in);
+					load(props);
+				} finally {
+					IOHelper.close(in);
+				}
 			}
-
 		} catch (IOException e) {
 			throw Assert.notYetHandled(e);
 		}

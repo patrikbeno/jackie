@@ -1,5 +1,6 @@
 package org.jackie.compilerimpl.typeregistry;
 
+import java.io.InputStream;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.compiler.typeregistry.TypeRegistry;
@@ -13,6 +14,7 @@ import org.jackie.jvm.JClass;
 import org.jackie.jvm.JPackage;
 import org.jackie.utils.Assert;
 import org.jackie.utils.ClassName;
+import org.jackie.utils.IOHelper;
 import org.jackie.utils.PackageName;
 import static org.jackie.event.Events.events;
 
@@ -98,18 +100,19 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 
 		EditAction.run(this, new EditAction<Object>() {
 			protected Object run() {
+				InputStream in = null;
 				try {
 					loading = jclass;
 					ClassName clsname = new ClassName(jclass.getFQName());
 					assert fileManager != null;
 					FileObject fo = fileManager.getFileObject(clsname.getPathName());
-					service(JClassParser.class).execute(
-							Channels.newInputStream(fo.getInputChannel()),
-							level);
+					in = Channels.newInputStream(fo.getInputChannel());
+					service(JClassParser.class).execute(in, level);
 					return null;
 				} catch (IOException e) {
 					throw Assert.notYetHandled(e);
 				} finally {
+					IOHelper.close(in);
 					loading = null;
 				}
 			}
