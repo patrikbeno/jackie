@@ -12,17 +12,8 @@
 	<profiles>
 		<profile>
 			<id>build.isolate</id>
-			<activation>
-				<property>
-					<name>build.isolate</name>
-				</property>
-			</activation>
-			<properties>
-				<build.home>${user.home}/var/build/mvn</build.home>
-				<build.dir>${build.home}/${pom.groupId}/${pom.artifactId}-${pom.version}</build.dir>
-			</properties>
+			<!-- in settings.xml; here only for IDEA support -->
 		</profile>
-
 		<profile>
 			<id>javac</id>
 			<modules>
