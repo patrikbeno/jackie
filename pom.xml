@@ -20,6 +20,12 @@
 				<module>../javac</module>
 			</modules>
 		</profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <maven.test.skip>false</maven.test.skip>
+            </properties>
+        </profile>
 	</profiles>
 
 	<modules>
@@ -55,6 +61,7 @@
 
 	<properties>
 		<build.dir>${basedir}/target</build.dir><!-- allow overriding compiler output -->
+        <maven.test.skip>true</maven.test.skip>
 
 		<!-- versions -->
 		<javac.version>1.7</javac.version>
@@ -103,8 +110,9 @@
 					<forkMode>once</forkMode>
 					<useSystemClassLoader>true</useSystemClassLoader>
 					<argLine>-Xmx256m</argLine>
-					<skip>true</skip>
-					<testFailureIgnore>true</testFailureIgnore>
+					<skip>${maven.test.skip}</skip>
+					<testFailureIgnore>false</testFailureIgnore>
+                    <failIfNoTests>false</failIfNoTests>
 				</configuration>
 			</plugin>
 			<plugin>
