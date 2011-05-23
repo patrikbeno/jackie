@@ -1,6 +1,5 @@
 package org.jackie.test.jvm;
 
-import com.sun.tools.javac.util.Version;
 
 /**
  * @author Patrik Beno
@@ -28,6 +27,10 @@ public class Samples {
 		final String CONSTANT = "hey!";
 		String test() { return CONSTANT; }
 	}
+
+    static @interface Version {
+        String value();
+    }
 
 	@Version("1.0")
 	static class Annotated {}
