@@ -189,6 +189,13 @@
 		<outputDirectory>${build.dir}/site</outputDirectory>
 	</reporting>
 
+    <pluginRepositories>
+        <pluginRepository>
+            <id>repository.jboss.org-releases</id>
+            <url>https://repository.jboss.org/nexus/content/repositories/releases/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
 	<distributionManagement>
 		<snapshotRepository>
 			<id>nexus.greenhorn.sk-snapshots</id>
