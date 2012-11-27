@@ -29,7 +29,7 @@ public class ClassBuilderTest {
 					protected void body() {
 						// todo provide API for constructors
 						mv.visitVarInsn(ALOAD, 0);
-						mv.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V");
+						mv.visitMethodInsn(INVOKESPECIAL, "org/jackie/asmtools/test/Sample", "<init>", "()V");
 						mv.visitInsn(RETURN);
 					}
 				});
