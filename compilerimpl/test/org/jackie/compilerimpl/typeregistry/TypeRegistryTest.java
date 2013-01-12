@@ -4,7 +4,7 @@ import org.jackie.compiler.typeregistry.TypeRegistry;
 import static org.jackie.context.ContextManager.*;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,10 +12,10 @@ import java.util.HashSet;
 /**
  * @author Patrik Beno
  */
-@Test
 public class TypeRegistryTest {
 
 
+    @Test
 	public void primitives() {
 		newContext();
 		try {
@@ -39,6 +39,7 @@ public class TypeRegistryTest {
 		}
 	}
 
+    @Test
 	public void primitiveArrays() {
 		newContext();
 		try {
@@ -53,6 +54,7 @@ public class TypeRegistryTest {
 		}
 	}
 
+    @Test
 	public void classes() {
 		newContext();
 		try {
@@ -71,6 +73,7 @@ public class TypeRegistryTest {
 		}
 	}
 
+    @Test
 	public void multiregistry() {
 		newContext();
 		try {

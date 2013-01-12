@@ -2,14 +2,14 @@ package org.jackie.context;
 
 import static org.jackie.context.ContextManager.*;
 import org.jackie.utils.Log;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
 public class ContextManagerTest {
 
+    @Test
 	public void test() {
 		assert !contextManager().hasContext();
 
@@ -31,6 +31,7 @@ public class ContextManagerTest {
 		assert !contextManager().hasContext();
 	}
 
+    @Test
 	public void withContext() {
 		final SampleContextObject co = new SampleContextObject();
 		executeWithContext(new ContextRunner() {
@@ -43,6 +44,7 @@ public class ContextManagerTest {
 		});
 	}
 
+    @Test
 	public void unauthorizedClose() {
 		newContext();
 		try {

@@ -5,14 +5,14 @@ import org.jackie.compilerimpl.TestCase;
 import static org.jackie.context.ContextManager.context;
 import org.jackie.jvm.JClass;
 import org.jackie.utils.Assert;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
 public class ClassReaderTest extends TestCase {
 
+    @Test
 	public void readSample() throws Exception {
 		run(new Runnable() {
 			public void run() {

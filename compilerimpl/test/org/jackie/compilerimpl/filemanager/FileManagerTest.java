@@ -4,7 +4,7 @@ import org.jackie.compiler.filemanager.FileObject;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.Set;
@@ -12,9 +12,9 @@ import java.util.Set;
 /**
  * @author Patrik Beno
  */
-@Test
 public class FileManagerTest {
 
+    @Test
 	public void loadJar() throws Exception {
 
       TimedTask loading = new TimedTask();
@@ -34,7 +34,7 @@ public class FileManagerTest {
 					 pathnames.size(), countBytes(fm), loading.duration(), loading.duration()*1000/pathnames.size());
    }
 
-   @Test(groups = {"perf"}, invocationCount = 5)
+   @Test//(groups = {"perf"}, invocationCount = 5)
    public void perftest() throws Exception {
       loadJar();
    }
@@ -47,6 +47,7 @@ public class FileManagerTest {
       return size;
    }
 
+    @Test
 	public void classpath() {
 		ClassPathFileManager fm = new ClassPathFileManager(true, true);
 		fm.getPathNames();

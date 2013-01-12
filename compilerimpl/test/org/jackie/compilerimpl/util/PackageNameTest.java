@@ -2,14 +2,14 @@ package org.jackie.compilerimpl.util;
 
 import org.jackie.utils.Assert;
 import org.jackie.utils.PackageName;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
 public class PackageNameTest {
 
+    @Test
 	public void parseStandardPackage() {
 		PackageName pckgname = new PackageName("java.lang.reflection");
 		Assert.expected("java.lang.reflection", pckgname.getFQName(), "getFQName()");

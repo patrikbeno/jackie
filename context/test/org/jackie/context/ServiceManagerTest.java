@@ -2,14 +2,14 @@ package org.jackie.context;
 
 import static org.jackie.context.ContextManager.*;
 import static org.jackie.context.ServiceManager.service;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
 public class ServiceManagerTest {
 
+    @Test
 	public void loadService() {
 		newContext();
 		try {

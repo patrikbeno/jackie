@@ -24,4 +24,6 @@ public interface TypeRegistry extends ContextObject {
 	Set<String> getJClassIndex();
 
 	Iterable<JClass> jclasses();
+
+    void register(ClassName clsname);
 }

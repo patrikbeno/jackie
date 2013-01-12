@@ -3,7 +3,7 @@ package org.jackie.compilerimpl.filemanager;
 import org.jackie.compilerimpl.filemanager.foimpl.URLFileObject;
 import org.jackie.compilerimpl.javacintegration.JFO;
 import org.jackie.utils.Assert;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import javax.tools.JavaFileObject.Kind;
 import java.io.File;
@@ -17,9 +17,9 @@ import java.nio.ByteBuffer;
 /**
  * @author Patrik Beno
  */
-@Test
 public class URLFileObjectTest {
 
+    @Test
 	public void read() throws Exception {
 		String jhome = System.getProperty("java.home");
 		URI jaruri = new File(jhome, "lib/rt.jar").toURI();

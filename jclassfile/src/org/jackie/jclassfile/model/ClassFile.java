@@ -1,5 +1,8 @@
 package org.jackie.jclassfile.model;
 
+import java.io.OutputStream;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import org.jackie.jclassfile.attribute.AttributeHelper;
 import org.jackie.jclassfile.attribute.AttributeSupport;
 import org.jackie.jclassfile.constantpool.ConstantPool;
@@ -27,6 +30,8 @@ import java.io.DataOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import org.jackie.utils.XDataOutputWrapper;
+
 import static java.util.Collections.emptyList;
 
 /**
@@ -279,9 +284,17 @@ ClassFile {
 		}
 	}
 
+	public void save(OutputStream out) {
+		save(new XDataOutputWrapper(new DataOutputStream(out)));
+	}
+
+	public void save(WritableByteChannel out) {
+		save(new XDataOutputWrapper(new DataOutputStream(Channels.newOutputStream(out))));
+	}
+
 	private void registerConstants(ConstantPool pool) {
 		classname = pool.register(classname);
-		superclass = pool.register(superclass);
+		superclass = (superclass != null) ? pool.register(superclass) : null;
 		interfaces = Helper.register(interfaces, pool);
 		for (FieldInfo f : iterable(fields)) {
 			f.registerConstants(pool);

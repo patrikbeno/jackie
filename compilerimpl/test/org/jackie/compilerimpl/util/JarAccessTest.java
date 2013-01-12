@@ -4,7 +4,7 @@ import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Log;
 import org.jackie.utils.TimedTask;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -20,10 +20,10 @@ import java.util.jar.JarInputStream;
 /**
  * @author Patrik Beno
  */
-@Test
+
 public class JarAccessTest {
 
-	@Test(groups={"perf"}, invocationCount=5)
+	@Test//(groups={"perf"}, invocationCount=5)
 	public void randomAccesJarEntries() throws Exception {
 		// detect rt.jar path
 		String jhome = System.getProperty("java.home");

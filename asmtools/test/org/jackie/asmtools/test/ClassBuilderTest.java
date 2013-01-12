@@ -3,7 +3,7 @@ package org.jackie.asmtools.test;
 import org.jackie.asmtools.ClassBuilder;
 import org.jackie.asmtools.ConstructorBuilder;
 import org.jackie.asmtools.MethodBuilder;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 import java.io.PrintStream;
 
