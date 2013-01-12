@@ -1,5 +1,7 @@
 package org.jackie.event.impl;
 
+import java.util.LinkedHashMap;
+import java.util.WeakHashMap;
 import org.jackie.event.Event;
 import org.jackie.event.EventManager;
 import org.jackie.utils.Assert;
@@ -43,8 +45,21 @@ public class EventManagerImpl implements EventManager {
 		return (listeners != null) ? new ArrayList(listeners) : emptyList();
 	}
 
+	static final Map<Class<? extends Event>, Event> dispatchers = new WeakHashMap<>();
+
 	public <T extends Event> T getEventDispatcher(Class<T> type) {
-		return proxyProvider.getProxy(type);
+		T proxy = (T) dispatchers.get(type);
+		if (proxy != null) { return proxy; }
+
+		synchronized (dispatchers) {
+			proxy = (T) dispatchers.get(type);
+			if (proxy != null) { return proxy; }
+
+			proxy = proxyProvider.getProxy(type);
+			dispatchers.put(type, proxy);
+
+			return proxy;
+		}
 	}
 
 }
