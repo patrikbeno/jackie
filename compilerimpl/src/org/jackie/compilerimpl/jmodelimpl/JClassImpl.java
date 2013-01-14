@@ -1,5 +1,6 @@
 package org.jackie.compilerimpl.jmodelimpl;
 
+import java.util.Arrays;
 import org.jackie.compiler.typeregistry.TypeRegistry;
 import org.jackie.compiler.spi.NodeCompiler;
 import org.jackie.compiler.event.ExtensionEvents;
@@ -21,6 +22,7 @@ import org.jackie.jvm.props.JFlags;
 import org.jackie.jvm.spi.AbstractJNode;
 import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
+import org.jackie.jvm.structure.JParameter;
 import org.jackie.utils.Assert;
 import static org.jackie.utils.Assert.typecast;
 import static org.jackie.event.Events.events;
@@ -246,6 +248,13 @@ public class JClassImpl extends AbstractJNode implements JClass {
 				}
 				methods.add(jmethod);
 				return this;
+			}
+
+			@Override
+			public JMethod addMethod() {
+				JMethod m = new JMethodImpl(cthis);
+				addMethod(m);
+				return m;
 			}
 
 			public JClass editable() {

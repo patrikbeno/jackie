@@ -134,6 +134,13 @@ public class JMethodImpl extends AbstractJNode implements JMethod {
 				return this;
 			}
 
+			@Override
+			public Editor addParameter(JParameter parameter) {
+				// TODO check NPE, validate
+				mthis.parameters.add(parameter);
+				return this;
+			}
+
 			public Editor setParameters(List<JParameter> parameters) {
 				mthis.parameters = new ArrayList<JParameter>(parameters);
 				return this;
