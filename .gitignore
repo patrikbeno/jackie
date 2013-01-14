@@ -18,3 +18,4 @@ doc/wiki/data/event-log
 doc/wiki/data/event-log
 test/data
 *.jar
+*.iml
