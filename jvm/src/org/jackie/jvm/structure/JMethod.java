@@ -36,6 +36,8 @@ public interface JMethod extends JNode, Named, Typed, Accessible, Flagged, Attri
 
 		Editor setType(JClass type);
 
+		Editor addParameter(JParameter parameter);
+
 		Editor setParameters(List<JParameter> parameters);
 
 		Editor setExceptions(List<JClass> exceptions);

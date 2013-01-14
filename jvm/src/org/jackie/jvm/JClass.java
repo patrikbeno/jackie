@@ -12,6 +12,7 @@ import org.jackie.jvm.structure.JField;
 import org.jackie.jvm.structure.JMethod;
 
 import java.util.List;
+import org.jackie.jvm.structure.JParameter;
 
 /**
  * @author Patrik Beno
@@ -67,10 +68,12 @@ public interface JClass extends JNode, Named, FQNamed, Accessible, Flagged, Attr
 
 		/// structure ///
 
-
 		Editor addField(JField jfield);
 
 		Editor addMethod(JMethod jmethod);
 
+		/// factory ///
+
+		JMethod addMethod();
 	}
 }
