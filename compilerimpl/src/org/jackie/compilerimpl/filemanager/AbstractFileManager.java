@@ -1,5 +1,6 @@
 package org.jackie.compilerimpl.filemanager;
 
+import java.util.Set;
 import org.jackie.compiler.filemanager.FileManager;
 import org.jackie.compiler.filemanager.FileObject;
 import org.jackie.utils.Assert;
@@ -31,9 +32,19 @@ public abstract class AbstractFileManager implements FileManager {
 			}
 
 			public void remove() {
-				throw Assert.unsupported();
+				it.remove();
 			}
 		};
+	}
+
+	@Override
+	public Set<String> getPathNames() {
+		throw new UnsupportedOperationException(); // todo implement this
+	}
+
+	@Override
+	public FileObject getFileObject(String pathname) {
+		throw new UnsupportedOperationException(); // todo implement this
 	}
 
 	public FileObject create(String pathname) {
