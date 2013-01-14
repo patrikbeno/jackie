@@ -66,6 +66,11 @@ public class AnnotationTypeImpl extends AbstractExtension<JClass> implements Ann
 				throw Assert.notYetImplemented(); // todo implement this
 			}
 
+			@Override
+			public Editor setElements(List<JAnnotationElement> elements) {
+				throw new UnsupportedOperationException(); // todo implement this
+			}
+
 			public AnnotationType editable() {
 				return AnnotationTypeImpl.this;
 			}

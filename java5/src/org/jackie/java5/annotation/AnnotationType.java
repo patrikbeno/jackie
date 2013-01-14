@@ -41,6 +41,8 @@ public interface AnnotationType extends Extension, Editable<AnnotationType.Edito
 
 		Editor addElement(JAnnotationElement element);
 
+		Editor setElements(List<JAnnotationElement> elements);
+
 	}
 
 }
