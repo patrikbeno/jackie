@@ -61,7 +61,7 @@
 		<!-- versions -->
 		<javac.version>1.7</javac.version>
 		<surefire.plugin>2.4.2</surefire.plugin>
-		<testng.version>5.6</testng.version>
+		<junit.version>4.10</junit.version>
 	</properties>
 
 	<build>
@@ -92,8 +92,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>1.5</source>
-					<target>1.5</target>
+					<source>${javac.version}</source>
+					<target>${javac.version}</target>
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
@@ -171,13 +171,27 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
-			<classifier>jdk15</classifier>
-			<scope>test</scope>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<!--<scope>test</scope>-->
 		</dependency>
 	</dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>javac</groupId>
+                <artifactId>javac</artifactId>
+                <version>${javac.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 	<reporting>
 		<outputDirectory>${build.dir}/site</outputDirectory>
