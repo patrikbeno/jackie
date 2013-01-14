@@ -89,7 +89,12 @@ public abstract class AbstractTypeRegistry implements TypeRegistry, JClassLoader
 		return getJClass(new ClassName(cls));
 	}
 
-	public void load(final JClass jclass, final LoadLevel level) {
+    @Override
+    public void register(ClassName clsname) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void load(final JClass jclass, final LoadLevel level) {
 
 		assert jclass != null;
 		assert level != null;

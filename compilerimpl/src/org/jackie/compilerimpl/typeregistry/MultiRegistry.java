@@ -64,7 +64,12 @@ public class MultiRegistry implements TypeRegistry {
 		throw Assert.notYetImplemented(); // todo implement this
 	}
 
-	public void loadJClass(JClass jclass, LoadLevel level) {
+    @Override
+    public void register(ClassName clsname) {
+        throw new UnsupportedOperationException();
+    }
+
+    public void loadJClass(JClass jclass, LoadLevel level) {
 		throw Assert.unsupported(); 
 	}
 

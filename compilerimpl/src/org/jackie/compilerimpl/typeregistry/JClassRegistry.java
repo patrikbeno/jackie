@@ -74,4 +74,9 @@ public class JClassRegistry extends AbstractTypeRegistry {
 		};
 	}
 
+    @Override
+    public void register(ClassName clsname) {
+        index.add(clsname.getFQName());
+    }
+
 }

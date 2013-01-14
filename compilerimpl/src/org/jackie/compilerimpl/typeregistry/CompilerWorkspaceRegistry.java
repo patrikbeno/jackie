@@ -17,8 +17,12 @@ public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 
 	public CompilerWorkspaceRegistry(TypeRegistry workspace, TypeRegistry dependencies) {
 		super(null);
+
 		this.workspace = workspace;
 		this.dependencies = dependencies;
+
+        this.workspace.setEditable(true);
+        setEditable(true);
 	}
 
 	public boolean hasJClass(ClassName clsname) {
@@ -37,7 +41,12 @@ public class CompilerWorkspaceRegistry extends AbstractTypeRegistry {
 		return null;
 	}
 
-	public Set<String> getJClassIndex() {
+    @Override
+    public void register(ClassName clsname) {
+        workspace.register(clsname);
+    }
+
+    public Set<String> getJClassIndex() {
 		throw Assert.notYetImplemented(); // todo implement this 
 	}
 
