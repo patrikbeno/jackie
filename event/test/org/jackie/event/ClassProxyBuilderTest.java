@@ -5,7 +5,7 @@ import static org.jackie.event.Events.eventManager;
 import org.jackie.event.impl.proxygen.ClassProxyBuilder;
 import static org.jackie.utils.Assert.expected;
 import org.jackie.utils.ObjectWrapper;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
@@ -76,9 +76,12 @@ public class ClassProxyBuilderTest {
 
 	}
 
-	@Test(expectedExceptions = {EventManagerException.class})
+	@Test
 	public void validateEventClass() throws Exception {
-		new ClassProxyBuilder(InvalidEvents.class).build();
+		try {
+			new ClassProxyBuilder(InvalidEvents.class).build();
+		} catch (EventManagerException expected) {
+		}
 	}
 
 }

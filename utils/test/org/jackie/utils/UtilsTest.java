@@ -1,8 +1,7 @@
 package org.jackie.utils;
 
-import org.testng.annotations.Test;
-
 import java.util.Arrays;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno

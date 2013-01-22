@@ -4,12 +4,11 @@ import static org.jackie.context.ContextManager.*;
 import org.jackie.context.ContextObject;
 import static org.jackie.event.Events.events;
 import org.jackie.utils.Log;
-import org.testng.annotations.Test;
+import org.junit.Test;
 
 /**
  * @author Patrik Beno
  */
-@Test
 public class EventTest {
 
 	static public interface ITestEvents extends Event {
