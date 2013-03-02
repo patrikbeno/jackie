@@ -97,6 +97,7 @@ public class Context {
     }
 
     public void await() {
+        if (isDone()) { return; }
         doAssert(Thread.currentThread() != owner, "Preventing deadlock! Cannot await() context completion within the context itself.");
         synchronized (sync) {
             while (hasForkedSubContexts()) {
