@@ -29,6 +29,16 @@ public class IOHelper {
 		}
 	}
 
+    static public void closeSilently(Object o) {
+        try {
+            close(o);
+        } catch (Error e) {
+            throw e;
+        } catch (Throwable t) {
+            Assert.logNotYetHandled(t);
+        }
+    }
+
 	static public void write(ByteBuffer buf, WritableByteChannel ch) {
 		try {
 			while (buf.hasRemaining()) {
