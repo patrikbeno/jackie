@@ -1,6 +1,7 @@
 package org.jackie.context;
 
 import static org.jackie.utils.Assert.NOTNULL;
+import static org.jackie.utils.Assert.doAssert;
 
 /**
  * @author Patrik Beno
@@ -16,6 +17,10 @@ public class ContextManager {
 	static public Context newContext() {
 		return contextManager().beginNewContext();
 	}
+
+    static public Context newContext(Context parent) {
+        return contextManager().beginNewContext(parent);
+    }
 
 	static public Context closeContext() {
 		return contextManager().closeCurrentContext();
@@ -52,7 +57,7 @@ public class ContextManager {
 	ThreadLocal<Context> tlContext;
 
 	{
-		tlContext = new ThreadLocal<Context>();
+		tlContext = new ThreadLocal<>();
 	}
 
 	///
@@ -62,6 +67,15 @@ public class ContextManager {
 		tlContext.set(ctx);
 		return ctx;
 	}
+
+    protected Context beginNewContext(Context parent) {
+        doAssert(!hasContext(),
+                "Cannot create forked subcontext: current thread is already running within a context. Thread: %s. Context: %s.",
+                Thread.currentThread(), tlContext.get());
+        Context ctx = new Context(parent);
+        tlContext.set(ctx);
+        return ctx;
+    }
 
 	protected Context closeCurrentContext() {
 		Context ctx = getCurrentContext();

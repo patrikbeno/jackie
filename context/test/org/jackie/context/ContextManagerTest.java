@@ -1,7 +1,11 @@
 package org.jackie.context;
 
 import static org.jackie.context.ContextManager.*;
+import static org.jackie.utils.Assert.doAssert;
+import static org.jackie.utils.Assert.notNull;
+
 import org.jackie.utils.Log;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -30,6 +34,30 @@ public class ContextManagerTest {
 		}
 		assert !contextManager().hasContext();
 	}
+
+    @Test
+    public void fork() {
+        final Context ctx = newContext();
+        try {
+            ctx.set(SampleContextObject.class, new SampleContextObject());
+            new Thread() {
+                @Override
+                public void run() {
+                    newContext(ctx);
+                    try {
+                        SampleContextObject sco = context(SampleContextObject.class);
+                        notNull(sco);
+                    } finally {
+                        closeContext();
+                    }
+                }
+            }.start();
+        } finally {
+            closeContext();
+        }
+        ctx.await();
+        doAssert(ctx.isDone(), "ctx.isDone()");
+    }
 
     @Test
 	public void withContext() {

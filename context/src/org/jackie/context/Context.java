@@ -2,30 +2,50 @@ package org.jackie.context;
 
 import static org.jackie.utils.Assert.doAssert;
 import org.jackie.utils.Assert;
-import org.jackie.utils.Closeable;
+import org.jackie.utils.ExceptionHelper;
+import org.jackie.utils.IOHelper;
+import org.jackie.utils.Log;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
  * @author Patrik Beno
  */
-public class Context implements Closeable {
+public class Context {
 
 	static private final int STACKTRACE_OFFSET = 4;
 
 	protected Context parent;
-	protected StackTraceElement creator;
-	protected Map<Class, Object> items;
+    protected Thread owner;
+
+    protected Map<Class, Object> items;
+
+    protected StackTraceElement creator;
+
+    protected List<Context> forks;
+
+    boolean done;
+    final Object sync = new Object();
 
 	{
-		items = new HashMap<Class, Object>();
+		items = new HashMap<>();
 	}
 
 	public Context(Context parent) {
 		this.parent = parent;
-		this.creator = Thread.currentThread().getStackTrace()[STACKTRACE_OFFSET];
-	}
+        this.owner = Thread.currentThread();
+        this.creator = Thread.currentThread().getStackTrace()[STACKTRACE_OFFSET];
+        if (isForkedSubContext()) {
+            parent.registerForkedSubContext(this);
+        }
+    }
+
+    public boolean isDone() {
+        return done;
+    }
 
 	public <T extends ContextObject> T get(Class<T> type) {
 		T t = type.cast(items.get(type));
@@ -44,21 +64,75 @@ public class Context implements Closeable {
 		items.remove(type);
 	}
 
-	public void authorizeClose() {
+	protected void authorizeClose() {
+        doAssert(owner == Thread.currentThread(), "Only owner can close context: %s", owner);
 		StackTraceElement ste = Thread.currentThread().getStackTrace()[STACKTRACE_OFFSET];
 		doAssert(ste.getClassName().equals(creator.getClassName()) && ste.getMethodName().equals(creator.getMethodName()),
 					"Unauthorized caller (%s). Context can be closed by its creator only (%s)", ste, creator);
 	}
 
-	public void close() {
-		for (Object o : items.values()) {
-			if (o instanceof Closeable) {
-				try {
-					((Closeable) o).close();
-				} catch (Exception e) {
-					Assert.logNotYetHandled(e);
-				}
-			}
-		}
-	}
+	protected void close() {
+        synchronized (sync) {
+            if (hasForkedSubContexts()) {
+                //noinspection SynchronizeOnNonFinalField
+                synchronized (forks) {
+                    Log.debug("Closing context %s. Waiting for completion of %d subcontexts...", forks.size());
+                    for (Context subcontext : forks) {
+                        subcontext.await();
+                    }
+                    forks.clear();
+                    forks = null;
+                }
+            }
+            for (Object o : items.values()) {
+                IOHelper.closeSilently(o);
+            }
+            if (isForkedSubContext()) {
+                parent.clearForkedSubContext(this);
+            }
+
+            done = true;
+            sync.notifyAll();
+        }
+    }
+
+    public void await() {
+        doAssert(Thread.currentThread() != owner, "Preventing deadlock! Cannot await() context completion within the context itself.");
+        synchronized (sync) {
+            while (hasForkedSubContexts()) {
+                for (Context subctx : forks) {
+                    subctx.await();
+                }
+            }
+            while (!isDone()) {
+                ExceptionHelper.wait(sync);
+            }
+        }
+    }
+
+    protected boolean hasParent() {
+        return parent != null;
+    }
+
+    protected boolean hasForkedSubContexts() {
+        return forks != null && !forks.isEmpty();
+    }
+
+    protected boolean isForkedSubContext() {
+        return hasParent() && owner != parent.owner;
+    }
+
+    synchronized
+    protected void registerForkedSubContext(Context context) {
+        if (forks == null) { forks = new LinkedList<>(); }
+        forks.add(context);
+    }
+
+    synchronized
+    protected void clearForkedSubContext(Context context) {
+        if (hasForkedSubContexts()) {
+            forks.remove(context);
+        }
+    }
+
 }
