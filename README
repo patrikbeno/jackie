@@ -1,39 +1,11 @@
-=== BAZAAR USAGE ===
 
-___________________
-COMMENTING COMMITS:
+JACKIE README
 
-Log message pattern (recommended, not mandatory - just trying to make things useful):
+(-: TODO :-)
 
-(1) new stuff:
-[module] subpackage / class name: commment
+Includes:
+- bytecode manipulation framework
+- java compiler API + implementation
+- IntelliJ Idea compiler plugin
 
-(2) bugfixes (not tracked):
-[module] fixed: comment
-
-(3) unit tests:
-[module] test: comment
-
-(4) build related:
-<build> comment
-
-(5) bazaar related:
-<bzr> comment
-
-(6) documentation:
-<doc> comment
-<javadoc> comment
-
-(7) tracked (JIRA) issues:
-[JCK-123] short desc: comment
-
-
-______________
-Time tracking:
-
-Every commit that represents any reasonable amount of work should include something like this:
-
-{{8hrs}}
-
-This should be on a single dedicated line, usually last line in the comment. Units supported: [h|hr|hrs].
-
+...
